@@ -14,6 +14,7 @@ import sys
 from ariadne import __version__
 
 NOT_BUILT = 2
+BUILT = {"fetch"}  # commands that run; the rest stop and name their phase
 
 # Command -> (phase that builds it, one-line description).
 COMMANDS = {
@@ -43,6 +44,8 @@ def build_parser() -> argparse.ArgumentParser:
             p.add_argument("--name", default=None, help="short name for the new site")
         else:
             p.add_argument("--site", default="boxwork", help="site name (default: boxwork)")
+        if name == "fetch":
+            p.add_argument("--force", action="store_true", help="re-read sources even if cached")
     return parser
 
 
@@ -52,6 +55,11 @@ def main(argv: list[str] | None = None) -> int:
     if args.command is None:
         parser.print_help()
         return NOT_BUILT
+    if args.command == "fetch":
+        from ariadne.fetch.run import fetch_site, fetch_summary_ok
+
+        summary = fetch_site(args.site, force=args.force)
+        return 0 if fetch_summary_ok(summary) else 1
     phase, _ = COMMANDS[args.command]
     print(
         f"ariadne {args.command}: not built yet. Phase {phase} builds this command "

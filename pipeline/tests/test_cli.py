@@ -9,7 +9,6 @@ import pytest
 from ariadne import __version__, cli
 
 COMMANDS = {
-    "fetch": 1,
     "derive": 2,
     "plan": 3,
     "validate": 2,
@@ -23,8 +22,16 @@ def test_help_lists_every_command(capsys):
         cli.main(["--help"])
     assert exc.value.code == 0
     out = capsys.readouterr().out
-    for name in COMMANDS:
+    for name in [*COMMANDS, "fetch"]:
         assert name in out
+
+
+def test_fetch_is_built_and_takes_force(capsys):
+    assert "fetch" in cli.BUILT
+    with pytest.raises(SystemExit) as exc:
+        cli.main(["fetch", "--help"])
+    assert exc.value.code == 0
+    assert "--force" in capsys.readouterr().out
 
 
 def test_version_flag_prints_the_package_version(capsys):
