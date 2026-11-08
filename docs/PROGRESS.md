@@ -7,8 +7,9 @@ Last updated: 2026-11-08.
 | Phase | Status |
 | --- | --- |
 | Kickoff | Done. Sources for Phases 1 and 2 verified (docs/SOURCES_LOG.md); findings applied to PROMPT.md and docs/PLAN.md |
-| 0 Repo and guardrails | In progress: plan and acceptance tests below |
-| 1 to 9 | Not started |
+| 0 Repo and guardrails | Done 2026-11-08: all ten acceptance tests pass; CI green; site live at https://vyom-aggarwal.github.io/ARIADNE/ |
+| 1 Sites and data | Next |
+| 2 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
 
@@ -69,10 +70,17 @@ Build the skeleton every later phase plugs into, with the project rules enforced
 | A9 | The built page has no axe-core WCAG 2.1 A or AA violations in Chromium, and every link can be reached with the Tab key | `web/e2e/placeholder.spec.ts` |
 | A10 | CI is green on `main`, the deploy workflow succeeds, and the Pages URL serves the placeholder heading | GitHub Actions and a fetch of the Pages URL |
 
+### Phase 0 evidence
+
+- **Commits:** `bd960a8` kickoff docs; `c54ec4d` license, AI disclosure, credits, README; `f878dc6` web placeholder and tests; `8eba763` pipeline skeleton, guardrails, Makefile, CI; `67f0179` Pages deploy.
+- **Local run:** 52 pipeline tests pass on Python 3.13 (A1 to A6), ruff clean, all three guardrails pass; 17 Vitest tests pass (A7, A8 unit tests); `npm run licenses` passes for all 138 npm packages (A8); 4 Playwright tests pass on the production build in Chromium (A9: no axe WCAG 2.1 A/AA violations in light or dark mode, all links reachable by Tab, visible focus outline, standards mode despite the header comment before the doctype).
+- **CI:** run 42533117810 on `67f0179`: Pipeline (Python 3.12) success, Pipeline (Python 3.13) success, Web success. This was the first real run of the Makefile, since GNU make is not installed on this machine.
+- **Deploy:** run 42533196737 (build and deploy both succeeded), triggered by the green CI run. Pages is enabled with the GitHub Actions source and HTTPS enforced. Fetching https://vyom-aggarwal.github.io/ARIADNE/ returned HTTP 200 with title "ARIADNE"; its script (HTTP 200) renders the "ARIADNE" h1 and the summary text, and its stylesheet returns HTTP 200 (A10).
+- **Self-review:** the page shows no data values, so no labels are due yet; it says plainly that it is a placeholder. Every library is credited with its license; all licenses are OSI-approved. No NASA graphics, no AI-generated media, no secrets.
+
 ## Next steps
 
-1. Finish Phase 0: write the tests, then the skeleton; run them locally; commit as "phase 0: ..."; push; enable Pages; confirm A10.
-2. Phase 1: site configs in `config/sites/`, windowed fetch with provenance records, the DEM source-class mask from ODE footprints of the 12 USGS pairs, the coverage report, the Murray Buttes crop, and Mars24 and MSL sol functions with the fixture tests.
+1. Phase 1: site configs in `config/sites/`, windowed fetch with provenance records, the DEM source-class mask from ODE footprints of the 12 USGS pairs, the coverage report, the Murray Buttes crop, and Mars24 and MSL sol functions with the fixture tests.
 
 ## Open issues
 
