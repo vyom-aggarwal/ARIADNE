@@ -1,0 +1,90 @@
+# Sources log
+
+Every source is checked before code depends on it (CLAUDE.md rule 3). Each entry records what was fetched, when, and what was confirmed. Checks were run with curl and a scratch Python environment (rasterio 1.x with bundled GDAL, pandas, shapely), outside the repo.
+
+Status key: **OK** = fetched and content confirmed; **MOVED** = old URL failed, current official location found and confirmed; **PARTIAL** = reachable but not every needed detail confirmed; **PENDING** = not needed until a later phase, not yet checked in depth; **FAILED** = not reachable from this machine.
+
+## Kickoff verification pass (2026-11-07 to 2026-11-08 UTC)
+
+### Elevation and imagery (Phase 1)
+
+| ID | Source | Status | What was confirmed |
+| --- | --- | --- | --- |
+| `usgs-gale-dem-1m` | USGS MSL Gale Merged DEM 1 m v3. https://planetarymaps.usgs.gov/mosaic/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif redirects to https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif | OK | 3,868,256,546 bytes, Last-Modified 2022-11-09, `Accept-Ranges: bytes`. GeoTIFF 32,980 × 57,440 px, 1 band float32, nodata −32767, LZW, 1 m pixels, **one row per strip and no overviews** (not cloud-optimized). CRS "Mars_Equirectangular_clon0" on a 3,396,190 m sphere, standard parallel 0. Bounds E 8,127,993.49 to 8,160,973.49 m, N −302,221.08 to −244,781.08 m = lat −5.0987 to −4.1296, lon 137.1242 to 137.6806 E, matching PROMPT.md. `/vsicurl/` window read of 200 × 200 m at the boxwork took 6.2 s, 100% valid, elevations −3,645.7 to −3,625.1 m (PLACES rover elevations there: −3,665.8 to −3,588.0 m). |
+| `usgs-gale-dem-1m-page` | Product page https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_dem_1m | OK | Authors Parker and Calef III, published 2016-10-20, "Please credit authors", use constraints none. Built from HRSC, CTX and HiRISE DEMs tied to MOLA; where HiRISE stereo is lacking, CTX, then HRSC, then MOLA 128 ppd. Lists 12 HiRISE stereo pairs: ESP_024234/ESP_024300 "West Gap"; PSP_009650/PSP_009716 "West"; PSP_010573/PSP_010639 "Center"; PSP_009505/PSP_009571 "G2"; ESP_011417/ESP_011562 "East"; ESP_018854/ESP_018920 "West of Center"; ESP_023957/ESP_024023 "Center Gap"; ESP_024102/ESP_025368 "East Gap"; PSP_009149/PSP_009294 "Traverse"; ESP_012551/ESP_012841 "T2"; PSP_001488/PSP_001752 "T1"; ESP_019698/ESP_019988 "T3". The page writes every pair with suffix _1755, but the HiRISE archive names the Traverse and T3 observations _1750. Accuracy: HRSC controlled to MOLA, about 100 m horizontal and 1 m vertical. The page gives no per-pixel source mask; one has to be built from stereo-pair footprints. |
+| `usgs-gale-ortho-25cm` | USGS MSL Gale Merged Orthophoto Mosaic 25 cm v3. https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/MSL_Gale_Orthophoto_Mosaic_25cm_v3.tif | OK, with correction | **50,404,480,837 bytes (about 50 GB), not 23 GB.** Last-Modified 2022-12-01, accepts ranges. 180,000 × 280,000 px, 1 band uint8, nodata 0, uncompressed, one row per strip, no overviews. Same CRS as the DEM. Bounds E 8,126,248 to 8,171,248 m, N −311,164 to −241,164 m. A 100 × 100 m window took 14.7 s; a full 3.5 × 3.9 km site crop is expected to take several minutes and should be cached once. |
+| `usgs-gale-hirise-lrgb` | Color alternative. https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_HiRISE-LRGB_78quads_sharp_cog.tif | OK | 1,030,625,379 bytes, Last-Modified 2025-07-25. A real COG: 36,000 × 76,000 px, 3 bands uint8, 512 px tiles, YCbCr JPEG q85, overviews 2 to 257. Bounds E 8,140,000 to 8,149,000 m, N −289,000 to −270,000 m (9 × 19 km). Covers the whole boxwork box but **not** the Murray Buttes box. A 500 × 500 m window took 1.3 s. |
+| `hirise-dtm-catalog` | https://www.uahirise.org/dtm/ | OK | Reachable. ODE (below) finds four public HiRISE DTMs touching the boxwork box. **DTEEC_019698_1750_019988_1750_U01** covers 100% of the rover's boxwork path and 96% of the site box; **DTEEC_009149_1750_009294_1750_U01** covers 100% of the path and 77% of the box; DTEEC_040770_1755_039280_1755_A01 covers 22% of the box; DTEEC_009650_1755_009716_1755_U01 covers 24%. The first two are the USGS "T3" and "Traverse" pairs, so the merged DEM over the boxwork path is very likely HiRISE-derived. File example: https://hirise.lpl.arizona.edu/PDS/DTM/ESP/ORB_019600_019699/ESP_019698_1750_ESP_019988_1750/DTEEC_019698_1750_019988_1750_U01.IMG (542,721,784 bytes, accepts ranges). |
+| `ode-rest` | PDS Geosciences Orbital Data Explorer REST API. https://oderest.rsl.wustl.edu/live2/?query=product&target=mars&output=JSON&results=m&... | OK | Returns JSON with WKT footprints (`Footprint_C0_geometry`), label and product URLs. Used for the HiRISE DTM and CRISM coverage checks here; it is the planned source for the DEM source-class mask (footprints of the 12 USGS pairs). |
+| `asp` | Ames Stereo Pipeline. https://github.com/NeoGeographyToolkit/StereoPipeline | OK (reachable) | Gap-fill is probably not needed over the rover path (see `hirise-dtm-catalog`). License to be recorded only if it is used. |
+
+### Rover positions (Phase 1)
+
+| ID | Source | Status | What was confirmed |
+| --- | --- | --- | --- |
+| `msl-places` | MSL PLACES localizations. Old PDS3 URL `.../msl/MSLPLC_1XXX/data_localizations/localized_interp.csv` returns **404**. Current PDS4 bundle: https://planetarydata.jpl.nasa.gov/img/data/msl/msl_places/data_localizations/localized_interp.csv | MOVED, then OK | 11,755,643 bytes, 49,315 data rows, sols 0 to 4868. Columns: frame (SITE/ROVER), site, drive, pose, landing_x/y/z, northing, easting, planetocentric_latitude, planetodetic_latitude, longitude, elevation, map_pixel_line/sample, dem_pixel_line/sample, roll, pitch, yaw, quat_s, quat_v1..v3, sclk, sol. Easting and northing are in the same equirectangular clon0 projection as the USGS mosaics: recomputing from lat/lon on the 3,396,190 m sphere matches to 1 mm. The bundle also has `localized_interp_demv2.csv` (same rows, elevations differ by centimeters), `localized_pos.csv` and `view_metadata.csv`. Per the release notes, PLACES is keyed to the rover motion counter, not the sol, and `sol` is the sol of the earliest SCLK seen at each site/drive. The PDS3 SIS is out of date; use the Mars 2020 PLACES SIS for the PDS4 layout. |
+| `msl-mmgis-waypoints` | https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json | OK | GeoJSON, 1,386 point features up to sol 5045 (newer than PLACES). Properties: RMC, site, drive, sol, easting, northing, elev_geoid, lon, lat, roll, pitch, yaw, tilt, dist_m, dist_total_m, drive_type. Good cross-check for the driven path. |
+
+### Site boxes derived from PLACES (Phase 1 input, not yet in config)
+
+Sol window for the boxwork campaign: sols 4527 to 4852 (2025-05-01 to 2026-03-31, confirmed by the REMS daily-report dates).
+
+| Site | Rover extent | Buffered box | Inside DEM | Inside 25 cm mosaic | Inside color COG |
+| --- | --- | --- | --- | --- | --- |
+| boxwork | 2,893 PLACES rows, sites 115 to 121; E 8,143,105.6 to 8,143,619.5, N −285,230.7 to −284,306.7 (514 × 924 m); lat −4.8120 to −4.7964, lon 137.3791 to 137.3878 | 1.5 km buffer: E 8,141,606 to 8,145,119, N −286,731 to −282,807 (3.5 × 3.9 km) | yes | yes | yes |
+| murray-buttes | Parked at site 57, drive 2798 from sol 1455 (2016-09-09) until the next drive on sol 1468; E about 8,141,565, N about −278,307, elevation about −4,379.5 m | 2 km buffer: E 8,139,558 to 8,143,600, N −280,370 to −276,307 (4.0 × 4.1 km) | yes | yes | no |
+
+### Thermal, context and spectral (Phase 2)
+
+| ID | Source | Status | What was confirmed |
+| --- | --- | --- | --- |
+| `trek-wmts` | Mars Trek WMTS and API docs. https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=mars; layer index https://trek.nasa.gov/mars/TrekServices/ws/index/eq/searchItems?... | OK | Example MOLA tile returns JPEG. 146 equirectangular layers listed. Tile pattern `https://trek.nasa.gov/tiles/Mars/EQ/<layer>/1.0.0/default/default028mm/{z}/{y}/{x}.png`, with `WMTSCapabilities.xml` under `1.0.0/`. Tiles send `Access-Control-Allow-Origin: *`, so browser fetches are allowed. One DNS failure was seen on 2026-11-08 and went away on retry. |
+| `trek-themis-ir` | THEMIS day and night IR. Layers `THEMIS_DayIR_ControlledMosaics_100m_v2_oct2018` and `THEMIS_NightIR_ControlledMosaics_100m_v2_oct2018` | OK, with caveat | Global, lat −65 to 65, PNG tiles. These are 8-bit display mosaics, not calibrated temperatures or thermal inertia, so they support only a relative, percentile-style sand proxy. Labels must say so. |
+| `trek-ctx-gale` | CTX context. Layers `Gale_CTX_BlockAdj_dd` (lon 135.18 to 139.24, lat −6.57 to −2.81, 15 zoom levels) and `curiosity_ctx_mosaic`; also `curiosity_hirise_mosaic` | OK | Endpoints confirmed through Trek's getLayerServices. |
+| `crism-mtrdr` | CRISM map-projected targeted products through ODE / PDS Geosciences | OK | Seven MTRDR products intersect the boxwork box. **FRT000058A3** (2007-04-22) and **FRT0000B6F1** (2008-07-09) cover 100% at 3,293 px/degree (about 18 m); **HRL0000BABA** (2008-07-20) covers 100% at 1,646 px/degree (about 36 m). Matches PROMPT.md's 12 to 36 m. Summary-parameter band choice is a Phase 2 task. |
+| `sim3292` | USGS SIM 3292, Geologic Map of Mars. https://doi.org/10.3133/sim3292 resolves to https://pubs.usgs.gov/publication/sim3292 | OK (reachable) | Context only; download format to be checked when used. |
+
+### Rover science (Phase 2: novelty score and drill sites)
+
+| ID | Source | Status | What was confirmed |
+| --- | --- | --- | --- |
+| `msl-an` | MSL Analyst's Notebook. https://an.rsl.wustl.edu/msl/ | PARTIAL | Reachable, but it is a JavaScript app with no simple bulk export. Use it as a human reference; use the PDS tables below for data. |
+| `msl-chemcam-moc` | ChemCam LIBS derived data. https://pds-geosciences.wustl.edu/msl/msl-m-chemcam-libs-4_5-rdr-v1/mslccm_1xxx/ ; index `index/libsindex.tab` (121,298 rows); oxide tables `data/moc/moc_<sol range>.csv`, latest `moc_4710_4843.csv` | OK | The MOC tables give, for each shot, the file name (which contains the SCLK), the target name, oxide wt% with uncertainties, and the distance from the rover in meters. Prior-target positions = PLACES rover position at that SCLK, uncertain by roughly the stated distance. That is good enough for the novelty term; label it DERIVED. |
+| `msl-apxs`, `msl-chemin`, `msl-dan` | PDS Geosciences MSL pages (apxs.htm, chemin.htm, dan.htm); DAN EDR and RDR at https://pds-geosciences.wustl.edu/msl/msl-m-dan-3_4-rdr-v1/ | PARTIAL | Archives reachable. Still to do: sol and site/drive of the four boxwork drill samples (three from 2025, plus Nevado Sajama2 by sol 4795), and DAN coverage over the boxwork sols. |
+
+### Weather (Phase 2 ground temperature; Phase 6 Now and Replay)
+
+| ID | Source | Status | What was confirmed |
+| --- | --- | --- | --- |
+| `msl-rems-pds` | REMS PDS4 bundle, PDS Atmospheres Node. https://atmos.nmsu.edu/PDS/data/PDS4/msl_rems_bundle/ (linked from https://pds-atmospheres.nmsu.edu/data_and_services/atmospheres_data/MARS/curiosity/rems.html) | OK | Collections: calibration, data_raw, data_calibrated, data_uv_corrected, document. `data_calibrated` runs to folder `SOL_04710_04843`, so it covers the May 2024 storm (sol 4190) and most of the boxwork campaign. SIS documents for the EDR and RDR formats are in `document/`. |
+| `msl-rems-daily` | Public daily report feed. https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json | OK, with caveat | JSON with 4,745 sols. The latest is sol 4995 = 2026-08-25, with min/max air and ground temperature, pressure, sunrise and sunset. The provider (Centro de Astrobiología) states the file is **"intended for outreach purposes only"** and points science use to PDS. Use it only for the "Now" display, labeled as an outreach report; use PDS for every computation. |
+
+### Time (Phase 1 sol fixtures; Phase 2 sun position)
+
+| ID | Source | Status | What was confirmed |
+| --- | --- | --- | --- |
+| `mars24-algorithm` | https://www.giss.nasa.gov/tools/mars24/help/algorithm.html | OK | Steps A-1 to D-6 with two worked examples giving every intermediate value. (1) 2000-01-06 00:00:00 UTC at 0° N 0° W: JD_TT 2451549.50074, Ls 277.18758°, EOT −5.18774°, MST 23:59:39, LTST 23:38:54, subsolar longitude 174.72600°, declination −25.22825°, heliocentric distance 1.39358 AU. (2) Spirit landing, 2004-01-03 13:46:31 UTC at 14.640° S, 184.702° W: Ls 327.32416°, MST 13:09:55, LTST 00:00:00, solar azimuth 179.99383°. Uses TT − UTC = 64.184 s for both. These are the Mars24 test fixtures. |
+| `mars24-notes` | https://www.giss.nasa.gov/tools/mars24/help/notes.html | OK | MSL mission time: **Sol 0 is the sol of touchdown**, and the mission clock is LMST for a planned landing site at **137.42° E**, not the actual 137.442° E, so mission time and site LMST differ by a few seconds. NAIF's MSL LMST clock kernels (https://naif.jpl.nasa.gov/pub/naif/MSL/kernels/sclk/, for example `msl_lmst_ops120808_v1.tsc`) are an independent cross-check. |
+| sol fixtures | PROMPT.md section 3, cross-checked against `msl-rems-daily` | OK | Feed dates: sol 4190 = 2024-05-20, 4220 = 2024-06-20, 4636 = 2025-08-21, 4650 = 2025-09-04, 4677 = 2025-10-02. All within the one-day tolerance of the caption dates (two differ by one day, as expected from UTC sol boundaries). |
+
+### Science facts (Phase 2 calibration and in-app citations)
+
+| ID | Source | Status | What was confirmed |
+| --- | --- | --- | --- |
+| `nasa-boxwork-2026` | NASA, Feb 23, 2026, release 2026-013. https://www.nasa.gov/missions/mars-science-laboratory/curiosity-rover/nasas-curiosity-rover-sees-martian-spiderwebs-up-close/ | OK | Confirmed: ridges about 1 to 2 m (3 to 6 ft) tall with sandy hollows, crisscrossing for miles; groundwater-through-fractures hypothesis; Curiosity confirmed the dark lines are fractures; nodules on ridge walls and in hollows, not near central fractures; clay in the ridge sample and carbonate in the hollow sample; the boxwork lies in the sulfate-bearing layer; Curiosity was due to leave in March 2026. **Drill samples: three were collected in 2025 (ridgetop, hollow bedrock, transitional area) and analyzed with X-rays and the oven; the article adds that a fourth was collected recently and used for wet chemistry (see `curiosity-blog-4798`). The kickoff note "three, not four" was incomplete: PLAN.md's four counts all of them. Corrected 2026-11-08.** |
+| `curiosity-blog-4798` | NASA Curiosity blog, "Sols 4798-4803: Back for More Science". https://science.nasa.gov/blog/curiosity-blog-sols-4798-4803-back-for-more-science/ | OK | Fetched 2026-11-08. A Mastcam caption shows side-by-side drill holes "Nevado Sajama" and "Nevado Sajama2", imaged January 31, 2026 (sol 4795). The second hole fed SAM's second TMAH wet-chemistry vial; the team returned because results from the first visit to Nevado Sajama were intriguing. This is the fourth boxwork sample in `nasa-boxwork-2026`. |
+| `nasa-rad-murray-buttes` | NASA, Nov 15, 2021. https://www.nasa.gov/missions/mars-science-laboratory/curiosity-rover/how-nasas-curiosity-rover-is-making-mars-safer-for-astronauts/ | OK | Parked against a cliff at Murray Buttes Sept 9 to 21, 2016; RAD measured a 4% decrease in overall radiation and a 7.5% decrease in neutral particle radiation; high solar activity cuts cosmic rays by as much as 30 to 50%. The primary paper is Ehresmann et al. in JGR Planets (2021); reading it for the exact quantities is a Phase 2 task. |
+| `nasa-storm-2024` | NASA, "NASA Watches Mars Light Up During Epic Solar Storm". https://www.nasa.gov/solar-system/nasa-watches-mars-light-up-during-epic-solar-storm/ (the jpl.nasa.gov copy returns 403 to scripts) | OK | Confirmed: May 20 flare later estimated X12; charged particles reached Mars "in just tens of minutes"; a person beside Curiosity would have received 8,100 micrograys, equivalent to 30 chest X-rays; the biggest surge RAD has measured since landing; RAD's principal investigator says cliffsides would add shielding. |
+
+## Not yet verified (needed in later phases)
+
+| ID | Source | Phase | Status |
+| --- | --- | --- | --- |
+| `ntrs-tp-2010-216125` | NASA/TP-2010-216125 (Norcross et al. 2010), NTRS PDF | 3 | PENDING. PDF reachable (3,620,626 bytes); not yet read or transcribed. |
+| `msl-rad-pds` | RAD archive, PDS PPI. https://pds-ppi.igpp.ucla.edu/data/MSL-M-RAD-3-RDR-V1.0/DATA/ | 6 | PENDING. Node reachable; dose-rate products not inspected. |
+| `donki` | CCMC DONKI. https://kauai.ccmc.gsfc.nasa.gov/DONKI/ | 6 | FAILED: connection timed out from this machine on 2026-11-07. Retry, then try the DONKI endpoints on api.nasa.gov. |
+| `jpl-horizons` | JPL Horizons through astroquery | 6 | PENDING. |
+| `photojournal-boxwork` | https://photojournal.jpl.nasa.gov/feature/boxwork | 4 | FAILED: redirects to the generic https://science.nasa.gov/photojournal/ page. Find the boxwork set there, or use PDS Imaging Navcam/Mastcam with PLACES `view_metadata.csv`. |
+| `pds-imaging` | https://pds-imaging.jpl.nasa.gov/ | 2 and 4 | PARTIAL. Reachable. Image positions for the uncertainty layer's "distance to nearest ground image" and for the hand-labeled ridge sample still need a source; PLACES `view_metadata.csv` is the first candidate. |
+| `swim` | https://swim.psi.edu/ | 8 | PENDING. Reachable; download format not checked. |
+| `space-com-apollo14` | Space.com on Apollo 14 tracks | 9 | PENDING. |

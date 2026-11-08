@@ -1,0 +1,32 @@
+# Raw data cache: large downloads and crops stay local (docs/PROGRESS.md). Small manifests may be
+# committed by un-ignoring them explicitly below.
+data/*
+!data/README.md
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+
+# Web
+node_modules/
+web/dist/
+web/test-results/
+web/playwright-report/
+web/blob-report/
+*.tsbuildinfo
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local environment files never hold secrets in the repo (CLAUDE.md rule 6)
+.env
+.env.*

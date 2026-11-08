@@ -1,2 +1,12 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Keep LF line endings in the repository on every platform (CI runs on Linux).
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tif binary
+*.tiff binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary

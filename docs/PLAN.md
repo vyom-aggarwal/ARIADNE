@@ -2,6 +2,8 @@
 
 Nov 7, 2026 · @Vyom
 
+Updated Nov 8, 2026 with the kickoff source checks; the evidence is in docs/SOURCES_LOG.md.
+
 ## The pitch
 
 ARIADNE is a meter-scale Marswalk navigator: it fuses eight kinds of NASA data into one living map, then plans, rehearses and guards a two-person EVA while always showing the way home. Tagline: *every Marswalk has a thread home.*
@@ -55,11 +57,11 @@ The EVA tests the leading explanation for the boxwork with dense, paired samplin
 | --- | --- | --- |
 | Did cement spread outward from the central fractures? Curiosity confirmed the dark orbital lines are fractures. | Three-station transects on several ridges: fracture, ridge wall, hollow floor | Ridge and fracture map from the 1 m terrain model and 25 cm imagery |
 | Why do nodules sit on ridge walls and in hollows, not near fractures? | Photograph and count nodules at each station; map them against fracture distance | Station geometry from the transect planner |
-| Does the clay-in-ridge, carbonate-in-hollow contrast hold beyond one pair? | Collect paired samples on many ridges, not one | Distance from Curiosity's four drill sites, so new ridges score higher |
+| Does the clay-in-ridge, carbonate-in-hollow contrast hold beyond one pair? | Collect paired samples on many ridges, not one | Distance from Curiosity's boxwork drill holes (three samples from 2025 and a fourth from January 2026), so new ridges score higher |
 | How high did the water table reach? | Log the elevation of every boxwork ridge visited | Boxwork extent and elevation range mapped from orbit |
 | Where does the sulfate-bearing layer change character? | Spot-check the transition at the loop's far end | Mineral summary parameters from orbital spectra, as regional context |
 
-The human advantage is speed and reach. Curiosity spent months in this terrain and drilled four samples; a crew can visit a dozen stations in one EVA, walk ridge crests the rover could barely fit on, and step down into sandy hollows without wheel-slip risk. ARIADNE quantifies this as "rover sols equivalent" by comparing the plan with Curiosity's actual pace through the same ground.
+The human advantage is speed and reach. Curiosity spent months in this terrain and drilled three samples there in 2025, plus a fourth in January 2026 beside the earlier "Nevado Sajama" hole for a wet-chemistry run; a crew can visit a dozen stations in one EVA, walk ridge crests the rover could barely fit on, and step down into sandy hollows without wheel-slip risk. ARIADNE quantifies this as "rover sols equivalent" by comparing the plan with Curiosity's actual pace through the same ground.
 
 Each candidate station gets a science value from hypothesis role, novelty against prior samples and spectral context. The route engine then trades that value against time, risk and the walk home. Orbital spectra run about 12 to 36 m per pixel depending on the observation ([Fraeman et al. 2016](https://pmc.ncbi.nlm.nih.gov/articles/PMC5101845)), coarser than a ridge, so they set context and never pick individual stations.
 
@@ -72,20 +74,20 @@ ARIADNE fuses eight of the challenge's data types from five NASA Mars missions p
 | Optical | MRO HiRISE | [MSL Gale Merged Orthophoto Mosaic](https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_orthophoto_mosaic_25cm), USGS | 0.25 m | Basemap, ridge and fracture tracing, boulder detection |
 | Optical context | MRO CTX | [Mars Trek tile API](https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=mars) | about 6 m | Approach views and context |
 | Topographic | MRO HiRISE and CTX, Mars Express HRSC, MGS MOLA | [MSL Gale Merged DEM](https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_dem_1m), USGS | 1 m grid | Slope, roughness, ridge index, sky view, line of sight, shadows |
-| Topographic gap-fill | MRO HiRISE | [HiRISE DTM catalog](https://www.uahirise.org/dtm/), or a new DTM built with NASA's Ames Stereo Pipeline | 1 to 2 m | Areas where the merged DEM falls back to coarser sources |
+| Topographic gap-fill | MRO HiRISE | [HiRISE DTM catalog](https://www.uahirise.org/dtm/), or a new DTM built with NASA's Ames Stereo Pipeline | 1 to 2 m | Areas where the merged DEM falls back to coarser sources; probably none on Curiosity's boxwork path, which two public HiRISE DTMs fully cover |
 | Topographic, global | MGS MOLA | Mars Trek tiles | 463 m | Planet-to-site zoom |
-| Thermal | Mars Odyssey THEMIS | Day and night infrared mosaics via Mars Trek | 100 m | Thermal-inertia proxy separating loose sand from rock |
+| Thermal | Mars Odyssey THEMIS | Day and night infrared mosaics via Mars Trek | 100 m | Relative sand proxy (Trek serves 8-bit display mosaics, not calibrated thermal inertia) |
 | Spectral | MRO CRISM | Map-projected targeted products with summary parameters, PDS Geosciences Node | 12 to 36 m | Sulfate and clay context |
 | Chemical | MSL ChemCam, APXS, CheMin | [MSL Analyst's Notebook](https://an.rsl.wustl.edu/msl), PDS Geosciences Node | Per target | Ground truth at Curiosity's targets and drill sites |
 | Geophysical | MSL DAN | PDS Geosciences Node | Along the rover path | Subsurface hydrogen beside the route |
-| Atmospheric | MSL REMS | PDS Atmospheres Node and daily public reports | Point time series | Temperature, pressure, UV and wind at the site |
+| Atmospheric | MSL REMS | PDS Atmospheres Node (PDS4 bundle to sol 4843); the daily public feed is for outreach only, so it feeds only the labeled Now display | Point time series | Temperature, pressure, UV and wind at the site |
 | Radiation | MSL RAD, MAVEN SEP | PDS Planetary Plasma Interactions Node and published NASA values | Point time series | Baseline dose, storm replay, shielding validation |
-| Space weather | CCMC DONKI, fed by NASA's Moon to Mars Space Weather Analysis Office | [DONKI](https://kauai.ccmc.gsfc.nasa.gov/DONKI/) and its API | Event lists | Predicted CME shock arrival at Mars, flare and particle alerts |
-| Rover position and point of view | MSL localization, Navcam, Mastcam, MAHLI | [PLACES localization table](https://planetarydata.jpl.nasa.gov/img/data/msl/MSLPLC_1XXX/data_localizations/localized_interp.csv), PDS Imaging Node, [Photojournal boxwork set](https://photojournal.jpl.nasa.gov/feature/boxwork) | Per drive | Rover path, photo placement, "what you'll see here" |
+| Space weather | CCMC DONKI, fed by NASA's Moon to Mars Space Weather Analysis Office | [DONKI](https://kauai.ccmc.gsfc.nasa.gov/DONKI/) and its API (timed out at kickoff; recheck in Phase 6) | Event lists | Predicted CME shock arrival at Mars, flare and particle alerts |
+| Rover position and point of view | MSL localization, Navcam, Mastcam, MAHLI | [PLACES localization table](https://planetarydata.jpl.nasa.gov/img/data/msl/msl_places/data_localizations/localized_interp.csv), PDS Imaging Node, [Photojournal boxwork set](https://photojournal.jpl.nasa.gov/feature/boxwork) (now redirects to a generic page; replace in Phase 4) | Per drive | Rover path, photo placement, "what you'll see here" |
 | Geologic context | USGS-NASA Planetary Geologic Mapping Program | [Geologic Map of Mars, SIM 3292](https://doi.org/10.3133/sim3292) | 1:20,000,000 | Regional unit context |
 | Ice, site 2 only | MRO, Mars Odyssey and MGS data via SWIM | [SWIM products](https://swim.psi.edu/) | Regional | Choosing the frontier site |
 
-Check one thing before building: per its USGS metadata, the merged DEM uses HiRISE stereo only where it exists and falls back to CTX, HRSC or MOLA elsewhere. Confirm true HiRISE coverage over the boxwork footprint first, and gap-fill if needed. Keep every credit line, such as NASA/JPL-Caltech/MSSS, and credit ESA/DLR/FU Berlin for HRSC.
+Check one thing before building: per its USGS metadata, the merged DEM uses HiRISE stereo only where it exists and falls back to CTX, HRSC or MOLA elsewhere. Confirm true HiRISE coverage over the boxwork footprint first, and gap-fill if needed. Kickoff result: public HiRISE DTMs DTEEC_019698_1750_019988_1750 and DTEEC_009149_1750_009294_1750 each cover all of Curiosity's boxwork path, and the first covers 96% of the site box. Keep every credit line, such as NASA/JPL-Caltech/MSSS, and credit ESA/DLR/FU Berlin for HRSC.
 
 ## Derived safety and science layers
 
@@ -228,7 +230,7 @@ Put the non-negotiables in a CLAUDE.md file at the repo root, which Claude Code 
 
 1. Phase 0, repo and guardrails. Monorepo with pipeline/, web/ and docs/; Apache-2.0 LICENSE; AI\_USE.md disclosure; CREDITS.md; a GitHub Actions workflow that builds and deploys to Pages.
    - Done when CI is green and the Pages URL loads.
-2. Phase 1, site and data. Pull Curiosity's boxwork-campaign drives from the PLACES table (mid-2025 to early 2026; sol 4636 was Aug 21, 2025) to set the site box. Read windows of the USGS DEM and orthomosaic, build the HiRISE coverage mask from the stereo pairs in the USGS metadata, and gap-fill from the HiRISE DTM catalog or Ames Stereo Pipeline where needed.
+2. Phase 1, site and data. Pull Curiosity's boxwork-campaign drives from the PLACES table (sols 4527 to 4852, mid-2025 to early 2026; sol 4636 was Aug 21, 2025) to set the site box. Read windows of the USGS DEM and orthomosaic, build the HiRISE coverage mask from the stereo pairs in the USGS metadata, and gap-fill from the HiRISE DTM catalog or Ames Stereo Pipeline where needed.
    - Done when the crops are correctly georeferenced, the rover path overlays the right terrain, and a coverage report exists.
 3. Phase 2, derived layers. Implement the eight layers as pure functions, tested on synthetic terrain where answers are known (a tilted plane's slope, a pit's open-sky fraction). Add a second small crop at Curiosity's Murray Buttes parking spot from September 2016.
    - Done when synthetic tests pass and the Murray Buttes check is written to validation.json.
@@ -302,9 +304,9 @@ The two risks most likely to sink the project are missing high-resolution terrai
 
 | Risk | Mitigation | Fallback |
 | --- | --- | --- |
-| Boxwork lacks HiRISE-grade elevation data | Coverage report in phase 1; gap-fill from the HiRISE DTM catalog or Ames Stereo Pipeline | Move the site box to the nearest HiRISE-covered boxwork and say so on screen |
+| Boxwork lacks HiRISE-grade elevation data (unlikely: two public HiRISE DTMs cover the rover path) | Coverage report in phase 1; gap-fill from the HiRISE DTM catalog or Ames Stereo Pipeline | Move the site box to the nearest HiRISE-covered boxwork and say so on screen |
 | Science overclaimed | Four-label system, uncertainty layer, "calibrated on one measurement" wording | Remove any number that cannot be labeled |
-| Huge source files (the 25 cm mosaic is 23 GB) | Windowed remote reads; crop to the site box early | Download once, crop locally, cache the crops |
+| Huge source files (the 25 cm mosaic is about 50 GB and not cloud-optimized) | Windowed remote reads; crop to the site box early | Download once, crop locally, cache the crops |
 | Live feeds down or blocked by browser cross-origin rules | Build-time snapshots ship in the bundle | Live fetch switches off automatically, with a visible "snapshot" badge |
 | Site too heavy for GitHub Pages or judges' laptops | Tile pyramids, level of detail, published site under 1 GB, deploys under GitHub's 10-minute limit | 2D mode switches on when WebGL is weak |
 | Scope creep | Phase gates; demo-ready after phase 4 | Cut voice, WebAssembly, live backroom sync, then site 2, in that order |
@@ -323,23 +325,24 @@ Pages marked "opened" were read in full; "search" means the fact came from a sea
 | [Space Apps Judging & Awards Guide](https://spaceappschallenge.org/resources/judging-awards-guide), 2024 edition | Criteria definitions, ten Global Awards | Opened |
 | [2025 Participant Terms and Conditions](https://spaceappschallenge.org/legal) | Licensing, citation, minors, video rights | Opened |
 | [NASA's Curiosity Rover Sees Martian 'Spiderwebs' Up Close](https://www.nasa.gov/missions/mars-science-laboratory/curiosity-rover/nasas-curiosity-rover-sees-martian-spiderwebs-up-close/), NASA, Feb 23, 2026 | Boxwork facts, drill results, rover-driving difficulty | Opened |
+| [Curiosity Blog, Sols 4798-4803: Back for More Science](https://science.nasa.gov/blog/curiosity-blog-sols-4798-4803-back-for-more-science/), NASA, 2026 | Fourth boxwork drill sample (Nevado Sajama2, sol 4795) | Opened |
 | [NASA Watches Mars Light Up During Epic Solar Storm](https://www.jpl.nasa.gov/news/nasa-watches-mars-light-up-during-epic-solar-storm/), JPL, June 10, 2024 | May 20, 2024 event and RAD dose | Opened |
 | [How NASA's Curiosity Rover Is Making Mars Safer for Astronauts](https://www.nasa.gov/missions/mars-science-laboratory/curiosity-rover/how-nasas-curiosity-rover-is-making-mars-safer-for-astronauts/), NASA, Nov 15, 2021 | Murray Buttes shielding, solar-cycle effect | Opened |
 | [Mars MSL Gale Merged DEM 1m](https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_dem_1m), USGS | DEM coverage, fallback sources, Mars sphere radius | Opened |
 | [NASA SUITS 2023-2024 Mission Description](https://nasa.gov/wp-content/uploads/2023/09/fy24-suits-mission-description.pdf) | In-suit display plus local console, 20-minute delay | Opened |
-| [Mars MSL Gale Merged Orthophoto Mosaic 25cm](https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_orthophoto_mosaic_25cm), USGS | 25 cm mosaic and file size | Search |
+| [Mars MSL Gale Merged Orthophoto Mosaic 25cm](https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_orthophoto_mosaic_25cm), USGS | 25 cm mosaic and file size (about 50 GB) | Opened |
 | [Fraeman et al. 2016](https://pmc.ncbi.nlm.nih.gov/articles/PMC5101845) | CRISM and THEMIS resolutions over Mount Sharp | Search |
 | [Norcross et al. 2010, NASA/TP-2010-216125](https://ntrs.nasa.gov/api/citations/20110003409/downloads/Norcross%20et%20al%202010%2C%20Metabolic%20costs%20%26%20biomech%20of%20inclined%20ambulation%20%26%20exploration%20tasks%20in%20a%20planet%20suit.pdf) | Suited walking on inclines | Search |
 | [Kluis et al. 2022](https://bhp.engr.tamu.edu/wp-content/uploads/sites/212/2022/02/Kluis-et-al.-2022-A-METHODOLOGY-FOR-ANALYZING-AND-IMPROVING-EVA-PERFORMANCE.pdf) | SEXTANT and BASALT planner lineage | Search |
-| [DONKI WSA-ENLIL run, May 2024](https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/30925/1) | Predicted CME arrival at Mars | Search |
-| [Mars24 algorithm](https://www.giss.nasa.gov/tools/mars24/help/algorithm.html), NASA GISS | Mars solar time and worked examples | Search |
-| [MSL PLACES localization table](https://planetarydata.jpl.nasa.gov/img/data/msl/MSLPLC_1XXX/data_localizations/localized_interp.csv) | Rover positions | Search |
+| [DONKI WSA-ENLIL run, May 2024](https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/30925/1) | Predicted CME arrival at Mars | Timed out at kickoff; recheck in Phase 6 |
+| [Mars24 algorithm](https://www.giss.nasa.gov/tools/mars24/help/algorithm.html), NASA GISS | Mars solar time and worked examples | Opened |
+| [MSL PLACES localization table](https://planetarydata.jpl.nasa.gov/img/data/msl/msl_places/data_localizations/localized_interp.csv) | Rover positions | Opened |
 | [MSL Analyst's Notebook](https://an.rsl.wustl.edu/msl) | ChemCam, APXS, CheMin access | Search |
-| [Photojournal boxwork set](https://photojournal.jpl.nasa.gov/feature/boxwork) | Point-of-view images | Search |
+| [Photojournal boxwork set](https://photojournal.jpl.nasa.gov/feature/boxwork) | Point-of-view images | Redirects to a generic page; replace in Phase 4 |
 | [Geologic Map of Mars, SIM 3292](https://doi.org/10.3133/sim3292), USGS | Regional geologic context | Search |
 | [SWIM project](https://swim.psi.edu/) | Ice maps for the frontier site | Search |
-| [Mars Trek tile API](https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=mars) | Global and context tiles | Search |
-| [HiRISE DTM catalog](https://www.uahirise.org/dtm/) | Terrain gap-fill | Search |
+| [Mars Trek tile API](https://trek.nasa.gov/tiles/apidoc/trekAPI.html?body=mars) | Global and context tiles | Opened |
+| [HiRISE DTM catalog](https://www.uahirise.org/dtm/) | Terrain gap-fill | Opened |
 | [NASA History SP-4214, Apollo 14 chapter](https://webarchive.library.unt.edu/eot2008/20090109112403/http:/www.hq.nasa.gov/office/pao/History/SP-4214/ch12-3.html) | Crew uncertain of position | Search |
 | [Space.com on LRO's view of Apollo 14 tracks](https://www.space.com/7166-moon-photo-reveals-tracks-tough-apollo-moonwalk.html) | About 30 m from Cone Crater's rim | Search |
 | [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits) | 1 GB site, 10-minute deploys | Search |
