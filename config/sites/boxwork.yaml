@@ -1,0 +1,20 @@
+# Written with AI assistance (Claude Code). See AI_USE.md.
+# Flagship site: the Mount Sharp boxwork that Curiosity explored in 2025 and 2026.
+name: boxwork
+title: Mount Sharp boxwork, Gale crater
+role: flagship
+selection:
+  # Bounding box of Curiosity's localizations (PLACES, ROVER frame) during the boxwork
+  # campaign. The UTC window is the initial one from PROMPT.md section 3; the sols are the
+  # ones that overlap these UTC days (computed by ariadne.models.msl_time).
+  method: rover_extent
+  utc_start: 2025-05-01
+  utc_end: 2026-03-31
+buffer_m: 1500
+buffer_label: PLACEHOLDER
+buffer_reason: Room around the rover's path for walks, horizons and context (PROMPT.md section 3).
+sources:
+  - usgs-gale-dem-1m
+  - usgs-gale-ortho-25cm
+optional_sources:
+  - usgs-gale-hirise-lrgb

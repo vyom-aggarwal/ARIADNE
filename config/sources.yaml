@@ -1,0 +1,73 @@
+# Written with AI assistance (Claude Code). See AI_USE.md.
+# Every source the pipeline reads, as checked at kickoff (evidence in docs/SOURCES_LOG.md).
+# Labels follow CLAUDE.md rule 2. Credit lines follow PROMPT.md section 3.
+
+usgs-gale-dem-1m:
+  title: MSL Gale Merged DEM 1 m (v3)
+  url: https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif
+  product_id: MSL_Gale_DEM_Mosaic_1m_v3
+  product_page: https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_dem_1m
+  resolution_m: 1.0
+  label: MEASURED
+  credit: >-
+    USGS Astrogeology (Parker and Calef III), MSL Gale Merged DEM 1 m; built from HiRISE
+    (NASA/JPL-Caltech/University of Arizona), CTX (NASA/JPL-Caltech/MSSS) and HRSC
+    (ESA/DLR/FU Berlin) stereo, tied to MOLA
+  license: US government work (USGS), public domain; the product page asks users to credit the authors
+  notes: >-
+    Mosaic of stereo models from many images, so there is no single acquisition date; the
+    coverage report shows which areas come from HiRISE stereo. The file declares pixel-center
+    (PixelIsPoint) georeferencing, which GDAL converts to corner coordinates on read.
+  output: dem.tif
+  nodata: -32767
+
+usgs-gale-ortho-25cm:
+  title: MSL Gale Merged Orthophoto Mosaic 25 cm (v3)
+  url: https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/MSL_Gale_Orthophoto_Mosaic_25cm_v3.tif
+  product_id: MSL_Gale_Orthophoto_Mosaic_25cm_v3
+  product_page: https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_orthophoto_mosaic_25cm
+  resolution_m: 0.25
+  label: MEASURED
+  credit: USGS Astrogeology, MSL Gale Merged Orthophoto Mosaic 25 cm; HiRISE images NASA/JPL-Caltech/University of Arizona
+  license: US government work (USGS), public domain
+  notes: Mosaic of many HiRISE images, so there is no single acquisition date.
+  output: ortho.tif
+  nodata: 0
+
+usgs-gale-hirise-lrgb:
+  title: MSL Gale HiRISE LRGB color mosaic, 78 quads, sharpened (cloud-optimized)
+  url: https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_HiRISE-LRGB_78quads_sharp_cog.tif
+  product_id: MSL_Gale_HiRISE-LRGB_78quads_sharp_cog
+  # No product page was found at kickoff; the file itself is the verified location.
+  product_page: https://asc-pds-services.s3.us-west-2.amazonaws.com/mosaic/Mars/MSL/MSL_Gale_HiRISE-LRGB_78quads_sharp_cog.tif
+  resolution_m: 0.25
+  label: MEASURED
+  credit: USGS Astrogeology, MSL Gale HiRISE LRGB mosaic; HiRISE images NASA/JPL-Caltech/University of Arizona
+  license: US government work (USGS), public domain
+  notes: >-
+    Color mosaic of many HiRISE images (no single acquisition date). Covers E 8,140,000 to
+    8,149,000 m and N -289,000 to -270,000 m only; used where it covers the whole site box.
+  output: color.tif
+
+msl-places:
+  title: MSL PLACES localizations (localized_interp.csv)
+  url: https://planetarydata.jpl.nasa.gov/img/data/msl/msl_places/data_localizations/localized_interp.csv
+  product_id: msl_places/data_localizations/localized_interp.csv
+  product_page: https://planetarydata.jpl.nasa.gov/img/data/msl/msl_places/
+  resolution_m: null
+  label: MEASURED
+  credit: NASA/JPL-Caltech, MSL PLACES localization archive (PDS Cartography and Imaging Sciences Node)
+  license: NASA PDS archive data, public domain
+  notes: One row per rover localization; each row carries its own sol and spacecraft clock.
+  output: localized_interp.csv
+
+ode-hirise-footprints:
+  title: HiRISE image and DTM footprints from the PDS Orbital Data Explorer
+  url: https://oderest.rsl.wustl.edu/live2/
+  product_id: ODE REST product query, HiRISE RDRV11 and DTM
+  product_page: https://ode.rsl.wustl.edu/mars/
+  resolution_m: null
+  label: MEASURED
+  credit: PDS Geosciences Node Orbital Data Explorer (Washington University in St. Louis); HiRISE NASA/JPL-Caltech/University of Arizona
+  license: NASA PDS archive metadata, public domain
+  notes: Footprints only, used to map where the DEM comes from HiRISE stereo.

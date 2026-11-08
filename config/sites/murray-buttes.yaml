@@ -1,0 +1,20 @@
+# Written with AI assistance (Claude Code). See AI_USE.md.
+# Validation-only site: where Curiosity parked beside the Murray Buttes in September 2016, and
+# RAD measured 4% less total radiation (NASA, Nov 15, 2021). Used to calibrate the shielding index.
+name: murray-buttes
+title: Murray Buttes parking spot, Gale crater
+role: validation
+selection:
+  # The single localization held longest within the UTC window (PLACES has one row per drive,
+  # so "held" means the sols until the next localization).
+  method: parking_position
+  utc_start: 2016-09-09
+  utc_end: 2016-09-21
+buffer_m: 2000
+buffer_label: PLACEHOLDER
+buffer_reason: Matches the 2 km horizon search distance, so horizons around the spot are complete.
+sources:
+  - usgs-gale-dem-1m
+  - usgs-gale-ortho-25cm
+optional_sources:
+  - usgs-gale-hirise-lrgb
