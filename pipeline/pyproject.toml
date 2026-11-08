@@ -1,0 +1,44 @@
+# Written with AI assistance (Claude Code). See AI_USE.md.
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ariadne"
+version = "0.0.0"
+description = "Build-time pipeline for ARIADNE, a Marswalk planner for the Mount Sharp boxwork."
+license = "Apache-2.0"
+requires-python = ">=3.12"
+# Lower bounds only. Versions confirmed on Python 3.13 on 2026-11-08 are listed in docs/PROGRESS.md.
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.13",
+    "scikit-image>=0.24",
+    "rasterio>=1.4",
+    "pyproj>=3.6",
+    "shapely>=2.0",
+    "numba>=0.61",
+    "ortools>=9.12",
+    "astroquery>=0.4.7",
+    "pandas>=2.2",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+ariadne = "ariadne.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["ariadne*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP"]
