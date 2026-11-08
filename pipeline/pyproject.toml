@@ -33,6 +33,9 @@ ariadne = "ariadne.cli:main"
 [tool.setuptools.packages.find]
 include = ["ariadne*"]
 
+[tool.setuptools.package-data]
+"ariadne.models" = ["data/*"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 

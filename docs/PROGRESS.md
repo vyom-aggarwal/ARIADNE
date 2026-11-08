@@ -8,7 +8,7 @@ Last updated: 2026-11-08.
 | --- | --- |
 | Kickoff | Done. Sources for Phases 1 and 2 verified (docs/SOURCES_LOG.md); findings applied to PROMPT.md and docs/PLAN.md |
 | 0 Repo and guardrails | Done 2026-11-08: all ten acceptance tests pass; CI green; site live at https://vyom-aggarwal.github.io/ARIADNE/ |
-| 1 Sites and data | Next |
+| 1 Sites and data | In progress: plan and acceptance tests below |
 | 2 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
@@ -78,9 +78,41 @@ Build the skeleton every later phase plugs into, with the project rules enforced
 - **Deploy:** run 42533196737 (build and deploy both succeeded), triggered by the green CI run. Pages is enabled with the GitHub Actions source and HTTPS enforced. Fetching https://vyom-aggarwal.github.io/ARIADNE/ returned HTTP 200 with title "ARIADNE"; its script (HTTP 200) renders the "ARIADNE" h1 and the summary text, and its stylesheet returns HTTP 200 (A10).
 - **Self-review:** the page shows no data values, so no labels are due yet; it says plainly that it is a placeholder. Every library is credited with its license; all licenses are OSI-approved. No NASA graphics, no AI-generated media, no secrets.
 
+## Phase 1 plan: sites and data
+
+Turn the kickoff checks into a repeatable `make fetch SITE=<site>` that crops every source to a site box, records where each file came from, and proves the crops sit in the right place.
+
+1. **Time.** Mars24 (GISS algorithm, steps A to D) and MSL mission time in `pipeline/ariadne/models/`. TT − UTC comes from the IERS leap-second table, bundled with its expiry date. MSL sol N starts at local mean midnight at 137.42° E, with sol 0 the touchdown sol. Touchdown is 2012-08-06 05:17:57 UTC per NAIF's MSL LMST clock kernel (`naif-msl-lmst`), which also gives sol 0's midnight at the actual landing site, an independent check.
+2. **Site configs.** `config/sites/boxwork.yaml` (Curiosity's localizations between 2025-05-01 and 2026-03-31 UTC, buffered by 1.5 km, PLACEHOLDER) and `config/sites/murray-buttes.yaml` (the parking position held from 2016-09-09 to 2016-09-21, buffered by 2 km, PLACEHOLDER, so horizons are complete), plus `config/sources.yaml` listing each source with its URL, product ID, resolution, credit and license.
+3. **Fetch with provenance.** Download PLACES once; derive the site box; snap it outward to each source's pixel grid; read the window in parallel row bands over `/vsicurl/`; write Cloud Optimized GeoTIFFs (DEM float32 with nodata −32767; orthophoto uint8 with nodata 0; HiRISE color where it covers the site). Every product gets a provenance record with the fields PROMPT.md section 3 lists. Re-running skips products whose record matches.
+4. **Coverage.** Query ODE for the footprints of the 12 USGS HiRISE stereo pairs and the public HiRISE DTMs; a pair's stereo footprint is the overlap of its two images. Rasterize onto the DEM crop grid as a source-class mask (HiRISE stereo, or "CTX, HRSC or MOLA", which the USGS metadata does not let us separate), and report the share of the site box and of the rover path in each class.
+5. **Georeferencing checks.** Sample the DEM crop at Curiosity's positions and compare with PLACES elevations; search horizontal shifts of ±10 m for the best fit; check that the crops share bounds; write a quicklook PNG (hillshade, orthophoto and rover path) for a visual check.
+6. **Reports.** `docs/coverage/<site>.md` (committed, stamped with the pipeline version) holds the box, sols, coverage and check results; the fetch also rewrites a marked fetch-log block in docs/SOURCES_LOG.md. Raw crops stay in `data/` (gitignored).
+
+### Phase 1 acceptance tests
+
+Tests B1 to B7 run in CI on fixtures and synthetic rasters; B8 to B10 run on the real crops during `make fetch`, with results committed in `docs/coverage/`.
+
+| ID | Test | Where |
+| --- | --- | --- |
+| B1 | Both GISS Mars24 worked examples reproduce every listed value from A-2 to C-5, plus the heliocentric distance, longitude and latitude, to the printed precision (1e-5). Declination, zenith, azimuth and the Spirit LTST match within 0.001° (LTST 1e-4 h), because the page's own printed values for those are not consistent with its printed inputs at the 5th decimal; a test demonstrates this | `pipeline/tests/test_mars24.py` |
+| B2 | TT − UTC is 64.184 s in 2000 and 2004, 67.184 s in August 2012, and 69.184 s from 2017; dates past the table's expiry raise a clear warning | `pipeline/tests/test_mars24.py` |
+| B3 | MSL sols: touchdown is sol 0; sol 0 midnight at 137.442° E matches NAIF's 2012-08-05 13:49:59 UTC, and NAIF's linear clock at sols 1000, 3000 and 5000, within 10 s (first planned at 2 s; the measured gap is 5.8 to 6.6 s, see the note below); the five caption fixtures match within one day; a sample of about 95 REMS daily-feed sols matches its dates within one day and its Ls within 1.5° | `pipeline/tests/test_msl_time.py` |
+| B4 | Provenance records carry every required field and a valid label, and survive a round trip through a sidecar file and GeoTIFF tags | `pipeline/tests/test_provenance.py` |
+| B5 | A crop read in parallel row bands equals one direct window read; its bounds cover the request and lie on the source pixel grid | `pipeline/tests/test_raster.py` |
+| B6 | Site boxes from a fixture extract of real PLACES rows: the boxwork rover extent and the Murray Buttes parking position (site 57, drive 2798) match the kickoff values | `pipeline/tests/test_sites.py` |
+| B7 | Footprint rasterization gives the exact mask for synthetic polygons; a stereo pair covers only where both images overlap; coverage shares add up to 100% | `pipeline/tests/test_coverage.py` |
+| B8 | Crops are georeferenced: the median of (DEM − PLACES elevation) along Curiosity's path is within 2 m, and the best-fit horizontal shift is within 2 m of zero | `docs/coverage/<site>.md` |
+| B9 | The coverage report exists for both sites, with box and rover-path shares by DEM source class and the gap-fill decision | `docs/coverage/<site>.md` |
+| B10 | Every crop in `data/sites/<site>/` has a provenance record, and the fetch-log block in docs/SOURCES_LOG.md lists it | fetch run, `pipeline/tests/test_fetch_outputs.py` (skipped when `data/` is empty, as in CI) |
+
+**B3 tolerance change (2026-11-08).** Before writing the test, a check showed that Mars24's mean solar time starts each MSL sol 6.6 s earlier than NAIF's LMST clock kernel at sol 0, and 5.8 s earlier at sol 5000. The two are independent models: NAIF's is a 2012 linear fit anchored at landing; Mars24's constants were revised in 2015. The gap is about 1/15,000 of the one-day tolerance PROMPT.md requires, so B3 uses 10 s for the NAIF comparison and keeps the measured values in its assertion message.
+
+The thresholds in B8 are team targets, set before the real crops were read: 2 m allows for any offset between PLACES' rover reference point and the ground, and for localization error, while still catching a misregistration of a few pixels.
+
 ## Next steps
 
-1. Phase 1: site configs in `config/sites/`, windowed fetch with provenance records, the DEM source-class mask from ODE footprints of the 12 USGS pairs, the coverage report, the Murray Buttes crop, and Mars24 and MSL sol functions with the fixture tests.
+1. Finish Phase 1 as planned above, committing each working piece.
 
 ## Open issues
 

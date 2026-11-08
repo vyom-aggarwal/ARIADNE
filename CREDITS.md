@@ -6,7 +6,15 @@ ARIADNE's own code is licensed under [Apache-2.0](LICENSE).
 
 ## Data
 
-None used yet. The sources checked for the first phases, and what was confirmed about each, are in [docs/SOURCES_LOG.md](docs/SOURCES_LOG.md). Each one moves here, with its credit line, when the pipeline first uses it.
+Sources move here, with their credit lines, when the pipeline first uses them. What was checked about each is in [docs/SOURCES_LOG.md](docs/SOURCES_LOG.md).
+
+| Data | Use | Source and credit | License or terms |
+| --- | --- | --- | --- |
+| IERS leap-second table (`Leap_Second.dat`, through Bulletin C 72) | TT − UTC for Mars time; bundled verbatim in `pipeline/ariadne/models/data/` | International Earth Rotation and Reference Systems Service (IERS), https://hpiers.obspm.fr/iers/bul/bulc/Leap_Second.dat | Public reference data, credited to IERS; the file states no license |
+| Mars24 algorithm and worked examples | Mars solar time and sun position (`pipeline/ariadne/models/mars24.py`) and its tests | NASA Goddard Institute for Space Studies, Mars24 Sunclock, https://www.giss.nasa.gov/tools/mars24/help/algorithm.html; Allison and McEwen (2000), Planet. Space Sci. 48, 215-235 | US government work (NASA) |
+| MSL mission-clock definition | Sol 0 and the 137.42° E mission clock | Mars24 notes, https://www.giss.nasa.gov/tools/mars24/help/notes.html | US government work (NASA) |
+| MSL LMST clock kernel `msl_lmst_ops120808_v1.tsc` | Touchdown time; independent check of sol starts in tests | NASA/JPL NAIF, https://naif.jpl.nasa.gov/pub/naif/MSL/kernels/sclk/ | NASA public data |
+| MSL REMS daily report feed, 93-sol sample | Test cross-check only (dates and Ls), never app data | NASA/JPL-Caltech/CAB (CSIC-INTA), https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json | Provider marks it for outreach purposes only |
 
 ## Images
 
