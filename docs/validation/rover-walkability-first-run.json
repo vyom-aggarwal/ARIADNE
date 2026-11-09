@@ -1,0 +1,1439 @@
+{
+ "frozen_from": "validation.json as committed in 9ce3e64 (2026-11-09; line endings only changed in 658ee3a), the Phase 2 first run",
+ "method": "Rover slope classes from the Horn slope of the 1 m DEM (3 x 3 posts)",
+ "check": {
+  "id": "rover-walkability",
+  "title": "Rover walkability on Curiosity's boxwork path",
+  "reference": "PLACES localizations, sols 4526 to 4853 (2893 points)",
+  "target": "At least 95% classed go or caution; every no-go cell listed as a possible false alarm",
+  "result": {
+   "share": {
+    "go": 0.3166,
+    "caution": 0.4805,
+    "no-go": 0.2029
+   },
+   "go_or_caution": 0.7971,
+   "no_go_points": [
+    {
+     "sol": 4526,
+     "site": 115,
+     "drive": 1836,
+     "easting": 8143615.26,
+     "northing": -284312.66
+    },
+    {
+     "sol": 4526,
+     "site": 115,
+     "drive": 1842,
+     "easting": 8143615.34,
+     "northing": -284313.59
+    },
+    {
+     "sol": 4526,
+     "site": 115,
+     "drive": 1848,
+     "easting": 8143615.47,
+     "northing": -284314.46
+    },
+    {
+     "sol": 4526,
+     "site": 115,
+     "drive": 1854,
+     "easting": 8143615.58,
+     "northing": -284315.3
+    },
+    {
+     "sol": 4526,
+     "site": 115,
+     "drive": 1860,
+     "easting": 8143615.66,
+     "northing": -284316.14
+    },
+    {
+     "sol": 4526,
+     "site": 115,
+     "drive": 1866,
+     "easting": 8143615.69,
+     "northing": -284317.04
+    },
+    {
+     "sol": 4526,
+     "site": 115,
+     "drive": 1908,
+     "easting": 8143615.7,
+     "northing": -284321.49
+    },
+    {
+     "sol": 4527,
+     "site": 115,
+     "drive": 2118,
+     "easting": 8143615.22,
+     "northing": -284345.49
+    },
+    {
+     "sol": 4548,
+     "site": 116,
+     "drive": 1224,
+     "easting": 8143402.11,
+     "northing": -284441.98
+    },
+    {
+     "sol": 4548,
+     "site": 116,
+     "drive": 1236,
+     "easting": 8143400.83,
+     "northing": -284443.45
+    },
+    {
+     "sol": 4548,
+     "site": 116,
+     "drive": 1242,
+     "easting": 8143400.05,
+     "northing": -284444.34
+    },
+    {
+     "sol": 4548,
+     "site": 116,
+     "drive": 1248,
+     "easting": 8143399.25,
+     "northing": -284445.24
+    },
+    {
+     "sol": 4552,
+     "site": 116,
+     "drive": 1440,
+     "easting": 8143379.92,
+     "northing": -284462.13
+    },
+    {
+     "sol": 4552,
+     "site": 116,
+     "drive": 1446,
+     "easting": 8143379.17,
+     "northing": -284462.8
+    },
+    {
+     "sol": 4552,
+     "site": 116,
+     "drive": 1452,
+     "easting": 8143378.43,
+     "northing": -284463.45
+    },
+    {
+     "sol": 4552,
+     "site": 116,
+     "drive": 1482,
+     "easting": 8143374.96,
+     "northing": -284466.9
+    },
+    {
+     "sol": 4552,
+     "site": 116,
+     "drive": 1512,
+     "easting": 8143374.15,
+     "northing": -284468.61
+    },
+    {
+     "sol": 4552,
+     "site": 116,
+     "drive": 1524,
+     "easting": 8143374.15,
+     "northing": -284470.59
+    },
+    {
+     "sol": 4552,
+     "site": 116,
+     "drive": 1530,
+     "easting": 8143374.15,
+     "northing": -284471.59
+    },
+    {
+     "sol": 4554,
+     "site": 116,
+     "drive": 1632,
+     "easting": 8143365.48,
+     "northing": -284478.89
+    },
+    {
+     "sol": 4571,
+     "site": 116,
+     "drive": 2040,
+     "easting": 8143358.76,
+     "northing": -284519.74
+    },
+    {
+     "sol": 4571,
+     "site": 116,
+     "drive": 2130,
+     "easting": 8143347.91,
+     "northing": -284529.27
+    },
+    {
+     "sol": 4571,
+     "site": 116,
+     "drive": 2136,
+     "easting": 8143346.82,
+     "northing": -284530.41
+    },
+    {
+     "sol": 4571,
+     "site": 116,
+     "drive": 2148,
+     "easting": 8143344.58,
+     "northing": -284532.71
+    },
+    {
+     "sol": 4573,
+     "site": 116,
+     "drive": 2328,
+     "easting": 8143322.89,
+     "northing": -284556.62
+    },
+    {
+     "sol": 4573,
+     "site": 116,
+     "drive": 2334,
+     "easting": 8143322.25,
+     "northing": -284557.33
+    },
+    {
+     "sol": 4573,
+     "site": 116,
+     "drive": 2340,
+     "easting": 8143321.57,
+     "northing": -284558.05
+    },
+    {
+     "sol": 4575,
+     "site": 116,
+     "drive": 2694,
+     "easting": 8143291.33,
+     "northing": -284601.66
+    },
+    {
+     "sol": 4575,
+     "site": 116,
+     "drive": 2730,
+     "easting": 8143288.55,
+     "northing": -284606.28
+    },
+    {
+     "sol": 4575,
+     "site": 116,
+     "drive": 2742,
+     "easting": 8143288.4,
+     "northing": -284607.53
+    },
+    {
+     "sol": 4575,
+     "site": 116,
+     "drive": 2748,
+     "easting": 8143288.49,
+     "northing": -284608.49
+    },
+    {
+     "sol": 4575,
+     "site": 116,
+     "drive": 2784,
+     "easting": 8143288.18,
+     "northing": -284613.75
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 36,
+     "easting": 8143279.33,
+     "northing": -284631.88
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 42,
+     "easting": 8143278.35,
+     "northing": -284631.95
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 66,
+     "easting": 8143274.49,
+     "northing": -284632.15
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 72,
+     "easting": 8143273.52,
+     "northing": -284632.12
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 84,
+     "easting": 8143271.51,
+     "northing": -284632.2
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 90,
+     "easting": 8143270.59,
+     "northing": -284632.24
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 96,
+     "easting": 8143269.65,
+     "northing": -284632.3
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 102,
+     "easting": 8143268.77,
+     "northing": -284632.34
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 108,
+     "easting": 8143267.76,
+     "northing": -284632.39
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 114,
+     "easting": 8143266.8,
+     "northing": -284632.45
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 120,
+     "easting": 8143265.86,
+     "northing": -284632.5
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 126,
+     "easting": 8143264.88,
+     "northing": -284632.56
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 132,
+     "easting": 8143263.99,
+     "northing": -284632.61
+    },
+    {
+     "sol": 4578,
+     "site": 117,
+     "drive": 138,
+     "easting": 8143262.99,
+     "northing": -284632.66
+    },
+    {
+     "sol": 4591,
+     "site": 117,
+     "drive": 1014,
+     "easting": 8143192.58,
+     "northing": -284663.27
+    },
+    {
+     "sol": 4591,
+     "site": 117,
+     "drive": 1020,
+     "easting": 8143191.92,
+     "northing": -284663.88
+    },
+    {
+     "sol": 4591,
+     "site": 117,
+     "drive": 1026,
+     "easting": 8143191.26,
+     "northing": -284664.52
+    },
+    {
+     "sol": 4591,
+     "site": 117,
+     "drive": 1032,
+     "easting": 8143191.27,
+     "northing": -284664.51
+    },
+    {
+     "sol": 4591,
+     "site": 117,
+     "drive": 1038,
+     "easting": 8143190.53,
+     "northing": -284665.32
+    },
+    {
+     "sol": 4594,
+     "site": 117,
+     "drive": 1212,
+     "easting": 8143190.08,
+     "northing": -284671.51
+    },
+    {
+     "sol": 4594,
+     "site": 117,
+     "drive": 1218,
+     "easting": 8143190.05,
+     "northing": -284671.45
+    },
+    {
+     "sol": 4594,
+     "site": 117,
+     "drive": 1224,
+     "easting": 8143190.05,
+     "northing": -284671.43
+    },
+    {
+     "sol": 4594,
+     "site": 117,
+     "drive": 1230,
+     "easting": 8143190.05,
+     "northing": -284671.4
+    },
+    {
+     "sol": 4594,
+     "site": 117,
+     "drive": 1236,
+     "easting": 8143189.72,
+     "northing": -284672.2
+    },
+    {
+     "sol": 4594,
+     "site": 117,
+     "drive": 1356,
+     "easting": 8143183.49,
+     "northing": -284682.86
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1482,
+     "easting": 8143181.2,
+     "northing": -284699.22
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1488,
+     "easting": 8143180.83,
+     "northing": -284700.09
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1494,
+     "easting": 8143180.42,
+     "northing": -284700.93
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1500,
+     "easting": 8143179.97,
+     "northing": -284701.77
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1506,
+     "easting": 8143179.53,
+     "northing": -284702.6
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1512,
+     "easting": 8143179.09,
+     "northing": -284703.44
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1524,
+     "easting": 8143178.24,
+     "northing": -284705.17
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1620,
+     "easting": 8143169.25,
+     "northing": -284710.28
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1626,
+     "easting": 8143168.35,
+     "northing": -284710.01
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1632,
+     "easting": 8143167.41,
+     "northing": -284709.69
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1638,
+     "easting": 8143166.51,
+     "northing": -284709.37
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1644,
+     "easting": 8143165.51,
+     "northing": -284709.03
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1662,
+     "easting": 8143162.82,
+     "northing": -284708.09
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1668,
+     "easting": 8143161.89,
+     "northing": -284707.74
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1842,
+     "easting": 8143159.28,
+     "northing": -284726.83
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1848,
+     "easting": 8143159.88,
+     "northing": -284727.81
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1854,
+     "easting": 8143159.95,
+     "northing": -284727.93
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1860,
+     "easting": 8143160.46,
+     "northing": -284728.8
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1866,
+     "easting": 8143160.94,
+     "northing": -284729.61
+    },
+    {
+     "sol": 4596,
+     "site": 117,
+     "drive": 1872,
+     "easting": 8143161.43,
+     "northing": -284730.44
+    },
+    {
+     "sol": 4598,
+     "site": 117,
+     "drive": 1932,
+     "easting": 8143161.12,
+     "northing": -284737.1
+    },
+    {
+     "sol": 4598,
+     "site": 117,
+     "drive": 1938,
+     "easting": 8143161.11,
+     "northing": -284737.17
+    },
+    {
+     "sol": 4598,
+     "site": 117,
+     "drive": 1944,
+     "easting": 8143160.92,
+     "northing": -284738.1
+    },
+    {
+     "sol": 4598,
+     "site": 117,
+     "drive": 1950,
+     "easting": 8143160.77,
+     "northing": -284739.04
+    },
+    {
+     "sol": 4598,
+     "site": 117,
+     "drive": 1986,
+     "easting": 8143158.57,
+     "northing": -284742.18
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2214,
+     "easting": 8143139.34,
+     "northing": -284755.88
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2220,
+     "easting": 8143138.43,
+     "northing": -284756.06
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2226,
+     "easting": 8143138.48,
+     "northing": -284755.99
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2232,
+     "easting": 8143137.62,
+     "northing": -284756.25
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2238,
+     "easting": 8143137.54,
+     "northing": -284756.27
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2244,
+     "easting": 8143137.56,
+     "northing": -284756.25
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2250,
+     "easting": 8143137.58,
+     "northing": -284756.23
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2256,
+     "easting": 8143137.58,
+     "northing": -284756.21
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2262,
+     "easting": 8143137.58,
+     "northing": -284756.2
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2268,
+     "easting": 8143137.49,
+     "northing": -284757.18
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2286,
+     "easting": 8143137.16,
+     "northing": -284759.93
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2292,
+     "easting": 8143137.01,
+     "northing": -284760.99
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2346,
+     "easting": 8143138.87,
+     "northing": -284765.25
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2352,
+     "easting": 8143138.91,
+     "northing": -284765.38
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2358,
+     "easting": 8143139.21,
+     "northing": -284766.41
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2364,
+     "easting": 8143139.31,
+     "northing": -284766.8
+    },
+    {
+     "sol": 4600,
+     "site": 117,
+     "drive": 2370,
+     "easting": 8143139.32,
+     "northing": -284766.85
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2382,
+     "easting": 8143139.55,
+     "northing": -284768.72
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2388,
+     "easting": 8143139.64,
+     "northing": -284769.65
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2394,
+     "easting": 8143139.73,
+     "northing": -284770.62
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2400,
+     "easting": 8143139.83,
+     "northing": -284771.58
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2418,
+     "easting": 8143140.1,
+     "northing": -284773.66
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2424,
+     "easting": 8143140.16,
+     "northing": -284774.1
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2430,
+     "easting": 8143140.18,
+     "northing": -284774.07
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2436,
+     "easting": 8143140.19,
+     "northing": -284774.06
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2442,
+     "easting": 8143140.19,
+     "northing": -284774.04
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2448,
+     "easting": 8143140.19,
+     "northing": -284774.04
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2454,
+     "easting": 8143139.74,
+     "northing": -284774.36
+    },
+    {
+     "sol": 4602,
+     "site": 117,
+     "drive": 2460,
+     "easting": 8143138.92,
+     "northing": -284774.97
+    },
+    {
+     "sol": 4605,
+     "site": 117,
+     "drive": 2532,
+     "easting": 8143131.83,
+     "northing": -284781.22
+    },
+    {
+     "sol": 4605,
+     "site": 117,
+     "drive": 2538,
+     "easting": 8143131.7,
+     "northing": -284781.34
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2544,
+     "easting": 8143131.71,
+     "northing": -284781.33
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2550,
+     "easting": 8143131.23,
+     "northing": -284782.18
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2556,
+     "easting": 8143130.75,
+     "northing": -284783.04
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2562,
+     "easting": 8143130.29,
+     "northing": -284783.88
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2568,
+     "easting": 8143129.83,
+     "northing": -284784.71
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2574,
+     "easting": 8143129.37,
+     "northing": -284785.52
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2580,
+     "easting": 8143128.91,
+     "northing": -284786.32
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2634,
+     "easting": 8143125.5,
+     "northing": -284792.47
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2640,
+     "easting": 8143125.17,
+     "northing": -284793.24
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2646,
+     "easting": 8143125.14,
+     "northing": -284793.32
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2652,
+     "easting": 8143124.71,
+     "northing": -284794.11
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2658,
+     "easting": 8143124.2,
+     "northing": -284794.86
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2664,
+     "easting": 8143123.56,
+     "northing": -284795.84
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2718,
+     "easting": 8143118.84,
+     "northing": -284798.84
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2724,
+     "easting": 8143117.82,
+     "northing": -284799.43
+    },
+    {
+     "sol": 4609,
+     "site": 117,
+     "drive": 2730,
+     "easting": 8143117.66,
+     "northing": -284799.52
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2736,
+     "easting": 8143117.32,
+     "northing": -284799.8
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2742,
+     "easting": 8143116.98,
+     "northing": -284800.25
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2748,
+     "easting": 8143116.27,
+     "northing": -284801.51
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2754,
+     "easting": 8143115.95,
+     "northing": -284802.38
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2820,
+     "easting": 8143114.79,
+     "northing": -284808.05
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2826,
+     "easting": 8143115.17,
+     "northing": -284808.91
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2832,
+     "easting": 8143115.54,
+     "northing": -284809.78
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2838,
+     "easting": 8143115.87,
+     "northing": -284810.66
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2844,
+     "easting": 8143116.19,
+     "northing": -284811.61
+    },
+    {
+     "sol": 4612,
+     "site": 117,
+     "drive": 2850,
+     "easting": 8143116.21,
+     "northing": -284811.67
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2856,
+     "easting": 8143116.4,
+     "northing": -284812.65
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2862,
+     "easting": 8143116.5,
+     "northing": -284813.61
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2868,
+     "easting": 8143116.61,
+     "northing": -284814.55
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2880,
+     "easting": 8143116.84,
+     "northing": -284816.68
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2886,
+     "easting": 8143116.89,
+     "northing": -284817.22
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2892,
+     "easting": 8143116.88,
+     "northing": -284817.16
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2898,
+     "easting": 8143116.87,
+     "northing": -284817.18
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2904,
+     "easting": 8143116.32,
+     "northing": -284818.04
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2910,
+     "easting": 8143115.79,
+     "northing": -284818.89
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2970,
+     "easting": 8143115.55,
+     "northing": -284824.76
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2976,
+     "easting": 8143116.27,
+     "northing": -284825.46
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2982,
+     "easting": 8143116.99,
+     "northing": -284826.15
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2988,
+     "easting": 8143117.64,
+     "northing": -284826.85
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 2994,
+     "easting": 8143118.24,
+     "northing": -284827.52
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 3000,
+     "easting": 8143118.23,
+     "northing": -284827.48
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 3006,
+     "easting": 8143118.22,
+     "northing": -284827.45
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 3012,
+     "easting": 8143118.19,
+     "northing": -284827.43
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 3018,
+     "easting": 8143119.41,
+     "northing": -284827.23
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 3024,
+     "easting": 8143120.26,
+     "northing": -284827.09
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 3036,
+     "easting": 8143122.26,
+     "northing": -284826.92
+    },
+    {
+     "sol": 4614,
+     "site": 117,
+     "drive": 3042,
+     "easting": 8143123.45,
+     "northing": -284826.84
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 78,
+     "easting": 8143125.78,
+     "northing": -284835.07
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 84,
+     "easting": 8143125.79,
+     "northing": -284835.99
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 90,
+     "easting": 8143125.79,
+     "northing": -284836.07
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 96,
+     "easting": 8143125.77,
+     "northing": -284836.04
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 102,
+     "easting": 8143125.76,
+     "northing": -284836.02
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 108,
+     "easting": 8143125.75,
+     "northing": -284836.01
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 114,
+     "easting": 8143126.33,
+     "northing": -284836.84
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 120,
+     "easting": 8143126.77,
+     "northing": -284837.48
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 126,
+     "easting": 8143126.87,
+     "northing": -284837.62
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 132,
+     "easting": 8143127.44,
+     "northing": -284838.43
+    },
+    {
+     "sol": 4616,
+     "site": 118,
+     "drive": 138,
+     "easting": 8143128.0,
+     "northing": -284839.24
+    },
+    {
+     "sol": 4618,
+     "site": 118,
+     "drive": 168,
+     "easting": 8143130.32,
+     "northing": -284842.57
+    },
+    {
+     "sol": 4621,
+     "site": 118,
+     "drive": 354,
+     "easting": 8143126.35,
+     "northing": -284840.85
+    },
+    {
+     "sol": 4621,
+     "site": 118,
+     "drive": 360,
+     "easting": 8143127.23,
+     "northing": -284840.39
+    },
+    {
+     "sol": 4621,
+     "site": 118,
+     "drive": 366,
+     "easting": 8143128.09,
+     "northing": -284839.95
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 384,
+     "easting": 8143130.03,
+     "northing": -284839.6
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 390,
+     "easting": 8143130.92,
+     "northing": -284839.74
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 396,
+     "easting": 8143131.74,
+     "northing": -284839.86
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 408,
+     "easting": 8143133.48,
+     "northing": -284840.26
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 414,
+     "easting": 8143134.41,
+     "northing": -284840.45
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 420,
+     "easting": 8143135.64,
+     "northing": -284840.63
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 426,
+     "easting": 8143135.89,
+     "northing": -284840.66
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 432,
+     "easting": 8143136.8,
+     "northing": -284840.79
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 438,
+     "easting": 8143137.75,
+     "northing": -284840.94
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 444,
+     "easting": 8143138.7,
+     "northing": -284841.11
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 450,
+     "easting": 8143139.67,
+     "northing": -284841.28
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 462,
+     "easting": 8143141.61,
+     "northing": -284841.52
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 480,
+     "easting": 8143144.56,
+     "northing": -284841.85
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 486,
+     "easting": 8143145.58,
+     "northing": -284841.95
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 492,
+     "easting": 8143146.53,
+     "northing": -284842.05
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 498,
+     "easting": 8143147.71,
+     "northing": -284842.19
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 504,
+     "easting": 8143148.21,
+     "northing": -284842.25
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 510,
+     "easting": 8143149.17,
+     "northing": -284842.4
+    },
+    {
+     "sol": 4623,
+     "site": 118,
+     "drive": 516,
+     "easting": 8143150.11,
+     "northing": -284842.64
+    },
+    {
+     "sol": 4625,
+     "site": 118,
+     "drive": 594,
+     "easting": 8143153.46,
+     "northing": -284849.32
+    },
+    {
+     "sol": 4625,
+     "site": 118,
+     "drive": 600,
+     "easting": 8143153.49,
+     "northing": -284849.97
+    },
+    {
+     "sol": 4625,
+     "site": 118,
+     "drive": 606,
+     "easting": 8143153.49,
+     "northing": -284850.03
+    },
+    {
+     "sol": 4625,
+     "site": 118,
+     "drive": 612,
+     "easting": 8143153.52,
+     "northing": -284850.05
+    },
+    {
+     "sol": 4625,
+     "site": 118,
+     "drive": 618,
+     "easting": 8143153.51,
+     "northing": -284850.07
+    },
+    {
+     "sol": 4625,
+     "site": 118,
+     "drive": 624,
+     "easting": 8143153.51,
+     "northing": -284850.06
+    }
+   ],
+   "no_go_count": 587,
+   "tilt_check": {
+    "rover_tilt_deg_p50_p90_p99": [
+     8.1,
+     12.7,
+     17.5
+    ],
+    "rover_tilt_share_over_20_deg": 0.0035,
+    "dem_slope_deg_p50_p90_p99": [
+     11.3,
+     22.3,
+     38.2
+    ],
+    "dem_slope_share_over_20_deg": 0.1535,
+    "note": "Rover tilt is arccos(cos roll x cos pitch) from PLACES (MEASURED). The 1 m DEM slope under the same points is steeper than the tilt the rover actually had, which suggests the rover classes should use slope at the rover's footprint scale."
+   }
+  },
+  "status": "fail",
+  "label": "MODELED",
+  "note": "Rover thresholds are PLACEHOLDER (config/derive.yaml). A no-go point where Curiosity drove is a likely false alarm of the model, or ground the rover crossed with care."
+ }
+}

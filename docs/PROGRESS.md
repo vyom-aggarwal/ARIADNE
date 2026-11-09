@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-09 UTC (Phase 2 done).
+Last updated: 2026-11-09 UTC (Phase 2 follow-up started).
 
 ## Status
 
@@ -21,6 +21,7 @@ Last updated: 2026-11-09 UTC (Phase 2 done).
 - **Python version:** use 3.13 locally if OR-Tools and numba install there, otherwise pin 3.12. Result below: both work, so no pin.
 - **Open items kept open:** the Photojournal boxwork set (Phase 4) and DONKI (Phase 6).
 - **Phase 2 spec changes (2026-11-08):** (1) far-field horizons: 2 km on the 1 m DEM, then to about 100 km on a coarse regional DEM, reporting the sunrise and sunset shift; (2) calibrate n so that S(parking spot) / S(the RAD study's baseline positions) = 0.96, with far-field horizons at both; (3) use Ehresmann et al. 2021 (doi:10.1029/2021JE006851) for the Murray Buttes figures and Guo et al. 2021 (doi:10.1007/s00159-021-00136-5) for a dose-pressure coefficient, verified first; (4) drill sites Altadena, Valle de la Luna, Nevado Sajama and Nevado Sajama2, sols from NASA's Curiosity blog and positions from PLACES; (5) describe the Mars24 example mismatch as rounding unless it can be shown otherwise. Applied to PROMPT.md and docs/PLAN.md; evidence in docs/SOURCES_LOG.md (Phase 2 verification pass).
+- **Phase 2 follow-up (2026-11-09):** (1) compute slope at each traveller's footprint scale on physical grounds, not to hit the target: the rover from Curiosity's published dimensions, the walker no finer than the DEM's effective resolution; fix the method before re-running, re-run the check once, keep the failed first result in validation.json beside the new one, and run the rover check on the Murray Buttes traverse as a held-out test; report a miss as is. (2) Map the DEM mosaic seams from the stereo-pair footprints into the uncertainty layer and check whether no-go cells on Curiosity's path sit on a seam. (3) Build a local labeling page (25 cm image and hillshade chips at random points, stratified by predicted class) for about 250 labels; split them into tuning and test halves before tuning; tune on the first half only and report precision and recall on the second; consider a smoothed DEM for TPI and image texture; regenerate the transects from the tuned map. (4) Continue with Phase 3 without waiting for the labels.
 
 ## Kickoff findings that change the plan
 
@@ -237,9 +238,48 @@ At Murray Buttes, low on the crater floor, Mount Sharp sets the uphill horizon a
 
 **Why the rover check fails.** Most no-go points are slopes over the PLACEHOLDER 20° limit. Curiosity's own tilt from PLACES roll and pitch (MEASURED) has a median of 8.1°, 99th percentile 17.5° and maximum 22.8° on these points, with only 0.35% above 20°. The 1 m DEM slope under the same points has a median of 11.3°, 99th percentile 38.2°, and 15% above 20°. Smoothing the DEM to the rover's footprint (Gaussian σ = 3 m) gives a median of 8.1°, 2.2% above 20°, and raises the correlation with the rover's tilt from 0.34 to 0.54. The 1 m slope measures ridge flanks shorter than the rover, plus DEM noise. Changing the rover slope to the footprint scale would change a validation result after seeing it, so it waits for the team's decision.
 
+## Phase 2 follow-up plan (team decisions of 2026-11-09)
+
+### Slope at the traveller's footprint scale (method fixed before the re-run)
+
+Written down before any new slope is computed on Curiosity's path. The only earlier look at the path is the Phase 2 diagnosis (the σ = 3 m smoothing), recorded above.
+
+- **Slope at scale L** is the gradient of the least-squares plane fitted to the DEM over a disc of diameter L, each 1 m cell weighted by the share of its area inside the disc. A disc, because the traveller's heading is unknown.
+- **The DEM's effective resolution, r_eff = 2.5 m (MODELED).** Kirk et al. 2021 (ISPRS Archives XLIII-B3-2021, 659) report that stereo DTMs made with the USGS process resolve 10 to 20 image pixels, the USGS products at the finer end. They measured this on HRSC DTMs against HiRISE at Jezero and call it generally consistent with their Gale results. The HiRISE images under this DEM have 25 cm pixels: the orthophoto mosaic made from them is 25 cm, and the HiRISE team's rule (DTM posts at about 4 image pixels) gives the 1 m grid, as Kirk et al. 2008 report "1 m (3–4 pixels)". So r_eff = 10 pixels × 0.25 m = 2.5 m, taking the finer end because this is a USGS product. Assumption, stated in the outputs: the matcher's resolution in image pixels carries over from HRSC to HiRISE images.
+- **Rover: L = max(Curiosity's length, r_eff) = 3.05 m.** NASA's mission page gives "10 feet long, 9 feet wide and 7 feet tall", not counting the arm (3.05 × 2.74 × 2.13 m).
+- **Walker: L = r_eff = 2.5 m.** A walker's stance is smaller than anything the DEM resolves.
+- **Sensitivity, reported beside the result but not used for it:** r_eff at the coarse end (20 pixels, 5.0 m) for both travellers.
+- **Unchanged:** roughness, dark-object density, sand proxy, drop-offs and every threshold.
+- **Expectation, written before the run:** both windows are about the size of the 3 × 3-post window the Horn slope already uses, so the result should move little. The σ = 3 m smoothing in the Phase 2 diagnosis acts over about 7 m, more than twice the rover's length; that is why it agreed with the rover's tilt, and it is not used. If the check still misses 95%, it is reported as is, with the seam analysis below.
+- **One re-run.** The boxwork check runs once with this method. The Phase 2 result (1 m Horn slope, 79.7%) is frozen in `docs/validation/rover-walkability-first-run.json` and stays in validation.json beside the new one.
+- **Held-out test:** the same rover check on Curiosity's localizations inside the Murray Buttes box, which played no part in choosing the method.
+
+### DEM seams
+
+- Candidate seams are the edges of each USGS stereo pair's footprint inside the DEM. The mosaic's precedence between overlapping pairs is not documented, so every edge is a candidate. The seam zone is within 30 m of an edge (PLACEHOLDER, the uncertainty of the rounded ODE footprints). Kirk et al. 2021 say the Gale HiRISE DTMs were mosaicked without rigorous registration, leaving "significant vertical discontinuities".
+- The zone becomes a flag in the uncertainty layer, and the candidate lines are written as GeoJSON.
+- The rover check reports, for the first and the new run, the share of path points and of no-go points in the seam zone, the no-go rate inside and outside it, and Fisher's exact test.
+- Not mapped: seams between the CCDs inside one HiRISE image, which the HiRISE team notes can show in a DTM as long lines; their positions need each image's CCD geometry.
+
+### Ridge map: labels, tuning and test
+
+- `ariadne ridge-sample --site boxwork` draws 252 random points, 84 in each predicted class (ridge, hollow, other), at least 25 m from the crop edge and 10 m apart, with a fixed seed. It assigns each point to the tuning or test half at that moment, balanced by class, and writes `data/labeling/boxwork/index.html`, a local page with a 25 cm image chip, a hillshade chip and a wider context chip per point. The page does not show the predicted class or the half. Labels (ridge, hollow, neither, unsure) are kept in the browser and exported as JSON for `config/labels/`.
+- `ariadne ridge-tune --site boxwork --labels <file>` tunes on the tuning half only: DEM smoothing before TPI (σ 0, 1, 2 or 3 m), TPI radius (5, 10 or 20 m), ridge and hollow thresholds, relief floor, and an optional image-texture term. It maximises the mean F1 of ridge and hollow, then reports precision and recall with 95% intervals on the test half. "Unsure" labels are dropped. The tuned thresholds go to config, and the ridge layer and transects are regenerated.
+
+### Acceptance tests
+
+| ID | Test | Where |
+| --- | --- | --- |
+| C16 | Footprint slope: the disc plane fit returns the exact slope and aspect of tilted planes for several diameters; a wider disc lowers the slope noise on a noisy plane; NaN cells stay NaN | `pipeline/tests/test_terrain.py` |
+| C17 | Footprint settings: the rover diameter is max(length, r_eff), the walker's is r_eff, and r_eff = pixels × pixel size from config, each value with a source | `pipeline/tests/test_walkability.py` |
+| C18 | Seams: footprint edges become lines inside the DEM and the crop edge is not a seam; distances on a synthetic grid are exact; the seam zone raises the uncertainty flag; the seam statistics and Fisher test are right on synthetic points | `pipeline/tests/test_seams.py` |
+| C19 | Ridge sample: stratified counts, fixed seed, minimum spacing and edge distance; the tuning and test halves are fixed at sampling time and balanced by class; the page lists every point and shows neither the predicted class nor the half | `pipeline/tests/test_ridge_labels.py` |
+| C20 | Ridge tuning: the chosen parameters do not change when test-half labels are shuffled; precision, recall and their intervals are right on a hand-made confusion table; "unsure" labels are dropped | `pipeline/tests/test_ridge_labels.py` |
+| C21 | validation.json keeps the frozen first rover result beside the new one, has the Murray Buttes held-out result, and the seam statistics for both runs | `pipeline/tests/test_validation_outputs.py` |
+
 ## Next steps
 
-1. Team decision: compute the rover's (and possibly the walker's) slope classes at the traveller's footprint scale, as the PLACES tilt comparison suggests, and re-run the rover check; or keep the 1 m slope and the recorded failure.
+1. Phase 2 follow-up: footprint-scale slope and the one re-run, DEM seams, the ridge labeling page (plan above).
 2. Phase 3, route engine: A*, cost-to-home fields, the leg matrix, OR-Tools reference plans, the browser solver, constraints, re-planning and storm mode. It also transcribes the NASA/TP-2010-216125 walking model, replacing the PLACEHOLDER pace in minutes-to-shelter.
 
 ## Open issues

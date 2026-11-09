@@ -67,6 +67,12 @@ calibration:
 walkability:
   walker_slope_deg: {value: [15, 25], label: PLACEHOLDER, note: go up to 15, caution 15 to 25, no-go above 25 (PROMPT.md 4.3).}
   rover_slope_deg: {value: [12, 20], label: PLACEHOLDER, note: go up to 12, caution 12 to 20, no-go above 20.}
+  slope_method: {value: footprint disc plane fit, label: MODELED, note: Slope for the walkability classes is the gradient of the least-squares plane over a disc of diameter L (cells weighted by their area inside it). Fixed 2026-11-09 before the re-run (docs/PROGRESS.md).}
+  dem_image_pixel_m: {value: 0.25, label: MEASURED, source: 'Pixel of the USGS 25 cm orthophoto mosaic made from the same HiRISE images; the HiRISE team rule (posts at about 4 image pixels, uahirise.org/dtm/about.php) gives the 1 m grid.'}
+  dem_resolution_pixels: {value: 10, label: MODELED, source: 'Kirk et al. 2021, ISPRS Archives XLIII-B3-2021, 659: stereo DTM resolution 10 to 20 image pixels, USGS products at the finer end (measured on HRSC DTMs; assumed to carry over to HiRISE).', note: r_eff = 10 x 0.25 m = 2.5 m.}
+  dem_resolution_pixels_coarse: {value: 20, label: MODELED, source: Kirk et al. 2021 (the coarse end of the range), note: Sensitivity case only (r_eff = 5.0 m).}
+  rover_footprint_m: {value: 3.05, label: MEASURED, source: 'NASA mission page: Curiosity is 10 feet long, 9 feet wide and 7 feet tall, not counting the arm (science.nasa.gov/mission/msl-curiosity).', note: Rover slope disc diameter = max(this, r_eff).}
+  walker_footprint_m: {value: 0.0, label: PLACEHOLDER, note: A walker's stance is smaller than the DEM resolves, so the walker slope disc diameter is r_eff.}
   walker_roughness_m: {value: [0.15, 0.35], label: PLACEHOLDER, note: go, caution, no-go breaks for the 5 m plane-fit residual.}
   rover_roughness_m: {value: [0.10, 0.25], label: PLACEHOLDER}
   dark_window_m: {value: 5, label: PLACEHOLDER, note: Window for dark-object density.}
