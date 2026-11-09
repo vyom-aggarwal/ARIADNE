@@ -14,9 +14,11 @@ from ariadne.models import leapseconds, mars24
 
 TOL = 1e-5  # the page prints 5 decimals
 
-# The page's printed declination, sun angles and Spirit LTST cannot be reproduced to 5 decimals
-# from its own printed inputs (see test_page_is_not_self_consistent_at_5_decimals), so those
-# keys use a looser, stated tolerance. Steps A-1 to C-5 must match to the printed precision.
+# In the Spirit example, the printed declination and LTST differ from what the printed formulas
+# give from the printed inputs by more than rounding of those inputs explains (see
+# test_spirit_example_gaps_exceed_input_rounding; the page does not say why, and every gap is
+# under one arcsecond). Those keys, and the sun angles that depend on them, use a stated 0.001°
+# tolerance. Steps A-1 to C-5 must match to the printed precision.
 LOOSE_TOL = {"declination": 1e-3, "zenith": 1e-3, "azimuth": 1e-3, "ltst_hours": 1e-4}
 
 EXAMPLE_1 = {
@@ -86,20 +88,32 @@ def test_worked_example_matches_every_printed_value(example):
         assert got == pytest.approx(want, abs=tol), f"{key}: got {got}, want {want}"
 
 
-def test_page_is_not_self_consistent_at_5_decimals():
-    """Why LOOSE_TOL exists: the page's own printed values disagree at the 5th decimal."""
+def test_spirit_example_gaps_exceed_input_rounding():
+    """Why LOOSE_TOL exists, shown with the page's own printed numbers.
+
+    Each printed input is rounded to 5 decimals, so it is off by at most 5e-6. The gaps below are
+    several times larger than that rounding can produce.
+    """
     import math
 
     e = EXAMPLE_2["expect"]
-    # C-4: LTST = LMST + EOT / 15 from the printed LMST and EOT gives 0.00020 h, not 0.00025 h.
+    half_unit = 5e-6
+    # C-4: LTST = LMST + EOT / 15. From the printed LMST and EOT this gives 0.00020 h; the page
+    # prints 0.00025 h. Rounding of the two inputs can move the result by at most ~5.3e-6 h.
     ltst_from_printed = e["lmst_hours"] + e["eot_deg"] / 15.0
-    assert abs(ltst_from_printed - e["ltst_hours"]) > 4e-5
-    # D-1: the printed formula applied to the printed Ls gives -13.42040, not -13.42065.
-    ls = math.radians(e["ls"])
-    decl_from_printed = math.degrees(math.asin(0.42565 * math.sin(ls))) + 0.25 * math.sin(ls)
-    assert abs(decl_from_printed - e["declination"]) > 2e-4
-    # Our results still sit within LOOSE_TOL of the printed values.
-    assert abs(decl_from_printed - e["declination"]) < LOOSE_TOL["declination"]
+    rounding_limit = half_unit + half_unit / 15.0
+    assert abs(ltst_from_printed - e["ltst_hours"]) > 4 * rounding_limit
+
+    # D-1: the printed formula applied to the printed Ls gives -13.42040; the page prints
+    # -13.42065. Rounding of Ls by 5e-6 degrees moves the declination by under 2e-6 degrees.
+    def decl(ls_deg):
+        s = math.sin(math.radians(ls_deg))
+        return math.degrees(math.asin(0.42565 * s)) + 0.25 * s
+
+    rounding_limit = abs(decl(e["ls"] + half_unit) - decl(e["ls"]))
+    assert abs(decl(e["ls"]) - e["declination"]) > 100 * rounding_limit
+    # Every gap is still well inside the stated tolerance (under one arcsecond).
+    assert abs(decl(e["ls"]) - e["declination"]) < LOOSE_TOL["declination"]
 
 
 def test_lmst_wraps_into_0_to_24_hours():

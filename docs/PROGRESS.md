@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-08.
+Last updated: 2026-11-08 (Phase 2 started).
 
 ## Status
 
@@ -9,7 +9,7 @@ Last updated: 2026-11-08.
 | Kickoff | Done. Sources for Phases 1 and 2 verified (docs/SOURCES_LOG.md); findings applied to PROMPT.md and docs/PLAN.md |
 | 0 Repo and guardrails | Done 2026-11-08: all ten acceptance tests pass; CI green; site live at https://vyom-aggarwal.github.io/ARIADNE/ |
 | 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
-| 2 Derived layers | Next |
+| 2 Derived layers | In progress: spec changes applied and sources verified; plan and tests below |
 | 3 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
@@ -19,6 +19,7 @@ Last updated: 2026-11-08.
 - **Setup:** pip venv with prebuilt wheels (bundled GDAL); the Makefile is the single source of commands and CI runs it on Linux; locally, GNU make through Chocolatey from Git Bash; PLAN.md moves to docs/.
 - **Python version:** use 3.13 locally if OR-Tools and numba install there, otherwise pin 3.12. Result below: both work, so no pin.
 - **Open items kept open:** the Photojournal boxwork set (Phase 4) and DONKI (Phase 6).
+- **Phase 2 spec changes (2026-11-08):** (1) far-field horizons: 2 km on the 1 m DEM, then to about 100 km on a coarse regional DEM, reporting the sunrise and sunset shift; (2) calibrate n so that S(parking spot) / S(the RAD study's baseline positions) = 0.96, with far-field horizons at both; (3) use Ehresmann et al. 2021 (doi:10.1029/2021JE006851) for the Murray Buttes figures and Guo et al. 2021 (doi:10.1007/s00159-021-00136-5) for a dose-pressure coefficient, verified first; (4) drill sites Altadena, Valle de la Luna, Nevado Sajama and Nevado Sajama2, sols from NASA's Curiosity blog and positions from PLACES; (5) describe the Mars24 example mismatch as rounding unless it can be shown otherwise. Applied to PROMPT.md and docs/PLAN.md; evidence in docs/SOURCES_LOG.md (Phase 2 verification pass).
 
 ## Kickoff findings that change the plan
 
@@ -96,7 +97,7 @@ Tests B1 to B7 run in CI on fixtures and synthetic rasters; B8 to B10 run on the
 
 | ID | Test | Where |
 | --- | --- | --- |
-| B1 | Both GISS Mars24 worked examples reproduce every listed value from A-2 to C-5, plus the heliocentric distance, longitude and latitude, to the printed precision (1e-5). Declination, zenith, azimuth and the Spirit LTST match within 0.001° (LTST 1e-4 h), because the page's own printed values for those are not consistent with its printed inputs at the 5th decimal; a test demonstrates this | `pipeline/tests/test_mars24.py` |
+| B1 | Both GISS Mars24 worked examples reproduce every listed value from A-2 to C-5, plus the heliocentric distance, longitude and latitude, to the printed precision (1e-5). Declination, zenith, azimuth and the Spirit LTST match within 0.001° (LTST 1e-4 h): in the Spirit example the printed declination and LTST differ from what the printed formulas give from the printed inputs by 0.00025° and 0.00005 h, more than rounding of those inputs explains (a test shows the arithmetic); the page does not say why. All gaps are under one arcsecond | `pipeline/tests/test_mars24.py` |
 | B2 | TT − UTC is 64.184 s in 2000 and 2004, 67.184 s in August 2012, and 69.184 s from 2017; dates past the table's expiry raise a clear warning | `pipeline/tests/test_mars24.py` |
 | B3 | MSL sols: touchdown is sol 0; sol 0 midnight at 137.442° E matches NAIF's 2012-08-05 13:49:59 UTC, and NAIF's linear clock at sols 1000, 3000 and 5000, within 10 s (first planned at 2 s; the measured gap is 5.8 to 6.6 s, see the note below); the five caption fixtures match within one day; a sample of about 95 REMS daily-feed sols matches its dates within one day and its Ls within 1.5° | `pipeline/tests/test_msl_time.py` |
 | B4 | Provenance records carry every required field and a valid label, and survive a round trip through a sidecar file and GeoTIFF tags | `pipeline/tests/test_provenance.py` |
@@ -141,17 +142,57 @@ The thresholds in B8 are team targets, set before the real crops were read: 2 m 
 - **No gap-fill** at either site (team rule: at least 99% of localizations and 90% of the box on HiRISE stereo).
 - **Provenance tags** are written with each Cloud Optimized GeoTIFF, because a COG cannot be re-tagged in place; a cached crop without its tag is re-read. This re-read the Murray Buttes DEM crop from the first, failed run.
 
+## Phase 2 plan: derived layers
+
+Turn the crops into the ten layers of PROMPT.md section 4, each a pure function in `pipeline/ariadne/derive/` tested on synthetic terrain, then run them on both sites with `make derive` and write `validation.json` with `make validate`.
+
+1. **Inputs.** Add the MOLA 463 m regional DEM to `config/sources.yaml`, cropped to the site box plus 102 km (100 km far-field reach, PLACEHOLDER, plus a margin) by the existing range reader. Add the THEMIS night-IR tiles (Trek, level 9, about 81 m) for the sand proxy, the ChemCam oxide tables for prior targets, and the four drill sites (sols from the blog, positions from PLACES). Every threshold goes into `config/derive.yaml` and `config/science.json`, marked PLACEHOLDER.
+2. **Terrain basics.** Horn slope and aspect, roughness (standard deviation of elevation after removing a best-fit plane in a 5 m window), TPI at 5, 10 and 20 m, local relief.
+3. **Horizons.** 72 azimuths. Near field: rays on the 1 m DEM out to 2 km or the crop edge, 1 m steps to 32 m, then steps growing 3% per step, bilinear sampling, curvature drop d²/2R, observer 1 m above the ground (PLACEHOLDER). Far field: on a 100 m coarse grid, rays on MOLA from where the near field stops (less a 100 m overlap) to 100 km, MOLA tied to the 1 m DEM by their median difference; each fine cell takes the interpolated far-field profile maximum, corrected to first order for its own elevation. The horizon is the larger of the two. Stored as a 72-band uint8 COG (0.4° steps from −12° to +90°).
+4. **Shielding.** S(n) by the closed form; f(p) = 1 + κ (p − p_ref) / D_ref with κ = −0.21 µGy/day per Pa and D_ref = 300 µGy/day (Guo et al. 2021, the published upper limit and its matching dose), p from elevation with the 11.0 km scale height, and p at Murray Buttes from the paper's 23 g/cm² (about 849 Pa). Calibration: the baseline is Curiosity's position on each of sols 1440 to 1455 and 1468 to 1480 (the mean of S at the positions held at the start and end of each sol, since PLACES gives no drive times); the parking spot is site 57, drive 2798. Find n in 0 to 10 where S(parking) f / mean(S f over baseline sols) = 0.962 (the paper's 3.8%), the n range for 3.4% to 4.2%, and the n for exactly 0.96. Also report the blocked sky (n = 0) at the parking spot against the paper's 19%, and the sensitivity to observer height (0.5 m and 2 m) and to near-field-only horizons.
+5. **Walkability** (walker and rover): slope classes (walker go up to 15°, caution 15° to 25°, no-go above 25°; rover go up to 12°, caution 12° to 20°, no-go above 20°; all PLACEHOLDER), roughness, dark-object density (share of 25 cm pixels much darker than their surroundings), a sand proxy (smooth texture, ripple directionality and THEMIS night-IR percentile, all relative within the site) and ridge-edge drop-offs (convex profile curvature with at least 1 m of local relief). Output: class and a continuous cost multiplier. Label MODELED. No boulder sizes (no per-image sun geometry).
+6. **Ridges and fractures.** Ridge where TPI10 > +0.3 m and local relief ≥ 0.8 m; hollow where TPI10 < −0.3 m (PLACEHOLDER). Fractures: multi-scale dark-line filter (Sato) on the 25 cm image inside the ridge mask, skeletonized, lines ≥ 10 m kept, written as GeoJSON. Both sites have HiRISE stereo everywhere, so the DEM route applies.
+7. **Shelters and time-to-shelter.** Shelter cells: S ≤ 0.95 and walkable, in zones ≥ 4 m² (PLACEHOLDER); the rover counts as a shelter. Minutes-to-shelter by a multi-source least-cost pass (scikit-image MCP) at a PLACEHOLDER walking speed divided by the walkability cost; Phase 3 replaces the speed with the NASA/TP-2010-216125 model.
+8. **Line of sight.** Viewshed from the rover antenna (3 m) to a helmet (1.8 m), and a pairwise helmet-to-helmet test (both PLACEHOLDER), by ray marching. The derive run uses a PLACEHOLDER staging point (Curiosity's Altadena drill position at the boxwork; the parking spot at Murray Buttes). Line of sight only; radio is not modeled.
+9. **Light.** Sun track from Mars24; shadow where the sun's elevation is below the horizon at its azimuth (interpolated between azimuths); insolation from incidence on the local slope; sunrise and sunset per cell for a reference date; daily insolation relative to flat open ground. Relative ground temperature is implemented and tested as a function of a REMS daily curve, but the REMS archive itself is read in Phase 6, so no temperature map is made yet.
+10. **Science value.** Transect triples along ridge crests ≥ 20 m long: a crest point (on a mapped fracture where one lies within 2 m), a wall point 1 to 2 m down the flank, a hollow point 3 to 10 m away, all walkable. Score = weighted sum of hypothesis role, novelty (distance to the nearest ChemCam target or drill hole), spectral context and access, weights in `config/science.json`. CRISM is not read yet, so the spectral term is marked missing and its weight is set aside, not faked.
+11. **Uncertainty.** Confidence in 0 to 1 from the DEM source class, the distance to the nearest ground image (Curiosity's localizations stand in for camera positions; PLACES `view_metadata.csv` is the better source, still to check) and model flags (DEM not HiRISE, near-field horizon cut short by the crop edge).
+12. **Outputs.** COGs and GeoJSON with provenance in `data/sites/<site>/derived/`; a committed report `docs/derived/<site>.md` (calibration, horizons, the far-field effect on sunrise and sunset, layer summaries); `validation.json` at the repo root with the shielding calibration, the rover-walkability check on Curiosity's path, and the Mars24 and sol checks.
+
+### Phase 2 acceptance tests
+
+C1 to C12 run in CI on synthetic data; C13 to C15 check the committed outputs of the real run, as in Phase 1.
+
+| ID | Test | Where |
+| --- | --- | --- |
+| C1 | Terrain: a tilted plane gives its exact slope and aspect (four orientations); roughness is zero on flat and tilted planes; TPI is zero on a plane and positive on a bump; local relief of a step equals the step | `pipeline/tests/test_terrain.py` |
+| C2 | Near-field horizons: the centre of a cylindrical pit gives atan(depth / radius) within 0.3° in every azimuth; a flat plane gives the curvature dip only; azimuth 90° looks east; quantization round-trips within 0.2° | `pipeline/tests/test_horizons.py` |
+| C3 | Far-field horizons: a cone-shaped mountain on a coarse grid gives its analytic angle after the curvature drop, within 0.1°; the tie offset between two DEMs is recovered; the combined horizon is the larger of near and far | `pipeline/tests/test_horizons.py` |
+| C4 | Shielding: flat open ground gives S = 1, vertical walls S = 0; the closed form equals numerical integration of cos^n θ over the open sky; the blocked fraction at n = 0 equals mean(sin h); the calibration recovers a known n from synthetic horizons and reports "no fit" when none exists; f(p) is 1 at the reference elevation and follows the hand-computed value elsewhere | `pipeline/tests/test_shielding.py` |
+| C5 | Walkability: classes switch at the configured slope thresholds; no-go wins over other factors; cost rises with slope; dark-object density and the sand proxy respond to synthetic dark spots, smooth patches and ripples; a 1 m step is flagged as a drop-off | `pipeline/tests/test_walkability.py` |
+| C6 | Ridges and fractures: a synthetic boxwork grid gives ridges on the walls and hollows between; a dark line on a ridge is traced; lines shorter than 10 m are dropped | `pipeline/tests/test_ridges.py` |
+| C7 | Shelters: zones smaller than 4 m² and unwalkable cells are dropped; minutes-to-shelter on flat ground equals distance divided by speed (straight and diagonal); the rover point counts as a shelter; unreachable cells are marked | `pipeline/tests/test_shelters.py` |
+| C8 | Line of sight: a wall hides what is behind it; flat ground is all visible; the pairwise test is symmetric and depends on height | `pipeline/tests/test_los.py` |
+| C9 | Light: shadow exactly when the sun is below the interpolated horizon; insolation equals cos(incidence) for sloped planes; with a constant horizon h0, sunrise is when the sun reaches h0; the relative temperature curve keeps the REMS timing | `pipeline/tests/test_light.py` |
+| C10 | Science: transects only on crests of 20 m or more; wall and hollow points at the configured distances and walkable; each score term lies in 0 to 1; novelty grows with distance to prior targets; a missing term is reported, not invented | `pipeline/tests/test_science.py` |
+| C11 | Uncertainty: confidence is highest on HiRISE ground near images with no flags, falls with distance and flags, and stays in 0 to 1 | `pipeline/tests/test_uncertainty.py` |
+| C12 | Inputs: drill positions are the localizations held on the blog sols; baseline sols give start and end positions; ChemCam file names yield SCLKs; Trek tile indices cover a box; `ariadne derive` and `ariadne validate` are built | `pipeline/tests/test_inputs.py`, `pipeline/tests/test_cli.py` |
+| C13 | `validation.json` holds the shielding calibration: n, the ratio, the n range for 3.8% ± 0.4%, the n for 0.96, the blocked-sky check against 19%, the sensitivity runs, the label "calibrated on one RAD measurement", and the sources | `pipeline/tests/test_validation_outputs.py` |
+| C14 | `docs/derived/<site>.md` exists for both sites and reports the far-field shift of sunrise and sunset | `pipeline/tests/test_validation_outputs.py` |
+| C15 | Every derived product has a provenance record with a label and the pipeline version (skipped when `data/` is empty, as in CI) | `pipeline/tests/test_validation_outputs.py` |
+
+Team targets set before the real run: the calibration passes if some n in 0 to 10 reproduces the ratio; the blocked-sky check is reported, not gated (the paper's horizon mask comes from rover images and a different elevation model); the rover-walkability check passes if at least 95% of Curiosity's boxwork localizations are classed go or caution.
+
 ## Next steps
 
-1. Phase 2, derived layers: terrain basics, horizons, walkability, ridges and fractures, the shielding index with its Murray Buttes calibration, shelters, line of sight, light and ground temperature, science value and uncertainty, each as a pure function with synthetic tests; then validation.json with the calibration result.
+1. Phase 2: write the C1 to C12 tests, then the derive modules; fetch the MOLA crop; run the calibration and the far-field report; then the remaining layers, `make derive` on both sites and `validation.json`.
 
 ## Open issues
 
 - DONKI's host timed out from this machine (needed in Phase 6). Retry, then try api.nasa.gov.
 - The Photojournal boxwork link now redirects to a generic page (needed in Phase 4).
-- Still to find in Phase 2: the sols and positions of the four boxwork drill samples, image positions for the uncertainty layer and the hand-labeled ridge sample, and the exact quantities in the Ehresmann et al. 2021 Murray Buttes paper.
+- Still to find: image positions for the uncertainty layer (PLACES `view_metadata.csv` is the candidate) and a hand-labeled ridge sample for the ridge-map check. The drill sites and the Ehresmann et al. 2021 quantities are now verified.
 - Team name and README credits: not given yet; README shows them as "to be added".
 - The georeferencing check is not an independent test of height: PLACES records the DEM pixel of each localization, so its elevations are tied to an orbital DEM. The horizontal shift search is the real alignment test. An independent height check would need ground data, such as rover stereo; this is not planned.
 - HiRISE coverage edges are uncertain by about 30 m, because ODE rounds footprint vertices. It makes no difference at these two sites, which are fully covered, but it matters for the uncertainty layer elsewhere.
 - The orthophoto shows mosaic seams (one is visible in the Murray Buttes quicklook). Phase 2's dark-object density should check that seams do not register as features.
-- Phase 2 still needs the Ehresmann et al. 2021 quantities and the drill-sample positions (see above).
