@@ -16,5 +16,21 @@ buffer_reason: Room around the rover's path for walks, horizons and context (PRO
 sources:
   - usgs-gale-dem-1m
   - usgs-gale-ortho-25cm
+  - mola-dem-463m
 optional_sources:
   - usgs-gale-hirise-lrgb
+context_sources:
+  - trek-themis-night-ir
+  - msl-chemcam-moc
+# The four boxwork drill holes. Sols are from NASA's Curiosity blog (docs/SOURCES_LOG.md,
+# curiosity-blog-*); positions are the PLACES localization held on that sol (the rover's
+# position while drilling; each hole is within the arm's reach of it).
+drill_sites:
+  - {name: Altadena, sol: 4564, setting: transitional area at the edge of the boxwork, source: https://science.nasa.gov/blog/curiosity-blog-sols-4568-4569-a-close-look-at-the-altadena-drill-hole-and-tailings/}
+  - {name: Valle de la Luna, sol: 4693, setting: bedrock in the Monte Grande hollow, source: https://science.nasa.gov/blog/curiosity-blog-sols-4695-4701-searching-for-answers-at-monte-grande/}
+  - {name: Nevado Sajama, sol: 4718, setting: ridgetop beside the Monte Grande hollow, source: https://science.nasa.gov/blog/curiosity-blog-sols-4716-4722-drilling-success-at-nevado-sajama/}
+  - {name: Nevado Sajama2, sol: 4795, setting: second hole beside Nevado Sajama, source: https://science.nasa.gov/blog/curiosity-blog-sols-4798-4803-back-for-more-science/}
+# PLACEHOLDER staging point for the line-of-sight demo: where Curiosity drilled Altadena.
+staging: {drill_site: Altadena, label: PLACEHOLDER}
+# Reference sol for the light layer (sunrise, sunset, insolation): Nevado Sajama's drill sol.
+reference_sol: {value: 4718, label: PLACEHOLDER}

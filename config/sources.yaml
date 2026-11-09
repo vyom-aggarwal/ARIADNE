@@ -71,3 +71,56 @@ ode-hirise-footprints:
   credit: PDS Geosciences Node Orbital Data Explorer (Washington University in St. Louis); HiRISE NASA/JPL-Caltech/University of Arizona
   license: NASA PDS archive metadata, public domain
   notes: Footprints only, used to map where the DEM comes from HiRISE stereo.
+
+mola-dem-463m:
+  title: Mars MGS MOLA DEM 463 m (MEGDR), global mosaic
+  url: https://planetarymaps.usgs.gov/mosaic/Mars_MGS_MOLA_DEM_mosaic_global_463m.tif
+  product_id: Mars_MGS_MOLA_DEM_mosaic_global_463m
+  product_page: https://astrogeology.usgs.gov/search/map/mars_mgs_mola_dem_463m
+  resolution_m: 463.09
+  label: MEASURED
+  credit: MOLA Science Team (NASA/GSFC), Mars Orbiter Laser Altimeter MEGDR; mosaic by USGS Astrogeology
+  license: CC0 (public domain), per the USGS product page
+  notes: >-
+    Elevations above the MOLA areoid, gathered 1999 to 2001; about 100 m horizontal and 1 m
+    radial point accuracy, total elevation uncertainty at least 3 m. Used only for far-field
+    horizons beyond 2 km, tied to the 1 m DEM by their median difference over the site.
+  acquisition_date: 1999 to 2001
+  output: regional_dem.tif
+  nodata: -32768
+  # Far-field horizons reach 100 km (PLACEHOLDER, config/derive.yaml) plus a 2 km margin.
+  crop_buffer_m: 102000
+
+trek-themis-night-ir:
+  title: THEMIS night IR controlled mosaic 100 m (v2, Oct 2018), through Mars Trek WMTS
+  url: https://trek.nasa.gov/tiles/Mars/EQ/THEMIS_NightIR_ControlledMosaics_100m_v2_oct2018/1.0.0/default/default028mm/{z}/{y}/{x}.png
+  product_id: THEMIS_NightIR_ControlledMosaics_100m_v2_oct2018
+  product_page: https://trek.nasa.gov/tiles/Mars/EQ/THEMIS_NightIR_ControlledMosaics_100m_v2_oct2018/1.0.0/WMTSCapabilities.xml
+  resolution_m: 81.4
+  label: MEASURED
+  credit: THEMIS (NASA/JPL-Caltech/Arizona State University), controlled mosaic; served by NASA Mars Trek
+  license: NASA data, public domain
+  notes: >-
+    8-bit display mosaic, not calibrated temperature or thermal inertia, so it is used only as a
+    relative sand proxy (percentile within the site). Tile level 9 of the default028mm matrix
+    (1024 x 512 tiles of 256 px over the globe, about 81 m per pixel at the equator).
+  kind: wmts
+  level: 9
+  output: themis_night_ir.tif
+
+msl-chemcam-moc:
+  title: MSL ChemCam LIBS oxide tables (MOC), PDS Geosciences Node
+  url: https://pds-geosciences.wustl.edu/msl/msl-m-chemcam-libs-4_5-rdr-v1/mslccm_1xxx/data/moc/
+  product_id: msl-m-chemcam-libs-4_5-rdr-v1 / data/moc
+  product_page: https://pds-geosciences.wustl.edu/msl/msl-m-chemcam-libs-4_5-rdr-v1/mslccm_1xxx/
+  resolution_m: null
+  label: MEASURED
+  credit: NASA/JPL-Caltech/LANL/IRAP, MSL ChemCam team; PDS Geosciences Node
+  license: NASA PDS archive data, public domain
+  notes: >-
+    One row per analysis: file name (with the spacecraft clock), target name, oxides and the
+    distance to the target. Target positions are Curiosity's PLACES position at that clock,
+    uncertain by about that distance (a few meters).
+  kind: table
+  files: [moc_4489_4612.csv, moc_4613_4709.csv, moc_4710_4843.csv]
+  output: chemcam_targets.csv

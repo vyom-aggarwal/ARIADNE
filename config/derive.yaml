@@ -1,0 +1,104 @@
+# Written with AI assistance (Claude Code). See AI_USE.md.
+# Settings for the derived layers (PROMPT.md section 4). Every value is labeled: PLACEHOLDER
+# values are team choices that the app's assumptions panel will show; MEASURED or DERIVED values
+# carry their source. Change a value here, never in code.
+
+terrain:
+  roughness_window_m: {value: 5, label: PLACEHOLDER, note: Window for the plane-fit residual (PROMPT.md 4.1).}
+  tpi_radii_m: {value: [5, 10, 20], label: PLACEHOLDER, note: Topographic position index scales (PROMPT.md 4.1).}
+  relief_radius_m: {value: 2, label: PLACEHOLDER, note: Half-width of the window for local relief.}
+
+horizons:
+  azimuths: {value: 72, label: PLACEHOLDER, note: Every 5 degrees, clockwise from north.}
+  near_max_m: {value: 2000, label: PLACEHOLDER, note: Near-field reach on the 1 m DEM.}
+  near_fine_until_m: {value: 32, label: PLACEHOLDER, note: 1 m steps up to this distance.}
+  near_growth: {value: 1.03, label: PLACEHOLDER, note: Each later step is 3% longer than the one before.}
+  far_max_m: {value: 100000, label: PLACEHOLDER, note: Far-field reach on the MOLA DEM.}
+  far_grid_m: {value: 100, label: PLACEHOLDER, note: Spacing of the coarse grid for far-field rays.}
+  far_min_step_m: {value: 200, label: PLACEHOLDER, note: Far-field step, about half a MOLA pixel, growing 1% per step past 20 km.}
+  far_growth: {value: 1.01, label: PLACEHOLDER}
+  observer_height_m:
+    value: 1.0
+    label: PLACEHOLDER
+    note: Height above the ground at which horizons are measured, roughly a walker's chest and RAD on the rover deck. The calibration reports 0.5 m and 2 m as well.
+  quant_min_deg: {value: -12.0, label: PLACEHOLDER, note: Stored horizons run from -12 degrees in 0.4 degree steps (uint8, 255 = no data).}
+  quant_step_deg: {value: 0.4, label: PLACEHOLDER}
+
+shielding:
+  kappa_ugy_per_day_per_pa:
+    value: -0.21
+    label: MEASURED
+    source: Guo et al. 2021, Astron. Astrophys. Rev. 29:8, section 3.2 (doi:10.1007/s00159-021-00136-5)
+    note: Dose falls as pressure rises. 0.21 is the published upper limit of the coefficient's size (deep solar minimum); most of the mission saw 0.1 to 0.2.
+  dose_ref_ugy_per_day:
+    value: 300
+    label: MEASURED
+    source: Guo et al. 2021, section 3.2
+    note: Average dose rate in the same solar minimum, so kappa / dose is a consistent pair.
+  scale_height_m:
+    value: 11000
+    label: MEASURED
+    source: NASA NSSDCA Mars Fact Sheet, https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html
+  gravity_m_s2:
+    value: 3.69
+    label: MEASURED
+    source: NASA NSSDCA Mars Fact Sheet (surface acceleration at the equator)
+  murray_column_g_cm2:
+    value: 23
+    label: MEASURED
+    source: Ehresmann et al. 2021, JGR Planets 126, e2021JE006851, section 3.3 (REMS pressure while parked)
+  n_search: {value: [0.0, 10.0], label: PLACEHOLDER, note: Range searched for the zenith exponent n (PROMPT.md 4.5).}
+  shelter_max_s: {value: 0.95, label: PLACEHOLDER, note: A cell is a shelter if S is at most this and it is walkable.}
+  shelter_min_area_m2: {value: 4, label: PLACEHOLDER}
+  rover_shelter_s: {value: 0.5, label: PLACEHOLDER, note: Shielding assumed inside the pressurized rover; not used for terrain shelters.}
+
+calibration:
+  # Ehresmann et al. 2021: dose on sols 1456-1467 was 3.8% +/- 0.4% below the expected dose,
+  # which was fitted on sols 1440-1455 and 1468-1480.
+  reduction: {value: 0.038, label: MEASURED, source: Ehresmann et al. 2021, section 3.2}
+  reduction_uncertainty: {value: 0.004, label: MEASURED, source: Ehresmann et al. 2021, section 3.2}
+  headline_ratio: {value: 0.96, label: MEASURED, note: The rounded 4% in NASA's write-up and the team's spec.}
+  blocked_sky_fraction: {value: 0.19, label: MEASURED, source: Ehresmann et al. 2021, section 2.2 (0.37 pi of 2 pi sr)}
+  parked_sols: {value: [1456, 1467], label: MEASURED, source: Ehresmann et al. 2021}
+  baseline_sols: {value: [[1440, 1455], [1468, 1480]], label: MEASURED, source: Ehresmann et al. 2021, Figure 6 caption}
+  parking: {site: 57, drive: 2798, label: MEASURED, source: MSL PLACES (Phase 1)}
+  observer_heights_m: {value: [0.5, 1.0, 2.0], label: PLACEHOLDER, note: Sensitivity runs.}
+
+walkability:
+  walker_slope_deg: {value: [15, 25], label: PLACEHOLDER, note: go up to 15, caution 15 to 25, no-go above 25 (PROMPT.md 4.3).}
+  rover_slope_deg: {value: [12, 20], label: PLACEHOLDER, note: go up to 12, caution 12 to 20, no-go above 20.}
+  walker_roughness_m: {value: [0.15, 0.35], label: PLACEHOLDER, note: go, caution, no-go breaks for the 5 m plane-fit residual.}
+  rover_roughness_m: {value: [0.10, 0.25], label: PLACEHOLDER}
+  dark_window_m: {value: 5, label: PLACEHOLDER, note: Window for dark-object density.}
+  dark_background_m: {value: 15, label: PLACEHOLDER, note: Median window that sets the local brightness.}
+  dark_ratio: {value: 0.6, label: PLACEHOLDER, note: A 25 cm pixel is dark if below this fraction of the local median.}
+  dark_density_caution: {value: 0.10, label: PLACEHOLDER, note: Share of dark pixels above which a cell is caution.}
+  sand_caution: {value: 0.75, label: PLACEHOLDER, note: Sand proxy (0 to 1, relative within the site) above which the rover is caution.}
+  dropoff_relief_m: {value: 1.0, label: PLACEHOLDER, note: Local relief that makes a convex edge a drop-off (PROMPT.md 4.3).}
+  dropoff_curvature_per_m: {value: 0.3, label: PLACEHOLDER, note: Convexity (negative Laplacian of elevation) that marks an edge.}
+  cost_weights: {value: {slope: 1.0, roughness: 1.0, dark: 1.0, sand: 0.5, dropoff: 1.0}, label: PLACEHOLDER, note: Extra cost per factor at its caution threshold.}
+
+ridges:
+  tpi_ridge_m: {value: 0.3, label: PLACEHOLDER, note: TPI at 10 m above this is a ridge (PROMPT.md 4.4).}
+  tpi_hollow_m: {value: -0.3, label: PLACEHOLDER}
+  ridge_relief_m: {value: 0.8, label: PLACEHOLDER}
+  fracture_sigmas_px: {value: [1, 2, 3], label: PLACEHOLDER, note: Scales of the dark-line filter on the 25 cm image.}
+  fracture_threshold: {value: 0.08, label: PLACEHOLDER, note: Line-filter response above which a pixel is on a fracture.}
+  fracture_min_length_m: {value: 10, label: PLACEHOLDER}
+
+shelters:
+  walking_speed_m_s: {value: 0.5, label: PLACEHOLDER, note: Flat-ground pace for minutes-to-shelter until Phase 3 brings the NASA/TP-2010-216125 model.}
+
+line_of_sight:
+  antenna_height_m: {value: 3.0, label: PLACEHOLDER}
+  helmet_height_m: {value: 1.8, label: PLACEHOLDER}
+  max_range_m: {value: 3000, label: PLACEHOLDER}
+
+light:
+  time_step_s: {value: 60, label: PLACEHOLDER, note: Sun-track step for sunrise, sunset and daily insolation.}
+  insolation_step_s: {value: 600, label: PLACEHOLDER}
+
+uncertainty:
+  source_score: {value: {hirise: 1.0, other: 0.3, nodata: 0.0}, label: PLACEHOLDER}
+  image_distance_scale_m: {value: 100, label: PLACEHOLDER, note: Confidence from imagery halves about every 70 m from Curiosity's positions.}
+  weights: {value: {source: 0.5, imagery: 0.3, flags: 0.2}, label: PLACEHOLDER}

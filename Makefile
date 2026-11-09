@@ -47,6 +47,8 @@ setup-browsers:
 	$(NPM) exec -- playwright install --with-deps chromium
 
 # Data pipeline. Commands not built yet exit with code 2 and name their phase.
+# derive needs the shielding calibration, which comes from the Murray Buttes crops: run
+# `make fetch SITE=murray-buttes` once before deriving any site.
 
 fetch derive plan validate package:
 	$(PY) -m ariadne $@ --site $(SITE)

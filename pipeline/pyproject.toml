@@ -49,3 +49,4 @@ select = ["E", "F", "W", "I", "B", "UP"]
 [tool.ruff.lint.per-file-ignores]
 # Markdown table templates read better on one line each.
 "ariadne/fetch/report.py" = ["E501"]
+"ariadne/derive/report.py" = ["E501"]

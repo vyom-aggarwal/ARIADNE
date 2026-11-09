@@ -8,13 +8,13 @@ import pytest
 
 from ariadne import __version__, cli
 
+# Commands not built yet, with the phase that builds them.
 COMMANDS = {
-    "derive": 2,
     "plan": 3,
-    "validate": 2,
     "package": 4,
     "build-site": 8,
 }
+BUILT_COMMANDS = ["fetch", "derive", "validate"]
 
 
 def test_help_lists_every_command(capsys):
@@ -22,7 +22,7 @@ def test_help_lists_every_command(capsys):
         cli.main(["--help"])
     assert exc.value.code == 0
     out = capsys.readouterr().out
-    for name in [*COMMANDS, "fetch"]:
+    for name in [*COMMANDS, *BUILT_COMMANDS]:
         assert name in out
 
 
@@ -30,6 +30,15 @@ def test_fetch_is_built_and_takes_force(capsys):
     assert "fetch" in cli.BUILT
     with pytest.raises(SystemExit) as exc:
         cli.main(["fetch", "--help"])
+    assert exc.value.code == 0
+    assert "--force" in capsys.readouterr().out
+
+
+def test_derive_and_validate_are_built(capsys):
+    # C12: Phase 2 builds these two commands
+    assert {"derive", "validate"} <= cli.BUILT
+    with pytest.raises(SystemExit) as exc:
+        cli.main(["derive", "--help"])
     assert exc.value.code == 0
     assert "--force" in capsys.readouterr().out
 

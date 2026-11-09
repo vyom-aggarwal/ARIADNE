@@ -131,6 +131,12 @@ def coverage_markdown(summary: dict) -> str:
         if p.get("skipped"):
             lines.append(f"| {p['file']} | `{p['source_id']}` | not made: {p['skipped']} | | | | |")
             continue
+        if "width" not in p:  # map tiles and tables
+            res = f"{p['resolution_m']} m" if p.get("resolution_m") else ""
+            lines.append(
+                f"| {p['file']} | `{p['source_id']}` | {p['size']} | {res} | {p['method']} | | {p['label']} |"
+            )
+            continue
         lines.append(
             f"| {p['file']} | `{p['source_id']}` | {p['width']:,} × {p['height']:,} | {p['resolution_m']} m | "
             f"{p['method']} | {p['seconds']:.0f} s | {p['label']} |"

@@ -125,8 +125,11 @@ Written by `make fetch`; one block per site, replaced on each run. Raw files sta
 | --- | --- | --- | --- | --- | --- | --- |
 | dem.tif | `usgs-gale-dem-1m` | 8,141,605.49 to 8,145,119.49; -286,731.08 to -282,806.08 | 3,514 × 3,925 px | gdal-bands | 2026-11-08T23:59:33Z | 0.0.0 |
 | ortho.tif | `usgs-gale-ortho-25cm` | 8,141,605.50 to 8,145,119.50; -286,730.75 to -282,806.50 | 14,056 × 15,697 px | range-requests | 2026-11-09T00:00:21Z | 0.0.0 |
+| regional_dem.tif | `mola-dem-463m` | 8,039,303.88 to 8,247,232.88; -388,998.57 to -180,606.48 | 449 × 450 px | range-requests | 2026-11-09T05:47:20Z | 0.0.0 |
 | color.tif | `usgs-gale-hirise-lrgb` | 8,141,605.50 to 8,145,119.50; -286,730.75 to -282,806.50 | 14,056 × 15,697 px | gdal-bands | 2026-11-09T00:01:16Z | 0.0.0 |
-| source_class.tif | `ariadne-dem-source-class` | DEM grid | 3,514 × 3,925 px | derived | 2026-11-09T00:01:47Z | 0.0.0 |
+| themis_night_ir.tif | `trek-themis-night-ir` | site box | 256 × 256 px | map tiles | 2026-11-09T05:49:41Z | 0.0.0 |
+| chemcam_targets.csv | `msl-chemcam-moc` | site box | 250 targets | tables joined to PLACES by SCLK | 2026-11-09T05:49:41Z | 0.0.0 |
+| source_class.tif | `ariadne-dem-source-class` | DEM grid | 3,514 × 3,925 px | derived | 2026-11-09T05:49:43Z | 0.0.0 |
 
 <!-- /site -->
 <!-- site:murray-buttes -->
@@ -136,7 +139,8 @@ Written by `make fetch`; one block per site, replaced on each run. Raw files sta
 | --- | --- | --- | --- | --- | --- | --- |
 | dem.tif | `usgs-gale-dem-1m` | 8,139,557.49 to 8,143,558.49; -280,307.08 to -276,306.08 | 4,001 × 4,001 px | gdal-bands | 2026-11-08T23:57:02Z | 0.0.0 |
 | ortho.tif | `usgs-gale-ortho-25cm` | 8,139,557.75 to 8,143,558.00; -280,306.75 to -276,306.50 | 16,001 × 16,001 px | range-requests | 2026-11-08T23:53:00Z | 0.0.0 |
-| source_class.tif | `ariadne-dem-source-class` | DEM grid | 4,001 × 4,001 px | derived | 2026-11-08T23:57:14Z | 0.0.0 |
+| regional_dem.tif | `mola-dem-463m` | 8,037,451.51 to 8,245,843.60; -382,515.27 to -174,123.17 | 450 × 450 px | range-requests | 2026-11-09T05:17:40Z | 0.0.0 |
+| source_class.tif | `ariadne-dem-source-class` | DEM grid | 4,001 × 4,001 px | derived | 2026-11-09T05:18:24Z | 0.0.0 |
 
 <!-- /site -->
 <!-- fetch-log:end -->

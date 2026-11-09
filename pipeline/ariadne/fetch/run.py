@@ -15,7 +15,7 @@ from shapely import wkt
 
 from ariadne import PIPELINE_VERSION
 from ariadne.config import Source, load_site_config, load_sources
-from ariadne.fetch import coverage, ode, places, raster, report
+from ariadne.fetch import context, coverage, ode, places, raster, report
 from ariadne.fetch.checks import georeference_check
 from ariadne.fetch.http import download
 from ariadne.fetch.sites import site_box
@@ -125,6 +125,100 @@ def _crop_source(src: Source, bounds, out: Path, force: bool, log) -> dict:
     }
 
 
+def _drill_geojson(drills: list[dict], site: str) -> dict:
+    return {
+        "type": "FeatureCollection",
+        "name": f"{site}_drill_sites",
+        "ariadne_crs": "equirectangular metres, Mars sphere 3,396,190 m (as the DEM)",
+        "features": [
+            {
+                "type": "Feature",
+                "geometry": {"type": "Point", "coordinates": [d["easting"], d["northing"]]},
+                "properties": {k: v for k, v in d.items() if k not in ("easting", "northing")}
+                | {"label": "MEASURED"},
+            }
+            for d in drills
+        ],
+    }
+
+
+def _context_source(src: Source, bounds, site_dir: Path, data: Path, rover, force: bool, log):
+    """Fetch a non-raster context source (map tiles or tables) for the site."""
+    out = site_dir / src.output
+    if src.kind == "wmts":
+        gray, transform = context.fetch_trek_mosaic(
+            src.url, int(src.level), bounds, data / "sources" / src.id
+        )
+        crop = raster.Crop(
+            gray,
+            transform,
+            rasterio.crs.CRS.from_wkt(_eqc_wkt(site_dir)),
+            0,
+            None,
+            None,
+            "map-tiles",
+        )
+        prov = Provenance.new(
+            source_id=src.id,
+            url=src.url,
+            product_id=src.product_id,
+            resolution_m=src.resolution_m,
+            acquisition_date=src.acquisition_date,
+            label=src.label,
+            notes=src.notes,
+            extra={"level": src.level, "credit": src.credit, "license": src.license},
+        )
+        raster.write_cog(out, crop, tags=provenance_tag(prov))
+        write_provenance(out, prov)
+        h, w = gray.shape
+        log(f"  {out.name}: {w} x {h} px of level-{src.level} tiles")
+        return {
+            "size": f"{w:,} × {h:,} px",
+            "method": "map tiles",
+            "processed": prov.processing_date,
+            "resolution_m": src.resolution_m,
+        }
+    if src.kind == "table":
+        paths = []
+        for f in src.files:
+            path = data / "sources" / src.id / f
+            if force or not path.exists():
+                download(src.url + f, path)
+            paths.append(path)
+        targets = context.chemcam_targets(paths, rover)
+        left, bottom, right, top = bounds
+        inside = targets[
+            targets.easting.between(left, right) & targets.northing.between(bottom, top)
+        ]
+        inside.to_csv(out, index=False)
+        prov = Provenance.new(
+            source_id=src.id,
+            url=src.url,
+            product_id=src.product_id,
+            resolution_m=None,
+            acquisition_date=f"sols {int(inside.sol.min())} to {int(inside.sol.max())}"
+            if len(inside)
+            else None,
+            label=Label.DERIVED,
+            notes=src.notes + " Files: " + ", ".join(src.files) + ".",
+        )
+        write_provenance(out, prov)
+        log(f"  {out.name}: {len(inside)} ChemCam targets inside the box")
+        return {
+            "size": f"{len(inside)} targets",
+            "method": "tables joined to PLACES by SCLK",
+            "label": str(Label.DERIVED),
+            "processed": prov.processing_date,
+        }
+    raise ValueError(f"unknown source kind {src.kind!r} for {src.id}")
+
+
+def _eqc_wkt(site_dir: Path) -> str:
+    """The site's analysis CRS, taken from its DEM crop."""
+    with rasterio.open(site_dir / "dem.tif") as ds:
+        return ds.crs.to_wkt()
+
+
 def _ode(bounds, site: str, data: Path, product_type: str, force: bool, log) -> list[dict]:
     path = data / "sources" / "ode" / f"{site}_hirise_{product_type.lower()}.json"
     if path.exists() and sidecar_path(path).exists() and not force:
@@ -205,9 +299,13 @@ def fetch_site(name: str, force: bool = False, log: Callable[[str], None] = prin
     products, rows = [], []
     for sid in cfg.sources + cfg.optional_sources:
         src = sources[sid]
+        bounds = box.bounds
+        if src.crop_buffer_m:
+            b = src.crop_buffer_m
+            bounds = (bounds[0] - b, bounds[1] - b, bounds[2] + b, bounds[3] + b)
         with rasterio.Env(**raster.GDAL_ENV), rasterio.open(raster.gdal_path(src.url)) as ds:
             src_bounds = tuple(ds.bounds)
-        if not _inside(box.bounds, src_bounds):
+        if not _inside(bounds, src_bounds):
             if sid in cfg.optional_sources:
                 products.append(
                     {
@@ -220,7 +318,7 @@ def fetch_site(name: str, force: bool = False, log: Callable[[str], None] = prin
                 continue
             raise ValueError(f"{sid} does not cover the {name} site box")
         out = site_dir / src.output
-        r = _crop_source(src, box.bounds, out, force, log)
+        r = _crop_source(src, bounds, out, force, log)
         prov = r.pop("prov")
         products.append(
             {
@@ -243,6 +341,48 @@ def fetch_site(name: str, force: bool = False, log: Callable[[str], None] = prin
                 "pipeline": prov.pipeline_version,
             }
         )
+
+    for sid in cfg.context_sources:
+        src = sources[sid]
+        r = _context_source(src, box.bounds, site_dir, data, rover, force, log)
+        label = r.pop("label", str(src.label))
+        products.append({"file": src.output, "source_id": sid, "label": label, **r})
+        rows.append(
+            {
+                "file": src.output,
+                "source_id": sid,
+                "bounds": r.get("bounds_text", "site box"),
+                "size": r["size"],
+                "method": r["method"],
+                "processed": r["processed"],
+                "pipeline": PIPELINE_VERSION,
+            }
+        )
+    if cfg.drill_sites:
+        drills = context.drill_site_positions(cfg.drill_sites, rover)
+        drill_file = site_dir / "drill_sites.geojson"
+        drill_file.write_text(json.dumps(_drill_geojson(drills, name), indent=1), encoding="utf-8")
+        write_provenance(
+            drill_file,
+            Provenance.new(
+                source_id="ariadne-drill-sites",
+                url=ps.url,
+                product_id="Boxwork drill holes: blog sols, PLACES positions",
+                resolution_m=None,
+                acquisition_date=", ".join(f"sol {d['sol']}" for d in drills),
+                label=Label.MEASURED,
+                notes=(
+                    "Sols from NASA's Curiosity blog (config/sites/boxwork.yaml); positions are "
+                    "the PLACES localization held on that sol, so each hole is within the arm's "
+                    "reach of the point."
+                ),
+            ),
+        )
+        for d in drills:
+            log(
+                f"  drill site {d['name']}: sol {d['sol']}, site {d['site']} drive {d['drive']}, "
+                f"E {d['easting']:.1f} N {d['northing']:.1f}"
+            )
 
     dem_path = site_dir / sources["usgs-gale-dem-1m"].output
     with rasterio.open(dem_path) as d:

@@ -1,0 +1,20 @@
+{
+  "_comment": "Written with AI assistance (Claude Code). See AI_USE.md. Science-value weights and transect geometry (PROMPT.md 4.9). Every value is a team choice (PLACEHOLDER) shown in the app's assumptions panel.",
+  "weights": {
+    "value": {"role": 0.4, "novelty": 0.3, "spectral": 0.15, "access": 0.15},
+    "label": "PLACEHOLDER",
+    "note": "A station's score is the weighted mean of the terms that are available; a missing term's weight is set aside and reported."
+  },
+  "role_values": {
+    "value": {"fracture": 1.0, "crest": 0.6, "wall": 0.8, "hollow": 0.9},
+    "label": "PLACEHOLDER",
+    "note": "How much each station type serves the fracture-to-hollow hypothesis; a crest point with no mapped fracture within 2 m counts as crest."
+  },
+  "novelty_scale_m": {"value": 200, "label": "PLACEHOLDER", "note": "Novelty is min(1, distance to the nearest ChemCam target or drill hole / this)."},
+  "access_scale_min": {"value": 30, "label": "PLACEHOLDER", "note": "Access is 1 - min(1, minutes to shelter / this)."},
+  "min_crest_length_m": {"value": 20, "label": "PLACEHOLDER", "note": "PROMPT.md 4.9."},
+  "transect_spacing_m": {"value": 25, "label": "PLACEHOLDER", "note": "Distance between transects along a crest."},
+  "fracture_snap_m": {"value": 2, "label": "PLACEHOLDER"},
+  "wall_distance_m": {"value": [1, 2], "label": "PLACEHOLDER", "note": "PROMPT.md 4.9: 1 to 2 m down the flank."},
+  "hollow_distance_m": {"value": [3, 10], "label": "PLACEHOLDER", "note": "PROMPT.md 4.9: 3 to 10 m away."}
+}

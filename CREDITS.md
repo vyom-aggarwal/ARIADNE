@@ -21,6 +21,18 @@ Sources move here, with their credit lines, when the pipeline first uses them. W
 | MSL PLACES localizations (`localized_interp.csv`) | Curiosity's positions: site boxes, the rover path, the georeferencing check; a 3,781-row extract is a test fixture | NASA/JPL-Caltech, PDS Cartography and Imaging Sciences Node, https://planetarydata.jpl.nasa.gov/img/data/msl/msl_places/ | NASA PDS archive data, public domain |
 | HiRISE image and DTM footprints | DEM source-class mask and coverage report | PDS Geosciences Node Orbital Data Explorer (Washington University in St. Louis), https://oderest.rsl.wustl.edu/; HiRISE NASA/JPL-Caltech/University of Arizona | NASA PDS archive metadata, public domain |
 | USGS list of the 12 HiRISE stereo pairs in the merged DEM | Which images count as HiRISE stereo | USGS Astrogeology product page for the merged DEM | US government work (USGS), public domain |
+| MGS MOLA DEM 463 m (MEGDR), global mosaic | Far-field horizons from 2 km to 100 km (`regional_dem.tif`, the site box plus 102 km) | MOLA Science Team (NASA/GSFC); mosaic by USGS Astrogeology, https://astrogeology.usgs.gov/search/map/mars_mgs_mola_dem_463m | CC0 (public domain), per the USGS product page |
+| THEMIS night IR controlled mosaic 100 m (v2, Oct 2018) | Relative sand proxy at the boxwork (`themis_night_ir.tif`) | THEMIS, NASA/JPL-Caltech/Arizona State University; tiles from NASA Mars Trek, https://trek.nasa.gov/ | NASA data, public domain |
+| MSL ChemCam LIBS oxide tables (MOC), sols 4489 to 4843 | Curiosity's prior targets for the science novelty score (`chemcam_targets.csv`) | NASA/JPL-Caltech/LANL/IRAP, MSL ChemCam team; PDS Geosciences Node, https://pds-geosciences.wustl.edu/msl/msl-m-chemcam-libs-4_5-rdr-v1/ | NASA PDS archive data, public domain |
+| NASA Curiosity blog posts, sols 4563 to 4803 | Sols of the four boxwork drill holes (Altadena, Valle de la Luna, Nevado Sajama, Nevado Sajama2) | NASA/JPL-Caltech, Mars Science Laboratory mission team, https://science.nasa.gov/blog/ (posts listed in docs/SOURCES_LOG.md) | US government work (NASA) |
+| NASA NSSDCA Mars Fact Sheet | Atmospheric scale height (11.0 km), surface gravity (3.69 m/s²) and flattening (0.00589) | NASA Goddard Space Flight Center, https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html | US government work (NASA) |
+
+## Published values used in models
+
+| Value | Use | Source | License |
+| --- | --- | --- | --- |
+| Murray Buttes dose drop (3.8% ± 0.4%), baseline sols 1440 to 1455 and 1468 to 1480, parked sols 1456 to 1467, 19% blocked sky, 7.5% neutral drop, 23 g/cm² column | Shielding calibration and its checks | Ehresmann, B., Hassler, D. M., Zeitlin, C., Guo, J., Wimmer-Schweingruber, R. F., Khaksari, S. and Loeffler, S. (2021), Natural Radiation Shielding on Mars Measured With the MSL/RAD Instrument, JGR Planets 126, e2021JE006851, https://doi.org/10.1029/2021JE006851 | Values cited, no text reused; free to read on Wiley |
+| Dose-pressure coefficient κ (upper limit 0.21 µGy/day per Pa) and the matching mean dose (about 300 µGy/day) | The pressure factor f(p) | Guo, J. et al. (2021), Radiation environment for future human exploration on the surface of Mars, Astron. Astrophys. Rev. 29:8, https://doi.org/10.1007/s00159-021-00136-5 | CC BY 4.0; values cited |
 
 ## Images
 

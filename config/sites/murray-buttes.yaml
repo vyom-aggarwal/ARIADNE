@@ -16,5 +16,10 @@ buffer_reason: Matches the 2 km horizon search distance, so horizons around the 
 sources:
   - usgs-gale-dem-1m
   - usgs-gale-ortho-25cm
+  - mola-dem-463m
 optional_sources:
   - usgs-gale-hirise-lrgb
+# PLACEHOLDER staging point for the line-of-sight demo: the parking spot itself.
+staging: {parking: true, label: PLACEHOLDER}
+# Reference sol for the light layer: the middle of the parked period (sols 1456 to 1467).
+reference_sol: {value: 1461, label: PLACEHOLDER}

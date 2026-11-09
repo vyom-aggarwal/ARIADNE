@@ -89,8 +89,29 @@ def is_uncompressed_strip_tiff(url_or_path: str) -> bool:
         )
 
 
+def resolve_redirects(url: str, max_hops: int = 5) -> str:
+    """Follow HTTP redirects with HEAD requests and return the final URL."""
+    for _ in range(max_hops):
+        parts = urlsplit(url)
+        conn_cls = (
+            http.client.HTTPSConnection if parts.scheme == "https" else http.client.HTTPConnection
+        )
+        conn = conn_cls(parts.netloc, timeout=60)
+        try:
+            conn.request("HEAD", parts.path, headers={"User-Agent": USER_AGENT})
+            resp = conn.getresponse()
+            resp.read()
+            if resp.status in (301, 302, 303, 307, 308) and resp.getheader("Location"):
+                url = resp.getheader("Location")
+                continue
+            return url
+        finally:
+            conn.close()
+    raise OSError(f"too many redirects from {url}")
+
+
 def _http_range_reader(url: str) -> RangeReader:
-    parts = urlsplit(url)
+    parts = urlsplit(resolve_redirects(url))
     local = threading.local()
 
     def read(start: int, length: int) -> bytes:

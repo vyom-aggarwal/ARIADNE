@@ -1,6 +1,6 @@
 # Coverage and georeferencing: Murray Buttes parking spot, Gale crater
 
-Written by `ariadne fetch --site murray-buttes` (pipeline 0.0.0) on 2026-11-08T23:58:57Z. Do not edit by hand; rerun the fetch instead.
+Written by `ariadne fetch --site murray-buttes` (pipeline 0.0.0) on 2026-11-09T05:20:00Z. Do not edit by hand; rerun the fetch instead.
 
 ## Site box
 
@@ -21,6 +21,7 @@ Written by `ariadne fetch --site murray-buttes` (pipeline 0.0.0) on 2026-11-08T2
 | --- | --- | --- | --- | --- | --- | --- |
 | dem.tif | `usgs-gale-dem-1m` | 4,001 × 4,001 | 1.0 m | gdal-bands | 35 s | MEASURED |
 | ortho.tif | `usgs-gale-ortho-25cm` | 16,001 × 16,001 | 0.25 m | range-requests | 40 s | MEASURED |
+| regional_dem.tif | `mola-dem-463m` | 450 × 450 | 463.09 m | range-requests | 5 s | MEASURED |
 | color.tif | `usgs-gale-hirise-lrgb` | not made: the source does not cover the whole site box | | | | |
 
 ## Where the elevation comes from
