@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-09 UTC (Phase 3 done; ridge labels awaited).
+Last updated: 2026-11-09 UTC (Phase 4 done locally; rover relay next; ridge labels awaited).
 
 ## Status
 
@@ -11,7 +11,8 @@ Last updated: 2026-11-09 UTC (Phase 3 done; ridge labels awaited).
 | 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
 | 2 Derived layers | Done 2026-11-09: C1 to C21 pass; validation.json holds the calibration (PASS). Follow-up done: footprint-scale slope re-run once (boxwork 79.8%, still FAIL; Murray Buttes held out 99.8%, PASS), DEM seams mapped, ridge labeling page built. Ridge precision and recall wait for the team's labels |
 | 3 Route engine | Done 2026-11-09, revised after review: D1 to D14 pass; plans visit whole transects within the 6 h EVA; presets differ by safety settings; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.2% of the time-limited OR-Tools reference (worst 98.8%). The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
-| 4 Habitat Planner | In progress |
+| 4 Habitat Planner | Done 2026-11-09 locally: E1 to E10 pass; first map 2.1 s (3 s target) and 3.1 to 4.5 s at 4× CPU slowdown in four of five runs (5 s budget; one run over). CI check pending |
+| 4b Rover as mobile comms relay | Next |
 | 5 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
@@ -426,10 +427,25 @@ The minimum demoable product: a desktop planner that loads one packaged site and
 | E9 | 3D: level-of-detail choice uses the fine chunks near the camera; billboards face their view direction; the walker's eye stays 1.7 m above the terrain | `web/tests/rehearsal.test.ts` |
 | E10 | Judge tour in Chromium on a mid-range laptop profile (1366 × 768, CPU slowed 4 times): the map appears within 5 s; layers toggle; routes switch; the timeline shows; the 3D view opens in orbit and ground modes with billboards; no serious or critical axe violations | `web/e2e/judge-tour.spec.ts` |
 
+### Phase 4 evidence
+
+- **Package** (`ariadne package --site boxwork`, 49 s, about 40 MB in `web/public/sites/boxwork/`, committed so CI can build and deploy it):
+  - Layers: imagery (a 2 m overview, swapped for the 1 m image once the map is up), shaded relief, walker and rover walkability, the hatched over-cautious cells, shielding, confidence, ridges and hollows, and minutes to shelter. Each comes with sources, resolution, date, label and legend.
+  - Four GeoJSON context layers.
+  - The three plans, each with a timeline (start PLACEHOLDER: sol 4718 at 09:00 local true solar time).
+  - 100 terrain chunks at 2 m and 8 m (raw 16-bit, because browsers read PNGs back as 8-bit), plus a 1 m texture of the 2.4 km planning window.
+  - Ten Navcam billboards from four sols.
+- **Photos.** The planned transects lie 220 to 640 m from Curiosity's path. The billboards are Navcam frames taken from the path looking toward a planned transect (within 800 m and 20°), one per stereo pair. Only the upper 55% of each frame is shown, keeping the rover deck and a hardware emblem out of view (rule 5).
+- **Web app:** React with deck.gl (OrthographicView in site metres, shifted to the site's corner) and three.js. The map and the 3D view load as separate chunks, and the map code starts loading with the page.
+- **Tests:** E1 to E5 (pipeline) and E6 to E9 (Vitest) pass with every earlier test: 300 pipeline tests, 45 web tests. Five Playwright tests pass, including the judge tour (E10) and the earlier page checks (axe in light and dark mode, Tab reaches every link, visible focus).
+- **First map** (time until deck.gl reports the map ready, 1366 × 768): 2.1 to 2.4 s with no slowdown, inside the 3 s team target. With `ARIADNE_PERF=1` (CPU slowed four times, local preview server warmed first) it was 3.1, 3.3, 3.9 and 4.5 s in four of five runs; one run went over the 5 s budget on this machine. The first attempt, with the 13 MB 1 m imagery loaded up front and every overlay fetched at start, took 6.6 s. Since then, the 2 m overview loads first, overlays load only when shown, and the context vectors load after the first draw. CI runs the tour as a functional check without the slowdown, because shared runners vary.
+- **Preview server:** `vite preview` now binds to 127.0.0.1; with the default it reported "localhost" but did not answer on this machine.
+
 ## Next steps
 
 1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
-2. Phase 4, Habitat Planner: map, layers with provenance, the three route options, the timeline and 3D rehearsal with photo billboards. It packages the planning fields, leg bundles and plans from `data/sites/<site>/plan/` into `web/public/sites/`.
+2. The rover as a mobile comms relay (team decision): a few overwatch points it can reach on its own cost surface, between which it moves during the EVA so more stations stay in line of sight; the thread ends wherever the rover is.
+3. Phase 5: Visor HUD, Cuff Tablet and printed card, with the over-cautious marking ("map may be over-cautious here, check by eye") on the HUD and tablet.
 
 ## Open issues
 

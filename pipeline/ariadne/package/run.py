@@ -73,6 +73,10 @@ def raster_layers(site_dir: Path, out: Path, cfg, derived_date: str, log) -> tup
     t1 = type(ot)(ot.a * k, 0, ot.c, 0, ot.e * k, ot.f)
     png.write_png(out / "layers" / "imagery.png", gray(o1))
     b1 = L.bounds(t1, o1.shape)
+    # a 2 m overview loads first; the browser swaps in the 1 m image once the map is up
+    o2 = block(o1, 2)
+    png.write_png(out / "layers" / "imagery_2m.png", gray(o2))
+    b_over = L.bounds(t1, (o2.shape[0] * 2, o2.shape[1] * 2))
     t2 = type(t)(t.a * 2, 0, t.c, 0, t.e * 2, t.f)
     z2 = block(dem, 2)
     png.write_png(out / "layers" / "hillshade.png", hillshade(z2, 2.0))
@@ -80,8 +84,9 @@ def raster_layers(site_dir: Path, out: Path, cfg, derived_date: str, log) -> tup
     wslope = setting(cfg, "walkability", "walker_slope_deg")
     rslope = setting(cfg, "walkability", "rover_slope_deg")
     entries = [
-        {"id": "imagery", "title": "HiRISE imagery", "file": "layers/imagery.png",
-         "bounds_m": b1, "resolution_m": 1.0, "sources": ["usgs-gale-ortho-25cm"],
+        {"id": "imagery", "title": "HiRISE imagery", "file": "layers/imagery_2m.png",
+         "file_detail": "layers/imagery.png", "bounds_detail_m": b1, "bounds_m": b_over,
+         "resolution_m": 1.0, "sources": ["usgs-gale-ortho-25cm"],
          "date": ORTHO_DATE, "label": "MEASURED", "legend": None, "group": "base",
          "description": "USGS 25 cm orthophoto mosaic from HiRISE, averaged to 1 m.",
          "default_visible": True, "opacity": 1.0},

@@ -1,5 +1,5 @@
 // Written with AI assistance (Claude Code). See AI_USE.md.
-// Phase 0 placeholder page (acceptance test A7).
+// The page around the Habitat Planner (acceptance test A7, updated in Phase 4).
 import { cleanup, render, screen, within } from "@testing-library/react";
 import axe from "axe-core";
 import { afterEach, describe, expect, it } from "vitest";
@@ -8,7 +8,7 @@ import { REPO_URL } from "../src/links";
 
 afterEach(cleanup);
 
-describe("placeholder page", () => {
+describe("page", () => {
   it("shows ARIADNE as the only level-one heading", () => {
     render(<App />);
     const h1s = screen.getAllByRole("heading", { level: 1 });
@@ -19,7 +19,7 @@ describe("placeholder page", () => {
   it("explains the project in plain English", () => {
     render(<App />);
     expect(screen.getByText(/two-astronaut Marswalk/i)).toBeTruthy();
-    expect(screen.getByText(/under construction/i)).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 2, name: /Habitat Planner/ })).toBeTruthy();
   });
 
   it("links to the source code, AI use and credits", () => {

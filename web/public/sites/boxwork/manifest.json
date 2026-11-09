@@ -2,7 +2,7 @@
  "site": "boxwork",
  "title": "Mount Sharp boxwork, Gale crater",
  "pipeline_version": "0.0.0",
- "packaged_utc": "2026-11-09T19:02:01+00:00",
+ "packaged_utc": "2026-11-09T19:32:01+00:00",
  "crs": "Equirectangular metres on the 3,396,190 m Mars sphere (east, north)",
  "bounds_m": [
   8141605.492786024,
@@ -19,7 +19,14 @@
   {
    "id": "imagery",
    "title": "HiRISE imagery",
-   "file": "layers/imagery.png",
+   "file": "layers/imagery_2m.png",
+   "file_detail": "layers/imagery.png",
+   "bounds_detail_m": [
+    8141605.5,
+    -286730.5,
+    8145119.5,
+    -282806.5
+   ],
    "bounds_m": [
     8141605.5,
     -286730.5,
