@@ -8,8 +8,9 @@ Last updated: 2026-11-08.
 | --- | --- |
 | Kickoff | Done. Sources for Phases 1 and 2 verified (docs/SOURCES_LOG.md); findings applied to PROMPT.md and docs/PLAN.md |
 | 0 Repo and guardrails | Done 2026-11-08: all ten acceptance tests pass; CI green; site live at https://vyom-aggarwal.github.io/ARIADNE/ |
-| 1 Sites and data | In progress: plan and acceptance tests below |
-| 2 to 9 | Not started |
+| 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
+| 2 Derived layers | Next |
+| 3 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
 
@@ -110,9 +111,39 @@ Tests B1 to B7 run in CI on fixtures and synthetic rasters; B8 to B10 run on the
 
 The thresholds in B8 are team targets, set before the real crops were read: 2 m allows for any offset between PLACES' rover reference point and the ground, and for localization error, while still catching a misregistration of a few pixels.
 
+### Phase 1 evidence
+
+- **Commits:** `239e66d` Mars24 and MSL sols; `3cbc58f` site configs, provenance and crops; `0455713` coverage mask, georeferencing check and fetch command; `3b4bf99` both sites fetched, reports and fetch log. CI passed on every one; the last is run 42538161863 (Python 3.12, Python 3.13 and web all green).
+- **Tests:** 124 pipeline tests pass locally on Python 3.13; in CI the B10 data checks skip because `data/` is not committed, and the committed reports are checked instead.
+- **Time (B1 to B3):** both Mars24 worked examples match; touchdown is sol 0; the five caption fixtures and 93 REMS feed sols match within one day, with Ls within 1.5°; NAIF's clock agrees within 10 s (measured 5.8 to 6.6 s).
+- **Fetch results** (`docs/coverage/boxwork.md`, `docs/coverage/murray-buttes.md`):
+
+| | Boxwork | Murray Buttes |
+| --- | --- | --- |
+| Box | 3,514 × 3,925 m, sols 4526 to 4853 (2,893 localizations) | 4,000 × 4,000 m around site 57, drive 2798 (held sols 1455 to 1468) |
+| DEM crop | 3,514 × 3,925 px, 32 s | 4,001 × 4,001 px, 35 s |
+| Orthophoto crop | 14,056 × 15,697 px, 41 s | 16,001 × 16,001 px, 40 s |
+| Color crop | 14,056 × 15,697 px, 13 s | not made (the color mosaic does not cover it) |
+| HiRISE stereo share (box; localizations) | 100%; 100% of 8,945 | 100%; 100% of 16,064 |
+| Pairs covering the box | T3 95.7%, Traverse 79.4%, West 26.2% | West 69.0%, Traverse 48.9%, West of Center 32.7% |
+| Median DEM − PLACES elevation | −0.00 m (MAD 0.10 m) | +0.01 m (MAD 0.07 m) |
+| Best-fit shift | (0, 0) m | (0, 0) m |
+| B8 result | PASS | PASS |
+
+- **Visual check:** in both quicklooks Curiosity's localizations follow valley floors and pass the parking spot without crossing cliffs.
+
+### Phase 1 decisions
+
+- **Sol windows** use every sol that overlaps the configured UTC days, so the boxwork runs from sol 4526 to 4853 (the kickoff's linear estimate gave 4527 to 4852). The rover extent is unchanged.
+- **Murray Buttes box** is the parking position ± 2 km, as PROMPT.md describes, rather than the extent of every localization in the window. PLACES has one row per drive, so "parked" means the localization with the longest gap until the next one (13 sols).
+- **Orthophoto reads** use HTTP range requests for only the bytes inside the window (benchmarked about 7 times faster than GDAL with identical output); the DEM and color mosaics use parallel GDAL row bands.
+- **The DEM declares pixel-center georeferencing**; GDAL converts it to corner coordinates on read, and the crops are written as pixel-corner files. The zero best-fit shift confirms there is no half-pixel error.
+- **No gap-fill** at either site (team rule: at least 99% of localizations and 90% of the box on HiRISE stereo).
+- **Provenance tags** are written with each Cloud Optimized GeoTIFF, because a COG cannot be re-tagged in place; a cached crop without its tag is re-read. This re-read the Murray Buttes DEM crop from the first, failed run.
+
 ## Next steps
 
-1. Finish Phase 1 as planned above, committing each working piece.
+1. Phase 2, derived layers: terrain basics, horizons, walkability, ridges and fractures, the shielding index with its Murray Buttes calibration, shelters, line of sight, light and ground temperature, science value and uncertainty, each as a pure function with synthetic tests; then validation.json with the calibration result.
 
 ## Open issues
 
@@ -120,3 +151,7 @@ The thresholds in B8 are team targets, set before the real crops were read: 2 m 
 - The Photojournal boxwork link now redirects to a generic page (needed in Phase 4).
 - Still to find in Phase 2: the sols and positions of the four boxwork drill samples, image positions for the uncertainty layer and the hand-labeled ridge sample, and the exact quantities in the Ehresmann et al. 2021 Murray Buttes paper.
 - Team name and README credits: not given yet; README shows them as "to be added".
+- The georeferencing check is not an independent test of height: PLACES records the DEM pixel of each localization, so its elevations are tied to an orbital DEM. The horizontal shift search is the real alignment test. An independent height check would need ground data, such as rover stereo; this is not planned.
+- HiRISE coverage edges are uncertain by about 30 m, because ODE rounds footprint vertices. It makes no difference at these two sites, which are fully covered, but it matters for the uncertainty layer elsewhere.
+- The orthophoto shows mosaic seams (one is visible in the Murray Buttes quicklook). Phase 2's dark-object density should check that seams do not register as features.
+- Phase 2 still needs the Ehresmann et al. 2021 quantities and the drill-sample positions (see above).
