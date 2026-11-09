@@ -65,6 +65,7 @@ Versions confirmed on Python 3.13 on 2026-11-08; `pipeline/pyproject.toml` sets 
 | numba | Fast compiled loops | BSD-2-Clause | https://numba.pydata.org |
 | llvmlite | Compiler backend for numba | BSD-2-Clause and Apache-2.0 with LLVM exception | https://llvmlite.readthedocs.io |
 | Google OR-Tools | Reference route and station planning | Apache-2.0 | https://developers.google.com/optimization |
+| jsonschema (with referencing, rpds-py, jsonschema-specifications, attrs) | Checks each plan.json against its schema | MIT | https://python-jsonschema.readthedocs.io |
 | astroquery | JPL Horizons ephemerides | BSD-3-Clause | https://astroquery.readthedocs.io |
 | pandas | Tables | BSD-3-Clause | https://pandas.pydata.org |
 | PyYAML | Site config files | MIT | https://pyyaml.org |
@@ -81,6 +82,7 @@ Exact versions are in `web/package-lock.json`. `npm run licenses` checks every p
 | Vite and @vitejs/plugin-react | Build and dev server | MIT | https://vite.dev |
 | TypeScript | Type checking | Apache-2.0 | https://www.typescriptlang.org |
 | Vitest | Unit tests | MIT | https://vitest.dev |
+| Ajv | Checks each plan.json against its schema in the web tests | MIT | https://ajv.js.org |
 | jsdom | Browser environment for unit tests | MIT | https://github.com/jsdom/jsdom |
 | Testing Library (DOM and React) | Component tests | MIT | https://testing-library.com |
 | Playwright | Browser tests | Apache-2.0 | https://playwright.dev |

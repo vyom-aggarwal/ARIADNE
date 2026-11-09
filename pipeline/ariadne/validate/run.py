@@ -379,6 +379,94 @@ def _not_run(cid: str, title: str, reason: str, phase: int) -> dict:
     return {"id": cid, "title": title, "status": "not run", "reason": reason, "phase": phase}
 
 
+# Minetti et al. 2002, Table 2 (p. 1042): gradient, mean minimum Cw, SD (J/kg/m).
+MINETTI_TABLE_2 = [
+    (-0.45, 3.46, 0.95), (-0.40, 3.23, 0.59), (-0.35, 2.65, 0.68), (-0.30, 2.18, 0.67),
+    (-0.20, 1.30, 0.48), (-0.10, 0.81, 0.37), (0.00, 1.64, 0.50), (0.10, 4.68, 0.34),
+    (0.20, 8.07, 0.57), (0.30, 11.29, 1.14), (0.35, 12.72, 0.76), (0.40, 14.75, 0.61),
+    (0.45, 17.33, 1.11),
+]  # fmt: skip
+
+
+def walker_model_check() -> dict:
+    from ariadne.models import metabolic as mb
+
+    suit = mb.load_suit()
+    rows = []
+    for i, mean, sd in MINETTI_TABLE_2:
+        model = float(mb.cost_of_transport(i))
+        rows.append(
+            {"gradient": i, "measured": mean, "sd": sd, "model": round(model, 3),
+             "within_one_sd": abs(model - mean) <= sd}
+        )  # fmt: skip
+    return {
+        "id": "walker-model",
+        "title": "Walker model",
+        "reference": "NASA/TP-2010-216125 (Norcross et al. 2010) and Minetti et al. 2002, "
+        "J Appl Physiol 93:1039, Table 2",
+        "target": "Matches transcribed values; extrapolation flagged",
+        "status": "reported",
+        "result": {
+            "nasa_tp_2010_216125": "Cannot be transcribed: the report gives the form of its "
+            "predictive equation (eq. 1, p. 70) but not its coefficients (p. 79). Its tested "
+            "ranges set the EXTRAPOLATED flag.",
+            "stand_in": "Minetti et al. 2002 cost of walking against gradient (Earth, unsuited), "
+            "with PLACEHOLDER suit, gravity and pace settings (config/suits.json)",
+            "minetti_within_one_sd": f"{sum(r['within_one_sd'] for r in rows)} of {len(rows)}",
+            "minetti_rows": rows,
+            "mars_walks_flagged_extrapolated": bool(mb.extrapolation_flags(0.1, 0.8, suit)),
+            "flags_at_mars_gravity": mb.extrapolation_flags(0.1, 0.8, suit),
+        },
+        "label": "MODELED",
+        "note": "The level value is the one mismatch (model 2.5 against 1.64 +/- 0.50 J/kg/m); "
+        "the fitted polynomial also used Margaria's data.",
+    }
+
+
+def thread_check(root: Path) -> dict:
+    path = root / "data" / "sites" / "boxwork" / "plan" / "summary.json"
+    if not path.exists():
+        return _not_run("thread", "Thread in 1,000 random scenarios", "run `make plan` first", 3)
+    s = json.loads(path.read_text(encoding="utf-8"))
+    th = s["thread"]
+    return {
+        "id": "thread",
+        "title": "Thread in random scenarios on the boxwork",
+        "reference": "C_left(x) - C_home(x) >= C_reserve at every sample (at most 5 m apart) of "
+        f"{th['scenarios']} random plans (seed {th['seed']})",
+        "target": "Holds in all of at least 1,000 random scenarios",
+        "status": "pass" if th["held"] == th["scenarios"] and th["scenarios"] >= 1000 else "fail",
+        "result": th,
+        "plans": s["plans"],
+        "label": "MODELED",
+        "note": "Plans use PLACEHOLDER consumables, reserve and suit settings; the check measures "
+        "the margin along each plan's actual legs.",
+    }
+
+
+def station_solver_check(root: Path) -> dict:
+    path = root / "docs" / "validation" / "station-solver.json"
+    if not path.exists():
+        return _not_run(
+            "station-solver",
+            "Browser station solver against OR-Tools",
+            "run the web benchmark (`make plan` writes docs/validation/station-solver.json)",
+            3,
+        )
+    b = json.loads(path.read_text(encoding="utf-8"))
+    return {
+        "id": "station-solver",
+        "title": "Browser station solver against OR-Tools",
+        "reference": f"OR-Tools reference plans on {b['scenarios']} random boxwork scenarios",
+        "target": "At least 95% of the reference science value",
+        "status": "pass" if b["mean_ratio"] >= b["target"] else "fail",
+        "result": {k: b[k] for k in ("scenarios", "mean_ratio", "min_ratio", "target")},
+        "label": "MODELED",
+        "note": "Mean ratio of browser to OR-Tools science value; per-scenario rows in "
+        "docs/validation/station-solver.json.",
+    }
+
+
 def build_validation(root: Path | None = None) -> dict:
     root = root or repo_root()
     cal_path = root / "data" / "calibration" / "shielding.json"
@@ -432,14 +520,8 @@ def build_validation(root: Path | None = None) -> dict:
     if spot is not None:
         ridge["spot_check"] = spot
     checks.append(ridge)
-    checks.append(
-        _not_run(
-            "walker-model",
-            "Walker model against NASA/TP-2010-216125",
-            "Phase 3 transcribes the model",
-            3,
-        )
-    )
+    checks.append(walker_model_check())
+    checks.append(thread_check(root))
     checks.append(
         _not_run(
             "ground-temperature",
@@ -456,11 +538,7 @@ def build_validation(root: Path | None = None) -> dict:
             6,
         )
     )
-    checks.append(
-        _not_run(
-            "station-solver", "Browser station solver against OR-Tools", "Phase 3 builds both", 3
-        )
-    )
+    checks.append(station_solver_check(root))
     checks.append(
         _not_run("labels", "Every number in the app labeled", "Phase 7 runs the label audit", 7)
     )

@@ -14,7 +14,7 @@ import sys
 from ariadne import __version__
 
 NOT_BUILT = 2
-BUILT = {"fetch", "derive", "validate", "ridge-sample", "ridge-tune"}  # the rest name their phase
+BUILT = {"fetch", "derive", "plan", "validate", "ridge-sample", "ridge-tune"}  # the rest: phase
 
 # Command -> (phase that builds it, one-line description).
 COMMANDS = {
@@ -46,6 +46,10 @@ def build_parser() -> argparse.ArgumentParser:
             p.add_argument("--name", default=None, help="short name for the new site")
         else:
             p.add_argument("--site", default="boxwork", help="site name (default: boxwork)")
+        if name == "plan":
+            p.add_argument(
+                "--quick", action="store_true", help="fewer scenarios and shorter solves (a trial)"
+            )
         if name == "ridge-tune":
             p.add_argument("--labels", required=True, help="labels JSON from the labeling page")
             p.add_argument(
@@ -88,6 +92,11 @@ def main(argv: list[str] | None = None) -> int:
             refresh_report(args.site)
         else:
             derive_site(args.site, force=args.force, from_stage=args.from_stage)
+        return 0
+    if args.command == "plan":
+        from ariadne.plan.run import plan_site
+
+        plan_site(args.site, quick=args.quick)
         return 0
     if args.command == "ridge-sample":
         from ariadne.derive.ridge_run import ridge_sample

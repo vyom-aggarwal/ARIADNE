@@ -62,13 +62,14 @@ make fetch SITE=murray-buttes   # crops for the calibration site (once)
 make fetch SITE=boxwork         # crops, context data and drill sites for the flagship site
 make derive SITE=murray-buttes  # calibrates the shielding layer, then builds the layers
 make derive SITE=boxwork
+make plan SITE=boxwork          # route fields, leg matrices, OR-Tools plans, the solver benchmark
 make validate                   # writes validation.json
 ariadne derive --site boxwork --from-stage walkability  # re-run walkability and later layers only
 ariadne ridge-sample --site boxwork  # draw the ridge-labeling sample and build the local labeling page
 ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json  # tune on half, test on half
 ```
 
-`make plan`, `make package` and `make site` are defined but not built yet; each one says which phase builds it. Raw and derived rasters go to `data/` (not committed); the reports in `docs/coverage/` and `docs/derived/` and `validation.json` are committed.
+`make package` and `make site` are defined but not built yet; each one says which phase builds it. Raw and derived rasters go to `data/` (not committed); the reports in `docs/coverage/`, `docs/derived/` and `docs/plan/` (with one plan.json per preset) and `validation.json` are committed.
 
 ## License and credits
 

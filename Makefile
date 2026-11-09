@@ -50,8 +50,13 @@ setup-browsers:
 # derive needs the shielding calibration, which comes from the Murray Buttes crops: run
 # `make fetch SITE=murray-buttes` once before deriving any site.
 
-fetch derive plan validate package:
+fetch derive validate package:
 	$(PY) -m ariadne $@ --site $(SITE)
+
+# plan also runs the browser solver's benchmark against the OR-Tools plans it writes.
+plan:
+	$(PY) -m ariadne plan --site $(SITE)
+	cd web && BENCH_OUT=docs/validation/station-solver.json npx vitest run tests/solver.test.ts
 
 site: fetch derive plan validate package
 

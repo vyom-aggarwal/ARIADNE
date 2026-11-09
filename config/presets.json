@@ -1,0 +1,25 @@
+{
+ "_about": "Route presets and the default scenario for the route engine (PROMPT.md 5.3 and 5.9). Every value is PLACEHOLDER unless a source is given. Weights multiply the terms of the edge cost c(e) = dt [w_t + w_m M/M_nom + w_r R + w_d D + w_u U]; value_weight is what one unit of science value is worth in weighted minutes when a station is skipped.",
+ "presets": {
+  "safest": {"title": "Safest", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 3.0, "dose": 2.0, "uncertainty": 2.0}, "value_weight": 300},
+  "balanced": {"title": "Balanced", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 1.0, "dose": 1.0, "uncertainty": 1.0}, "value_weight": 1000},
+  "most_science": {"title": "Most science", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.3, "hazard": 0.5, "dose": 0.3, "uncertainty": 0.3}, "value_weight": 1000000}
+ },
+ "scenario": {
+  "eva_max_min": {"value": 240, "label": "PLACEHOLDER", "note": "Longest EVA allowed, staging to staging."},
+  "consumables_total_min": {"value": 300, "label": "PLACEHOLDER", "note": "Consumables at the start, in minutes at the nominal metabolic rate."},
+  "reserve_min": {"value": 30, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9: C_reserve = 30 min"},
+  "service_min": {"value": 15, "label": "PLACEHOLDER", "source": "PROMPT.md 5.8: 15 min per station"},
+  "shelter_max_min": {"value": 20, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
+  "comm_shadow_max_min": {"value": 10, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
+  "buddy_max_m": {"value": 50, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
+  "buddy_min_m": {"value": 3, "label": "PLACEHOLDER", "note": "The overwatch point is at least this far from the station."},
+  "helmet_height_m": {"value": 1.8, "label": "PLACEHOLDER", "source": "PROMPT.md 4.7"},
+  "pace_drift_trigger": {"value": 0.15, "label": "PLACEHOLDER", "source": "PROMPT.md 5.10"},
+  "sample_step_m": {"value": 5, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9: checked at least every 5 m"},
+  "max_station_distance_m": {"value": 800, "label": "PLACEHOLDER", "note": "Candidate stations lie within this distance of the staging point."},
+  "candidate_stations": {"value": 40, "label": "PLACEHOLDER", "note": "Highest-scoring valid stations kept for the leg matrix."},
+  "grid_margin_m": {"value": 400, "label": "PLACEHOLDER", "note": "Planning grid extends this far beyond the farthest candidate."},
+  "planning_resolution_m": {"value": 2, "label": "PLACEHOLDER", "source": "PROMPT.md 5.1: a 2 m level for long legs"}
+ }
+}

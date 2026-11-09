@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-09 UTC (Phase 2 follow-up done; ridge labels awaited; Phase 3 in progress).
+Last updated: 2026-11-09 UTC (Phase 3 done; ridge labels awaited).
 
 ## Status
 
@@ -10,8 +10,9 @@ Last updated: 2026-11-09 UTC (Phase 2 follow-up done; ridge labels awaited; Phas
 | 0 Repo and guardrails | Done 2026-11-08: all ten acceptance tests pass; CI green; site live at https://vyom-aggarwal.github.io/ARIADNE/ |
 | 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
 | 2 Derived layers | Done 2026-11-09: C1 to C21 pass; validation.json holds the calibration (PASS). Follow-up done: footprint-scale slope re-run once (boxwork 79.8%, still FAIL; Murray Buttes held out 99.8%, PASS), DEM seams mapped, ridge labeling page built. Ridge precision and recall wait for the team's labels |
-| 3 Route engine | In progress |
-| 4 to 9 | Not started |
+| 3 Route engine | Done 2026-11-09: D1 to D13 pass; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.1% of OR-Tools; plan.json validates. The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
+| 4 Habitat Planner | Next |
+| 5 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
 
@@ -344,10 +345,27 @@ Turn the derived layers into walk plans: a directional graph on the DEM, cost-to
 | D12 | Re-planning triggers on more than 15% pace drift, drops the lowest value per minute first, re-checks every constraint and returns a diff; storm mode follows the pointers to the earliest shelter | `web/tests/replan.test.ts`, `web/tests/storm.test.ts` |
 | D13 | `ariadne plan` is built; docs/plan/<site>.md and validation.json carry the plans, the 1,000-scenario thread run, the walker model and the solver benchmark | `pipeline/tests/test_cli.py`, `pipeline/tests/test_plan_outputs.py` |
 
+### Phase 3 evidence
+
+- **Commits:** `5a6097d` (plan, walker model, graph, selection, constraints; CI green); the next commit holds `ariadne plan`, the boxwork plans, the browser modules and tests D9 to D13.
+- **Run:** `make plan SITE=boxwork` took 12 minutes on this machine. Planning grid: 2 m cells, 1200 × 1200 around the staging point (Altadena drill position, PLACEHOLDER). 74.8% of it is walkable; 22.0% is in line of sight of the 3 m rover antenna. 40 candidate stations passed the filters (within 800 m, walkable, in line of sight, with an overwatch point). Line of sight rejected 115 otherwise-eligible stations, the strongest limit.
+- **Reference plans** (docs/plan/boxwork-*.json, all valid against the schema):
+
+| Preset | Stations | Science value | Minutes | Consumables (min) | Distance (m) | Least thread margin (min) | Worst minutes to shelter | Longest comm shadow (min) | Checks |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| safest | 13 | 12.35 | 235 | 164 | 2,078 | 105.9 | 3.3 | 1.4 | all pass |
+| balanced | 13 | 12.38 | 240 | 170 | 2,288 | 99.7 | 3.4 | 1.4 | all pass |
+| most_science | 13 | 12.37 | 238 | 167 | 2,175 | 102.9 | 3.4 | 1.4 | all pass |
+
+- **Thread (D8):** 1000 of 1000 random boxwork scenarios hold at every sample (least margin above the reserve 1.99 min); 1,000 of 1,000 on synthetic terrain in CI.
+- **Browser solver (D11):** 101.1% of the OR-Tools science value on average over 60 scenarios (lowest 87.8%), every plan feasible; per-scenario rows in docs/validation/station-solver.json.
+- **Walker model (D1, D10):** Minetti's polynomial lies within one SD of 12 of the 13 Table 2 means; the TypeScript twin matches the shared fixture to 1e-9. validation.json reports the NASA report as not transcribable and every Mars walk as EXTRAPOLATED.
+- **Tests:** all pipeline tests and all web tests pass locally (Python 3.13, Node 24).
+
 ## Next steps
 
 1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
-2. Phase 3, route engine (plan above).
+2. Phase 4, Habitat Planner: map, layers with provenance, the three route options, the timeline and 3D rehearsal with photo billboards. It packages the planning fields, leg bundles and plans from `data/sites/<site>/plan/` into `web/public/sites/`.
 
 ## Open issues
 
@@ -363,3 +381,7 @@ Turn the derived layers into walk plans: a directional graph on the DEM, cost-to
 - Murray Buttes has no boxwork, so its ridge and fracture layers are only a code check.
 - The boxwork rover check fails (79.8%) after the footprint-scale re-run; DEM seams account for part of the false alarms. The rover's walkability classes are still used for the rover constraint, with this caveat shown.
 - Seams between the CCDs inside one HiRISE image are not mapped.
+- The walker model is a stand-in: Minetti et al. 2002 (Earth, unsuited) with PLACEHOLDER suit, gravity and pace settings, because NASA/TP-2010-216125 publishes no coefficients. A suited, reduced-gravity source with published coefficients would replace it.
+- Comms is line of sight from a 3 m antenna at the staging point only; it leaves about 15% of the boxwork site in view and is the main limit on candidate stations. Relays are not modeled.
+- The rover stays at the staging point; rover pickups elsewhere are not planned yet. The buddy's walk to the overwatch point is not timed.
+- With the PLACEHOLDER presets the 240-minute EVA limit binds and all three presets pick nearly the same 13 stations (value 12.35 to 12.38), differing mainly in their paths. The preset weights need the team's choice before Phase 4 shows them side by side.

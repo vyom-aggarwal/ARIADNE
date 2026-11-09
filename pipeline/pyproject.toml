@@ -22,6 +22,7 @@ dependencies = [
     "astroquery>=0.4.7",
     "pandas>=2.2",
     "pyyaml>=6.0",
+    "jsonschema>=4.20",
 ]
 
 [project.optional-dependencies]
@@ -52,3 +53,4 @@ select = ["E", "F", "W", "I", "B", "UP"]
 "ariadne/derive/report.py" = ["E501"]
 # The labeling page template is HTML and JavaScript.
 "ariadne/derive/ridge_labels.py" = ["E501"]
+"ariadne/plan/report.py" = ["E501"]

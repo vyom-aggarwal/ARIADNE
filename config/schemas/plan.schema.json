@@ -1,0 +1,89 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "$id": "https://vyom-aggarwal.github.io/ARIADNE/schemas/plan.schema.json",
+ "title": "ARIADNE walk plan",
+ "description": "One walk plan (PROMPT.md 5.12). Coordinates are metres in the site's equirectangular grid. Extra fields are allowed.",
+ "type": "object",
+ "required": ["site", "scenario", "stations", "legs", "margins", "checks", "provenance"],
+ "properties": {
+  "site": {"type": "string"},
+  "scenario": {
+   "type": "object",
+   "required": ["start_utc", "preset", "suit_profile", "rover_profile"],
+   "properties": {
+    "start_utc": {"type": ["string", "null"]},
+    "preset": {"enum": ["safest", "balanced", "most_science"]},
+    "suit_profile": {"type": "string"},
+    "rover_profile": {"type": "string"}
+   }
+  },
+  "stations": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": ["id", "role", "xy_m", "value", "service_min", "label"],
+    "properties": {
+     "id": {"type": "string", "pattern": "^S[0-9]{2,}$"},
+     "role": {"type": "string"},
+     "xy_m": {"$ref": "#/$defs/xy"},
+     "value": {"type": "number", "minimum": 0},
+     "service_min": {"type": "number", "minimum": 0},
+     "label": {"$ref": "#/$defs/label"}
+    }
+   }
+  },
+  "legs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": ["from", "to", "path_xy_m", "minutes", "consumables_min", "relative_dose"],
+    "properties": {
+     "from": {"type": "string"},
+     "to": {"type": "string"},
+     "path_xy_m": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/xy"}},
+     "minutes": {"type": "number", "minimum": 0},
+     "consumables_min": {"type": "number", "minimum": 0},
+     "relative_dose": {"type": "number", "minimum": 0}
+    }
+   }
+  },
+  "margins": {
+   "type": "array",
+   "minItems": 1,
+   "items": {
+    "type": "object",
+    "required": ["t_min", "c_left", "c_home", "c_reserve"],
+    "properties": {
+     "t_min": {"type": "number", "minimum": 0},
+     "c_left": {"type": "number"},
+     "c_home": {"type": ["number", "null"]},
+     "c_reserve": {"type": "number", "minimum": 0}
+    }
+   }
+  },
+  "checks": {
+   "type": "object",
+   "required": ["thread", "buddy", "shelter", "comms", "rover"],
+   "properties": {
+    "thread": {"$ref": "#/$defs/check"},
+    "buddy": {"$ref": "#/$defs/check"},
+    "shelter": {"$ref": "#/$defs/check"},
+    "comms": {"$ref": "#/$defs/check"},
+    "rover": {"$ref": "#/$defs/check"}
+   }
+  },
+  "provenance": {
+   "type": "object",
+   "required": ["pipeline_version", "inputs"],
+   "properties": {
+    "pipeline_version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+"},
+    "inputs": {"type": "array", "items": {"type": "string"}}
+   }
+  }
+ },
+ "$defs": {
+  "xy": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "number"}},
+  "label": {"enum": ["MEASURED", "DERIVED", "MODELED", "PLACEHOLDER"]},
+  "check": {"enum": ["pass", "fail", "not checked"]}
+ }
+}

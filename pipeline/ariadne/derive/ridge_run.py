@@ -155,7 +155,9 @@ def _apply_to_config(root: Path, best: dict, n_labels: int, sample_id: str) -> N
     path.write_text(text, encoding="utf-8", newline="\n")
 
 
-def ridge_tune(site: str, labels_path: Path, apply: bool = True, log=print) -> dict:
+def ridge_tune(
+    site: str, labels_path: Path, apply: bool = True, log=print, out_path: Path | None = None
+) -> dict:
     root = repo_root()
     sample = json.loads(sample_path(root, site).read_text(encoding="utf-8"))
     pts = sample["points"]
@@ -207,11 +209,11 @@ def ridge_tune(site: str, labels_path: Path, apply: bool = True, log=print) -> d
         "pipeline_version": PIPELINE_VERSION,
         "computed_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
     }
-    out = root / "docs" / "validation" / "ridge-map.json"
+    out = out_path or root / "docs" / "validation" / "ridge-map.json"
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(result, indent=1) + "\n", encoding="utf-8", newline="\n")
     if apply:
         _apply_to_config(root, best, best["tuning_points"], sample["sample_id"])
-    log(f"ridge map tuned on {best['tuning_points']} labels; test report: {out.relative_to(root)}")
+    log(f"ridge map tuned on {best['tuning_points']} labels; test report: {out}")
     log(f"now run: ariadne derive --site {site} --from-stage walkability")
     return result

@@ -1,7 +1,7 @@
 {
  "title": "ARIADNE validation",
  "pipeline_version": "0.0.0",
- "generated_utc": "2026-11-09T10:01:11+00:00",
+ "generated_utc": "2026-11-09T10:32:49+00:00",
  "note": "Targets are team targets, set before each run, not published standards.",
  "checks": [
   {
@@ -4139,10 +4139,189 @@
   },
   {
    "id": "walker-model",
-   "title": "Walker model against NASA/TP-2010-216125",
-   "status": "not run",
-   "reason": "Phase 3 transcribes the model",
-   "phase": 3
+   "title": "Walker model",
+   "reference": "NASA/TP-2010-216125 (Norcross et al. 2010) and Minetti et al. 2002, J Appl Physiol 93:1039, Table 2",
+   "target": "Matches transcribed values; extrapolation flagged",
+   "status": "reported",
+   "result": {
+    "nasa_tp_2010_216125": "Cannot be transcribed: the report gives the form of its predictive equation (eq. 1, p. 70) but not its coefficients (p. 79). Its tested ranges set the EXTRAPOLATED flag.",
+    "stand_in": "Minetti et al. 2002 cost of walking against gradient (Earth, unsuited), with PLACEHOLDER suit, gravity and pace settings (config/suits.json)",
+    "minetti_within_one_sd": "12 of 13",
+    "minetti_rows": [
+     {
+      "gradient": -0.45,
+      "measured": 3.46,
+      "sd": 0.95,
+      "model": 3.605,
+      "within_one_sd": true
+     },
+     {
+      "gradient": -0.4,
+      "measured": 3.23,
+      "sd": 0.59,
+      "model": 3.504,
+      "within_one_sd": true
+     },
+     {
+      "gradient": -0.35,
+      "measured": 2.65,
+      "sd": 0.68,
+      "model": 2.936,
+      "within_one_sd": true
+     },
+     {
+      "gradient": -0.3,
+      "measured": 2.18,
+      "sd": 0.67,
+      "model": 2.208,
+      "within_one_sd": true
+     },
+     {
+      "gradient": -0.2,
+      "measured": 1.3,
+      "sd": 0.48,
+      "model": 1.087,
+      "within_one_sd": true
+     },
+     {
+      "gradient": -0.1,
+      "measured": 0.81,
+      "sd": 0.37,
+      "model": 1.127,
+      "within_one_sd": true
+     },
+     {
+      "gradient": 0.0,
+      "measured": 1.64,
+      "sd": 0.5,
+      "model": 2.5,
+      "within_one_sd": false
+     },
+     {
+      "gradient": 0.1,
+      "measured": 4.68,
+      "sd": 0.34,
+      "model": 4.899,
+      "within_one_sd": true
+     },
+     {
+      "gradient": 0.2,
+      "measured": 8.07,
+      "sd": 0.57,
+      "model": 7.877,
+      "within_one_sd": true
+     },
+     {
+      "gradient": 0.3,
+      "measured": 11.29,
+      "sd": 1.14,
+      "model": 11.184,
+      "within_one_sd": true
+     },
+     {
+      "gradient": 0.35,
+      "measured": 12.72,
+      "sd": 0.76,
+      "model": 13.017,
+      "within_one_sd": true
+     },
+     {
+      "gradient": 0.4,
+      "measured": 14.75,
+      "sd": 0.61,
+      "model": 15.098,
+      "within_one_sd": true
+     },
+     {
+      "gradient": 0.45,
+      "measured": 17.33,
+      "sd": 1.11,
+      "model": 17.6,
+      "within_one_sd": true
+     }
+    ],
+    "mars_walks_flagged_extrapolated": true,
+    "flags_at_mars_gravity": [
+     "gravity 0.38 g is outside the 0.12 to 0.32 g tested in NASA/TP-2010-216125"
+    ]
+   },
+   "label": "MODELED",
+   "note": "The level value is the one mismatch (model 2.5 against 1.64 +/- 0.50 J/kg/m); the fitted polynomial also used Margaria's data."
+  },
+  {
+   "id": "thread",
+   "title": "Thread in random scenarios on the boxwork",
+   "reference": "C_left(x) - C_home(x) >= C_reserve at every sample (at most 5 m apart) of 1000 random plans (seed 20261109)",
+   "target": "Holds in all of at least 1,000 random scenarios",
+   "status": "pass",
+   "result": {
+    "scenarios": 1000,
+    "held": 1000,
+    "worst_margin_min": 1.988,
+    "mean_stations_visited": 7.58,
+    "seed": 20261109
+   },
+   "plans": {
+    "safest": {
+     "science_value": 12.347,
+     "minutes": 235.111,
+     "consumables_min": 164.087,
+     "relative_dose_min": 38.7881,
+     "distance_m": 2078.2,
+     "min_thread_margin_min": 105.894,
+     "worst_minutes_to_shelter": 3.3,
+     "longest_comm_shadow_min": 1.42,
+     "label": "MODELED",
+     "stations": 13,
+     "checks": {
+      "thread": "pass",
+      "buddy": "pass",
+      "shelter": "pass",
+      "comms": "pass",
+      "rover": "pass"
+     }
+    },
+    "balanced": {
+     "science_value": 12.377,
+     "minutes": 239.822,
+     "consumables_min": 170.29,
+     "relative_dose_min": 43.2364,
+     "distance_m": 2288.1,
+     "min_thread_margin_min": 99.709,
+     "worst_minutes_to_shelter": 3.39,
+     "longest_comm_shadow_min": 1.45,
+     "label": "MODELED",
+     "stations": 13,
+     "checks": {
+      "thread": "pass",
+      "buddy": "pass",
+      "shelter": "pass",
+      "comms": "pass",
+      "rover": "pass"
+     }
+    },
+    "most_science": {
+     "science_value": 12.369,
+     "minutes": 237.834,
+     "consumables_min": 167.079,
+     "relative_dose_min": 41.3717,
+     "distance_m": 2174.6,
+     "min_thread_margin_min": 102.896,
+     "worst_minutes_to_shelter": 3.39,
+     "longest_comm_shadow_min": 1.45,
+     "label": "MODELED",
+     "stations": 13,
+     "checks": {
+      "thread": "pass",
+      "buddy": "pass",
+      "shelter": "pass",
+      "comms": "pass",
+      "rover": "pass"
+     }
+    }
+   },
+   "label": "MODELED",
+   "note": "Plans use PLACEHOLDER consumables, reserve and suit settings; the check measures the margin along each plan's actual legs."
   },
   {
    "id": "ground-temperature",
@@ -4161,9 +4340,17 @@
   {
    "id": "station-solver",
    "title": "Browser station solver against OR-Tools",
-   "status": "not run",
-   "reason": "Phase 3 builds both",
-   "phase": 3
+   "reference": "OR-Tools reference plans on 60 random boxwork scenarios",
+   "target": "At least 95% of the reference science value",
+   "status": "pass",
+   "result": {
+    "scenarios": 60,
+    "mean_ratio": 1.0114,
+    "min_ratio": 0.8777,
+    "target": 0.95
+   },
+   "label": "MODELED",
+   "note": "Mean ratio of browser to OR-Tools science value; per-scenario rows in docs/validation/station-solver.json."
   },
   {
    "id": "labels",

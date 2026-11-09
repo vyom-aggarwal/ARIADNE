@@ -257,28 +257,13 @@ def astar(gr: Grid, suit: mb.Suit, w: dict, start, goal) -> Path | None:
 _OFFSET_INDEX = {(int(a), int(b)): k for k, (a, b) in enumerate(OFFSETS)}
 
 
-def segment_clear(gr: Grid, p, q) -> bool:
-    """True if every cell the segment p-q touches is passable (corners count)."""
-    (r0, c0), (r1, c1) = p, q
-    n = max(2, int(math.ceil(max(abs(r1 - r0), abs(c1 - c0)) * 10)))
-    t = np.linspace(0.0, 1.0, n + 1)
-    rs, cs = r0 + (r1 - r0) * t, c0 + (c1 - c0) * t
-    h, w = gr.passable.shape
-    for er in (-0.05, 0.05):
-        for ec in (-0.05, 0.05):
-            rr = np.clip(np.rint(rs + er).astype(int), 0, h - 1)
-            cc = np.clip(np.rint(cs + ec).astype(int), 0, w - 1)
-            if not gr.passable[rr, cc].all():
-                return False
-    return True
-
-
-def _bilinear(z, r, c):
+@njit(cache=True)
+def _bilin(z, r, c):
     h, w = z.shape
-    r = np.clip(r, 0, h - 1)
-    c = np.clip(c, 0, w - 1)
-    r0 = np.minimum(np.floor(r).astype(int), h - 2)
-    c0 = np.minimum(np.floor(c).astype(int), w - 2)
+    r = min(max(r, 0.0), h - 1.0)
+    c = min(max(c, 0.0), w - 1.0)
+    r0 = min(int(math.floor(r)), h - 2)
+    c0 = min(int(math.floor(c)), w - 2)
     fr, fc = r - r0, c - c0
     return (
         z[r0, c0] * (1 - fr) * (1 - fc) + z[r0, c0 + 1] * (1 - fr) * fc
@@ -286,55 +271,99 @@ def _bilinear(z, r, c):
     )  # fmt: skip
 
 
-def segment_steps(gr: Grid, suit: mb.Suit, w: dict, p, q) -> dict:
+@njit(cache=True)
+def _seg_walk(z, hazard, dose, unc, res, wv, sv, r0, c0, r1, c1, single):
+    """Running totals at each step of a straight walk from (r0, c0) to (r1, c1): one step with
+    cell heights for a single grid move, else steps of at most half a cell on the bilinear
+    surface. Columns: r, c, cost, minutes, consumables, dose, metres."""
+    h, w = z.shape
+    dr, dc = r1 - r0, c1 - c0
+    if single:
+        n = 1
+    else:
+        n = max(1, int(math.ceil(max(abs(dr), abs(dc)) * 2)))
+    out = np.empty((n, 7))
+    acc = np.zeros(5)
+    ra, ca = r0, c0
+    za = z[int(r0), int(c0)] if single else _bilin(z, r0, c0)
+    for s in range(1, n + 1):
+        f = s / n
+        rb, cb = r0 + dr * f, c0 + dc * f
+        zb = z[int(r1), int(c1)] if single else _bilin(z, rb, cb)
+        ia = (min(max(int(round(ra)), 0), h - 1), min(max(int(round(ca)), 0), w - 1))
+        ib = (min(max(int(round(rb)), 0), h - 1), min(max(int(round(cb)), 0), w - 1))
+        length = res * math.hypot(rb - ra, cb - ca)
+        dt, ratio = _move(za, zb, length, sv)
+        hz = 0.5 * (hazard[ia] + hazard[ib])
+        dd = 0.5 * (dose[ia] + dose[ib])
+        uu = 0.5 * (unc[ia] + unc[ib])
+        acc[0] += dt * (wv[0] + wv[1] * ratio + wv[2] * hz + wv[3] * dd + wv[4] * uu)
+        acc[1] += dt
+        acc[2] += dt * ratio
+        acc[3] += dt * dd
+        acc[4] += length
+        out[s - 1, 0] = rb
+        out[s - 1, 1] = cb
+        out[s - 1, 2:] = acc
+        ra, ca, za = rb, cb, zb
+    return out
+
+
+@njit(cache=True)
+def _seg_clear(passable, r0, c0, r1, c1):
+    h, w = passable.shape
+    n = max(2, int(math.ceil(max(abs(r1 - r0), abs(c1 - c0)) * 10)))
+    for s in range(n + 1):
+        f = s / n
+        r, c = r0 + (r1 - r0) * f, c0 + (c1 - c0) * f
+        for er in (-0.05, 0.05):
+            for ec in (-0.05, 0.05):
+                rr = min(max(int(round(r + er)), 0), h - 1)
+                cc = min(max(int(round(c + ec)), 0), w - 1)
+                if not passable[rr, cc]:
+                    return False
+    return True
+
+
+def _arrays(gr: Grid):
+    return (
+        np.ascontiguousarray(gr.z, dtype=np.float64),
+        np.ascontiguousarray(gr.hazard, dtype=np.float64),
+        np.ascontiguousarray(gr.dose, dtype=np.float64),
+        np.ascontiguousarray(gr.unc, dtype=np.float64),
+    )
+
+
+def segment_clear(gr: Grid, p, q) -> bool:
+    """True if every cell the segment p-q touches is passable (corners count)."""
+    return bool(_seg_clear(np.ascontiguousarray(gr.passable), float(p[0]), float(p[1]),
+                           float(q[0]), float(q[1])))  # fmt: skip
+
+
+def segment_steps(gr: Grid, suit: mb.Suit, w: dict, p, q, arrays=None) -> dict:
     """Walk straight from cell p to cell q and return each step's end point and running totals
     (cost, minutes, consumables, dose, metres). A single grid move is one step with the edge
     formula exactly; a longer segment is walked in steps of at most half a cell on the bilinear
     surface."""
-    sv, wv = _suit_vec(suit), _w_vec(w)
-    dr, dc = q[0] - p[0], q[1] - p[1]
-    if (dr, dc) in _OFFSET_INDEX:
-        rs, cs = np.array([p[0], q[0]], float), np.array([p[1], q[1]], float)
-        zz = np.array([gr.z[p], gr.z[q]], float)
-    else:
-        n = max(1, int(math.ceil(max(abs(dr), abs(dc)) * 2)))
-        t = np.linspace(0.0, 1.0, n + 1)
-        rs, cs = p[0] + dr * t, p[1] + dc * t
-        zz = _bilinear(gr.z, rs, cs)
-    k = len(rs) - 1
-    out = {key: np.zeros(k) for key in ("cost", "minutes", "consumables", "dose", "metres")}
-    acc = np.zeros(5)
-    for s in range(k):
-        ca = (int(np.rint(rs[s])), int(np.rint(cs[s])))
-        cb = (int(np.rint(rs[s + 1])), int(np.rint(cs[s + 1])))
-        length = gr.res * math.hypot(rs[s + 1] - rs[s], cs[s + 1] - cs[s])
-        dt, ratio = _move(float(zz[s]), float(zz[s + 1]), length, sv)
-        hz = 0.5 * (gr.hazard[ca] + gr.hazard[cb])
-        dd = 0.5 * (gr.dose[ca] + gr.dose[cb])
-        uu = 0.5 * (gr.unc[ca] + gr.unc[cb])
-        acc += (
-            dt * (wv[0] + wv[1] * ratio + wv[2] * hz + wv[3] * dd + wv[4] * uu),
-            dt,
-            dt * ratio,
-            dt * dd,
-            length,
-        )
-        for j, key in enumerate(("cost", "minutes", "consumables", "dose", "metres")):
-            out[key][s] = acc[j]
-    out["r"], out["c"] = rs[1:], cs[1:]
-    return out
+    z, hz, dd, uu = arrays or _arrays(gr)
+    single = (int(q[0] - p[0]), int(q[1] - p[1])) in _OFFSET_INDEX and float(p[0]).is_integer()
+    a = _seg_walk(z, hz, dd, uu, float(gr.res), _w_vec(w), _suit_vec(suit), float(p[0]),
+                  float(p[1]), float(q[0]), float(q[1]), single)  # fmt: skip
+    keys = ("r", "c", "cost", "minutes", "consumables", "dose", "metres")
+    return {k: a[:, j] for j, k in enumerate(keys)}
 
 
-def segment_metrics(gr: Grid, suit: mb.Suit, w: dict, p, q) -> dict:
+def segment_metrics(gr: Grid, suit: mb.Suit, w: dict, p, q, arrays=None) -> dict:
     """Cost, minutes, consumables and dose of walking straight from cell p to cell q."""
-    s = segment_steps(gr, suit, w, p, q)
+    s = segment_steps(gr, suit, w, p, q, arrays)
     return {k: float(s[k][-1]) for k in ("cost", "minutes", "consumables", "dose")}
 
 
 def polyline_metrics(gr: Grid, suit: mb.Suit, w: dict, pts) -> dict:
+    arrays = _arrays(gr)
     tot = {"cost": 0.0, "minutes": 0.0, "consumables": 0.0, "dose": 0.0}
     for p, q in zip(pts[:-1], pts[1:], strict=True):
-        m = segment_metrics(gr, suit, w, p, q)
+        m = segment_metrics(gr, suit, w, p, q, arrays)
         for k in tot:
             tot[k] += m[k]
     return tot
@@ -346,18 +375,20 @@ def smooth(gr: Grid, suit: mb.Suit, w: dict, path, lookahead: int = 40):
     path it replaces. Never crosses a no-go cell, never raises the cost."""
     if len(path) <= 2:
         return list(path)
-    edge = [
-        segment_metrics(gr, suit, w, a, b)["cost"] for a, b in zip(path[:-1], path[1:], strict=True)
-    ]
+    arrays = _arrays(gr)
+    passable = np.ascontiguousarray(gr.passable)
+    edge = [segment_metrics(gr, suit, w, a, b, arrays)["cost"]
+            for a, b in zip(path[:-1], path[1:], strict=True)]  # fmt: skip
     prefix = np.concatenate([[0.0], np.cumsum(edge)])
     out = [path[0]]
     i = 0
     while i < len(path) - 1:
         best = i + 1
         for j in range(min(len(path) - 1, i + lookahead), i + 1, -1):
-            if not segment_clear(gr, path[i], path[j]):
+            p, q = path[i], path[j]
+            if not _seg_clear(passable, float(p[0]), float(p[1]), float(q[0]), float(q[1])):
                 continue
-            if segment_metrics(gr, suit, w, path[i], path[j])["cost"] <= prefix[j] - prefix[i]:
+            if segment_metrics(gr, suit, w, p, q, arrays)["cost"] <= prefix[j] - prefix[i]:
                 best = j
                 break
         out.append(path[best])

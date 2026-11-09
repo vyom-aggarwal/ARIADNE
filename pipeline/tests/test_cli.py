@@ -10,11 +10,10 @@ from ariadne import __version__, cli
 
 # Commands not built yet, with the phase that builds them.
 COMMANDS = {
-    "plan": 3,
     "package": 4,
     "build-site": 8,
 }
-BUILT_COMMANDS = ["fetch", "derive", "validate", "ridge-sample", "ridge-tune"]
+BUILT_COMMANDS = ["fetch", "derive", "plan", "validate", "ridge-sample", "ridge-tune"]
 
 
 def test_help_lists_every_command(capsys):
