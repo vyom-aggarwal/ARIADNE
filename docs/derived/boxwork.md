@@ -75,6 +75,7 @@ At named points (sunrise and sunset; near field only, then with the far field):
 | Science transects | 2655 transects (206 on mapped fractures); station scores median 0.88 (5th to 95th percentile 0.63 to 0.95); 254 prior targets; missing term: spectral |
 | Confidence | median 0.60; 0.0% of cells below 0.5 |
 | Candidate DEM mosaic seams | 10.9 km of stereo-pair footprint edges (T3, Traverse, West); 4.7% of the site within 30 m |
+| Map may be over-cautious here (check by eye) | walker: 0.9% of the site (4.9% of its slope no-go cells); rover: 1.4% (5.0%); no-go by slope in a seam zone or below confidence 0.55 |
 | Light, sol 4718 | sunrise median 06:45, sunset median 17:51; insolation median 0.99 of flat open ground |
 
 ## Drill sites

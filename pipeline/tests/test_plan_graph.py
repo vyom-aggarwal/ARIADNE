@@ -177,3 +177,9 @@ def test_leg_matrix_is_asymmetric_on_a_ramp_and_matches_astar(suit):
         g.polyline_metrics(gr, suit, W_TIME, m["paths"][(2, 0)])["minutes"]
     )
     assert len(m["paths"][(0, 1)]) >= 2
+
+
+def test_a_zero_length_segment_costs_nothing(suit):
+    gr = grid(np.zeros((5, 5)))
+    m = g.polyline_metrics(gr, suit, W_TIME, [(2, 2), (2, 2)])
+    assert m == {"cost": 0.0, "minutes": 0.0, "consumables": 0.0, "dose": 0.0}

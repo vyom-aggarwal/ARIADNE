@@ -20,8 +20,8 @@ function instanceFor(s: { nodes: number[]; eva_max_min: number; consumables_budg
     minutes: pick(minutes),
     consumables: pick(consumables),
     cost: pick(cost),
-    serviceMin: s.nodes.map((n) => (n === 0 ? 0 : bench.service_min)),
-    serviceCons: s.nodes.map((n) => (n === 0 ? 0 : bench.service_consumables_min)),
+    serviceMin: s.nodes.map((n) => bench.service_min[n] ?? Infinity),
+    serviceCons: s.nodes.map((n) => bench.service_consumables_min[n] ?? Infinity),
     evaMax: s.eva_max_min,
     consBudget: s.consumables_budget,
   };
@@ -78,7 +78,10 @@ describe("browser station solver", () => {
       const out = resolve(root, process.env.BENCH_OUT);
       mkdirSync(dirname(out), { recursive: true });
       writeFileSync(out, JSON.stringify({ scenarios: rows.length, mean_ratio: Number(mean.toFixed(4)),
-        min_ratio: min, target: 0.95, pipeline_version: bench.pipeline_version, rows }, null, 1) + "\n");
+        min_ratio: min, target: 0.95,
+        reference: `OR-Tools guided local search, ${bench.ortools_time_limit_s} s per scenario: ` +
+          "a time-limited reference, not a proven optimum",
+        pipeline_version: bench.pipeline_version, rows }, null, 1) + "\n");
     }
     expect(mean).toBeGreaterThanOrEqual(0.95);
   }, 120_000);

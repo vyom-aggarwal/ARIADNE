@@ -66,7 +66,7 @@ def build_parser() -> argparse.ArgumentParser:
             )
             p.add_argument(
                 "--from-stage",
-                choices=["walkability"],
+                choices=["walkability", "flags"],
                 default=None,
                 help="reuse the saved horizons, light and sunrise results; re-run this stage "
                 "and every stage after it",
@@ -91,7 +91,12 @@ def main(argv: list[str] | None = None) -> int:
         if args.report_only:
             refresh_report(args.site)
         else:
-            derive_site(args.site, force=args.force, from_stage=args.from_stage)
+            if args.from_stage == "flags":
+                from ariadne.derive.run import derive_flags
+
+                derive_flags(args.site)
+            else:
+                derive_site(args.site, force=args.force, from_stage=args.from_stage)
         return 0
     if args.command == "plan":
         from ariadne.plan.run import plan_site

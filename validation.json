@@ -1,7 +1,7 @@
 {
  "title": "ARIADNE validation",
  "pipeline_version": "0.0.0",
- "generated_utc": "2026-11-09T10:32:49+00:00",
+ "generated_utc": "2026-11-09T18:44:27+00:00",
  "note": "Targets are team targets, set before each run, not published standards.",
  "checks": [
   {
@@ -2184,7 +2184,8 @@
     }
    },
    "label": "MODELED",
-   "note": "Rover thresholds are PLACEHOLDER (config/derive.yaml). A no-go point where Curiosity drove is a likely false alarm of the model, or ground the rover crossed with care.",
+   "note": "Rover thresholds are PLACEHOLDER (config/derive.yaml). This check can only measure false alarms (no-go where Curiosity actually drove), the cautious direction; it cannot measure missed hazards. A no-go point on the path is a likely false alarm, or ground the rover crossed with care.",
+   "diagnosis": "The boxwork misses its target while Murray Buttes, held out, passes. The boxwork ridges are 1 to 2 m high and a few metres wide, at the DEM's effective resolution (about 2.5 m) and the rover's footprint, so slope there mixes real relief with what the DEM cannot resolve and with its errors; candidate DEM seams add false alarms (no-go rate 62% within 30 m of a seam against 18% elsewhere). No more re-runs (team decision, 2026-11-09). The planner stays conservative, and the surfaces mark slope no-go cells in seam or low-confidence zones as 'map may be over-cautious here, check by eye'.",
    "first_run": {
     "status": "fail",
     "method": "Rover slope classes from the Horn slope of the 1 m DEM (3 x 3 posts)",
@@ -3946,7 +3947,8 @@
     }
    },
    "label": "MODELED",
-   "note": "Rover thresholds are PLACEHOLDER (config/derive.yaml). A no-go point where Curiosity drove is a likely false alarm of the model, or ground the rover crossed with care."
+   "note": "Rover thresholds are PLACEHOLDER (config/derive.yaml). This check can only measure false alarms (no-go where Curiosity actually drove), the cautious direction; it cannot measure missed hazards. A no-go point on the path is a likely false alarm, or ground the rover crossed with care.",
+   "diagnosis": "The boxwork misses its target while Murray Buttes, held out, passes. The boxwork ridges are 1 to 2 m high and a few metres wide, at the DEM's effective resolution (about 2.5 m) and the rover's footprint, so slope there mixes real relief with what the DEM cannot resolve and with its errors; candidate DEM seams add false alarms (no-go rate 62% within 30 m of a seam against 18% elsewhere). No more re-runs (team decision, 2026-11-09). The planner stays conservative, and the surfaces mark slope no-go cells in seam or low-confidence zones as 'map may be over-cautious here, check by eye'."
   },
   {
    "id": "mars24",
@@ -4257,22 +4259,23 @@
    "result": {
     "scenarios": 1000,
     "held": 1000,
-    "worst_margin_min": 1.988,
-    "mean_stations_visited": 7.58,
+    "worst_margin_min": 2.051,
+    "mean_transects_visited": 4.05,
     "seed": 20261109
    },
    "plans": {
     "safest": {
-     "science_value": 12.347,
-     "minutes": 235.111,
-     "consumables_min": 164.087,
-     "relative_dose_min": 38.7881,
-     "distance_m": 2078.2,
-     "min_thread_margin_min": 105.894,
+     "transects": 7,
+     "stations": 21,
+     "science_value": 18.943,
+     "minutes": 356.789,
+     "consumables_min": 238.048,
+     "relative_dose_min": 40.3212,
+     "distance_m": 2005.8,
+     "min_thread_margin_min": 106.952,
      "worst_minutes_to_shelter": 3.3,
-     "longest_comm_shadow_min": 1.42,
+     "longest_comm_shadow_min": 1.73,
      "label": "MODELED",
-     "stations": 13,
      "checks": {
       "thread": "pass",
       "buddy": "pass",
@@ -4282,16 +4285,17 @@
      }
     },
     "balanced": {
-     "science_value": 12.377,
-     "minutes": 239.822,
-     "consumables_min": 170.29,
-     "relative_dose_min": 43.2364,
-     "distance_m": 2288.1,
-     "min_thread_margin_min": 99.709,
-     "worst_minutes_to_shelter": 3.39,
-     "longest_comm_shadow_min": 1.45,
+     "transects": 7,
+     "stations": 21,
+     "science_value": 18.943,
+     "minutes": 356.087,
+     "consumables_min": 236.822,
+     "relative_dose_min": 39.6477,
+     "distance_m": 1959.7,
+     "min_thread_margin_min": 123.165,
+     "worst_minutes_to_shelter": 3.3,
+     "longest_comm_shadow_min": 1.71,
      "label": "MODELED",
-     "stations": 13,
      "checks": {
       "thread": "pass",
       "buddy": "pass",
@@ -4301,16 +4305,17 @@
      }
     },
     "most_science": {
-     "science_value": 12.369,
-     "minutes": 237.834,
-     "consumables_min": 167.079,
-     "relative_dose_min": 41.3717,
-     "distance_m": 2174.6,
-     "min_thread_margin_min": 102.896,
-     "worst_minutes_to_shelter": 3.39,
-     "longest_comm_shadow_min": 1.45,
+     "transects": 7,
+     "stations": 21,
+     "science_value": 19.107,
+     "minutes": 359.358,
+     "consumables_min": 240.653,
+     "relative_dose_min": 42.762,
+     "distance_m": 2336.7,
+     "min_thread_margin_min": 119.344,
+     "worst_minutes_to_shelter": 2.47,
+     "longest_comm_shadow_min": 0.62,
      "label": "MODELED",
-     "stations": 13,
      "checks": {
       "thread": "pass",
       "buddy": "pass",
@@ -4340,17 +4345,17 @@
   {
    "id": "station-solver",
    "title": "Browser station solver against OR-Tools",
-   "reference": "OR-Tools reference plans on 60 random boxwork scenarios",
-   "target": "At least 95% of the reference science value",
+   "reference": "Time-limited OR-Tools reference plans on 60 random boxwork scenarios",
+   "target": "At least 95% of the reference science value on average; worst case reported",
    "status": "pass",
    "result": {
     "scenarios": 60,
-    "mean_ratio": 1.0114,
-    "min_ratio": 0.8777,
+    "mean_ratio": 1.0118,
+    "min_ratio": 0.988,
     "target": 0.95
    },
    "label": "MODELED",
-   "note": "Mean ratio of browser to OR-Tools science value; per-scenario rows in docs/validation/station-solver.json."
+   "note": "OR-Tools runs a guided local search with a time limit per scenario, so it is a time-limited reference, not a proven optimum; the browser solver can and sometimes does find more value. Mean ratio 1.012, worst case 0.988; per-scenario rows in docs/validation/station-solver.json."
   },
   {
    "id": "labels",

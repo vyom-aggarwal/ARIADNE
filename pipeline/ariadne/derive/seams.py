@@ -74,3 +74,16 @@ def zone_statistics(in_zone, nogo) -> dict:
         "odds_ratio": round(float(odds), 3) if np.isfinite(odds) else None,
         "fisher_p": float(f"{p:.4g}"),
     }
+
+
+def overcautious(slope_deg, nogo_deg: float, seam_zone, confidence, low_confidence: float):
+    """Where the map may be over-cautious: cells that are no-go by slope and lie in a candidate
+    seam zone or a low-confidence zone. 1 = flag, 0 = not, 255 = no slope. The rover check can
+    only measure false alarms (no-go where Curiosity drove), and those cluster at seams, so the
+    surfaces ask the crew to check these cells by eye rather than treat them as walls."""
+    s = np.asarray(slope_deg, dtype=np.float64)
+    nogo = s > nogo_deg
+    doubt = np.asarray(seam_zone, dtype=bool) | (np.asarray(confidence) < low_confidence)
+    out = (nogo & doubt).astype(np.uint8)
+    out[~np.isfinite(s)] = 255
+    return out

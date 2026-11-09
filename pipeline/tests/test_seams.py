@@ -53,3 +53,13 @@ def test_zone_statistics_and_fisher_test():
     odds, p = stats.fisher_exact([[12, 18], [7, 63]])
     assert s["odds_ratio"] == pytest.approx(odds, rel=1e-3)
     assert s["fisher_p"] == pytest.approx(p, rel=1e-3)
+
+
+def test_overcautious_flag_marks_slope_no_go_in_seam_or_low_confidence_zones():
+    slope = np.array([[30.0, 30.0, 30.0, 10.0], [30.0, 10.0, 30.0, np.nan]])
+    zone = np.array([[True, False, False, True], [False, False, False, False]])
+    conf = np.array([[0.6, 0.5, 0.6, 0.5], [0.6, 0.5, 0.7, 0.6]])
+    flag = seams.overcautious(slope, 25.0, zone, conf, 0.55)
+    # no-go by slope AND (seam zone OR confidence below 0.55); missing slope is no data (255)
+    assert flag.tolist() == [[1, 1, 0, 0], [0, 0, 0, 255]]
+    assert flag.dtype == np.uint8

@@ -229,6 +229,11 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
             lines.append(
                 f"| Candidate DEM mosaic seams | {sm['length_m'] / 1000:.1f} km of stereo-pair footprint edges ({', '.join(sm['pairs_with_edges_in_crop']) or 'none'}); {_pct(sm['zone_share_of_site'])} of the site within {sm['zone_m']:.0f} m |"
             )
+    if s.get("flags"):
+        fl = s["flags"]
+        lines.append(
+            f"| Map may be over-cautious here (check by eye) | walker: {_pct(fl['walker']['flagged_share_of_site'])} of the site ({_pct(fl['walker']['flagged_share_of_slope_no_go'])} of its slope no-go cells); rover: {_pct(fl['rover']['flagged_share_of_site'])} ({_pct(fl['rover']['flagged_share_of_slope_no_go'])}); no-go by slope in a seam zone or below confidence {fl['low_confidence']} |"
+        )
     if s.get("light"):
         lt = s["light"]
         lines.append(

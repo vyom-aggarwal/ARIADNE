@@ -293,15 +293,16 @@ def _seg_walk(z, hazard, dose, unc, res, wv, sv, r0, c0, r1, c1, single):
         ia = (min(max(int(round(ra)), 0), h - 1), min(max(int(round(ca)), 0), w - 1))
         ib = (min(max(int(round(rb)), 0), h - 1), min(max(int(round(cb)), 0), w - 1))
         length = res * math.hypot(rb - ra, cb - ca)
-        dt, ratio = _move(za, zb, length, sv)
-        hz = 0.5 * (hazard[ia] + hazard[ib])
-        dd = 0.5 * (dose[ia] + dose[ib])
-        uu = 0.5 * (unc[ia] + unc[ib])
-        acc[0] += dt * (wv[0] + wv[1] * ratio + wv[2] * hz + wv[3] * dd + wv[4] * uu)
-        acc[1] += dt
-        acc[2] += dt * ratio
-        acc[3] += dt * dd
-        acc[4] += length
+        if length > 0.0:  # a zero-length segment (two stations in one cell) costs nothing
+            dt, ratio = _move(za, zb, length, sv)
+            hz = 0.5 * (hazard[ia] + hazard[ib])
+            dd = 0.5 * (dose[ia] + dose[ib])
+            uu = 0.5 * (unc[ia] + unc[ib])
+            acc[0] += dt * (wv[0] + wv[1] * ratio + wv[2] * hz + wv[3] * dd + wv[4] * uu)
+            acc[1] += dt
+            acc[2] += dt * ratio
+            acc[3] += dt * dd
+            acc[4] += length
         out[s - 1, 0] = rb
         out[s - 1, 1] = cb
         out[s - 1, 2:] = acc
@@ -397,24 +398,33 @@ def smooth(gr: Grid, suit: mb.Suit, w: dict, path, lookahead: int = 40):
 
 
 def leg_matrix(gr: Grid, suit: mb.Suit, w: dict, points, max_cost: float = np.inf) -> dict:
-    """Asymmetric matrices between points from one forward Dijkstra per point. Each leg is then
-    smoothed, and cost, minutes, consumables and dose describe the smoothed leg, so plans and
-    their checks measure the same path; `grid_cost` keeps the Dijkstra cost."""
-    n = len(points)
+    """Asymmetric matrices between points (see `leg_matrix_st`, with the same points as sources
+    and targets)."""
+    return leg_matrix_st(gr, suit, w, points, points, max_cost)
+
+
+def leg_matrix_st(gr: Grid, suit: mb.Suit, w: dict, sources, targets, max_cost=np.inf) -> dict:
+    """Matrices from each source to each target, from one forward Dijkstra per source. Each leg
+    is smoothed, and cost, minutes, consumables and dose describe the smoothed leg, so plans and
+    their checks measure the same path; `grid_cost` keeps the Dijkstra cost. Entry (i, i) is 0
+    and has no path: source i and target i belong to the same node."""
+    ns, nt = len(sources), len(targets)
     keys = ("cost", "minutes", "consumables", "dose", "grid_cost")
-    mats = {k: np.full((n, n), np.inf) for k in keys}
+    mats = {k: np.full((ns, nt), np.inf) for k in keys}
     paths = {}
-    for i, p in enumerate(points):
+    for i, p in enumerate(sources):
         f = dijkstra(gr, suit, w, [p], max_cost=max_cost)
-        for j, q in enumerate(points):
+        for j, q in enumerate(targets):
+            if i == j:
+                for k in keys:
+                    mats[k][i, j] = 0.0
+                continue
             mats["grid_cost"][i, j] = f.cost[q]
-            if i != j and np.isfinite(f.cost[q]):
+            if np.isfinite(f.cost[q]):
                 pts = smooth(gr, suit, w, extract_path(f, q))
                 paths[(i, j)] = pts
                 met = polyline_metrics(gr, suit, w, pts)
                 for k in ("cost", "minutes", "consumables", "dose"):
                     mats[k][i, j] = met[k]
-    for k in mats:
-        np.fill_diagonal(mats[k], 0.0)
     mats["paths"] = paths
     return mats

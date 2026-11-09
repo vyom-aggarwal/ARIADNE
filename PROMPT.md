@@ -131,18 +131,18 @@ Why this form: integrating cos^n θ · sin θ over the open zenith angles, from 
 
 1. Graph: the DEM grid at 1 m, with a 2 m level for long legs; 16-neighbor moves; cost depends on the signed grade along each move, so uphill and downhill differ.
 2. Walker model: read NASA/TP-2010-216125 and transcribe its predictive metabolic and speed relationships exactly, with page numbers, into pipeline/ariadne/models/metabolic.py and web/src/core/models/metabolic.ts. Unit-test both against at least three values reported in the paper. Flag any speed, grade, gravity (Mars is 0.38 g) or suit setting outside the tested range as EXTRAPOLATED; if a clean transcription is impossible, use a clearly labeled PLACEHOLDER curve and say so in the app.
-3. Edge cost, with weight presets Safest, Balanced and Most science in config/presets.json: time Δt, metabolic rate Ṁ for gravity g, grade s and suit, hazard R, relative dose D, and uncertainty U, as in the first formula below.
+3. Edge cost, with presets Safest, Balanced and Most science in config/presets.json that differ by safety settings, not just weights (all PLACEHOLDER): Safest has a 45 min reserve, a 10 min shelter limit and caution (hazard) and uncertainty penalties three times Balanced's; Balanced holds the defaults; Most science keeps Balanced's hard limits, drops the caution penalty and maximises complete transects. Edge cost terms: time Δt, metabolic rate Ṁ for gravity g, grade s and suit, hazard R, relative dose D, and uncertainty U, as in the first formula below.
 4. Consumables: track C_left in minutes at the nominal metabolic rate, consumed at the rate Ṁ(t) divided by the nominal rate. C_home(x) is the consumables cost of walking from x to the nearest safe haven at planned pace.
 5. Path search: A* with an admissible heuristic (straight-line distance times the minimum cost per meter), then line-of-sight smoothing that never crosses a no-go cell.
 6. Cost-to-home field: multi-source Dijkstra from every safe haven on the reversed graph.
 7. Leg matrix: in the pipeline, run Dijkstra from each candidate station to build an asymmetric station-to-station cost matrix, and ship it with the site.
-8. Station selection as prize-collecting routing. Reference solver: Google OR-Tools routing in Python with a time dimension, service times (PLACEHOLDER: 15 min per station), and an optional-visit disjunction per station penalized by its science value. Browser solver: greedy value-per-minute insertion, then 2-opt, Or-opt and simulated annealing in a Web Worker; benchmark on at least 50 generated scenarios with a target of 95% of the OR-Tools value.
+8. Station selection as prize-collecting routing over whole transects: each fracture (or crest), wall and hollow transect is one node, visited in that order, with its three station visits and its internal walk as its service time, because the science value is in the comparison. Reference solver: Google OR-Tools routing in Python with a time dimension, service times (PLACEHOLDER: 15 min per station), and an optional-visit disjunction per station penalized by its science value. Browser solver: greedy value-per-minute insertion, then 2-opt, Or-opt and simulated annealing in a Web Worker; benchmark on at least 50 generated scenarios with a target of 95% of the OR-Tools value.
 9. Hard constraints, checked at least every 5 m along the route:
    - Thread: the second formula below, with C_reserve = 30 min (PLACEHOLDER).
    - Buddy: the pair moves together; during station work the partner holds an overwatch point within 50 m (PLACEHOLDER) with mutual line of sight, or the station is invalid.
    - Shelter: minutes-to-shelter of 20 or less (PLACEHOLDER).
    - Comms: no comm shadow longer than 10 continuous minutes (PLACEHOLDER).
-   - Rover: the rover follows its own cost surface (PLACEHOLDER slope limit, sand avoidance) to any pickup point, and the thread ends at the rover.
+   - Rover: the rover follows its own cost surface (PLACEHOLDER slope limit, sand avoidance) to any pickup point, and the thread ends at the rover. The rover also serves as a mobile comms relay: it moves between a few overwatch points it can reach during the EVA, so more stations stay in line of sight, and the thread ends wherever the rover is.
    - Any violation triggers a re-solve with the offending station removed or the budget tightened.
 10. Re-planning during the walk: triggers are pace drifting more than 15% from plan (PLACEHOLDER), a margin crossing its threshold, or an alert. Drop the lowest value-per-minute stations first, re-check every constraint, and show a diff of what changed.
 11. Storm mode: Dijkstra on time from the current position to every shelter zone; take the earliest arrival, breaking ties by lower S. Show the MODELED dose avoided over the event duration, taken from replay data or marked PLACEHOLDER.
@@ -184,12 +184,14 @@ Habitat Planner, desktop:
 Visor HUD, an overlay on the first-person view at 1920×1080:
 
 - At most four elements at once, kept in the periphery; white and cyan with dark outlines, never red or orange; every color paired with a shape.
+- Slope no-go cells in a DEM seam zone or a low-confidence zone are marked "map may be over-cautious here, check by eye"; the planner still avoids them.
 - Heading and distance to the next station; the thread drawn as a line home with the margin in minutes; buddy bearing, distance and suit status; caution and warning, with a shelter arrow in storm mode; breadcrumbs and dropped pins.
 - Voice commands through the Web Speech API where the browser supports it: "distance home", "next station", "drop pin".
 
 Cuff Tablet, 1024×768:
 
 - Touch targets of at least 64 CSS px (PLACEHOLDER for gloved use).
+- The same "map may be over-cautious here, check by eye" marking as the HUD.
 - Next-station card with a "what you'll see" photo, and station steps following "Look, Observe, Describe, Document" from SUITS.
 - Sample log with a photo field stored locally; works offline through a service worker.
 
@@ -216,7 +218,7 @@ make validate writes validation.json, and the app's Validation tab renders it. T
 | Check | Reference | Target |
 | --- | --- | --- |
 | Shielding index | RAD at Murray Buttes: 3.8% ± 0.4% less dose than expected from the sols 1440 to 1455 and 1468 to 1480 baseline, 7.5% fewer neutral particles, 19% of the sky blocked (Ehresmann et al. 2021) | Calibrated n reproduces S(parking) / S(baseline) = 0.96 within the paper's uncertainty; the blocked-sky fraction and the neutral drop are reported separately |
-| Rover walkability | Curiosity's driven boxwork path from PLACES | At least 95% of it classed go or caution; every no-go cell listed as a possible false alarm |
+| Rover walkability | Curiosity's driven boxwork path from PLACES, and the Murray Buttes traverse held out | At least 95% of it classed go or caution; every no-go cell listed as a possible false alarm. The check can only measure false alarms (the cautious direction), not missed hazards |
 | Walker model | NASA/TP-2010-216125 values and tested ranges | Matches transcribed values; extrapolation flagged |
 | Ridge map | Hand-labeled sample from Curiosity images at known positions | Precision and recall reported |
 | Mars24 | GISS worked examples | Every printed value matched to 0.001° or better, most to all five printed decimals |

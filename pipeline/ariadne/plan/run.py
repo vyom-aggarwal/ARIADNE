@@ -26,6 +26,7 @@ from ariadne.models import metabolic as mb
 from ariadne.plan import constraints as cs
 from ariadne.plan import graph as g
 from ariadne.plan import select
+from ariadne.plan import transects as tr
 
 CONSUMABLES = {"time": 0.0, "metabolic": 1.0, "hazard": 0.0, "dose": 0.0, "uncertainty": 0.0}
 TIME_ONLY = {"time": 1.0, "metabolic": 0.0, "hazard": 0.0, "dose": 0.0, "uncertainty": 0.0}
@@ -96,82 +97,134 @@ def rc_to_xy(t: Affine, r, c):
     return [round(float(t.c + (c + 0.5) * t.a), 2), round(float(t.f + (r + 0.5) * t.e), 2)]
 
 
-def candidate_stations(transects: list, gr, t2, staging_rc, fields: cs.Fields, sc, log) -> list:
-    """Transect stations that are reachable, walkable, in comms line of sight and have an
-    overwatch point; the highest-scoring `candidate_stations` of them."""
-    pts = [f for f in transects if f["geometry"]["type"] == "Point" and "score" in f["properties"]]
-    feats = sorted(pts, key=lambda f: -float(f["properties"]["score"]))
-    out, seen = [], set()
-    h, w = gr.z.shape
-    max_d = sc["max_station_distance_m"]
-    rejected = {"far": 0, "outside": 0, "unwalkable": 0, "no comms": 0, "no overwatch": 0}
-    for f in feats:
-        x, y = f["geometry"]["coordinates"][:2]
-        r, c = xy_to_rc(t2, x, y)
-        if np.hypot(r - staging_rc[0], c - staging_rc[1]) * gr.res > max_d:
-            rejected["far"] += 1
-            continue
-        if not (0 <= r < h and 0 <= c < w) or (r, c) in seen:
-            rejected["outside"] += 1
-            continue
-        if not gr.passable[r, c] or not np.isfinite(fields.c_home[r, c]):
-            rejected["unwalkable"] += 1
-            continue
-        if not fields.comms[r, c]:
-            rejected["no comms"] += 1
-            continue
-        ow = cs.overwatch_point(gr, (r, c), sc["buddy_max_m"], sc["buddy_min_m"],
-                                sc["helmet_height_m"])  # fmt: skip
-        if ow is None:
-            rejected["no overwatch"] += 1
+def transect_candidates(features, gr, t2, staging_rc, fields: cs.Fields, sc, log) -> list[dict]:
+    """Whole transects whose three points are all within reach, walkable, in comms line of sight
+    and have an overwatch point; the `candidate_transects` with the highest science value."""
+    groups: dict[int, list] = {}
+    for f in features:
+        if f["geometry"]["type"] != "Point" or "score" not in f["properties"]:
             continue
         p = f["properties"]
+        x, y = f["geometry"]["coordinates"][:2]
+        groups.setdefault(int(p["transect"]), []).append(
+            (p["role"], xy_to_rc(t2, x, y), float(p["score"]))
+        )
+    h, w = gr.z.shape
+    max_d = sc["max_station_distance_m"]
+    rejected = {"incomplete": 0, "far": 0, "outside": 0, "unwalkable": 0, "no comms": 0,
+                "no overwatch": 0}  # fmt: skip
+    ranked = []
+    for tid, pts in groups.items():
+        o = tr.order_transect(pts)
+        if o is None:
+            rejected["incomplete"] += 1
+            continue
+        ranked.append((sum(o[2]), tid, o))
+    ranked.sort(key=lambda r: -r[0])
+    out = []
+    for value, tid, (roles, cells, scores) in ranked:
+        reason = None
+        for r, c in cells:
+            if np.hypot(r - staging_rc[0], c - staging_rc[1]) * gr.res > max_d:
+                reason = "far"
+            elif not (0 <= r < h and 0 <= c < w):
+                reason = "outside"
+            elif not gr.passable[r, c] or not np.isfinite(fields.c_home[r, c]):
+                reason = "unwalkable"
+            elif not fields.comms[r, c]:
+                reason = "no comms"
+            if reason:
+                break
+        ows = []
+        if reason is None:
+            for cell in cells:
+                ow = cs.overwatch_point(gr, cell, sc["buddy_max_m"], sc["buddy_min_m"],
+                                        sc["helmet_height_m"])  # fmt: skip
+                if ow is None:
+                    reason = "no overwatch"
+                    break
+                ows.append(ow)
+        if reason:
+            rejected[reason] += 1
+            continue
         out.append(
             {
-                "rc": (r, c),
-                "xy_m": rc_to_xy(t2, r, c),
-                "role": p["role"],
-                "value": float(p["score"]),
-                "transect": int(p["transect"]),
-                "overwatch_xy_m": rc_to_xy(t2, *ow["cell"]),
-                "overwatch_distance_m": round(ow["distance_m"], 1),
+                "transect": tid,
+                "points": [tuple(map(int, c)) for c in cells],
+                "roles": roles,
+                "scores": scores,
+                "value": float(value),
+                "xy_m": [rc_to_xy(t2, *c) for c in cells],
+                "overwatch_xy_m": [rc_to_xy(t2, *o["cell"]) for o in ows],
+                "overwatch_distance_m": [round(o["distance_m"], 1) for o in ows],
             }
         )
-        seen.add((r, c))
-        if len(out) >= int(sc["candidate_stations"]):
+        if len(out) >= int(sc["candidate_transects"]):
             break
-    log(f"  candidates: {len(out)} kept; rejected {rejected}")
+    log(f"  candidate transects: {len(out)} kept; rejected {rejected}")
     return out
 
 
-def leg_extras(gr, suit, w, paths, fields: cs.Fields, n: int) -> dict:
+def leg_extras(gr, suit, w, paths, fields: cs.Fields, shape) -> dict:
     """Longest comm shadow and worst minutes to shelter along each smoothed leg."""
-    shadow = np.zeros((n, n))
-    shelter = np.zeros((n, n))
-    for (i, j), pts in paths.items():
-        s = cs.route_samples(gr, suit, w, [pts], [], 0.0, 0.0)
-        start, longest, worst = None, 0.0, 0.0
-        for smp in s:
-            rc = cs._cell(gr, smp["r"], smp["c"])
-            worst = max(worst, float(fields.shelter_min[rc]))
-            if not fields.comms[rc]:
-                start = smp["t"] if start is None else start
-                longest = max(longest, smp["t"] - start)
-            else:
-                start = None
-        shadow[i, j], shelter[i, j] = longest, worst
+    shadow = np.zeros(shape)
+    shelter = np.zeros(shape)
+    for key, pts in paths.items():
+        shadow[key], shelter[key] = path_extras(gr, suit, w, pts, fields)
     return {"shadow_max_min": shadow, "shelter_max_min": shelter}
 
 
-def cached_leg_matrix(path: Path, gr, suit, w, points, fields, log) -> dict:
-    """The leg matrix and per-leg extras, reused from `path` when every input is the same."""
+def path_extras(gr, suit, w, pts, fields: cs.Fields) -> tuple[float, float]:
+    s = cs.route_samples(gr, suit, w, [pts], [], 0.0, 0.0)
+    start, longest, worst = None, 0.0, 0.0
+    for smp in s:
+        rc = cs._cell(gr, smp["r"], smp["c"])
+        worst = max(worst, float(fields.shelter_min[rc]))
+        if not fields.comms[rc]:
+            start = smp["t"] if start is None else start
+            longest = max(longest, smp["t"] - start)
+        else:
+            start = None
+    return longest, worst
+
+
+def node_internals(gr, suit, w, nodes, fields: cs.Fields) -> list:
+    """For each transect node, its two internal walks (fracture or crest to wall, wall to
+    hollow): smoothed paths, metrics, and the longest shadow and worst shelter time on them.
+    None where a walk is impossible on this grid."""
+    out = []
+    for nd in nodes:
+        a, b, c = nd["points"]
+        legs = []
+        for p, q in ((a, b), (b, c)):
+            if not (gr.passable[p] and gr.passable[q]):
+                legs = None
+                break
+            path = g.astar(gr, suit, w, p, q)
+            if path is None:
+                legs = None
+                break
+            pts = g.smooth(gr, suit, w, path.path)
+            if len(pts) < 2:  # both points in one planning cell
+                pts = [p, q]
+            met = g.polyline_metrics(gr, suit, w, pts)
+            sh, sl = path_extras(gr, suit, w, pts, fields)
+            legs.append({"path": pts, "metrics": met, "shadow": sh, "shelter": sl})
+        out.append(legs)
+    return out
+
+
+def cached_node_legs(path: Path, gr, suit, w, staging, nodes, fields, log) -> dict:
+    """Leg matrix (staging and node exits to staging and node entries), per-leg extras and the
+    nodes' internal walks, reused from `path` when every input is the same."""
     import hashlib
     import pickle
 
     key = hashlib.sha256(
         json.dumps(
-            {"points": [list(map(int, p)) for p in points], "w": w, "suit": suit.__dict__,
-             "shape": list(gr.z.shape), "res": gr.res, "version": PIPELINE_VERSION},
+            {"staging": list(map(int, staging)), "nodes": [n["points"] for n in nodes], "w": w,
+             "suit": suit.__dict__, "shape": list(gr.z.shape), "res": gr.res,
+             "version": PIPELINE_VERSION, "cache_format": 2},
             sort_keys=True,
         ).encode()
         + gr.z.tobytes() + gr.passable.tobytes() + gr.hazard.tobytes() + gr.dose.tobytes()
@@ -183,82 +236,121 @@ def cached_leg_matrix(path: Path, gr, suit, w, points, fields, log) -> dict:
         if saved.get("key") == key:
             log(f"  legs: reusing {path.name}")
             return saved["m"]
-    m = g.leg_matrix(gr, suit, w, points)
-    m.update(leg_extras(gr, suit, w, m["paths"], fields, len(points)))
+    sources = [staging] + [n["points"][-1] for n in nodes]
+    targets = [staging] + [n["points"][0] for n in nodes]
+    m = g.leg_matrix_st(gr, suit, w, sources, targets)
+    m.update(leg_extras(gr, suit, w, m["paths"], fields, m["minutes"].shape))
+    m["internal"] = node_internals(gr, suit, w, nodes, fields)
     with path.open("wb") as f:
         pickle.dump({"key": key, "m": m}, f)
     return m
 
 
+def node_ok(m, k: int, limits: dict) -> bool:
+    """Node k (1-based) is usable: both internal walks exist and keep the limits."""
+    legs = m["internal"][k - 1]
+    return legs is not None and all(
+        lg["shadow"] <= limits["comm_shadow_max_min"] and lg["shelter"] <= limits["shelter_max_min"]
+        for lg in legs
+    )
+
+
 def problem_for(
     m: dict,
-    nodes: list[int],
-    cands: list,
+    idx: list[int],
+    nodes: list,
     sc: dict,
+    limits: dict,
     suit: mb.Suit,
     lam: float,
+    objective: str = "value",
     eva: float | None = None,
     cons_total: float | None = None,
 ) -> select.Problem:
-    idx = np.array(nodes)
-    k = len(nodes) - 1
-    service = sc["service_min"]
+    """The routing problem over the nodes in `idx` (0 = staging first)."""
+    ix = np.array(idx)
     eva = sc["eva_max_min"] if eva is None else eva
     cons_total = sc["consumables_total_min"] if cons_total is None else cons_total
-    # a leg that would break the comms or shelter limits is not allowed
-    bad = (m["shadow_max_min"] > sc["comm_shadow_max_min"]) | (
-        m["shelter_max_min"] > sc["shelter_max_min"]
+    svc = [tr.node_service([lg["metrics"] for lg in m["internal"][k - 1]], sc["service_min"],
+                           suit.station_rate_ratio) for k in idx[1:]]  # fmt: skip
+    bad = (m["shadow_max_min"] > limits["comm_shadow_max_min"]) | (
+        m["shelter_max_min"] > limits["shelter_max_min"]
     )
-    minutes = np.where(bad, np.inf, m["minutes"])[np.ix_(idx, idx)]
+    values = np.array([nodes[k - 1]["value"] for k in idx[1:]])
     return select.Problem(
-        value=np.r_[0.0, [cands[i - 1]["value"] for i in nodes[1:]]],
-        service_min=np.r_[0.0, np.full(k, service)],
-        service_cons=np.r_[0.0, np.full(k, service * suit.station_rate_ratio)],
-        minutes=minutes,
-        consumables=m["consumables"][np.ix_(idx, idx)],
-        cost=m["cost"][np.ix_(idx, idx)],
+        value=np.r_[0.0, tr.objective_values(values, objective)],
+        service_min=np.r_[0.0, [s["minutes"] for s in svc]],
+        service_cons=np.r_[0.0, [s["consumables"] for s in svc]],
+        minutes=np.where(bad, np.inf, m["minutes"])[np.ix_(ix, ix)],
+        consumables=m["consumables"][np.ix_(ix, ix)],
+        cost=m["cost"][np.ix_(ix, ix)],
         eva_max_min=eva,
-        consumables_budget=cons_total - sc["reserve_min"] - cs.DISCRETISATION_MARGIN_MIN,
+        consumables_budget=cons_total - limits["reserve_min"] - cs.DISCRETISATION_MARGIN_MIN,
         value_weight=lam,
     )
 
 
-def plan_json(site, preset, sol, nodes, cands, m, t2, res, sc, inputs) -> dict:
-    route = [nodes[r] for r in sol.route]
-    ids = {0: "STAGING"}
+def expanded(m, route: list[int], nodes: list):
+    """Legs and stations of a node route, with each transect's internal walks."""
+    internal = {k: [lg["path"] for lg in m["internal"][k - 1]] for k in route[1:-1]}
+    return tr.expand_route(route, nodes, m["paths"], internal)
+
+
+def check_plan(fields, suit, w, m, route, nodes, sc, limits, cons_total, staging_rc):
+    legs, stations, info = expanded(m, route, nodes)
+    res = cs.check_route(
+        fields, suit, w, legs or [[staging_rc, staging_rc]], stations, sc["service_min"],
+        sc["service_min"] * suit.station_rate_ratio, cons_total, limits,
+        buddy_ok=[True] * len(stations),
+    )  # fmt: skip
+    return res, legs, stations, info
+
+
+def plan_json(site, preset, pr, route, nodes, m, legs, info, gr, suit, t2, res, sc, limits,
+              inputs) -> dict:  # fmt: skip
+    ids = []
     stations = []
-    for n_, node in enumerate(route[1:-1], start=1):
-        cnd = cands[node - 1]
-        ids[node] = f"S{n_:02d}"
+    for n_, inf in enumerate(info, start=1):
+        nd = nodes[inf["node"] - 1]
+        k = nd["roles"].index(inf["role"])
+        sid = f"S{n_:02d}"
+        ids.append(sid)
         stations.append(
             {
-                "id": ids[node],
-                "role": cnd["role"],
-                "xy_m": cnd["xy_m"],
-                "value": round(cnd["value"], 4),
+                "id": sid,
+                "role": inf["role"],
+                "transect": f"T{route[1:-1].index(inf['node']) + 1:02d}",
+                "transect_source_id": nd["transect"],
+                "xy_m": nd["xy_m"][k],
+                "value": round(nd["scores"][k], 4),
                 "service_min": sc["service_min"],
                 "label": "MODELED",
-                "overwatch_xy_m": cnd["overwatch_xy_m"],
-                "overwatch_distance_m": cnd["overwatch_distance_m"],
+                "overwatch_xy_m": nd["overwatch_xy_m"][k],
+                "overwatch_distance_m": nd["overwatch_distance_m"][k],
             }
         )
-    legs = []
-    for a, b in zip(route[:-1], route[1:], strict=True):
-        if a == b:
-            continue
-        legs.append(
+    chain = ["STAGING", *ids, "STAGING"]
+    out_legs = []
+    for k, pts in enumerate(legs):
+        met = g.polyline_metrics(gr, suit, pr["weights"], pts)
+        out_legs.append(
             {
-                "from": ids[a],
-                "to": ids[b],
-                "path_xy_m": [rc_to_xy(t2, r, c) for r, c in m["paths"][(a, b)]],
-                "minutes": round(float(m["minutes"][a, b]), 3),
-                "consumables_min": round(float(m["consumables"][a, b]), 3),
-                "relative_dose": round(float(m["dose"][a, b]), 4),
+                "from": chain[k],
+                "to": chain[k + 1],
+                "path_xy_m": [rc_to_xy(t2, r, c) for r, c in pts],
+                "minutes": round(met["minutes"], 3),
+                "consumables_min": round(met["consumables"], 3),
+                "relative_dose": round(met["dose"], 4),
+                "within_transect": bool(
+                    0 < k < len(stations)
+                    and stations[k - 1]["transect"] == stations[k]["transect"]
+                ),
             }
-        )
+        )  # fmt: skip
     for x in res["margins"]:
         r, c = x.pop("xy_cell")
         x["xy_m"] = rc_to_xy(t2, r, c)
+    n_tr = len(route) - 2
     return {
         "site": site,
         "scenario": {
@@ -268,14 +360,20 @@ def plan_json(site, preset, sol, nodes, cands, m, t2, res, sc, inputs) -> dict:
             "rover_profile": "default",
             "eva_max_min": sc["eva_max_min"],
             "consumables_total_min": sc["consumables_total_min"],
+            "reserve_min": limits["reserve_min"],
+            "shelter_max_min": limits["shelter_max_min"],
+            "weights": pr["weights"],
+            "objective": pr["objective"],
             "label": "PLACEHOLDER",
         },
         "stations": stations,
-        "legs": legs,
+        "legs": out_legs,
         "margins": res["margins"],
         "checks": res["checks"],
         "totals": {
-            "science_value": round(sol.value, 4),
+            "transects": n_tr,
+            "stations": len(stations),
+            "science_value": round(sum(nodes[k - 1]["value"] for k in route[1:-1]), 4),
             "minutes": res["details"]["minutes"],
             "consumables_min": res["details"]["consumables"],
             "relative_dose_min": res["details"]["relative_dose"],
@@ -302,27 +400,23 @@ def validate_plan(plan: dict) -> None:
     jsonschema.validate(plan, schema)
 
 
-def thread_scenarios(m, cands, fields, gr, suit, w, sc, n: int, seed: int, log) -> dict:
-    """Plan n random scenarios (station subsets and budgets) and check the thread on each."""
+def thread_scenarios(m, nodes, usable, fields, gr, suit, w, sc, limits, n, seed, log) -> dict:
+    """Plan n random scenarios (transect subsets and budgets) and check the thread on each."""
     rng = np.random.default_rng(seed)
-    limits = {k: sc[k] for k in ("reserve_min", "shelter_max_min", "comm_shadow_max_min",
-                                 "sample_step_m")}  # fmt: skip
     fails, worst, visited = 0, np.inf, 0
+    pool = np.array(usable)
     for _ in range(n):
-        k = int(rng.integers(3, len(cands) + 1))
-        nodes = [0, *sorted(rng.choice(np.arange(1, len(cands) + 1), k, replace=False).tolist())]
-        total = float(rng.uniform(120, 360))
-        p = problem_for(m, nodes, cands, sc, suit, 1e6, eva=float(rng.uniform(90, 300)),
+        k = int(rng.integers(1, len(pool) + 1))
+        idx = [0, *sorted(rng.choice(pool, k, replace=False).tolist())]
+        total = float(rng.uniform(150, 450))
+        p = problem_for(m, idx, nodes, sc, limits, suit, 1e6, eva=float(rng.uniform(120, 420)),
                         cons_total=total)  # fmt: skip
         sol = select.solve(p, first_solution_only=True)
-        route = [nodes[r] for r in sol.route]
-        legs = [m["paths"][(a, b)] for a, b in zip(route[:-1], route[1:], strict=True) if a != b]
+        route = [idx[r] for r in sol.route]
         visited += len(route) - 2
-        if not legs:
+        if len(route) <= 2:
             continue
-        res = cs.check_route(fields, suit, w, legs, [cands[r - 1]["rc"] for r in route[1:-1]],
-                             sc["service_min"], sc["service_min"] * suit.station_rate_ratio,
-                             total, limits)  # fmt: skip
+        res, *_ = check_plan(fields, suit, w, m, route, nodes, sc, limits, total, None)
         fails += res["checks"]["thread"] != "pass"
         worst = min(worst, res["details"]["thread_min_margin_min"])
     log(f"  thread: {n - fails} of {n} random scenarios hold (worst margin {worst:.2f} min)")
@@ -330,51 +424,72 @@ def thread_scenarios(m, cands, fields, gr, suit, w, sc, n: int, seed: int, log) 
         "scenarios": n,
         "held": n - fails,
         "worst_margin_min": round(float(worst), 3),
-        "mean_stations_visited": round(visited / n, 2),
+        "mean_transects_visited": round(visited / n, 2),
         "seed": seed,
     }
 
 
-def bench_fixture(m, cands, sc, suit, n: int, seed: int, time_limit: float, log) -> dict:
-    """Random scenarios solved by OR-Tools, for the browser solver's benchmark."""
+def bench_fixture(m, nodes, usable, sc, limits, suit, n, seed, time_limit, log) -> dict:
+    """Random scenarios solved by OR-Tools (time-limited), for the browser solver's benchmark."""
     rng = np.random.default_rng(seed)
     scen = []
+    pool = np.array(usable)
     for _ in range(n):
-        k = int(rng.integers(12, len(cands) + 1))
-        nodes = [0, *sorted(rng.choice(np.arange(1, len(cands) + 1), k, replace=False).tolist())]
-        eva = float(rng.uniform(90, 300))
-        total = float(rng.uniform(120, 360))
-        p = problem_for(m, nodes, cands, sc, suit, 1e6, eva=eva, cons_total=total)
+        k = int(rng.integers(min(8, len(pool)), len(pool) + 1))
+        idx = [0, *sorted(rng.choice(pool, k, replace=False).tolist())]
+        eva = float(rng.uniform(120, 420))
+        total = float(rng.uniform(150, 450))
+        p = problem_for(m, idx, nodes, sc, limits, suit, 1e6, eva=eva, cons_total=total)
         sol = select.solve(p, time_limit_s=time_limit)
         scen.append(
             {
-                "nodes": nodes,
+                "nodes": idx,
                 "eva_max_min": round(eva, 3),
                 "consumables_budget": round(p.consumables_budget, 3),
-                "ortools_route": [nodes[r] for r in sol.route],
+                "ortools_route": [idx[r] for r in sol.route],
                 "ortools_value": round(sol.value, 6),
             }
         )
     log(f"  benchmark: {n} OR-Tools scenarios")
-    bad = (m["shadow_max_min"] > sc["comm_shadow_max_min"]) | (
-        m["shelter_max_min"] > sc["shelter_max_min"]
+    svc_min = [0.0] + [
+        tr.node_service([lg["metrics"] for lg in m["internal"][k]], sc["service_min"],
+                        suit.station_rate_ratio)["minutes"] if m["internal"][k] else None
+        for k in range(len(nodes))
+    ]  # fmt: skip
+    svc_cons = [0.0] + [
+        tr.node_service([lg["metrics"] for lg in m["internal"][k]], sc["service_min"],
+                        suit.station_rate_ratio)["consumables"] if m["internal"][k] else None
+        for k in range(len(nodes))
+    ]  # fmt: skip
+    bad = (m["shadow_max_min"] > limits["comm_shadow_max_min"]) | (
+        m["shelter_max_min"] > limits["shelter_max_min"]
     )
 
     def mat(a):
         return [[None if not np.isfinite(v) else round(float(v), 4) for v in row] for row in a]
 
     return {
-        "_about": "Browser solver benchmark (test D11): OR-Tools reference plans on random "
-        "subsets of the boxwork candidates, balanced preset legs. Generated by ariadne plan.",
+        "_about": "Browser solver benchmark (test D11): OR-Tools reference plans, with a "
+        f"{time_limit:g} s guided local search per scenario (a time-limited reference, not a "
+        "proven optimum), on random subsets of the boxwork transect nodes, Balanced legs. "
+        "Generated by ariadne plan.",
         "pipeline_version": PIPELINE_VERSION,
-        "service_min": sc["service_min"],
-        "service_consumables_min": round(sc["service_min"] * suit.station_rate_ratio, 4),
-        "values": [0.0] + [round(c["value"], 6) for c in cands],
+        "ortools_time_limit_s": time_limit,
+        "service_min": [None if v is None else round(v, 4) for v in svc_min],
+        "service_consumables_min": [None if v is None else round(v, 4) for v in svc_cons],
+        "values": [0.0] + [round(nd["value"], 6) for nd in nodes],
         "minutes": mat(np.where(bad, np.inf, m["minutes"])),
         "consumables": mat(m["consumables"]),
         "cost": mat(m["cost"]),
         "scenarios": scen,
     }
+
+
+def preset_limits(sc: dict, pr: dict) -> dict:
+    lim = {k: sc[k] for k in ("reserve_min", "shelter_max_min", "comm_shadow_max_min",
+                              "sample_step_m")}  # fmt: skip
+    lim.update({k: float(v) for k, v in pr.get("limits", {}).items()})
+    return lim
 
 
 def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
@@ -402,60 +517,68 @@ def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
     sources = [tuple(x) for x in sh_cells] + [staging_rc]
     ties = [float(gr0.dose[tuple(x)]) for x in sh_cells] + [rover_s]
     storm = g.dijkstra(gr0, suit, TIME_ONLY, sources, reverse=True, tie_break=ties)
-    passable = gr0.passable & (storm.time <= sc["shelter_max_min"])
-    gr = g.Grid(gr0.z, passable, gr0.hazard, gr0.dose, gr0.unc, gr0.res)
-    home = g.dijkstra(gr, suit, CONSUMABLES, [staging_rc], reverse=True)
-    fields = cs.Fields(gr, home.consumables, storm.time, extra["comms"], extra["rover_ok"])
+
+    def fields_for(shelter_max):
+        passable = gr0.passable & (storm.time <= shelter_max)
+        grid = g.Grid(gr0.z, passable, gr0.hazard, gr0.dose, gr0.unc, gr0.res)
+        home = g.dijkstra(grid, suit, CONSUMABLES, [staging_rc], reverse=True)
+        return cs.Fields(grid, home.consumables, storm.time, extra["comms"], extra["rover_ok"])
+
+    limits = {name: preset_limits(sc, pr) for name, pr in presets["presets"].items()}
+    loosest = max(lim["shelter_max_min"] for lim in limits.values())
+    fields = {s: fields_for(s) for s in sorted({lim["shelter_max_min"] for lim in limits.values()})}
+    f_loose = fields[loosest]
     log(f"  fields ready ({time.time() - t0:.0f} s)")
-    common = dict(resolution_m=gr.res, inputs=["derived layers"])
-    for name, arr, pid, label in (
-        ("c_home.tif", np.where(np.isfinite(home.consumables), home.consumables, np.nan),
-         "Consumables to walk back to the staging point, minutes at the nominal rate",
-         Label.MODELED),
+    common = dict(resolution_m=gr0.res, inputs=["derived layers"])
+    home = f_loose.c_home
+    for name, arr, pid in (
+        ("c_home.tif", np.where(np.isfinite(home), home, np.nan),
+         "Consumables to walk back to the staging point, minutes at the nominal rate"),
         ("shelter_minutes.tif", np.where(np.isfinite(storm.time), storm.time, np.nan),
-         "Walking minutes to the nearest shelter or the rover", Label.MODELED),
+         "Walking minutes to the nearest shelter or the rover"),
         ("storm_pointer.tif", storm.pred.astype(np.int16),
-         "Storm mode: index of the next move toward the earliest shelter (-1 at shelters)",
-         Label.MODELED),
+         "Storm mode: index of the next move toward the earliest shelter (-1 at shelters)"),
     ):  # fmt: skip
         write_layer(out / name, arr.astype(np.float32 if arr.dtype != np.int16 else np.int16),
-                    t2, crs, None, product_id=pid, label=label,
+                    t2, crs, None, product_id=pid, label=Label.MODELED,
                     notes="Walker model with PLACEHOLDER suit settings.", **common)  # fmt: skip
     transects = json.loads((site_dir / "derived" / "transects.geojson").read_text("utf-8"))
-    cands = candidate_stations(transects["features"], gr, t2, staging_rc, fields, sc, log)
-    points = [staging_rc] + [c["rc"] for c in cands]
-    limits = {k_: sc[k_] for k_ in ("reserve_min", "shelter_max_min", "comm_shadow_max_min",
-                                    "sample_step_m")}  # fmt: skip
+    nodes = transect_candidates(transects["features"], f_loose.grid, t2, staging_rc, f_loose,
+                                sc, log)  # fmt: skip
     inputs = ["usgs-gale-dem-1m", "usgs-gale-ortho-25cm", "msl-places", "mola-dem-463m",
               "derived layers (docs/derived)"]  # fmt: skip
-    mats, plans = {}, {}
+    mats, plans, usable_by = {}, {}, {}
     for name, pr in presets["presets"].items():
-        w = pr["weights"]
-        m = cached_leg_matrix(out / f"legs_{name}.pkl", gr, suit, w, points, fields, log)
+        w, lim = pr["weights"], limits[name]
+        f = fields[lim["shelter_max_min"]]
+        m = cached_node_legs(out / f"legs_{name}.pkl", f.grid, suit, w, staging_rc, nodes, f, log)
         mats[name] = m
-        nodes = list(range(len(points)))
-        p = problem_for(m, nodes, cands, sc, suit, float(pr["value_weight"]))
-        sol = select.solve(p, time_limit_s=3.0 if quick else 15.0)
-        route = sol.route
-        legs = [m["paths"][(a, b)] for a, b in zip(route[:-1], route[1:], strict=True) if a != b]
-        res = cs.check_route(
-            fields, suit, w, legs or [[staging_rc, staging_rc]],
-            [cands[r - 1]["rc"] for r in route[1:-1]], sc["service_min"],
-            sc["service_min"] * suit.station_rate_ratio, sc["consumables_total_min"], limits,
-            buddy_ok=[True] * (len(route) - 2),
-        )  # fmt: skip
-        plan = plan_json(site, name, sol, nodes, cands, m, t2, res, sc, inputs)
+        usable = [k_ for k_ in range(1, len(nodes) + 1) if node_ok(m, k_, lim)]
+        usable_by[name] = usable
+        p = problem_for(m, [0, *usable], nodes, sc, lim, suit, float(pr["value_weight"]),
+                        pr["objective"])  # fmt: skip
+        sol = select.solve(p, time_limit_s=3.0 if quick else 20.0)
+        route = [[0, *usable][r] for r in sol.route]
+        res, legs, stations, info = check_plan(f, suit, w, m, route, nodes, sc, lim,
+                                               sc["consumables_total_min"], staging_rc)  # fmt: skip
+        plan = plan_json(site, name, pr, route, nodes, m, legs, info, f.grid, suit, t2, res, sc,
+                         lim, inputs)  # fmt: skip
         validate_plan(plan)
         plans[name] = plan
-        log(f"  {name}: {len(route) - 2} stations, value {sol.value:.2f}, "
+        log(f"  {name}: {len(route) - 2} transects ({len(stations)} stations) of {len(usable)} "
+            f"usable, value {plan['totals']['science_value']:.2f}, "
             f"{res['details']['minutes']:.0f} min, checks {res['checks']}")  # fmt: skip
     bal = mats["balanced"]
     w_bal = presets["presets"]["balanced"]["weights"]
+    f_bal = fields[limits["balanced"]["shelter_max_min"]]
+    n_thread = 100 if quick else 1000
+    lim_bal = limits["balanced"]
     thread = thread_scenarios(
-        bal, cands, fields, gr, suit, w_bal, sc, 100 if quick else 1000, 20261109, log
-    )
-    bench = bench_fixture(bal, cands, sc, suit, 10 if quick else 60, 1109,
-                          0.5 if quick else 2.0, log)  # fmt: skip
+        bal, nodes, usable_by["balanced"], f_bal, f_bal.grid, suit, w_bal, sc, lim_bal, n_thread,
+        20261109, log,
+    )  # fmt: skip
+    bench = bench_fixture(bal, nodes, usable_by["balanced"], sc, limits["balanced"], suit,
+                          10 if quick else 60, 1109, 0.5 if quick else 2.0, log)  # fmt: skip
     docs = root / "docs" / "plan"
     docs.mkdir(parents=True, exist_ok=True)
     for name, plan in plans.items():
@@ -469,17 +592,27 @@ def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
         "site": site,
         "pipeline_version": PIPELINE_VERSION,
         "computed_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
-        "grid": {"resolution_m": gr.res, "shape": list(gr.z.shape)},
+        "grid": {"resolution_m": gr0.res, "shape": list(gr0.z.shape)},
         "staging_xy_m": staging_xy,
-        "candidates": len(cands),
+        "candidate_transects": len(nodes),
+        "usable_transects": {n_: len(u) for n_, u in usable_by.items()},
         "walkable_share": round(float(gr0.passable.mean()), 4),
-        "within_shelter_limit_share": round(float(passable.sum() / max(1, gr0.passable.sum())), 4),
+        "within_shelter_limit_share": {
+            str(s): round(float(f_.grid.passable.sum() / max(1, gr0.passable.sum())), 4)
+            for s, f_ in fields.items()
+        },
         "comms_share": round(float(extra["comms"].mean()), 4),
         "rover_ok": extra["rover_ok"],
-        "plans": {
-            n_: p_["totals"] | {"stations": len(p_["stations"]), "checks": p_["checks"]}
-            for n_, p_ in plans.items()
+        "presets": {
+            n_: {
+                "weights": pr["weights"],
+                "limits": limits[n_],
+                "objective": pr["objective"],
+                "value_weight": pr["value_weight"],
+            }
+            for n_, pr in presets["presets"].items()
         },  # fmt: skip
+        "plans": {n_: p_["totals"] | {"checks": p_["checks"]} for n_, p_ in plans.items()},
         "thread": thread,
         "scenario": sc,
         "seconds": round(time.time() - t0),

@@ -266,8 +266,19 @@ def rover_walkability_check(root: Path) -> list[dict]:
     )
     target = "At least 95% classed go or caution; every no-go cell listed as a possible false alarm"
     note = (
-        "Rover thresholds are PLACEHOLDER (config/derive.yaml). A no-go point where Curiosity "
-        "drove is a likely false alarm of the model, or ground the rover crossed with care."
+        "Rover thresholds are PLACEHOLDER (config/derive.yaml). This check can only measure false "
+        "alarms (no-go where Curiosity actually drove), the cautious direction; it cannot measure "
+        "missed hazards. A no-go point on the path is a likely false alarm, or ground the rover "
+        "crossed with care."
+    )
+    diagnosis = (
+        "The boxwork misses its target while Murray Buttes, held out, passes. The boxwork ridges "
+        "are 1 to 2 m high and a few metres wide, at the DEM's effective resolution (about 2.5 m) "
+        "and the rover's footprint, so slope there mixes real relief with what the DEM cannot "
+        "resolve and with its errors; candidate DEM seams add false alarms (no-go rate 62% within "
+        "30 m of a seam against 18% elsewhere). No more re-runs (team decision, 2026-11-09). The "
+        "planner stays conservative, and the surfaces mark slope no-go cells in seam or "
+        "low-confidence zones as 'map may be over-cautious here, check by eye'."
     )
     out = []
     box = _site_rover_results(root, "boxwork")
@@ -300,6 +311,7 @@ def rover_walkability_check(root: Path) -> list[dict]:
             },
             "label": "MODELED",
             "note": note,
+            "diagnosis": diagnosis,
         }
         if frozen is not None:
             first = frozen["check"]
@@ -338,6 +350,7 @@ def rover_walkability_check(root: Path) -> list[dict]:
                 },
                 "label": "MODELED",
                 "note": note,
+                "diagnosis": diagnosis,
             }
         )
     return out
@@ -457,13 +470,16 @@ def station_solver_check(root: Path) -> dict:
     return {
         "id": "station-solver",
         "title": "Browser station solver against OR-Tools",
-        "reference": f"OR-Tools reference plans on {b['scenarios']} random boxwork scenarios",
-        "target": "At least 95% of the reference science value",
+        "reference": f"Time-limited OR-Tools reference plans on {b['scenarios']} random boxwork "
+        "scenarios",
+        "target": "At least 95% of the reference science value on average; worst case reported",
         "status": "pass" if b["mean_ratio"] >= b["target"] else "fail",
         "result": {k: b[k] for k in ("scenarios", "mean_ratio", "min_ratio", "target")},
         "label": "MODELED",
-        "note": "Mean ratio of browser to OR-Tools science value; per-scenario rows in "
-        "docs/validation/station-solver.json.",
+        "note": "OR-Tools runs a guided local search with a time limit per scenario, so it is a "
+        "time-limited reference, not a proven optimum; the browser solver can and sometimes does "
+        f"find more value. Mean ratio {b['mean_ratio']:.3f}, worst case {b['min_ratio']:.3f}; "
+        "per-scenario rows in docs/validation/station-solver.json.",
     }
 
 

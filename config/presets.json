@@ -1,13 +1,13 @@
 {
- "_about": "Route presets and the default scenario for the route engine (PROMPT.md 5.3 and 5.9). Every value is PLACEHOLDER unless a source is given. Weights multiply the terms of the edge cost c(e) = dt [w_t + w_m M/M_nom + w_r R + w_d D + w_u U]; value_weight is what one unit of science value is worth in weighted minutes when a station is skipped.",
+ "_about": "Route presets and the default scenario for the route engine (PROMPT.md 5.3 and 5.9). Every value is PLACEHOLDER unless a source is given. Weights multiply the terms of the edge cost c(e) = dt [w_t + w_m M/M_nom + w_r R + w_d D + w_u U]: R is the hazard (caution) term, the walker cost multiplier less 1, which rises through caution ground; U is 1 - confidence. Each preset's limits override the scenario's. value_weight is what one unit of objective is worth in weighted minutes when a transect is skipped. The objective 'value' maximises science value; 'transects' maximises the number of complete transects, then value. Presets set by the team on 2026-11-09.",
  "presets": {
-  "safest": {"title": "Safest", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 3.0, "dose": 2.0, "uncertainty": 2.0}, "value_weight": 300},
-  "balanced": {"title": "Balanced", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 1.0, "dose": 1.0, "uncertainty": 1.0}, "value_weight": 1000},
-  "most_science": {"title": "Most science", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.3, "hazard": 0.5, "dose": 0.3, "uncertainty": 0.3}, "value_weight": 1000000}
+  "safest": {"title": "Safest", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 3.0, "dose": 1.0, "uncertainty": 3.0}, "limits": {"reserve_min": 45, "shelter_max_min": 10}, "objective": "value", "value_weight": 1000, "note": "Reserve 45 min, shelter within 10 min, caution (hazard) and uncertainty penalties three times Balanced's."},
+  "balanced": {"title": "Balanced", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 1.0, "dose": 1.0, "uncertainty": 1.0}, "limits": {"reserve_min": 30, "shelter_max_min": 20}, "objective": "value", "value_weight": 1000, "note": "The defaults."},
+  "most_science": {"title": "Most science", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 0.0, "dose": 1.0, "uncertainty": 1.0}, "limits": {"reserve_min": 30, "shelter_max_min": 20}, "objective": "transects", "value_weight": 1000000, "note": "Balanced's hard limits, no caution penalty, maximises complete transects."}
  },
  "scenario": {
-  "eva_max_min": {"value": 240, "label": "PLACEHOLDER", "note": "Longest EVA allowed, staging to staging."},
-  "consumables_total_min": {"value": 300, "label": "PLACEHOLDER", "note": "Consumables at the start, in minutes at the nominal metabolic rate."},
+  "eva_max_min": {"value": 360, "label": "PLACEHOLDER", "source": "PROMPT.md section 2 and docs/PLAN.md: an EVA budget of 6 h plus a 30 min reserve"},
+  "consumables_total_min": {"value": 390, "label": "PLACEHOLDER", "source": "PROMPT.md section 2: 6 h plus the 30 min reserve, in minutes at the nominal metabolic rate"},
   "reserve_min": {"value": 30, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9: C_reserve = 30 min"},
   "service_min": {"value": 15, "label": "PLACEHOLDER", "source": "PROMPT.md 5.8: 15 min per station"},
   "shelter_max_min": {"value": 20, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
@@ -17,8 +17,8 @@
   "helmet_height_m": {"value": 1.8, "label": "PLACEHOLDER", "source": "PROMPT.md 4.7"},
   "pace_drift_trigger": {"value": 0.15, "label": "PLACEHOLDER", "source": "PROMPT.md 5.10"},
   "sample_step_m": {"value": 5, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9: checked at least every 5 m"},
-  "max_station_distance_m": {"value": 800, "label": "PLACEHOLDER", "note": "Candidate stations lie within this distance of the staging point."},
-  "candidate_stations": {"value": 40, "label": "PLACEHOLDER", "note": "Highest-scoring valid stations kept for the leg matrix."},
+  "max_station_distance_m": {"value": 800, "label": "PLACEHOLDER", "note": "Every point of a candidate transect lies within this distance of the staging point."},
+  "candidate_transects": {"value": 30, "label": "PLACEHOLDER", "note": "Highest-value valid transects kept for the leg matrix."},
   "grid_margin_m": {"value": 400, "label": "PLACEHOLDER", "note": "Planning grid extends this far beyond the farthest candidate."},
   "planning_resolution_m": {"value": 2, "label": "PLACEHOLDER", "source": "PROMPT.md 5.1: a 2 m level for long legs"}
  }

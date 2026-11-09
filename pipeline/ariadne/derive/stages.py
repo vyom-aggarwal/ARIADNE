@@ -781,6 +781,49 @@ def stage_uncertainty(ctx, log):
     log("  confidence written")
 
 
+def stage_flags(ctx, log):
+    """Where the map may be over-cautious: no-go by slope in a seam or low-confidence zone. Reads
+    the saved slope, seam-distance and confidence layers, so it can run on its own."""
+    cfg, out = ctx["cfg"], ctx["out"]
+    conf, t, crs = read_raster(out / "confidence.tif")
+    seam_d, _, _ = read_raster(out / "seam_distance.tif")
+    zone = np.nan_to_num(seam_d, nan=np.inf) <= float(setting(cfg, "uncertainty", "seam_zone_m"))
+    low = float(setting(cfg, "uncertainty", "low_confidence"))
+    summary = {"low_confidence": low}
+    for who, nogo_key in (("walker", "walker_slope_deg"), ("rover", "rover_slope_deg")):
+        slope, _, _ = read_raster(out / f"slope_{who}.tif")
+        nogo = float(setting(cfg, "walkability", nogo_key)[1])
+        flag = seams.overcautious(slope, nogo, zone, conf, low)
+        write_layer(
+            out / f"overcautious_{who}.tif",
+            flag,
+            t,
+            crs,
+            255,
+            product_id=f"Map may be over-cautious here ({who}): no-go by slope in a seam or "
+            "low-confidence zone, check by eye",
+            label=Label.MODELED,
+            notes="1 = no-go by slope (above the PLACEHOLDER limit) within the seam zone or where "
+            "confidence is below the PLACEHOLDER low-confidence level. The rover check can only "
+            "measure false alarms, and they cluster at seams.",
+            resolution_m=float(t.a),
+            inputs=[f"slope_{who}.tif", "seam_distance.tif", "confidence.tif"],
+            settings={
+                "nogo_deg": nogo,
+                "seam_zone_m": float(setting(cfg, "uncertainty", "seam_zone_m")),
+                "low_confidence": low,
+            },
+        )
+        valid = flag != 255
+        nogo_cells = int(((slope > nogo) & valid).sum())
+        summary[who] = {
+            "flagged_share_of_site": round(float((flag == 1).sum()) / max(1, int(valid.sum())), 4),
+            "flagged_share_of_slope_no_go": round(float((flag == 1).sum()) / max(1, nogo_cells), 4),
+        }
+    ctx["flags"] = summary
+    log("  over-cautious flags written")
+
+
 def _stats(a) -> dict | None:
     v = np.asarray(a, dtype=np.float64)
     v = v[np.isfinite(v)]

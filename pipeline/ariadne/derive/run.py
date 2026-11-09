@@ -380,7 +380,30 @@ def _light_and_sun(ctx, hres, site_raw, log):
     return named, sun
 
 
-RERUN_STAGES = ("walkability",)
+RERUN_STAGES = ("walkability", "flags")
+
+
+def derive_flags(name: str, log: Callable[[str], None] = print) -> dict:
+    """Write only the over-cautious flags from the saved layers and refresh the report."""
+    from ariadne.derive import stages
+    from ariadne.derive.report import derived_markdown
+
+    root, site_dir, out = _site_paths(name)
+    summary_path = out / "summary.json"
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    ctx = {"cfg": load_derive_config(), "out": out}
+    stages.stage_flags(ctx, log)
+    summary["flags"] = ctx["flags"]
+    summary_path.write_text(json.dumps(summary, indent=1), encoding="utf-8", newline="\n")
+    cal = json.loads(calibration_path(root).read_text(encoding="utf-8"))
+    report = root / "docs" / "derived" / f"{name}.md"
+    report.write_text(
+        derived_markdown(summary, cal if name == CALIBRATION_SITE else None),
+        encoding="utf-8",
+        newline="\n",
+    )
+    log(f"  report refreshed: {report.relative_to(root)}")
+    return summary
 
 
 def derive_site(
@@ -575,6 +598,7 @@ def derive_site(
     stages.stage_shelters_los(ctx, log)
     stages.stage_science(ctx, log)
     stages.stage_uncertainty(ctx, log)
+    stages.stage_flags(ctx, log)
 
     summary = {
         "site": name,
@@ -601,6 +625,7 @@ def derive_site(
         "line_of_sight": ctx.get("line_of_sight"),
         "science": ctx.get("science"),
         "uncertainty": ctx.get("uncertainty"),
+        "flags": ctx.get("flags"),
         "drill_sites": drills,
         "role": site_cfg.role,
         "seconds": round(time.time() - t_start),

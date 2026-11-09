@@ -10,7 +10,7 @@ Last updated: 2026-11-09 UTC (Phase 3 done; ridge labels awaited).
 | 0 Repo and guardrails | Done 2026-11-08: all ten acceptance tests pass; CI green; site live at https://vyom-aggarwal.github.io/ARIADNE/ |
 | 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
 | 2 Derived layers | Done 2026-11-09: C1 to C21 pass; validation.json holds the calibration (PASS). Follow-up done: footprint-scale slope re-run once (boxwork 79.8%, still FAIL; Murray Buttes held out 99.8%, PASS), DEM seams mapped, ridge labeling page built. Ridge precision and recall wait for the team's labels |
-| 3 Route engine | Done 2026-11-09: D1 to D13 pass; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.1% of OR-Tools; plan.json validates. The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
+| 3 Route engine | Done 2026-11-09, revised after review: D1 to D14 pass; plans visit whole transects within the 6 h EVA; presets differ by safety settings; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.2% of the time-limited OR-Tools reference (worst 98.8%). The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
 | 4 Habitat Planner | Next |
 | 5 to 9 | Not started |
 
@@ -23,6 +23,7 @@ Last updated: 2026-11-09 UTC (Phase 3 done; ridge labels awaited).
 - **Open items kept open:** the Photojournal boxwork set (Phase 4) and DONKI (Phase 6).
 - **Phase 2 spec changes (2026-11-08):** (1) far-field horizons: 2 km on the 1 m DEM, then to about 100 km on a coarse regional DEM, reporting the sunrise and sunset shift; (2) calibrate n so that S(parking spot) / S(the RAD study's baseline positions) = 0.96, with far-field horizons at both; (3) use Ehresmann et al. 2021 (doi:10.1029/2021JE006851) for the Murray Buttes figures and Guo et al. 2021 (doi:10.1007/s00159-021-00136-5) for a dose-pressure coefficient, verified first; (4) drill sites Altadena, Valle de la Luna, Nevado Sajama and Nevado Sajama2, sols from NASA's Curiosity blog and positions from PLACES; (5) describe the Mars24 example mismatch as rounding unless it can be shown otherwise. Applied to PROMPT.md and docs/PLAN.md; evidence in docs/SOURCES_LOG.md (Phase 2 verification pass).
 - **Phase 2 follow-up (2026-11-09):** (1) compute slope at each traveller's footprint scale on physical grounds, not to hit the target: the rover from Curiosity's published dimensions, the walker no finer than the DEM's effective resolution; fix the method before re-running, re-run the check once, keep the failed first result in validation.json beside the new one, and run the rover check on the Murray Buttes traverse as a held-out test; report a miss as is. (2) Map the DEM mosaic seams from the stereo-pair footprints into the uncertainty layer and check whether no-go cells on Curiosity's path sit on a seam. (3) Build a local labeling page (25 cm image and hillshade chips at random points, stratified by predicted class) for about 250 labels; split them into tuning and test halves before tuning; tune on the first half only and report precision and recall on the second; consider a smoothed DEM for TPI and image texture; regenerate the transects from the tuned map. (4) Continue with Phase 3 without waiting for the labels.
+- **Phase 3 review (2026-11-09):** (1) walkability: no more re-runs; report the boxwork FAIL (79.8%) beside the Murray Buttes PASS (99.8%) with the diagnosis (ridges at the DEM's resolution limit, seams add false alarms), say that the check can only measure false alarms, keep the planner conservative, and mark slope no-go cells in seam or low-confidence zones on the HUD and tablet as "map may be over-cautious here, check by eye". (2) EVA length: align with the spec's 6 h plus a 30 min reserve (PLACEHOLDER). (3) Route each fracture-wall-hollow transect as one node with its combined service time and internal walk. (4) Presets differ by safety settings: Safest reserve 45 min, shelter limit 10 min, caution and uncertainty penalties ×3; Balanced the defaults; Most science Balanced's limits, no caution penalty, maximise complete transects (all PLACEHOLDER). (5) Describe OR-Tools as a time-limited reference, not an optimum, and report the worst case. (6) Phase 4, then the rover as a mobile comms relay: a few reachable overwatch points it moves between during the EVA, with the thread ending wherever the rover is.
 
 ## Kickoff findings that change the plan
 
@@ -344,6 +345,7 @@ Turn the derived layers into walk plans: a directional graph on the DEM, cost-to
 | D11 | Browser solver: at least 95% of the OR-Tools science value on average over 50 or more boxwork scenarios, every plan feasible, with the per-scenario ratios recorded | `web/tests/solver.test.ts`, `docs/validation/station-solver.json` |
 | D12 | Re-planning triggers on more than 15% pace drift, drops the lowest value per minute first, re-checks every constraint and returns a diff; storm mode follows the pointers to the earliest shelter | `web/tests/replan.test.ts`, `web/tests/storm.test.ts` |
 | D13 | `ariadne plan` is built; docs/plan/<site>.md and validation.json carry the plans, the 1,000-scenario thread run, the walker model and the solver benchmark | `pipeline/tests/test_cli.py`, `pipeline/tests/test_plan_outputs.py` |
+| D14 (review) | A transect node's service is three visits plus its internal walk; routes expand into complete fracture-wall-hollow triples in order; plans visit whole transects only; the presets carry their safety settings (Safest reserve 45 and shelter 10, caution and uncertainty ×3; Most science caution 0 and the transect objective) and every plan keeps its preset's limits within the 360-minute EVA; the over-cautious flag marks slope no-go in seam or low-confidence zones | `pipeline/tests/test_plan_transects.py`, `pipeline/tests/test_plan_outputs.py`, `pipeline/tests/test_seams.py` |
 
 ### Phase 3 evidence
 
@@ -362,6 +364,26 @@ Turn the derived layers into walk plans: a directional graph on the DEM, cost-to
 - **Walker model (D1, D10):** Minetti's polynomial lies within one SD of 12 of the 13 Table 2 means; the TypeScript twin matches the shared fixture to 1e-9. validation.json reports the NASA report as not transcribable and every Mars walk as EXTRAPOLATED.
 - **Tests:** all pipeline tests and all web tests pass locally (Python 3.13, Node 24).
 
+### Phase 3 review changes (2026-11-09)
+
+- **EVA length.** The 240-minute limit and 300 minutes of consumables were PLACEHOLDER values chosen here, not taken from the spec. They now follow PROMPT.md's "6 h plus a 30 min reserve": a 360-minute EVA limit and 390 minutes of consumables.
+- **Whole transects.** None of the first plans' 13 stations formed a complete transect (they came from 11 to 13 different transects). Each transect is now one node, visited fracture (or crest), wall, hollow. Its service time is the three 15-minute visits plus its internal walk, and its value is the sum of its three station scores. Two stations of one transect can share a 2 m planning cell; such an internal walk has zero length.
+- **Presets by safety settings** (config/presets.json, PLACEHOLDER): Safest has a 45-minute reserve, a 10-minute shelter limit, and caution (hazard) and uncertainty weights of 3; Balanced holds the defaults; Most science keeps Balanced's limits, sets the caution weight to 0 and maximises complete transects, then value.
+- **Over-cautious flag.** `overcautious_walker.tif` and `overcautious_rover.tif` mark cells that are no-go by slope and lie in a seam zone or where confidence is below 0.55 (PLACEHOLDER: cells with at least one model flag). They cover 0.9% of the boxwork site (4.9% of its walker slope no-go cells) and 0.1% at Murray Buttes. The planner still avoids these cells; the HUD and tablet (Phase 5) will mark them "map may be over-cautious here, check by eye". `ariadne derive --from-stage flags` writes them from the saved layers.
+- **Rover check wording.** validation.json now says the check can only measure false alarms, the cautious direction, and gives the diagnosis beside the Murray Buttes PASS. No re-run.
+- **Benchmark wording.** OR-Tools runs a 2-second guided local search per scenario, so it is a time-limited reference, not a proven optimum.
+
+| Preset | Transects | Science value | Minutes | Consumables (min) | Distance (m) | Least thread margin (min) | Worst minutes to shelter | Longest comm shadow (min) | Checks |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| safest | 7 (21 stations) | 18.94 | 357 | 238 | 2,006 | 107.0 | 3.3 | 1.7 | all pass |
+| balanced | 7 (21 stations) | 18.94 | 356 | 237 | 1,960 | 123.2 | 3.3 | 1.7 | all pass |
+| most_science | 7 (21 stations) | 19.11 | 359 | 241 | 2,337 | 119.3 | 2.5 | 0.6 | all pass |
+
+- **The presets still pick similar transects.** In every preset the 360-minute EVA limit binds before consumables (about 240 of 345 to 360 usable minutes). Every candidate transect lies within 4 minutes of shelter, so Safest's 10-minute limit removes none; 26 of 30 candidates are usable in every preset. Safest and Balanced choose the same seven transects by different paths; Most science trades a longer walk (2.3 km against 2.0 km) for a higher-value set.
+- **Thread:** 1000 of 1000 random scenarios hold (least margin above the reserve 2.05 min).
+- **Browser solver:** 101.2% of the time-limited OR-Tools value on average over 60 scenarios, worst case 98.8%. On the earlier station-level nodes it was 101.1% on average with a worst case of 87.8%.
+- **Photo source for Phase 4.** PLACES `view_metadata.csv` describes the PLACES database views, not image positions, so it was the wrong candidate. Two working routes: PLACES `data_ancillary/observations.csv` (every camera observation by SCLK), and NASA's raw-image API (`mars.nasa.gov/api/v1/raw_image_items/`). The API's JPL-processed images (Navcam, Hazcam, ChemCam RMI) carry site, drive, spacecraft clock, camera position and vector, mast azimuth and elevation, and an image credit.
+
 ## Next steps
 
 1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
@@ -371,7 +393,7 @@ Turn the derived layers into walk plans: a directional graph on the DEM, cost-to
 
 - DONKI's host timed out from this machine (needed in Phase 6). Retry, then try api.nasa.gov.
 - The Photojournal boxwork link now redirects to a generic page (needed in Phase 4).
-- Still to find: image positions for the uncertainty layer (PLACES `view_metadata.csv` is the candidate) and a hand-labeled ridge sample for the ridge-map check. The drill sites and the Ehresmann et al. 2021 quantities are now verified.
+- Still to wire in: image positions for the uncertainty layer (PLACES `observations.csv` or the raw-image API; `view_metadata.csv` turned out to describe database views) and the team's ridge labels. The drill sites and the Ehresmann et al. 2021 quantities are now verified.
 - Team name and README credits: not given yet; README shows them as "to be added".
 - The georeferencing check is not an independent test of height: PLACES records the DEM pixel of each localization, so its elevations are tied to an orbital DEM. The horizontal shift search is the real alignment test. An independent height check would need ground data, such as rover stereo; this is not planned.
 - HiRISE coverage edges are uncertain by about 30 m, because ODE rounds footprint vertices. It makes no difference at these two sites, which are fully covered, but it matters for the uncertainty layer elsewhere.
@@ -379,9 +401,9 @@ Turn the derived layers into walk plans: a directional graph on the DEM, cost-to
 - The 1 m DEM has a straight north-south seam at Murray Buttes that shows faintly in slope-based layers (walkability, ridges). It does not affect the parking spot's horizons, which the sky check confirms.
 - RAD's albedo radiation from the butte is not modeled (the paper could not separate it), and the model treats the whole omnidirectional dose as arriving from the sky. A larger RAD shielding dataset, or the paper's figure data (Ehresmann 2021), would let n be tested rather than fitted.
 - Murray Buttes has no boxwork, so its ridge and fracture layers are only a code check.
-- The boxwork rover check fails (79.8%) after the footprint-scale re-run; DEM seams account for part of the false alarms. The rover's walkability classes are still used for the rover constraint, with this caveat shown.
+- The boxwork rover check fails (79.8%) beside the Murray Buttes PASS (99.8%); no more re-runs (team decision). It can only measure false alarms. The boxwork ridges sit at the DEM's resolution limit and seams add false alarms; the planner stays conservative and the surfaces will mark the over-cautious cells.
 - Seams between the CCDs inside one HiRISE image are not mapped.
 - The walker model is a stand-in: Minetti et al. 2002 (Earth, unsuited) with PLACEHOLDER suit, gravity and pace settings, because NASA/TP-2010-216125 publishes no coefficients. A suited, reduced-gravity source with published coefficients would replace it.
 - Comms is line of sight from a 3 m antenna at the staging point only; it leaves about 15% of the boxwork site in view and is the main limit on candidate stations. Relays are not modeled.
 - The rover stays at the staging point; rover pickups elsewhere are not planned yet. The buddy's walk to the overwatch point is not timed.
-- With the PLACEHOLDER presets the 240-minute EVA limit binds and all three presets pick nearly the same 13 stations (value 12.35 to 12.38), differing mainly in their paths. The preset weights need the team's choice before Phase 4 shows them side by side.
+- With the PLACEHOLDER presets the 360-minute EVA limit binds before consumables, and Safest's tighter limits remove no boxwork candidate, so the presets choose similar transects and differ mainly in paths and margins.

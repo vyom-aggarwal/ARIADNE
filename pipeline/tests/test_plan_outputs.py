@@ -37,6 +37,39 @@ def test_plan_validates_against_the_schema(path):
     assert plan["walker_model"]["extrapolated"] is True
 
 
+@pytest.mark.parametrize("path", PLANS, ids=lambda p: p.name)
+def test_plans_visit_whole_transects_in_order(path):
+    plan = json.loads(path.read_text(encoding="utf-8"))
+    st = plan["stations"]
+    assert len(st) % 3 == 0 and plan["totals"]["stations"] == len(st)
+    assert plan["totals"]["transects"] == len(st) // 3
+    for k in range(0, len(st), 3):
+        trio = st[k : k + 3]
+        assert len({s["transect"] for s in trio}) == 1
+        assert trio[0]["role"] in {"fracture", "crest"}
+        assert [s["role"] for s in trio[1:]] == ["wall", "hollow"]
+
+
+def test_presets_differ_by_their_safety_settings():
+    presets = json.loads((ROOT / "config" / "presets.json").read_text(encoding="utf-8"))["presets"]
+    safest, balanced, most = presets["safest"], presets["balanced"], presets["most_science"]
+    assert safest["limits"] == {"reserve_min": 45, "shelter_max_min": 10}
+    assert safest["weights"]["hazard"] == 3 * balanced["weights"]["hazard"]
+    assert safest["weights"]["uncertainty"] == 3 * balanced["weights"]["uncertainty"]
+    assert most["limits"] == balanced["limits"] and most["weights"]["hazard"] == 0
+    assert most["objective"] == "transects"
+    plans = {p.stem.split("-", 1)[1]: json.loads(p.read_text(encoding="utf-8")) for p in PLANS}
+    s = plans["safest"]
+    assert all(m["c_reserve"] == 45 for m in s["margins"])
+    assert s["totals"]["worst_minutes_to_shelter"] <= 10.0 + 1e-6
+    for name, plan in plans.items():
+        lim = presets[name]["limits"]
+        assert plan["scenario"]["reserve_min"] == lim["reserve_min"]
+        assert plan["totals"]["worst_minutes_to_shelter"] <= lim["shelter_max_min"] + 1e-6
+        assert plan["scenario"]["eva_max_min"] == 360  # the spec's 6 h
+        assert plan["totals"]["minutes"] <= 360 + 1e-6
+
+
 def test_a_broken_plan_fails_the_schema():
     with pytest.raises(jsonschema.ValidationError):
         jsonschema.validate({"site": "boxwork"}, SCHEMA)

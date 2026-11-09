@@ -111,4 +111,5 @@ uncertainty:
   source_score: {value: {hirise: 1.0, other: 0.3, nodata: 0.0}, label: PLACEHOLDER}
   image_distance_scale_m: {value: 100, label: PLACEHOLDER, note: Confidence from imagery halves about every 70 m from Curiosity's positions.}
   weights: {value: {source: 0.5, imagery: 0.3, flags: 0.2}, label: PLACEHOLDER}
+  low_confidence: {value: 0.55, label: PLACEHOLDER, note: Cells below this confidence carry at least one model flag (seam zone, crop edge or DEM not HiRISE); used for the over-cautious flag.}
   seam_zone_m: {value: 30, label: PLACEHOLDER, note: Cells within this distance of a candidate DEM mosaic seam are flagged; the ODE footprints are uncertain by about 30 m.}

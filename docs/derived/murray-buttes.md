@@ -101,6 +101,7 @@ This site is for validation only. It has no boxwork, so its ridge and fracture l
 | Line of sight from the staging antenna | 16.6% of the site (line of sight only, no radio model) |
 | Confidence | median 0.60; 0.0% of cells below 0.5 |
 | Candidate DEM mosaic seams | 14.3 km of stereo-pair footprint edges (Traverse, West, West of Center); 5.3% of the site within 30 m |
+| Map may be over-cautious here (check by eye) | walker: 0.1% of the site (5.4% of its slope no-go cells); rover: 0.1% (4.6%); no-go by slope in a seam zone or below confidence 0.55 |
 | Light, sol 1461 | sunrise median 06:38, sunset median 17:57; insolation median 0.97 of flat open ground |
 
 ## Not done here
