@@ -12,7 +12,7 @@ Last updated: 2026-11-09 UTC (Phase 4 and the rover relay done; ridge labels awa
 | 2 Derived layers | Done 2026-11-09: C1 to C21 pass; validation.json holds the calibration (PASS). Follow-up done: footprint-scale slope re-run once (boxwork 79.8%, still FAIL; Murray Buttes held out 99.8%, PASS), DEM seams mapped, ridge labeling page built. Ridge precision and recall wait for the team's labels |
 | 3 Route engine | Done 2026-11-09, revised after review: D1 to D14 pass; plans visit whole transects within the 6 h EVA; presets differ by safety settings; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.2% of the time-limited OR-Tools reference (worst 98.8%). The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
 | 4 Habitat Planner | Done 2026-11-09: E1 to E10 pass (CI run 42684297699 green; Pages deploy 42684506684 serves the planner); first map 2.1 s (3 s target) and 3.1 to 4.5 s at 4× CPU slowdown in four of five runs (5 s budget; one run over) |
-| 4b Rover as mobile comms relay | Done 2026-11-09: F1 to F5 pass; 3 relay sites put 112 of 150 pool transects in sight (staging alone: 41); the 6 h limit, not comms, still caps the boxwork plans; thread holds in 1000 of 1000 |
+| 4b Rover as mobile comms relay | Done 2026-11-09: F1 to F5 pass (CI run 42696159967 green, Pages deploy 42696408772); 3 relay sites put 112 of 150 pool transects in sight (staging alone: 41); the 6 h limit, not comms, still caps the boxwork plans; thread holds in 1000 of 1000 |
 | 5 Visor HUD, Cuff Tablet, printed card | Next |
 | 6 to 9 | Not started |
 
