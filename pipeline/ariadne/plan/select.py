@@ -29,6 +29,8 @@ class Problem:
     eva_max_min: float
     consumables_budget: float
     value_weight: float = 1e6
+    groups: list[list[int]] | None = None  # at most one node of each group is visited
+    end_node: int | None = None  # the route ends here instead of back at node 0
 
 
 @dataclass
@@ -66,7 +68,12 @@ def solve(p: Problem, time_limit_s: float = 5.0, first_solution_only: bool = Fal
     k_arc = np.rint(cost * SCALE).astype(np.int64)
     for a in (t_arc, c_arc, k_arc):
         np.fill_diagonal(a, 0)
-    manager = pywrapcp.RoutingIndexManager(n, 1, 0)
+    end = 0 if p.end_node is None else int(p.end_node)
+    manager = (
+        pywrapcp.RoutingIndexManager(n, 1, 0)
+        if end == 0
+        else pywrapcp.RoutingIndexManager(n, 1, [0], [end])
+    )
     routing = pywrapcp.RoutingModel(manager)
 
     def cb(mat):
@@ -80,7 +87,14 @@ def solve(p: Problem, time_limit_s: float = 5.0, first_solution_only: bool = Fal
     routing.AddDimension(
         cb(c_arc), 0, int(np.floor(p.consumables_budget * SCALE)), True, "consumables"
     )
+    grouped = set()
+    for grp in p.groups or []:
+        penalty = int(round(max(p.value[i] for i in grp) * p.value_weight * SCALE))
+        routing.AddDisjunction([manager.NodeToIndex(i) for i in grp], max(penalty, 0), 1)
+        grouped.update(grp)
     for node in range(1, n):
+        if node == end or node in grouped:
+            continue
         penalty = int(round(p.value[node] * p.value_weight * SCALE))
         routing.AddDisjunction([manager.NodeToIndex(node)], max(penalty, 0))
     params = pywrapcp.DefaultRoutingSearchParameters()
@@ -92,13 +106,13 @@ def solve(p: Problem, time_limit_s: float = 5.0, first_solution_only: bool = Fal
         params.time_limit.FromMilliseconds(int(time_limit_s * 1000))
     sol = routing.SolveWithParameters(params)
     if sol is None:
-        return Solution([0, 0], 0.0, 0.0, 0.0, 0.0, "no solution")
+        return Solution([0, end], 0.0, 0.0, 0.0, 0.0, "no solution")
     route = []
     idx = routing.Start(0)
     while not routing.IsEnd(idx):
         route.append(manager.IndexToNode(idx))
         idx = sol.Value(routing.NextVar(idx))
-    route.append(0)
+    route.append(end)
     t, c = route_totals(p, route)
     k = float(sum(p.cost[a, b] for a, b in zip(route[:-1], route[1:], strict=True)))
     return Solution(route, float(p.value[route[1:-1]].sum()), t, c, k, "ok")

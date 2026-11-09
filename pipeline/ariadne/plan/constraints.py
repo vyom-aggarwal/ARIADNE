@@ -48,7 +48,7 @@ def route_samples(gr, suit, w, legs, stations, service_min: float, service_cons:
     sample at the station. Leg k ends at stations[k]; the last leg ends at the staging point."""
     r0, c0 = legs[0][0] if legs else (0, 0)
     out = [{"r": float(r0), "c": float(c0), "t": 0.0, "cons": 0.0, "dose": 0.0, "m": 0.0,
-            "station": None}]  # fmt: skip
+            "station": None, "leg": 0}]  # fmt: skip
     for k, leg in enumerate(legs):
         for p, q in zip(leg[:-1], leg[1:], strict=True):
             s = g.segment_steps(gr, suit, w, p, q)
@@ -63,11 +63,14 @@ def route_samples(gr, suit, w, legs, stations, service_min: float, service_cons:
                         "dose": base["dose"] + float(s["dose"][j]),
                         "m": base["m"] + float(s["metres"][j]),
                         "station": None,
+                        "leg": k,
                     }
                 )
         if k < len(stations):
             last = dict(out[-1])
-            last.update(t=last["t"] + service_min, cons=last["cons"] + service_cons, station=k)
+            last.update(
+                t=last["t"] + service_min, cons=last["cons"] + service_cons, station=k, leg=k
+            )
             out.append(last)
     return out
 
@@ -108,7 +111,12 @@ def check_route(
     consumables_total: float,
     limits: dict,
     buddy_ok: list[bool] | None = None,
+    leg_fields: list[Fields] | None = None,
 ) -> dict:
+    """Check a route. With `leg_fields` (one Fields per leg) the rover moves: each leg uses its
+    own C_home, shelter and comms fields (those of the relay the rover is parked at), and at a
+    station where the rover changes relay, C_home is the larger of the two and the station must
+    be in sight of both."""
     gr = fields.grid
     samples = route_samples(gr, suit, w, legs, stations, service_min, service_cons)
     reserve = float(limits["reserve_min"])
@@ -116,11 +124,18 @@ def check_route(
     shelter_worst, shadow, longest = 0.0, None, 0.0
     for s in samples:
         rc = _cell(gr, s["r"], s["c"])
-        ch = float(fields.c_home[rc])
+        f = fields if leg_fields is None else leg_fields[min(s["leg"], len(leg_fields) - 1)]
+        ch = float(f.c_home[rc])
+        in_sight = bool(f.comms[rc])
+        if leg_fields is not None and s["station"] is not None and s["leg"] + 1 < len(leg_fields):
+            nxt = leg_fields[s["leg"] + 1]
+            if nxt is not f:  # the rover moves during this visit
+                ch = max(ch, float(nxt.c_home[rc]))
+                in_sight = in_sight and bool(nxt.comms[rc])
         c_left = consumables_total - s["cons"]
         worst = min(worst, c_left - ch - reserve if np.isfinite(ch) else -np.inf)
-        shelter_worst = max(shelter_worst, float(fields.shelter_min[rc]))
-        if not fields.comms[rc]:
+        shelter_worst = max(shelter_worst, float(f.shelter_min[rc]))
+        if not in_sight:
             shadow = s["t"] if shadow is None else shadow
             longest = max(longest, s["t"] - shadow)
         else:
@@ -148,7 +163,9 @@ def check_route(
         "buddy": "not checked" if buddy_ok is None else ("pass" if all(buddy_ok) else "fail"),
         "shelter": "pass" if shelter_worst <= limits["shelter_max_min"] + 1e-9 else "fail",
         "comms": "pass" if longest <= limits["comm_shadow_max_min"] + 1e-9 else "fail",
-        "rover": "pass" if fields.rover_ok else "fail",
+        "rover": "pass"
+        if fields.rover_ok and all(x.rover_ok for x in leg_fields or [])
+        else "fail",
     }
     return {
         "margins": margins,

@@ -1,7 +1,7 @@
 {
  "title": "ARIADNE validation",
  "pipeline_version": "0.0.0",
- "generated_utc": "2026-11-09T18:44:27+00:00",
+ "generated_utc": "2026-11-09T20:39:25+00:00",
  "note": "Targets are team targets, set before each run, not published standards.",
  "checks": [
   {
@@ -4259,8 +4259,9 @@
    "result": {
     "scenarios": 1000,
     "held": 1000,
-    "worst_margin_min": 2.051,
-    "mean_transects_visited": 4.05,
+    "worst_margin_min": 2.097,
+    "mean_transects_visited": 3.49,
+    "mean_rover_moves": 1.03,
     "seed": 20261109
    },
    "plans": {
@@ -4268,13 +4269,14 @@
      "transects": 7,
      "stations": 21,
      "science_value": 18.943,
-     "minutes": 356.789,
-     "consumables_min": 238.048,
-     "relative_dose_min": 40.3212,
-     "distance_m": 2005.8,
-     "min_thread_margin_min": 106.952,
-     "worst_minutes_to_shelter": 3.3,
-     "longest_comm_shadow_min": 1.73,
+     "minutes": 355.89,
+     "consumables_min": 237.171,
+     "relative_dose_min": 39.4667,
+     "distance_m": 1958.5,
+     "min_thread_margin_min": 107.829,
+     "worst_minutes_to_shelter": 4.19,
+     "longest_comm_shadow_min": 2.15,
+     "rover_moves": 2,
      "label": "MODELED",
      "checks": {
       "thread": "pass",
@@ -4282,19 +4284,21 @@
       "shelter": "pass",
       "comms": "pass",
       "rover": "pass"
-     }
+     },
+     "ends_at": "STAGING"
     },
     "balanced": {
      "transects": 7,
      "stations": 21,
      "science_value": 18.943,
-     "minutes": 356.087,
-     "consumables_min": 236.822,
-     "relative_dose_min": 39.6477,
-     "distance_m": 1959.7,
-     "min_thread_margin_min": 123.165,
-     "worst_minutes_to_shelter": 3.3,
-     "longest_comm_shadow_min": 1.71,
+     "minutes": 355.162,
+     "consumables_min": 236.028,
+     "relative_dose_min": 38.7687,
+     "distance_m": 1912.1,
+     "min_thread_margin_min": 123.959,
+     "worst_minutes_to_shelter": 4.19,
+     "longest_comm_shadow_min": 2.1,
+     "rover_moves": 2,
      "label": "MODELED",
      "checks": {
       "thread": "pass",
@@ -4302,7 +4306,8 @@
       "shelter": "pass",
       "comms": "pass",
       "rover": "pass"
-     }
+     },
+     "ends_at": "STAGING"
     },
     "most_science": {
      "transects": 7,
@@ -4314,7 +4319,8 @@
      "distance_m": 2336.7,
      "min_thread_margin_min": 119.344,
      "worst_minutes_to_shelter": 2.47,
-     "longest_comm_shadow_min": 0.62,
+     "longest_comm_shadow_min": 0.34,
+     "rover_moves": 2,
      "label": "MODELED",
      "checks": {
       "thread": "pass",
@@ -4322,7 +4328,8 @@
       "shelter": "pass",
       "comms": "pass",
       "rover": "pass"
-     }
+     },
+     "ends_at": "STAGING"
     }
    },
    "label": "MODELED",
@@ -4350,12 +4357,12 @@
    "status": "pass",
    "result": {
     "scenarios": 60,
-    "mean_ratio": 1.0118,
-    "min_ratio": 0.988,
+    "mean_ratio": 1.0294,
+    "min_ratio": 1,
     "target": 0.95
    },
    "label": "MODELED",
-   "note": "OR-Tools runs a guided local search with a time limit per scenario, so it is a time-limited reference, not a proven optimum; the browser solver can and sometimes does find more value. Mean ratio 1.012, worst case 0.988; per-scenario rows in docs/validation/station-solver.json."
+   "note": "OR-Tools runs a guided local search with a time limit per scenario, so it is a time-limited reference, not a proven optimum; the browser solver can and sometimes does find more value. Mean ratio 1.029, worst case 1.000; per-scenario rows in docs/validation/station-solver.json."
   },
   {
    "id": "labels",

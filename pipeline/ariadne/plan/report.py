@@ -25,8 +25,8 @@ def plan_markdown(s: dict) -> str:
         f"| Staging point (rover), PLACEHOLDER | E {s['staging_xy_m'][0]:,.1f} m, N {s['staging_xy_m'][1]:,.1f} m |",
         f"| Planning grid | {s['grid']['resolution_m']:.0f} m cells, {s['grid']['shape'][1]} × {s['grid']['shape'][0]} |",
         f"| Walkable for the walker | {100 * s['walkable_share']:.1f}% of the grid; of that, {shelter} of shelter |",
-        f"| In line of sight of the rover antenna | {100 * s['comms_share']:.1f}% of the grid |",
-        f"| Candidate transects | {s['candidate_transects']} whole fracture (or crest), wall and hollow transects: all three points walkable, in line of sight, with an overwatch point within {sc['buddy_max_m']:.0f} m, within {sc['max_station_distance_m']:.0f} m |",
+        f"| In line of sight of the rover antenna | {100 * s['comms_share']:.1f}% of the grid from the staging point; {100 * s['comms_share_with_relays']:.1f}% from the staging point or a relay site |",
+        f"| Candidate transects | {s['candidate_transects']} whole fracture (or crest), wall and hollow transects: all three points walkable and in line of sight of the rover at some relay site, each with an overwatch point within {sc['buddy_max_m']:.0f} m, within {sc['max_station_distance_m']:.0f} m |",
         f"| Scenario (PLACEHOLDER) | EVA up to {sc['eva_max_min']:.0f} min (6 h); {sc['consumables_total_min']:.0f} min of consumables (6 h plus the 30 min reserve); {sc['service_min']:.0f} min per station, so 45 min per transect plus its internal walk |",
         f"| Staging point passable for the rover | {'yes' if s['rover_ok'] else 'no'} (rover class go or caution there; the rover's drive to it is not planned) |",
         "",
@@ -42,36 +42,62 @@ def plan_markdown(s: dict) -> str:
             f"{'complete transects, then value' if p['objective'] == 'transects' else 'science value'} | "
             f"{s['usable_transects'][name]} |"
         )
+    rl = s["relays"]
+    lines += [
+        "",
+        "## Rover as a mobile comms relay (PLACEHOLDER rover settings)",
+        "",
+        f"From {rl['candidates']} rover-reachable candidate sites ({rl['rover']['relay_spacing_m']:.0f} m grid within {rl['rover']['relay_max_distance_m']:.0f} m of the staging point), greedy coverage chose {len(rl['sites']) - 1} relay sites. Of the {rl['pool']} highest-value whole transects within reach, {rl['pool_seen_from_staging']} are in full sight of the rover at the staging point and {rl['pool_seen_with_relays']} with the relay sites. The rover drives at {rl['rover']['speed_go_m_s']:g} m/s on rover-go ground and {rl['rover']['speed_caution_m_s']:g} m/s on caution ground; it moves only during the last station of a transect (within the 15-minute visit, with that station in sight along the whole drive) or during the first leg, and the walk ends where the rover is.",
+        "",
+        "| Relay | Easting, northing (m) | Drive from staging (min) |",
+        "| --- | --- | --- |",
+    ]
+    for i, (xy, d) in enumerate(zip(rl["sites"], rl["drive_from_staging_min"], strict=True)):
+        lines.append(
+            f"| {'STAGING' if i == 0 else f'RELAY{i}'} | {xy[0]:,.1f}, {xy[1]:,.1f} | {d:.1f} |"
+        )
+    lines += [
+        "",
+        "| Preset | Usable transects: staging only, with relay | Planned transects: staging only, with relay | Science value: staging only, with relay |",
+        "| --- | --- | --- | --- |",
+    ]
+    for name, c in s["comparison"].items():
+        lines.append(
+            f"| {name} | {c['usable_transects_staging_only']}, {c['usable_transects_with_relay']} | "
+            f"{c['transects_staging_only']}, {c['transects_with_relay']} | "
+            f"{c['value_staging_only']:.2f}, {c['value_with_relay']:.2f} |"
+        )
     lines += [
         "",
         "## Reference plans (OR-Tools)",
         "",
         "Each plan visits whole transects only: every visited transect's fracture (or crest), wall and hollow stations, in that order.",
         "",
-        "| Preset | Transects | Stations | Science value | Minutes | Consumables (min) | Distance (m) | Least thread margin (min) | Worst minutes to shelter | Longest comm shadow (min) | Checks |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        "| Preset | Transects | Stations | Science value | Minutes | Consumables (min) | Distance (m) | Least thread margin (min) | Worst minutes to shelter | Longest comm shadow (min) | Rover moves, ends at | Checks |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for name, p in s["plans"].items():
         checks = ", ".join(f"{k} {v}" for k, v in p["checks"].items())
         lines.append(
             f"| {name} | {p['transects']} | {p['stations']} | {p['science_value']:.2f} | {p['minutes']:.0f} | "
             f"{p['consumables_min']:.0f} | {p['distance_m']:,.0f} | {p['min_thread_margin_min']:.1f} | "
-            f"{p['worst_minutes_to_shelter']:.1f} | {p['longest_comm_shadow_min']:.1f} | {checks} |"
+            f"{p['worst_minutes_to_shelter']:.1f} | {p['longest_comm_shadow_min']:.1f} | "
+            f"{p['rover_moves']}, {p['ends_at']} | {checks} |"
         )
     lines += [
         "",
         "## Thread over random scenarios",
         "",
-        f"{th['held']} of {th['scenarios']} random scenarios kept the thread at every sample (random transect subsets, EVA limits of 120 to 420 min and consumables of 150 to 450 min, Balanced limits; seed {th['seed']}). The least margin above the reserve was {th['worst_margin_min']:.2f} min; plans visited {th['mean_transects_visited']:.1f} transects on average.",
+        f"{th['held']} of {th['scenarios']} random scenarios kept the thread at every sample (random transect subsets, EVA limits of 120 to 420 min and consumables of 150 to 450 min, Balanced limits; seed {th['seed']}). The least margin above the reserve was {th['worst_margin_min']:.2f} min; plans visited {th['mean_transects_visited']:.1f} transects and moved the rover {th['mean_rover_moves']:.1f} times on average; C_home follows the rover.",
         "",
         "## Assumptions",
         "",
         "- Walker model: Minetti et al. 2002 cost of walking against gradient (Earth, unsuited) with a PLACEHOLDER suit and gravity factor of 1.0, a PLACEHOLDER top speed of 1.0 m/s and a PLACEHOLDER power ceiling. NASA/TP-2010-216125 publishes no coefficients for its model, so it is used only for the tested ranges behind the EXTRAPOLATED flag.",
         "- Hazard (the caution penalty) is the Phase 2 walker cost multiplier less 1; relative dose is the shielding index S; uncertainty is 1 − confidence. A transect's value is the sum of its three Phase 2 station scores (spectral term missing).",
         "- The planner stays conservative: slope no-go cells are never entered, even where the map may be over-cautious (seam or low-confidence zones); the surfaces mark those cells for the crew to check by eye.",
-        "- Comms is line of sight only from a 3 m antenna on the rover at the staging point; no radio model and no relays.",
+        "- Comms is line of sight only from a 3 m antenna on the rover at the relay site it is parked at; no radio model. While the rover drives during the first leg, contact is assumed from its destination.",
         "- The buddy rule is met by an overwatch point found for every station; the partner's own walk to it is not timed.",
-        "- The rover stays at the staging point; pickups elsewhere are not planned yet.",
+        "- The thread's C_home is the consumables to walk to the rover's current relay site; during a move, the larger of the two sites' values at that station.",
         "",
     ]
     return "\n".join(lines)

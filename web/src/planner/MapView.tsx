@@ -2,7 +2,7 @@
 // The planner's 2D map: deck.gl OrthographicView in site metres (east, north), shifted to the
 // site's south-west corner so float32 keeps centimetre precision.
 import { OrthographicView } from "@deck.gl/core";
-import { BitmapLayer, GeoJsonLayer, PathLayer, ScatterplotLayer } from "@deck.gl/layers";
+import { BitmapLayer, GeoJsonLayer, PathLayer, ScatterplotLayer, TextLayer } from "@deck.gl/layers";
 import DeckGL from "@deck.gl/react";
 import { useEffect, useMemo, useState } from "react";
 import type { LayerState } from "./LayerPanel";
@@ -150,6 +150,32 @@ export default function MapView({ manifest, base, layerState, plan, onReady }: P
         }),
       );
     }
+    if (plan?.rover) {
+      const relays = plan.rover.relays.filter((r) => r.id !== "STAGING");
+      out.push(
+        new ScatterplotLayer({
+          id: "relays",
+          data: relays,
+          getPosition: (r: any) => local(r.xy_m),
+          getFillColor: [240, 228, 66],
+          getLineColor: [0, 0, 0],
+          stroked: true,
+          lineWidthMinPixels: 2,
+          getRadius: 8,
+          radiusUnits: "pixels",
+        }),
+        new TextLayer({
+          id: "relay-labels",
+          data: relays,
+          getPosition: (r: any) => local(r.xy_m),
+          getText: (r: any) => r.id.replace("RELAY", "R"),
+          getSize: 13,
+          getColor: [0, 0, 0],
+          getPixelOffset: [0, 0],
+          fontWeight: 700,
+        }),
+      );
+    }
     out.push(
       new ScatterplotLayer({
         id: "staging",
@@ -190,6 +216,7 @@ export default function MapView({ manifest, base, layerState, plan, onReady }: P
         <li><span className="key-dot" style={{ background: "rgb(204,121,167)" }} aria-hidden="true" /> Wall station</li>
         <li><span className="key-dot" style={{ background: "rgb(86,180,233)" }} aria-hidden="true" /> Hollow station</li>
         <li><span className="key-line" aria-hidden="true" /> Selected route (white line with a black edge)</li>
+        <li><span className="key-dot" style={{ background: "rgb(240,228,66)" }} aria-hidden="true" /> Rover relay site (R1, R2, …), PLACEHOLDER</li>
       </ul>
     </div>
   );

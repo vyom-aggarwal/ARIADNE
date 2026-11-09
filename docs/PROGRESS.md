@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-09 UTC (Phase 4 done locally; rover relay next; ridge labels awaited).
+Last updated: 2026-11-09 UTC (Phase 4 and the rover relay done; ridge labels awaited).
 
 ## Status
 
@@ -11,9 +11,10 @@ Last updated: 2026-11-09 UTC (Phase 4 done locally; rover relay next; ridge labe
 | 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
 | 2 Derived layers | Done 2026-11-09: C1 to C21 pass; validation.json holds the calibration (PASS). Follow-up done: footprint-scale slope re-run once (boxwork 79.8%, still FAIL; Murray Buttes held out 99.8%, PASS), DEM seams mapped, ridge labeling page built. Ridge precision and recall wait for the team's labels |
 | 3 Route engine | Done 2026-11-09, revised after review: D1 to D14 pass; plans visit whole transects within the 6 h EVA; presets differ by safety settings; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.2% of the time-limited OR-Tools reference (worst 98.8%). The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
-| 4 Habitat Planner | Done 2026-11-09 locally: E1 to E10 pass; first map 2.1 s (3 s target) and 3.1 to 4.5 s at 4× CPU slowdown in four of five runs (5 s budget; one run over). CI check pending |
-| 4b Rover as mobile comms relay | Next |
-| 5 to 9 | Not started |
+| 4 Habitat Planner | Done 2026-11-09: E1 to E10 pass (CI run 42684297699 green; Pages deploy 42684506684 serves the planner); first map 2.1 s (3 s target) and 3.1 to 4.5 s at 4× CPU slowdown in four of five runs (5 s budget; one run over) |
+| 4b Rover as mobile comms relay | Done 2026-11-09: F1 to F5 pass; 3 relay sites put 112 of 150 pool transects in sight (staging alone: 41); the 6 h limit, not comms, still caps the boxwork plans; thread holds in 1000 of 1000 |
+| 5 Visor HUD, Cuff Tablet, printed card | Next |
+| 6 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
 
@@ -441,11 +442,55 @@ The minimum demoable product: a desktop planner that loads one packaged site and
 - **First map** (time until deck.gl reports the map ready, 1366 × 768): 2.1 to 2.4 s with no slowdown, inside the 3 s team target. With `ARIADNE_PERF=1` (CPU slowed four times, local preview server warmed first) it was 3.1, 3.3, 3.9 and 4.5 s in four of five runs; one run went over the 5 s budget on this machine. The first attempt, with the 13 MB 1 m imagery loaded up front and every overlay fetched at start, took 6.6 s. Since then, the 2 m overview loads first, overlays load only when shown, and the context vectors load after the first draw. CI runs the tour as a functional check without the slowdown, because shared runners vary.
 - **Preview server:** `vite preview` now binds to 127.0.0.1; with the default it reported "localhost" but did not answer on this machine.
 
+## Rover relay plan (team decision of 2026-11-09)
+
+The rover becomes a mobile comms relay: it moves between a few overwatch points during the EVA, so more stations stay in line of sight, and the thread ends wherever the rover is.
+
+1. **Rover model** (`config/rovers.json`, all PLACEHOLDER): speed 1.0 m/s on rover-go ground and 0.5 m/s on caution ground (no-go is impassable), antenna 3 m, three relay sites besides the staging point.
+2. **Relay sites:** rover-reachable points on a 50 m grid within 800 m of the staging point. Each gets a viewshed from the 3 m antenna to a 1.8 m helmet (line of sight only). Greedy maximum coverage then picks the sites that put the most transect value fully in sight (all three points), starting from the staging point's viewshed.
+3. **Nodes:** a node is a transect paired with a relay that sees all three of its points; OR-Tools picks at most one pair per transect.
+4. **Rover moves:**
+   - Between nodes, the rover moves only while the crew works the last (hollow) station of a transect. The drive must fit in the 15-minute visit, and that station must stay in line of sight of the rover at every point of its drive.
+   - At the start, the rover may drive to its first relay while the crew walks the first leg, if the drive is no longer than that walk.
+   - The walk ends at the rover's last relay, not necessarily the staging point.
+5. **Checks with a moving rover:**
+   - Comms: line of sight from the relay the rover is parked at.
+   - Shelter: the nearer of a terrain shelter and the rover.
+   - Thread: C_home is the consumables to walk to the rover's current relay. During a move it is the larger of the two relays' values at that station, a conservative choice.
+6. **Outputs:** the plans list each station's relay and the rover's schedule (moves, drive minutes). The report compares candidate transects and plan value with and without the relay.
+
+### Rover relay acceptance tests
+
+| ID | Test | Where |
+| --- | --- | --- |
+| F1 | Relay choice: greedy coverage picks the best sets on synthetic visibility; only rover-reachable sites are candidates | `pipeline/tests/test_relay.py` |
+| F2 | A move is allowed only if the drive fits the station visit and the station stays in sight along the drive | `pipeline/tests/test_relay.py` |
+| F3 | OR-Tools with transect groups and a separate end: at most one relay per transect, the route ends at the END node, and the brute-force optimum is found on a small case | `pipeline/tests/test_relay.py` |
+| F4 | Thread with a moving rover: C_home follows the rover's relay leg by leg, takes the larger value during a move, and the walk ends at the last relay | `pipeline/tests/test_relay.py` |
+| F5 | Committed plans carry the relay schedule, keep every check, end at the rover's last relay, and the report gives the comparison with and without the relay | `pipeline/tests/test_plan_outputs.py` |
+
+### Rover relay evidence
+
+- **Run:** `make plan SITE=boxwork` took 18 minutes. From 311 rover-reachable candidate sites, greedy coverage chose 3 relay sites, 12.6, 10.7, 26.7 minutes' drive from the staging point at the PLACEHOLDER rover speeds.
+- **Coverage:** of the 150 highest-value whole transects within reach, 41 are in full sight from the staging point and 112 with the relay sites. The planning grid in line of sight grows from 22.0% to 51.2%.
+- **Plans** (staging-only → with relay):
+
+| Preset | Usable transects | Planned transects | Science value | Rover moves |
+| --- | --- | --- | --- | --- |
+| safest | 15 → 27 | 7 → 7 | 18.94 → 18.94 | 2, ends at STAGING |
+| balanced | 15 → 27 | 7 → 7 | 18.94 → 18.94 | 2, ends at STAGING |
+| most_science | 15 → 27 | 7 → 7 | 19.11 → 19.11 | 2, ends at STAGING |
+
+- **Why the value does not rise at the boxwork.** The 360-minute EVA limit binds first. Enough of the 30 highest-value candidates are already in sight of the staging point to fill the time, and these sit closer to it. The relay widens the choice (more usable transects) and keeps every check, but the time limit, not comms, caps the plan. The plans still move the rover twice: OR-Tools picks among equal-value plans by walking cost, and moving the rover is free in that cost.
+- **Thread:** 1000 of 1000 random relay scenarios hold, with C_home following the rover (least margin above the reserve 2.10 min; 1.0 rover moves per plan on average).
+- **Browser solver** (now with transect groups and an end node, and eight seeded restarts): 102.9% of the time-limited OR-Tools value on average over 60 relay scenarios, worst case 100.0%, at most 61 ms each. With a single run the worst case was 68.3% (two scenarios below 95%).
+- **Tests:** F1 to F5 pass with every earlier test (312 pipeline, 45 web, 5 Playwright). Playwright now runs one test at a time: run in parallel, the 3D tour's software WebGL slowed the dark-mode check past its timeout.
+- **The planner** shows the relay sites (R1 to R3) on the map and the rover's moves and end point in the route options.
+
 ## Next steps
 
 1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
-2. The rover as a mobile comms relay (team decision): a few overwatch points it can reach on its own cost surface, between which it moves during the EVA so more stations stay in line of sight; the thread ends wherever the rover is.
-3. Phase 5: Visor HUD, Cuff Tablet and printed card, with the over-cautious marking ("map may be over-cautious here, check by eye") on the HUD and tablet.
+2. Phase 5: Visor HUD, Cuff Tablet and printed card, with the over-cautious marking ("map may be over-cautious here, check by eye") on the HUD and tablet.
 
 ## Open issues
 
@@ -463,5 +508,5 @@ The minimum demoable product: a desktop planner that loads one packaged site and
 - Seams between the CCDs inside one HiRISE image are not mapped.
 - The walker model is a stand-in: Minetti et al. 2002 (Earth, unsuited) with PLACEHOLDER suit, gravity and pace settings, because NASA/TP-2010-216125 publishes no coefficients. A suited, reduced-gravity source with published coefficients would replace it.
 - Comms is line of sight from a 3 m antenna at the staging point only; it leaves about 15% of the boxwork site in view and is the main limit on candidate stations. Relays are not modeled.
-- The rover stays at the staging point; rover pickups elsewhere are not planned yet. The buddy's walk to the overwatch point is not timed.
+- The rover relay assumes contact from the rover's destination while it drives during the first leg. The buddy's walk to the overwatch point is not timed.
 - With the PLACEHOLDER presets the 360-minute EVA limit binds before consumables, and Safest's tighter limits remove no boxwork candidate, so the presets choose similar transects and differ mainly in paths and margins.

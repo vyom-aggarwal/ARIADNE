@@ -24,6 +24,9 @@ const ROWS: { name: string; unit: string; value: (t: Totals) => string }[] = [
   { name: "Stations (transects)", unit: "", value: (t) => `${t.stations} (${t.transects})` },
   { name: "Science value", unit: "sum of station scores", value: (t) => t.science_value.toFixed(2) },
 ];
+const ROVER_SOURCE =
+  "The rover is a mobile comms relay: it parks at a relay site for each transect and moves during " +
+  "the last station of a transect; the walk ends where the rover is (PLACEHOLDER rover settings).";
 
 export default function RouteOptions({ plans, selected, onSelect }: Props) {
   const presets = ORDER.filter((p) => plans[p]);
@@ -63,6 +66,17 @@ export default function RouteOptions({ plans, selected, onSelect }: Props) {
               ))}
             </tr>
           ))}
+          <tr>
+            <th scope="row">
+              Rover moves<span className="unit"> (where the walk ends)</span>
+            </th>
+            {presets.map((p) => (
+              <td key={p}>
+                {plans[p].rover ? `${plans[p].rover!.moves.length} (${plans[p].rover!.ends_at})` : "0"}{" "}
+                <LabelBadge label="MODELED" source={ROVER_SOURCE} />
+              </td>
+            ))}
+          </tr>
           <tr>
             <th scope="row">Checks</th>
             {presets.map((p) => (

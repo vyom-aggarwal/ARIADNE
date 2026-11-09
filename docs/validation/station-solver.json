@@ -1,490 +1,490 @@
 {
  "scenarios": 60,
- "mean_ratio": 1.0118,
- "min_ratio": 0.988,
+ "mean_ratio": 1.0294,
+ "min_ratio": 1,
  "target": 0.95,
  "reference": "OR-Tools guided local search, 2 s per scenario: a time-limited reference, not a proven optimum",
  "pipeline_version": "0.0.0",
  "rows": [
   {
    "scenario": 0,
-   "stations_offered": 19,
-   "ortools_value": 13.516,
-   "browser_value": 13.516,
+   "nodes_offered": 33,
+   "ortools_value": 10.981,
+   "browser_value": 10.981,
    "ratio": 1,
-   "browser_ms": 3.1
+   "browser_ms": 32.8
   },
   {
    "scenario": 1,
-   "stations_offered": 12,
-   "ortools_value": 5.458,
-   "browser_value": 5.458,
-   "ratio": 1,
-   "browser_ms": 2
+   "nodes_offered": 23,
+   "ortools_value": 10.684,
+   "browser_value": 10.85,
+   "ratio": 1.0155,
+   "browser_ms": 23.4
   },
   {
    "scenario": 2,
-   "stations_offered": 15,
-   "ortools_value": 5.473,
-   "browser_value": 5.473,
-   "ratio": 1,
-   "browser_ms": 2.2
-  },
-  {
-   "scenario": 3,
-   "stations_offered": 13,
-   "ortools_value": 13.521,
-   "browser_value": 13.521,
-   "ratio": 1,
-   "browser_ms": 2.8
-  },
-  {
-   "scenario": 4,
-   "stations_offered": 20,
-   "ortools_value": 5.589,
-   "browser_value": 5.589,
-   "ratio": 1,
-   "browser_ms": 5.3
-  },
-  {
-   "scenario": 5,
-   "stations_offered": 21,
-   "ortools_value": 13.768,
-   "browser_value": 13.768,
-   "ratio": 1,
-   "browser_ms": 5
-  },
-  {
-   "scenario": 6,
-   "stations_offered": 12,
-   "ortools_value": 10.966,
-   "browser_value": 10.966,
-   "ratio": 1,
-   "browser_ms": 2.7
-  },
-  {
-   "scenario": 7,
-   "stations_offered": 20,
-   "ortools_value": 5.508,
-   "browser_value": 5.508,
-   "ratio": 1,
-   "browser_ms": 4
-  },
-  {
-   "scenario": 8,
-   "stations_offered": 19,
-   "ortools_value": 16.439,
-   "browser_value": 16.439,
-   "ratio": 1,
-   "browser_ms": 4.2
-  },
-  {
-   "scenario": 9,
-   "stations_offered": 21,
-   "ortools_value": 11.097,
-   "browser_value": 11.097,
-   "ratio": 1,
-   "browser_ms": 2.6
-  },
-  {
-   "scenario": 10,
-   "stations_offered": 11,
-   "ortools_value": 5.473,
-   "browser_value": 5.473,
-   "ratio": 1,
-   "browser_ms": 1.7
-  },
-  {
-   "scenario": 11,
-   "stations_offered": 14,
-   "ortools_value": 8.426,
-   "browser_value": 8.426,
-   "ratio": 1,
-   "browser_ms": 2.1
-  },
-  {
-   "scenario": 12,
-   "stations_offered": 19,
-   "ortools_value": 19.11,
-   "browser_value": 21.361,
-   "ratio": 1.1178,
-   "browser_ms": 2.4
-  },
-  {
-   "scenario": 13,
-   "stations_offered": 15,
-   "ortools_value": 5.473,
-   "browser_value": 5.473,
-   "ratio": 1,
-   "browser_ms": 1.9
-  },
-  {
-   "scenario": 14,
-   "stations_offered": 20,
-   "ortools_value": 10.481,
-   "browser_value": 10.481,
-   "ratio": 1,
-   "browser_ms": 2.2
-  },
-  {
-   "scenario": 15,
-   "stations_offered": 13,
-   "ortools_value": 13.305,
-   "browser_value": 13.305,
-   "ratio": 1,
-   "browser_ms": 2.9
-  },
-  {
-   "scenario": 16,
-   "stations_offered": 23,
-   "ortools_value": 18.716,
-   "browser_value": 18.716,
-   "ratio": 1,
-   "browser_ms": 2.5
-  },
-  {
-   "scenario": 17,
-   "stations_offered": 17,
-   "ortools_value": 5.589,
-   "browser_value": 5.589,
-   "ratio": 1,
-   "browser_ms": 1.8
-  },
-  {
-   "scenario": 18,
-   "stations_offered": 24,
-   "ortools_value": 13.768,
-   "browser_value": 13.768,
-   "ratio": 1,
-   "browser_ms": 3
-  },
-  {
-   "scenario": 19,
-   "stations_offered": 18,
-   "ortools_value": 10.729,
-   "browser_value": 10.729,
-   "ratio": 1,
-   "browser_ms": 2.2
-  },
-  {
-   "scenario": 20,
-   "stations_offered": 26,
-   "ortools_value": 19.11,
-   "browser_value": 19.11,
-   "ratio": 1,
-   "browser_ms": 3.4
-  },
-  {
-   "scenario": 21,
-   "stations_offered": 10,
-   "ortools_value": 7.989,
-   "browser_value": 8.009,
-   "ratio": 1.0025,
-   "browser_ms": 2.4
-  },
-  {
-   "scenario": 22,
-   "stations_offered": 19,
-   "ortools_value": 8.426,
-   "browser_value": 10.884,
-   "ratio": 1.2917,
-   "browser_ms": 1.5
-  },
-  {
-   "scenario": 23,
-   "stations_offered": 25,
-   "ortools_value": 18.881,
-   "browser_value": 18.944,
-   "ratio": 1.0033,
-   "browser_ms": 2.3
-  },
-  {
-   "scenario": 24,
-   "stations_offered": 13,
-   "ortools_value": 21.576,
-   "browser_value": 21.576,
-   "ratio": 1,
-   "browser_ms": 2.1
-  },
-  {
-   "scenario": 25,
-   "stations_offered": 23,
-   "ortools_value": 8.179,
-   "browser_value": 8.26,
-   "ratio": 1.0099,
-   "browser_ms": 1.7
-  },
-  {
-   "scenario": 26,
-   "stations_offered": 13,
-   "ortools_value": 10.815,
-   "browser_value": 10.981,
-   "ratio": 1.0153,
-   "browser_ms": 1.5
-  },
-  {
-   "scenario": 27,
-   "stations_offered": 13,
-   "ortools_value": 8.426,
-   "browser_value": 8.426,
-   "ratio": 1,
-   "browser_ms": 1.4
-  },
-  {
-   "scenario": 28,
-   "stations_offered": 23,
-   "ortools_value": 13.516,
-   "browser_value": 13.516,
-   "ratio": 1,
-   "browser_ms": 1.9
-  },
-  {
-   "scenario": 29,
-   "stations_offered": 26,
-   "ortools_value": 18.834,
-   "browser_value": 18.834,
-   "ratio": 1,
-   "browser_ms": 2.3
-  },
-  {
-   "scenario": 30,
-   "stations_offered": 9,
-   "ortools_value": 13.652,
-   "browser_value": 13.652,
-   "ratio": 1,
-   "browser_ms": 1.6
-  },
-  {
-   "scenario": 31,
-   "stations_offered": 9,
-   "ortools_value": 16.284,
-   "browser_value": 16.284,
-   "ratio": 1,
-   "browser_ms": 1.6
-  },
-  {
-   "scenario": 32,
-   "stations_offered": 23,
-   "ortools_value": 10.884,
-   "browser_value": 10.884,
-   "ratio": 1,
-   "browser_ms": 1.7
-  },
-  {
-   "scenario": 33,
-   "stations_offered": 12,
-   "ortools_value": 5.473,
-   "browser_value": 5.473,
-   "ratio": 1,
-   "browser_ms": 1.2
-  },
-  {
-   "scenario": 34,
-   "stations_offered": 19,
-   "ortools_value": 8.137,
-   "browser_value": 8.137,
-   "ratio": 1,
-   "browser_ms": 1.4
-  },
-  {
-   "scenario": 35,
-   "stations_offered": 13,
-   "ortools_value": 16.142,
-   "browser_value": 16.142,
-   "ratio": 1,
-   "browser_ms": 2.6
-  },
-  {
-   "scenario": 36,
-   "stations_offered": 20,
-   "ortools_value": 10.978,
-   "browser_value": 10.846,
-   "ratio": 0.988,
-   "browser_ms": 1.8
-  },
-  {
-   "scenario": 37,
-   "stations_offered": 12,
-   "ortools_value": 10.651,
-   "browser_value": 10.651,
-   "ratio": 1,
-   "browser_ms": 1.2
-  },
-  {
-   "scenario": 38,
-   "stations_offered": 16,
-   "ortools_value": 16.025,
-   "browser_value": 16.025,
-   "ratio": 1,
-   "browser_ms": 1.8
-  },
-  {
-   "scenario": 39,
-   "stations_offered": 11,
-   "ortools_value": 19.107,
-   "browser_value": 21.633,
-   "ratio": 1.1322,
-   "browser_ms": 1.9
-  },
-  {
-   "scenario": 40,
-   "stations_offered": 14,
-   "ortools_value": 5.589,
-   "browser_value": 5.589,
-   "ratio": 1,
-   "browser_ms": 1.4
-  },
-  {
-   "scenario": 41,
-   "stations_offered": 24,
-   "ortools_value": 10.481,
-   "browser_value": 10.481,
-   "ratio": 1,
-   "browser_ms": 1.7
-  },
-  {
-   "scenario": 42,
-   "stations_offered": 23,
-   "ortools_value": 11.097,
-   "browser_value": 11.097,
-   "ratio": 1,
-   "browser_ms": 1.9
-  },
-  {
-   "scenario": 43,
-   "stations_offered": 25,
-   "ortools_value": 16.439,
-   "browser_value": 16.439,
-   "ratio": 1,
-   "browser_ms": 2.4
-  },
-  {
-   "scenario": 44,
-   "stations_offered": 12,
-   "ortools_value": 13.486,
-   "browser_value": 13.486,
-   "ratio": 1,
-   "browser_ms": 1.9
-  },
-  {
-   "scenario": 45,
-   "stations_offered": 19,
-   "ortools_value": 16.273,
-   "browser_value": 16.273,
-   "ratio": 1,
-   "browser_ms": 2.3
-  },
-  {
-   "scenario": 46,
-   "stations_offered": 19,
-   "ortools_value": 18.944,
-   "browser_value": 18.944,
-   "ratio": 1,
-   "browser_ms": 2.1
-  },
-  {
-   "scenario": 47,
-   "stations_offered": 16,
-   "ortools_value": 16.308,
-   "browser_value": 18.667,
-   "ratio": 1.1447,
-   "browser_ms": 2.3
-  },
-  {
-   "scenario": 48,
-   "stations_offered": 11,
-   "ortools_value": 16.086,
-   "browser_value": 16.086,
-   "ratio": 1,
-   "browser_ms": 1.9
-  },
-  {
-   "scenario": 49,
-   "stations_offered": 12,
-   "ortools_value": 13.768,
-   "browser_value": 13.768,
-   "ratio": 1,
-   "browser_ms": 1.9
-  },
-  {
-   "scenario": 50,
-   "stations_offered": 13,
-   "ortools_value": 5.624,
-   "browser_value": 5.624,
-   "ratio": 1,
-   "browser_ms": 1.4
-  },
-  {
-   "scenario": 51,
-   "stations_offered": 14,
-   "ortools_value": 10.737,
-   "browser_value": 10.737,
-   "ratio": 1,
-   "browser_ms": 1.7
-  },
-  {
-   "scenario": 52,
-   "stations_offered": 21,
+   "nodes_offered": 30,
    "ortools_value": 8.26,
    "browser_value": 8.26,
    "ratio": 1,
-   "browser_ms": 1.6
+   "browser_ms": 22.8
   },
   {
-   "scenario": 53,
-   "stations_offered": 23,
-   "ortools_value": 10.849,
-   "browser_value": 10.849,
+   "scenario": 3,
+   "nodes_offered": 28,
+   "ortools_value": 5.624,
+   "browser_value": 8.178,
+   "ratio": 1.4541,
+   "browser_ms": 21.4
+  },
+  {
+   "scenario": 4,
+   "nodes_offered": 21,
+   "ortools_value": 5.458,
+   "browser_value": 5.458,
    "ratio": 1,
-   "browser_ms": 2
+   "browser_ms": 18.9
   },
   {
-   "scenario": 54,
-   "stations_offered": 9,
-   "ortools_value": 16.07,
-   "browser_value": 16.07,
-   "ratio": 1,
-   "browser_ms": 1.8
-  },
-  {
-   "scenario": 55,
-   "stations_offered": 22,
-   "ortools_value": 10.931,
-   "browser_value": 10.931,
-   "ratio": 1,
-   "browser_ms": 2.1
-  },
-  {
-   "scenario": 56,
-   "stations_offered": 18,
-   "ortools_value": 8.179,
-   "browser_value": 8.179,
-   "ratio": 1,
-   "browser_ms": 1.7
-  },
-  {
-   "scenario": 57,
-   "stations_offered": 14,
-   "ortools_value": 13.602,
-   "browser_value": 13.602,
-   "ratio": 1,
-   "browser_ms": 1.8
-  },
-  {
-   "scenario": 58,
-   "stations_offered": 13,
+   "scenario": 5,
+   "nodes_offered": 38,
    "ortools_value": 5.639,
    "browser_value": 5.639,
    "ratio": 1,
-   "browser_ms": 1.7
+   "browser_ms": 24.6
+  },
+  {
+   "scenario": 6,
+   "nodes_offered": 21,
+   "ortools_value": 5.473,
+   "browser_value": 5.473,
+   "ratio": 1,
+   "browser_ms": 19.4
+  },
+  {
+   "scenario": 7,
+   "nodes_offered": 24,
+   "ortools_value": 5.639,
+   "browser_value": 5.639,
+   "ratio": 1,
+   "browser_ms": 21
+  },
+  {
+   "scenario": 8,
+   "nodes_offered": 46,
+   "ortools_value": 13.768,
+   "browser_value": 13.768,
+   "ratio": 1,
+   "browser_ms": 43.7
+  },
+  {
+   "scenario": 9,
+   "nodes_offered": 36,
+   "ortools_value": 16.157,
+   "browser_value": 16.157,
+   "ratio": 1,
+   "browser_ms": 36.4
+  },
+  {
+   "scenario": 10,
+   "nodes_offered": 34,
+   "ortools_value": 13.521,
+   "browser_value": 13.521,
+   "ratio": 1,
+   "browser_ms": 39.3
+  },
+  {
+   "scenario": 11,
+   "nodes_offered": 46,
+   "ortools_value": 5.639,
+   "browser_value": 5.639,
+   "ratio": 1,
+   "browser_ms": 29.2
+  },
+  {
+   "scenario": 12,
+   "nodes_offered": 20,
+   "ortools_value": 8.012,
+   "browser_value": 8.012,
+   "ratio": 1,
+   "browser_ms": 18.2
+  },
+  {
+   "scenario": 13,
+   "nodes_offered": 46,
+   "ortools_value": 5.639,
+   "browser_value": 5.639,
+   "ratio": 1,
+   "browser_ms": 28.3
+  },
+  {
+   "scenario": 14,
+   "nodes_offered": 37,
+   "ortools_value": 11.097,
+   "browser_value": 11.097,
+   "ratio": 1,
+   "browser_ms": 34.1
+  },
+  {
+   "scenario": 15,
+   "nodes_offered": 34,
+   "ortools_value": 13.637,
+   "browser_value": 13.637,
+   "ratio": 1,
+   "browser_ms": 36.3
+  },
+  {
+   "scenario": 16,
+   "nodes_offered": 19,
+   "ortools_value": 10.981,
+   "browser_value": 13.485,
+   "ratio": 1.228,
+   "browser_ms": 23.3
+  },
+  {
+   "scenario": 17,
+   "nodes_offered": 23,
+   "ortools_value": 5.341,
+   "browser_value": 5.589,
+   "ratio": 1.0464,
+   "browser_ms": 19.8
+  },
+  {
+   "scenario": 18,
+   "nodes_offered": 15,
+   "ortools_value": 8.129,
+   "browser_value": 8.129,
+   "ratio": 1,
+   "browser_ms": 17.6
+  },
+  {
+   "scenario": 19,
+   "nodes_offered": 34,
+   "ortools_value": 10.966,
+   "browser_value": 10.966,
+   "ratio": 1,
+   "browser_ms": 35.2
+  },
+  {
+   "scenario": 20,
+   "nodes_offered": 20,
+   "ortools_value": 8.129,
+   "browser_value": 8.129,
+   "ratio": 1,
+   "browser_ms": 18.8
+  },
+  {
+   "scenario": 21,
+   "nodes_offered": 23,
+   "ortools_value": 16.142,
+   "browser_value": 16.142,
+   "ratio": 1,
+   "browser_ms": 31.6
+  },
+  {
+   "scenario": 22,
+   "nodes_offered": 24,
+   "ortools_value": 10.85,
+   "browser_value": 10.85,
+   "ratio": 1,
+   "browser_ms": 24.7
+  },
+  {
+   "scenario": 23,
+   "nodes_offered": 38,
+   "ortools_value": 8.426,
+   "browser_value": 8.426,
+   "ratio": 1,
+   "browser_ms": 29
+  },
+  {
+   "scenario": 24,
+   "nodes_offered": 33,
+   "ortools_value": 13.637,
+   "browser_value": 13.637,
+   "ratio": 1,
+   "browser_ms": 37.4
+  },
+  {
+   "scenario": 25,
+   "nodes_offered": 43,
+   "ortools_value": 5.639,
+   "browser_value": 8.26,
+   "ratio": 1.4648,
+   "browser_ms": 26.2
+  },
+  {
+   "scenario": 26,
+   "nodes_offered": 23,
+   "ortools_value": 13.652,
+   "browser_value": 13.652,
+   "ratio": 1,
+   "browser_ms": 28.6
+  },
+  {
+   "scenario": 27,
+   "nodes_offered": 27,
+   "ortools_value": 5.639,
+   "browser_value": 5.639,
+   "ratio": 1,
+   "browser_ms": 21.1
+  },
+  {
+   "scenario": 28,
+   "nodes_offered": 45,
+   "ortools_value": 8.426,
+   "browser_value": 8.426,
+   "ratio": 1,
+   "browser_ms": 31.1
+  },
+  {
+   "scenario": 29,
+   "nodes_offered": 44,
+   "ortools_value": 8.426,
+   "browser_value": 10.931,
+   "ratio": 1.2973,
+   "browser_ms": 30.1
+  },
+  {
+   "scenario": 30,
+   "nodes_offered": 12,
+   "ortools_value": 5.342,
+   "browser_value": 5.342,
+   "ratio": 1,
+   "browser_ms": 16
+  },
+  {
+   "scenario": 31,
+   "nodes_offered": 24,
+   "ortools_value": 10.815,
+   "browser_value": 13.486,
+   "ratio": 1.247,
+   "browser_ms": 25.4
+  },
+  {
+   "scenario": 32,
+   "nodes_offered": 36,
+   "ortools_value": 19.11,
+   "browser_value": 19.11,
+   "ratio": 1,
+   "browser_ms": 48.2
+  },
+  {
+   "scenario": 33,
+   "nodes_offered": 18,
+   "ortools_value": 16.022,
+   "browser_value": 16.022,
+   "ratio": 1,
+   "browser_ms": 25.7
+  },
+  {
+   "scenario": 34,
+   "nodes_offered": 39,
+   "ortools_value": 10.931,
+   "browser_value": 10.931,
+   "ratio": 1,
+   "browser_ms": 38.1
+  },
+  {
+   "scenario": 35,
+   "nodes_offered": 23,
+   "ortools_value": 8.26,
+   "browser_value": 8.26,
+   "ratio": 1,
+   "browser_ms": 24.7
+  },
+  {
+   "scenario": 36,
+   "nodes_offered": 17,
+   "ortools_value": 13.52,
+   "browser_value": 13.52,
+   "ratio": 1,
+   "browser_ms": 19
+  },
+  {
+   "scenario": 37,
+   "nodes_offered": 13,
+   "ortools_value": 8.012,
+   "browser_value": 8.012,
+   "ratio": 1,
+   "browser_ms": 17
+  },
+  {
+   "scenario": 38,
+   "nodes_offered": 26,
+   "ortools_value": 18.944,
+   "browser_value": 18.944,
+   "ratio": 1,
+   "browser_ms": 39.4
+  },
+  {
+   "scenario": 39,
+   "nodes_offered": 24,
+   "ortools_value": 16.026,
+   "browser_value": 16.026,
+   "ratio": 1,
+   "browser_ms": 30.7
+  },
+  {
+   "scenario": 40,
+   "nodes_offered": 38,
+   "ortools_value": 8.295,
+   "browser_value": 8.295,
+   "ratio": 1,
+   "browser_ms": 27.6
+  },
+  {
+   "scenario": 41,
+   "nodes_offered": 24,
+   "ortools_value": 18.812,
+   "browser_value": 18.812,
+   "ratio": 1,
+   "browser_ms": 31.5
+  },
+  {
+   "scenario": 42,
+   "nodes_offered": 22,
+   "ortools_value": 10.931,
+   "browser_value": 10.931,
+   "ratio": 1,
+   "browser_ms": 25.9
+  },
+  {
+   "scenario": 43,
+   "nodes_offered": 19,
+   "ortools_value": 13.602,
+   "browser_value": 13.602,
+   "ratio": 1,
+   "browser_ms": 25.3
+  },
+  {
+   "scenario": 44,
+   "nodes_offered": 20,
+   "ortools_value": 10.849,
+   "browser_value": 10.849,
+   "ratio": 1,
+   "browser_ms": 21.2
+  },
+  {
+   "scenario": 45,
+   "nodes_offered": 33,
+   "ortools_value": 5.508,
+   "browser_value": 5.508,
+   "ratio": 1,
+   "browser_ms": 22.1
+  },
+  {
+   "scenario": 46,
+   "nodes_offered": 27,
+   "ortools_value": 5.589,
+   "browser_value": 5.589,
+   "ratio": 1,
+   "browser_ms": 20.8
+  },
+  {
+   "scenario": 47,
+   "nodes_offered": 38,
+   "ortools_value": 16.272,
+   "browser_value": 16.272,
+   "ratio": 1,
+   "browser_ms": 61.2
+  },
+  {
+   "scenario": 48,
+   "nodes_offered": 40,
+   "ortools_value": 8.426,
+   "browser_value": 8.426,
+   "ratio": 1,
+   "browser_ms": 29.4
+  },
+  {
+   "scenario": 49,
+   "nodes_offered": 40,
+   "ortools_value": 13.602,
+   "browser_value": 13.768,
+   "ratio": 1.0122,
+   "browser_ms": 36
+  },
+  {
+   "scenario": 50,
+   "nodes_offered": 39,
+   "ortools_value": 10.966,
+   "browser_value": 10.966,
+   "ratio": 1,
+   "browser_ms": 34.3
+  },
+  {
+   "scenario": 51,
+   "nodes_offered": 15,
+   "ortools_value": 13.352,
+   "browser_value": 13.352,
+   "ratio": 1,
+   "browser_ms": 20.4
+  },
+  {
+   "scenario": 52,
+   "nodes_offered": 21,
+   "ortools_value": 8.01,
+   "browser_value": 8.013,
+   "ratio": 1.0004,
+   "browser_ms": 19.3
+  },
+  {
+   "scenario": 53,
+   "nodes_offered": 43,
+   "ortools_value": 19.11,
+   "browser_value": 19.11,
+   "ratio": 1,
+   "browser_ms": 47.7
+  },
+  {
+   "scenario": 54,
+   "nodes_offered": 41,
+   "ortools_value": 5.639,
+   "browser_value": 5.639,
+   "ratio": 1,
+   "browser_ms": 26.9
+  },
+  {
+   "scenario": 55,
+   "nodes_offered": 14,
+   "ortools_value": 13.471,
+   "browser_value": 13.471,
+   "ratio": 1,
+   "browser_ms": 23.5
+  },
+  {
+   "scenario": 56,
+   "nodes_offered": 46,
+   "ortools_value": 13.768,
+   "browser_value": 13.768,
+   "ratio": 1,
+   "browser_ms": 44.7
+  },
+  {
+   "scenario": 57,
+   "nodes_offered": 38,
+   "ortools_value": 5.458,
+   "browser_value": 5.458,
+   "ratio": 1,
+   "browser_ms": 26.7
+  },
+  {
+   "scenario": 58,
+   "nodes_offered": 45,
+   "ortools_value": 13.768,
+   "browser_value": 13.768,
+   "ratio": 1,
+   "browser_ms": 42.5
   },
   {
    "scenario": 59,
-   "stations_offered": 25,
-   "ortools_value": 21.482,
-   "browser_value": 21.591,
-   "ratio": 1.0051,
-   "browser_ms": 2.7
+   "nodes_offered": 30,
+   "ortools_value": 10.981,
+   "browser_value": 10.981,
+   "ratio": 1,
+   "browser_ms": 30.4
   }
  ]
 }

@@ -2,7 +2,7 @@
  "site": "boxwork",
  "title": "Mount Sharp boxwork, Gale crater",
  "pipeline_version": "0.0.0",
- "packaged_utc": "2026-11-09T19:32:01+00:00",
+ "packaged_utc": "2026-11-09T20:40:16+00:00",
  "crs": "Equirectangular metres on the 3,396,190 m Mars sphere (east, north)",
  "bounds_m": [
   8141605.492786024,
@@ -533,13 +533,14 @@
     "transects": 7,
     "stations": 21,
     "science_value": 18.943,
-    "minutes": 356.087,
-    "consumables_min": 236.822,
-    "relative_dose_min": 39.6477,
-    "distance_m": 1959.7,
-    "min_thread_margin_min": 123.165,
-    "worst_minutes_to_shelter": 3.3,
-    "longest_comm_shadow_min": 1.71,
+    "minutes": 355.162,
+    "consumables_min": 236.028,
+    "relative_dose_min": 38.7687,
+    "distance_m": 1912.1,
+    "min_thread_margin_min": 123.959,
+    "worst_minutes_to_shelter": 4.19,
+    "longest_comm_shadow_min": 2.1,
+    "rover_moves": 2,
     "label": "MODELED"
    }
   },
@@ -557,7 +558,8 @@
     "distance_m": 2336.7,
     "min_thread_margin_min": 119.344,
     "worst_minutes_to_shelter": 2.47,
-    "longest_comm_shadow_min": 0.62,
+    "longest_comm_shadow_min": 0.34,
+    "rover_moves": 2,
     "label": "MODELED"
    }
   },
@@ -569,13 +571,14 @@
     "transects": 7,
     "stations": 21,
     "science_value": 18.943,
-    "minutes": 356.789,
-    "consumables_min": 238.048,
-    "relative_dose_min": 40.3212,
-    "distance_m": 2005.8,
-    "min_thread_margin_min": 106.952,
-    "worst_minutes_to_shelter": 3.3,
-    "longest_comm_shadow_min": 1.73,
+    "minutes": 355.89,
+    "consumables_min": 237.171,
+    "relative_dose_min": 39.4667,
+    "distance_m": 1958.5,
+    "min_thread_margin_min": 107.829,
+    "worst_minutes_to_shelter": 4.19,
+    "longest_comm_shadow_min": 2.15,
+    "rover_moves": 2,
     "label": "MODELED"
    }
   }
@@ -2898,7 +2901,7 @@
    "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NLB_826010430EDR_F1202366NCAM00255M_.JPG",
    "credit": "Courtesy NASA/JPL-Caltech",
    "source_credit": "NASA/JPL-Caltech",
-   "transect_source_id": 1652,
+   "transect_source_id": 1629,
    "file": "photos/NLB_826010430EDR_F1202366NCAM00255M_.jpg",
    "label": "MEASURED",
    "show_top_fraction": 0.55
@@ -2918,7 +2921,7 @@
    "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NRB_826010430EDR_F1202366NCAM00255M_.JPG",
    "credit": "Courtesy NASA/JPL-Caltech",
    "source_credit": "NASA/JPL-Caltech",
-   "transect_source_id": 1652,
+   "transect_source_id": 1629,
    "file": "photos/NRB_826010430EDR_F1202366NCAM00255M_.jpg",
    "label": "MEASURED",
    "show_top_fraction": 0.55
@@ -2938,7 +2941,7 @@
    "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633542EDR_F1210000NCAM00262M_.JPG",
    "credit": "Courtesy NASA/JPL-Caltech",
    "source_credit": "NASA/JPL-Caltech",
-   "transect_source_id": 1638,
+   "transect_source_id": 1652,
    "file": "photos/NRB_826633542EDR_F1210000NCAM00262M_.jpg",
    "label": "MEASURED",
    "show_top_fraction": 0.55
@@ -2958,7 +2961,7 @@
    "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04830/opgs/edr/ncam/NLB_826276448EDR_F1202726NCAM00258M_.JPG",
    "credit": "Courtesy NASA/JPL-Caltech",
    "source_credit": "NASA/JPL-Caltech",
-   "transect_source_id": 1638,
+   "transect_source_id": 1652,
    "file": "photos/NLB_826276448EDR_F1202726NCAM00258M_.jpg",
    "label": "MEASURED",
    "show_top_fraction": 0.55
@@ -2978,7 +2981,7 @@
    "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NLB_826633459EDR_F1210000NCAM00262M_.JPG",
    "credit": "Courtesy NASA/JPL-Caltech",
    "source_credit": "NASA/JPL-Caltech",
-   "transect_source_id": 1550,
+   "transect_source_id": 1489,
    "file": "photos/NLB_826633459EDR_F1210000NCAM00262M_.jpg",
    "label": "MEASURED",
    "show_top_fraction": 0.55
@@ -2998,7 +3001,7 @@
    "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633459EDR_F1210000NCAM00262M_.JPG",
    "credit": "Courtesy NASA/JPL-Caltech",
    "source_credit": "NASA/JPL-Caltech",
-   "transect_source_id": 1550,
+   "transect_source_id": 1489,
    "file": "photos/NRB_826633459EDR_F1210000NCAM00262M_.jpg",
    "label": "MEASURED",
    "show_top_fraction": 0.55

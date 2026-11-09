@@ -36,7 +36,8 @@
     8143882.49,
     -284706.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S02",
@@ -54,7 +55,8 @@
     8143882.49,
     -284704.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S03",
@@ -72,7 +74,8 @@
     8143890.49,
     -284700.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S04",
@@ -90,7 +93,8 @@
     8143772.49,
     -284816.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "RELAY2"
   },
   {
    "id": "S05",
@@ -108,7 +112,8 @@
     8143772.49,
     -284816.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "RELAY2"
   },
   {
    "id": "S06",
@@ -126,7 +131,8 @@
     8143770.49,
     -284816.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "RELAY2"
   },
   {
    "id": "S07",
@@ -144,7 +150,8 @@
     8143768.49,
     -284840.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S08",
@@ -162,7 +169,8 @@
     8143770.49,
     -284840.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S09",
@@ -180,7 +188,8 @@
     8143770.49,
     -284838.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S10",
@@ -198,7 +207,8 @@
     8143556.49,
     -285082.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S11",
@@ -216,7 +226,8 @@
     8143556.49,
     -285082.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S12",
@@ -234,7 +245,8 @@
     8143550.49,
     -285090.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S13",
@@ -252,7 +264,8 @@
     8143550.49,
     -285098.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S14",
@@ -270,7 +283,8 @@
     8143548.49,
     -285098.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S15",
@@ -288,7 +302,8 @@
     8143542.49,
     -285104.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S16",
@@ -306,7 +321,8 @@
     8143544.49,
     -285112.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S17",
@@ -324,7 +340,8 @@
     8143546.49,
     -285110.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S18",
@@ -342,7 +359,8 @@
     8143550.49,
     -285106.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S19",
@@ -360,7 +378,8 @@
     8143536.49,
     -285130.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S20",
@@ -378,7 +397,8 @@
     8143536.49,
     -285130.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   },
   {
    "id": "S21",
@@ -396,7 +416,8 @@
     8143536.49,
     -285126.08
    ],
-   "overwatch_distance_m": 4.0
+   "overwatch_distance_m": 4.0,
+   "relay": "STAGING"
   }
  ],
  "legs": [
@@ -3520,7 +3541,7 @@
   {
    "t_min": 57.291,
    "c_left": 344.986,
-   "c_home": 6.131,
+   "c_home": 12.222,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3531,7 +3552,7 @@
   {
    "t_min": 57.383,
    "c_left": 344.84,
-   "c_home": 6.122,
+   "c_home": 12.213,
    "c_reserve": 30.0,
    "step_m": 4.109,
    "xy_m": [
@@ -3542,7 +3563,7 @@
   {
    "t_min": 57.452,
    "c_left": 344.73,
-   "c_home": 6.132,
+   "c_home": 12.223,
    "c_reserve": 30.0,
    "step_m": 3.842,
    "xy_m": [
@@ -3553,7 +3574,7 @@
   {
    "t_min": 57.536,
    "c_left": 344.596,
-   "c_home": 6.124,
+   "c_home": 12.245,
    "c_reserve": 30.0,
    "step_m": 3.842,
    "xy_m": [
@@ -3564,7 +3585,7 @@
   {
    "t_min": 57.607,
    "c_left": 344.484,
-   "c_home": 6.064,
+   "c_home": 12.259,
    "c_reserve": 30.0,
    "step_m": 3.842,
    "xy_m": [
@@ -3575,7 +3596,7 @@
   {
    "t_min": 57.682,
    "c_left": 344.366,
-   "c_home": 6.002,
+   "c_home": 12.227,
    "c_reserve": 30.0,
    "step_m": 4.078,
    "xy_m": [
@@ -3586,7 +3607,7 @@
   {
    "t_min": 57.771,
    "c_left": 344.243,
-   "c_home": 5.945,
+   "c_home": 12.17,
    "c_reserve": 30.0,
    "step_m": 5.0,
    "xy_m": [
@@ -3597,7 +3618,7 @@
   {
    "t_min": 57.856,
    "c_left": 344.111,
-   "c_home": 5.94,
+   "c_home": 12.185,
    "c_reserve": 30.0,
    "step_m": 5.0,
    "xy_m": [
@@ -3608,7 +3629,7 @@
   {
    "t_min": 57.943,
    "c_left": 343.979,
-   "c_home": 5.901,
+   "c_home": 12.19,
    "c_reserve": 30.0,
    "step_m": 5.0,
    "xy_m": [
@@ -3619,7 +3640,7 @@
   {
    "t_min": 58.008,
    "c_left": 343.876,
-   "c_home": 5.865,
+   "c_home": 12.207,
    "c_reserve": 30.0,
    "step_m": 3.75,
    "xy_m": [
@@ -3630,7 +3651,7 @@
   {
    "t_min": 58.084,
    "c_left": 343.754,
-   "c_home": 5.824,
+   "c_home": 12.183,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3641,7 +3662,7 @@
   {
    "t_min": 58.159,
    "c_left": 343.634,
-   "c_home": 5.778,
+   "c_home": 12.137,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3652,7 +3673,7 @@
   {
    "t_min": 58.234,
    "c_left": 343.516,
-   "c_home": 5.782,
+   "c_home": 12.142,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3663,7 +3684,7 @@
   {
    "t_min": 58.325,
    "c_left": 343.369,
-   "c_home": 5.765,
+   "c_home": 12.124,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3674,7 +3695,7 @@
   {
    "t_min": 58.419,
    "c_left": 343.219,
-   "c_home": 5.726,
+   "c_home": 12.099,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3685,7 +3706,7 @@
   {
    "t_min": 58.482,
    "c_left": 343.117,
-   "c_home": 5.703,
+   "c_home": 12.088,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3696,7 +3717,7 @@
   {
    "t_min": 58.557,
    "c_left": 342.999,
-   "c_home": 5.669,
+   "c_home": 12.093,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3707,7 +3728,7 @@
   {
    "t_min": 58.606,
    "c_left": 342.92,
-   "c_home": 5.656,
+   "c_home": 12.08,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3718,7 +3739,7 @@
   {
    "t_min": 58.709,
    "c_left": 342.756,
-   "c_home": 5.601,
+   "c_home": 12.07,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3729,7 +3750,7 @@
   {
    "t_min": 58.761,
    "c_left": 342.673,
-   "c_home": 5.554,
+   "c_home": 12.071,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3740,7 +3761,7 @@
   {
    "t_min": 58.808,
    "c_left": 342.598,
-   "c_home": 5.522,
+   "c_home": 12.041,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3751,7 +3772,7 @@
   {
    "t_min": 58.857,
    "c_left": 342.519,
-   "c_home": 5.498,
+   "c_home": 12.017,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3762,7 +3783,7 @@
   {
    "t_min": 58.922,
    "c_left": 342.415,
-   "c_home": 5.493,
+   "c_home": 12.013,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3773,7 +3794,7 @@
   {
    "t_min": 58.99,
    "c_left": 342.306,
-   "c_home": 5.512,
+   "c_home": 12.031,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3784,7 +3805,7 @@
   {
    "t_min": 59.119,
    "c_left": 342.1,
-   "c_home": 5.54,
+   "c_home": 12.059,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3795,7 +3816,7 @@
   {
    "t_min": 59.216,
    "c_left": 341.944,
-   "c_home": 5.571,
+   "c_home": 12.091,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3806,7 +3827,7 @@
   {
    "t_min": 59.339,
    "c_left": 341.748,
-   "c_home": 5.599,
+   "c_home": 12.119,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3817,7 +3838,7 @@
   {
    "t_min": 59.414,
    "c_left": 341.631,
-   "c_home": 5.644,
+   "c_home": 12.163,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3828,7 +3849,7 @@
   {
    "t_min": 59.522,
    "c_left": 341.457,
-   "c_home": 5.673,
+   "c_home": 12.192,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3839,7 +3860,7 @@
   {
    "t_min": 59.692,
    "c_left": 341.186,
-   "c_home": 5.714,
+   "c_home": 12.234,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3850,7 +3871,7 @@
   {
    "t_min": 59.789,
    "c_left": 341.031,
-   "c_home": 5.736,
+   "c_home": 12.256,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3861,7 +3882,7 @@
   {
    "t_min": 59.894,
    "c_left": 340.863,
-   "c_home": 5.766,
+   "c_home": 12.285,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3872,7 +3893,7 @@
   {
    "t_min": 59.946,
    "c_left": 340.78,
-   "c_home": 5.79,
+   "c_home": 12.309,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3883,7 +3904,7 @@
   {
    "t_min": 60.02,
    "c_left": 340.678,
-   "c_home": 5.843,
+   "c_home": 12.362,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3894,7 +3915,7 @@
   {
    "t_min": 60.071,
    "c_left": 340.598,
-   "c_home": 5.868,
+   "c_home": 12.387,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3905,7 +3926,7 @@
   {
    "t_min": 60.145,
    "c_left": 340.493,
-   "c_home": 5.919,
+   "c_home": 12.438,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3916,7 +3937,7 @@
   {
    "t_min": 60.192,
    "c_left": 340.438,
-   "c_home": 5.939,
+   "c_home": 12.459,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3927,7 +3948,7 @@
   {
    "t_min": 60.267,
    "c_left": 340.358,
-   "c_home": 5.859,
+   "c_home": 12.379,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3938,7 +3959,7 @@
   {
    "t_min": 60.425,
    "c_left": 340.104,
-   "c_home": 5.622,
+   "c_home": 12.142,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3949,7 +3970,7 @@
   {
    "t_min": 60.483,
    "c_left": 340.013,
-   "c_home": 5.609,
+   "c_home": 12.128,
    "c_reserve": 30.0,
    "step_m": 2.828,
    "xy_m": [
@@ -3960,7 +3981,7 @@
   {
    "t_min": 60.584,
    "c_left": 339.851,
-   "c_home": 5.611,
+   "c_home": 12.13,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3971,7 +3992,7 @@
   {
    "t_min": 60.659,
    "c_left": 339.743,
-   "c_home": 5.66,
+   "c_home": 12.179,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3982,7 +4003,7 @@
   {
    "t_min": 60.745,
    "c_left": 339.604,
-   "c_home": 5.695,
+   "c_home": 12.215,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -3993,7 +4014,7 @@
   {
    "t_min": 75.82,
    "c_left": 330.516,
-   "c_home": 5.72,
+   "c_home": 12.239,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -4004,7 +4025,7 @@
   {
    "t_min": 90.82,
    "c_left": 321.516,
-   "c_home": 5.72,
+   "c_home": 12.239,
    "c_reserve": 30.0,
    "step_m": 0.0,
    "xy_m": [
@@ -4015,7 +4036,7 @@
   {
    "t_min": 105.894,
    "c_left": 312.423,
-   "c_home": 5.653,
+   "c_home": 12.173,
    "c_reserve": 30.0,
    "step_m": 4.472,
    "xy_m": [
@@ -8277,6 +8298,61 @@
   "comms": "pass",
   "rover": "pass"
  },
+ "rover": {
+  "relays": [
+   {
+    "id": "STAGING",
+    "xy_m": [
+     8143368.49,
+     -284510.08
+    ],
+    "drive_from_staging_min": 0.0
+   },
+   {
+    "id": "RELAY1",
+    "xy_m": [
+     8142918.49,
+     -284310.08
+    ],
+    "drive_from_staging_min": 12.55
+   },
+   {
+    "id": "RELAY2",
+    "xy_m": [
+     8143168.49,
+     -284210.08
+    ],
+    "drive_from_staging_min": 10.66
+   },
+   {
+    "id": "RELAY3",
+    "xy_m": [
+     8143168.49,
+     -283760.08
+    ],
+    "drive_from_staging_min": 26.69
+   }
+  ],
+  "moves": [
+   {
+    "before_transect": 2,
+    "from_relay": 0,
+    "to_relay": 2,
+    "drive_min": 10.66,
+    "when": "during the last station of the previous transect"
+   },
+   {
+    "before_transect": 3,
+    "from_relay": 2,
+    "to_relay": 0,
+    "drive_min": 10.66,
+    "when": "during the last station of the previous transect"
+   }
+  ],
+  "ends_at": "STAGING",
+  "label": "PLACEHOLDER",
+  "note": "The rover is a mobile comms relay: it parks at a relay site for each transect and moves only during the last station of a transect (or the first leg); the walk ends at the rover."
+ },
  "totals": {
   "transects": 7,
   "stations": 21,
@@ -8287,7 +8363,8 @@
   "distance_m": 2336.7,
   "min_thread_margin_min": 119.344,
   "worst_minutes_to_shelter": 2.47,
-  "longest_comm_shadow_min": 0.62,
+  "longest_comm_shadow_min": 0.34,
+  "rover_moves": 2,
   "label": "MODELED"
  },
  "walker_model": {

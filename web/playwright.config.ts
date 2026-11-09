@@ -7,6 +7,8 @@ const PORT = 4173;
 export default defineConfig({
   testDir: "e2e",
   forbidOnly: !!process.env.CI,
+  // one test at a time: the 3D rehearsal renders WebGL in software and slows parallel tests
+  workers: 1,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [["list"], ["html", { open: "never" }]] : "list",
   use: {

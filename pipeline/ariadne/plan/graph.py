@@ -403,7 +403,9 @@ def leg_matrix(gr: Grid, suit: mb.Suit, w: dict, points, max_cost: float = np.in
     return leg_matrix_st(gr, suit, w, points, points, max_cost)
 
 
-def leg_matrix_st(gr: Grid, suit: mb.Suit, w: dict, sources, targets, max_cost=np.inf) -> dict:
+def leg_matrix_st(
+    gr: Grid, suit: mb.Suit, w: dict, sources, targets, max_cost=np.inf, same_node_diagonal=True
+) -> dict:
     """Matrices from each source to each target, from one forward Dijkstra per source. Each leg
     is smoothed, and cost, minutes, consumables and dose describe the smoothed leg, so plans and
     their checks measure the same path; `grid_cost` keeps the Dijkstra cost. Entry (i, i) is 0
@@ -415,7 +417,7 @@ def leg_matrix_st(gr: Grid, suit: mb.Suit, w: dict, sources, targets, max_cost=n
     for i, p in enumerate(sources):
         f = dijkstra(gr, suit, w, [p], max_cost=max_cost)
         for j, q in enumerate(targets):
-            if i == j:
+            if same_node_diagonal and i == j:
                 for k in keys:
                     mats[k][i, j] = 0.0
                 continue

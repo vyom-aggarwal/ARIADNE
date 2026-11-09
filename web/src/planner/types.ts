@@ -40,6 +40,15 @@ export interface Totals {
   min_thread_margin_min: number;
   worst_minutes_to_shelter: number;
   longest_comm_shadow_min: number;
+  rover_moves?: number;
+  label: Label;
+}
+
+export interface RoverPlan {
+  relays: { id: string; xy_m: [number, number]; drive_from_staging_min: number }[];
+  moves: { before_transect: number; from_relay: number; to_relay: number; drive_min: number;
+    when: string }[];
+  ends_at: string;
   label: Label;
 }
 
@@ -51,6 +60,7 @@ export interface Station {
   value: number;
   service_min: number;
   label: Label;
+  relay?: string;
 }
 
 export interface Leg {
@@ -80,6 +90,7 @@ export interface Plan {
   checks: Record<string, string>;
   totals: Totals;
   timeline: Timeline;
+  rover?: RoverPlan;
 }
 
 export interface Photo {

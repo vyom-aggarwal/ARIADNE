@@ -31,7 +31,7 @@ def test_plan_validates_against_the_schema(path):
     assert plan["checks"]["thread"] == "pass"
     assert all(m["c_left"] - (m["c_home"] or 0) >= m["c_reserve"] - 1e-6 for m in plan["margins"])
     # legs chain from the staging point back to it through the stations, in order
-    ids = ["STAGING"] + [s["id"] for s in plan["stations"]] + ["STAGING"]
+    ids = ["STAGING"] + [s["id"] for s in plan["stations"]] + [plan["rover"]["ends_at"]]
     if plan["legs"]:
         assert [leg["from"] for leg in plan["legs"]] + [plan["legs"][-1]["to"]] == ids
     assert plan["walker_model"]["extrapolated"] is True
@@ -86,3 +86,30 @@ def test_report_and_validation_carry_the_phase_3_results():
     assert checks["walker-model"]["result"]["minetti_within_one_sd"] == "12 of 13"
     assert checks["station-solver"]["status"] in {"pass", "fail"}
     assert checks["station-solver"]["result"]["scenarios"] >= 50
+
+
+# --- F5: the rover as a mobile comms relay ---
+
+
+@pytest.mark.parametrize("path", PLANS, ids=lambda p: p.name)
+def test_plans_carry_the_rover_relay_schedule_and_end_at_the_rover(path):
+    plan = json.loads(path.read_text(encoding="utf-8"))
+    rover = plan["rover"]
+    relay_ids = {r["id"] for r in rover["relays"]}
+    assert "STAGING" in relay_ids and rover["ends_at"] in relay_ids
+    assert all(s["relay"] in relay_ids for s in plan["stations"])
+    if plan["legs"]:
+        assert plan["legs"][-1]["to"] == rover["ends_at"]
+    # each transect is worked from one relay; moves happen only between transects
+    for k in range(0, len(plan["stations"]), 3):
+        assert len({s["relay"] for s in plan["stations"][k : k + 3]}) == 1
+    assert plan["totals"]["rover_moves"] == len(rover["moves"])
+    for mv in rover["moves"]:
+        assert mv["drive_min"] <= 15.0 + 1e-6 or mv["before_transect"] == 1
+    assert plan["totals"]["longest_comm_shadow_min"] <= 10.0 + 1e-6
+    assert all(v == "pass" for v in plan["checks"].values())
+
+
+def test_report_compares_plans_with_and_without_the_relay():
+    report = (ROOT / "docs" / "plan" / "boxwork.md").read_text(encoding="utf-8")
+    assert "Rover as a mobile comms relay" in report and "staging only, with relay" in report

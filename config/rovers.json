@@ -1,0 +1,13 @@
+{
+ "_about": "Rover profiles for the route engine (PROMPT.md 5.9: the rover follows its own cost surface, and serves as a mobile comms relay). Every value is PLACEHOLDER unless a source is given.",
+ "default": {
+  "speed_go_m_s": {"value": 1.0, "label": "PLACEHOLDER", "note": "Driving speed on rover-go ground (Phase 2 rover walkability class 0)."},
+  "speed_caution_m_s": {"value": 0.5, "label": "PLACEHOLDER", "note": "Driving speed on rover-caution ground (class 1); no-go ground is impassable."},
+  "antenna_height_m": {"value": 3.0, "label": "PLACEHOLDER", "source": "PROMPT.md 4.7 and config/derive.yaml line_of_sight"},
+  "relay_sites": {"value": 3, "label": "PLACEHOLDER", "note": "Relay sites chosen besides the staging point."},
+  "relay_spacing_m": {"value": 50, "label": "PLACEHOLDER", "note": "Spacing of the candidate relay grid."},
+  "relay_max_distance_m": {"value": 800, "label": "PLACEHOLDER", "note": "Candidate relay sites lie within this distance of the staging point."},
+  "viewshed_range_m": {"value": 1500, "label": "PLACEHOLDER", "note": "Line-of-sight range from the rover antenna."},
+  "shelter_s": {"value": 0.5, "label": "PLACEHOLDER", "source": "config/derive.yaml shielding.rover_shelter_s"}
+ }
+}

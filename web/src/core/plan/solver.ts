@@ -5,6 +5,10 @@
  * route starts and ends. Greedy value-per-minute insertion builds a first route; 2-opt and
  * Or-opt shorten it; insertion fills the time freed; simulated annealing (seeded) escapes local
  * optima. Benchmarked against the OR-Tools reference plans (test D11).
+ *
+ * Optional: `group` gives each node a group id (-1 for none) and at most one node of a group is
+ * visited (one relay per transect); `end` is the node the route ends at (default 0, the start),
+ * so a walk can end wherever the rover is.
  */
 
 export interface Instance {
@@ -16,6 +20,8 @@ export interface Instance {
   serviceCons: number[];
   evaMax: number;
   consBudget: number;
+  group?: number[];
+  end?: number;
 }
 
 export interface Totals {
@@ -29,6 +35,8 @@ export interface Totals {
 export interface SolveOptions {
   seed?: number;
   iterations?: number;
+  /** Independent annealing runs (different seeds); the best is kept. */
+  restarts?: number;
 }
 
 const EPS = 1e-9;
@@ -95,15 +103,32 @@ function bestInsertion(inst: Instance, route: number[], base: Totals, n: number)
   return best;
 }
 
-/** Repeatedly insert the station with the highest value per added minute. */
-export function greedyInsert(inst: Instance, start: number[] = [0, 0]): number[] {
-  const route = [...start];
+const endOf = (inst: Instance) => inst.end ?? 0;
+
+/** Nodes that may still join a route: not the start or end, not in it, and not in a group the
+ * route already visits. */
+function open(inst: Instance, route: number[]): number[] {
   const inRoute = new Set(route);
+  const groups = new Set(
+    route.map((n) => inst.group?.[n] ?? -1).filter((g) => g >= 0),
+  );
+  const out: number[] = [];
+  for (let n = 1; n < inst.value.length; n++) {
+    if (n === endOf(inst) || inRoute.has(n)) continue;
+    const g = inst.group?.[n] ?? -1;
+    if (g >= 0 && groups.has(g)) continue;
+    out.push(n);
+  }
+  return out;
+}
+
+/** Repeatedly insert the station with the highest value per added minute. */
+export function greedyInsert(inst: Instance, start?: number[]): number[] {
+  const route = start ? [...start] : [0, endOf(inst)];
   for (;;) {
     const base = routeTotals(inst, route);
     let pick: { n: number; pos: number; ratio: number } | null = null;
-    for (let n = 1; n < inst.value.length; n++) {
-      if (inRoute.has(n)) continue;
+    for (const n of open(inst, route)) {
       const ins = bestInsertion(inst, route, base, n);
       if (!ins) continue;
       const ratio = inst.value[n] / Math.max(ins.dMin, 1e-6);
@@ -111,7 +136,6 @@ export function greedyInsert(inst: Instance, start: number[] = [0, 0]): number[]
     }
     if (!pick) return route;
     route.splice(pick.pos, 0, pick.n);
-    inRoute.add(pick.n);
   }
 }
 
@@ -177,15 +201,25 @@ function polish(inst: Instance, route: number[]): number[] {
   return r;
 }
 
-/** Greedy, 2-opt, Or-opt, then simulated annealing over remove, insert, swap and reverse moves. */
+/** Greedy, 2-opt, Or-opt, then simulated annealing over remove, insert, swap and reverse moves,
+ * restarted with different seeds; the best route is kept. */
 export function solve(inst: Instance, opts: SolveOptions = {}): { route: number[]; totals: Totals } {
-  const rand = rng(opts.seed ?? 1);
-  const iters = opts.iterations ?? 4000;
+  const restarts = Math.max(1, opts.restarts ?? 8);
+  let best: { route: number[]; totals: Totals } | null = null;
+  for (let k = 0; k < restarts; k++) {
+    const run = solveOnce(inst, (opts.seed ?? 1) + 7919 * k, opts.iterations ?? 4000);
+    if (best === null || better(run.totals, best.totals)) best = run;
+  }
+  return best!;
+}
+
+function solveOnce(inst: Instance, seed: number, iterations: number) {
+  const rand = rng(seed);
+  const iters = iterations;
   let cur = polish(inst, greedyInsert(inst));
   let curT = routeTotals(inst, cur);
   let best = cur;
   let bestT = curT;
-  const n = inst.value.length;
   const vmax = Math.max(1e-6, ...inst.value);
   let temp = 0.3 * vmax;
   const cool = Math.pow(1e-3, 1 / Math.max(1, iters));
@@ -198,10 +232,9 @@ export function solve(inst: Instance, opts: SolveOptions = {}): { route: number[
     } else if (move < 0.85) {
       // insert an unvisited station at its cheapest feasible place, after removing one visited
       // station for a swap (60% of these moves) when the route has any
-      const out = [];
-      for (let k = 1; k < n; k++) if (!cand.includes(k)) out.push(k);
-      if (out.length === 0) continue;
       if (move >= 0.45 && inner > 0) cand.splice(1 + Math.floor(rand() * inner), 1);
+      const out = open(inst, cand);
+      if (out.length === 0) continue;
       const node = out[Math.floor(rand() * out.length)];
       const ins = bestInsertion(inst, cand, routeTotals(inst, cand), node);
       if (!ins) continue;
