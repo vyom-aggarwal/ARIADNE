@@ -14,7 +14,7 @@ import sys
 from ariadne import __version__
 
 NOT_BUILT = 2
-BUILT = {"fetch", "derive", "plan", "validate", "ridge-sample", "ridge-tune"}  # the rest: phase
+BUILT = {"fetch", "derive", "plan", "validate", "package", "ridge-sample", "ridge-tune"}
 
 # Command -> (phase that builds it, one-line description).
 COMMANDS = {
@@ -102,6 +102,11 @@ def main(argv: list[str] | None = None) -> int:
         from ariadne.plan.run import plan_site
 
         plan_site(args.site, quick=args.quick)
+        return 0
+    if args.command == "package":
+        from ariadne.package.run import package_site
+
+        package_site(args.site)
         return 0
     if args.command == "ridge-sample":
         from ariadne.derive.ridge_run import ridge_sample

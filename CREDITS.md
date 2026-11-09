@@ -42,7 +42,20 @@ Sources move here, with their credit lines, when the pipeline first uses them. W
 
 ## Images
 
-None used yet. No AI-generated images are used, and no NASA logos, flags, insignia or mission patches appear as graphics.
+Curiosity Navcam frames shown as 3D billboards in the Habitat Planner (web/public/sites/boxwork/photos/), from NASA's raw-image API. Only the upper part of each frame is shown, so the rover deck and any hardware markings stay out of view. No AI-generated images are used, and no NASA logos, flags, insignia or mission patches appear as graphics.
+
+| Image | Camera and time | Source | Credit and terms |
+| --- | --- | --- | --- |
+| NLB_826010399EDR_F1202366NCAM00255M_ | Navcam, sol 4827 (site 120, drive 2366) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NLB_826010399EDR_F1202366NCAM00255M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NLB_826010375EDR_F1202366NCAM00255M_ | Navcam, sol 4827 (site 120, drive 2366) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NLB_826010375EDR_F1202366NCAM00255M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NLB_826276424EDR_F1202726NCAM00258M_ | Navcam, sol 4830 (site 120, drive 2726) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04830/opgs/edr/ncam/NLB_826276424EDR_F1202726NCAM00258M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NLB_826276393EDR_F1202726NCAM00258M_ | Navcam, sol 4830 (site 120, drive 2726) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04830/opgs/edr/ncam/NLB_826276393EDR_F1202726NCAM00258M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NLB_826010430EDR_F1202366NCAM00255M_ | Navcam, sol 4827 (site 120, drive 2366) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NLB_826010430EDR_F1202366NCAM00255M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NRB_826010430EDR_F1202366NCAM00255M_ | Navcam, sol 4827 (site 120, drive 2366) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NRB_826010430EDR_F1202366NCAM00255M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NRB_826633542EDR_F1210000NCAM00262M_ | Navcam, sol 4834 (site 121, drive 0) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633542EDR_F1210000NCAM00262M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NLB_826276448EDR_F1202726NCAM00258M_ | Navcam, sol 4830 (site 120, drive 2726) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04830/opgs/edr/ncam/NLB_826276448EDR_F1202726NCAM00258M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NLB_826633459EDR_F1210000NCAM00262M_ | Navcam, sol 4834 (site 121, drive 0) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NLB_826633459EDR_F1210000NCAM00262M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| NRB_826633459EDR_F1210000NCAM00262M_ | Navcam, sol 4834 (site 121, drive 0) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633459EDR_F1210000NCAM00262M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
 
 ## Text
 
@@ -83,6 +96,8 @@ Exact versions are in `web/package-lock.json`. `npm run licenses` checks every p
 | TypeScript | Type checking | Apache-2.0 | https://www.typescriptlang.org |
 | Vitest | Unit tests | MIT | https://vitest.dev |
 | Ajv | Checks each plan.json against its schema in the web tests | MIT | https://ajv.js.org |
+| deck.gl (@deck.gl/core, layers, react) | The planner's 2D map in site metres | MIT | https://deck.gl |
+| three.js | The 3D rehearsal | MIT | https://threejs.org |
 | jsdom | Browser environment for unit tests | MIT | https://github.com/jsdom/jsdom |
 | Testing Library (DOM and React) | Component tests | MIT | https://testing-library.com |
 | Playwright | Browser tests | Apache-2.0 | https://playwright.dev |

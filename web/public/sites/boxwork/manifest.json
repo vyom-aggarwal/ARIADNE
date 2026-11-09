@@ -1,0 +1,3006 @@
+{
+ "site": "boxwork",
+ "title": "Mount Sharp boxwork, Gale crater",
+ "pipeline_version": "0.0.0",
+ "packaged_utc": "2026-11-09T19:02:01+00:00",
+ "crs": "Equirectangular metres on the 3,396,190 m Mars sphere (east, north)",
+ "bounds_m": [
+  8141605.492786024,
+  -286731.075189438,
+  8145119.492786024,
+  -282806.075189438
+ ],
+ "staging_xy_m": [
+  8143367.86,
+  -284509.49
+ ],
+ "staging_label": "PLACEHOLDER",
+ "layers": [
+  {
+   "id": "imagery",
+   "title": "HiRISE imagery",
+   "file": "layers/imagery.png",
+   "bounds_m": [
+    8141605.5,
+    -286730.5,
+    8145119.5,
+    -282806.5
+   ],
+   "resolution_m": 1.0,
+   "sources": [
+    "usgs-gale-ortho-25cm"
+   ],
+   "date": "2022-12-01 (USGS orthophoto mosaic v3)",
+   "label": "MEASURED",
+   "legend": null,
+   "group": "base",
+   "description": "USGS 25 cm orthophoto mosaic from HiRISE, averaged to 1 m.",
+   "default_visible": true,
+   "opacity": 1.0,
+   "kind": "raster"
+  },
+  {
+   "id": "hillshade",
+   "title": "Shaded relief",
+   "file": "layers/hillshade.png",
+   "bounds_m": [
+    8141605.492786024,
+    -286730.075189438,
+    8145119.492786024,
+    -282806.075189438
+   ],
+   "resolution_m": 2.0,
+   "sources": [
+    "usgs-gale-dem-1m"
+   ],
+   "date": "2022-11-09 (USGS DEM mosaic v3)",
+   "label": "DERIVED",
+   "legend": null,
+   "group": "base",
+   "description": "Shaded relief of the 1 m DEM averaged to 2 m (light from the northwest).",
+   "default_visible": false,
+   "opacity": 0.6,
+   "kind": "raster"
+  },
+  {
+   "id": "walk_walker",
+   "title": "Walkability, suited walker",
+   "file": "layers/walk_walker.png",
+   "bounds_m": [
+    8141605.492786024,
+    -286730.075189438,
+    8145119.492786024,
+    -282806.075189438
+   ],
+   "resolution_m": 2.0,
+   "sources": [
+    "usgs-gale-dem-1m",
+    "usgs-gale-ortho-25cm",
+    "trek-themis-night-ir"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "legend": [
+    {
+     "value": 0,
+     "color": [
+      0,
+      158,
+      115,
+      70
+     ],
+     "label": "go (slope up to 15\u00b0)"
+    },
+    {
+     "value": 1,
+     "color": [
+      230,
+      159,
+      0,
+      150
+     ],
+     "label": "caution (15 to 25\u00b0)"
+    },
+    {
+     "value": 2,
+     "color": [
+      213,
+      94,
+      0,
+      210
+     ],
+     "label": "no-go (above 25\u00b0 or other hazard)"
+    }
+   ],
+   "group": "safety",
+   "description": "Go, caution or no-go from slope at the traveller's footprint scale, roughness, dark objects, the sand proxy and drop-offs (PLACEHOLDER thresholds; the worst cell of each 2 m block is shown).",
+   "default_visible": true,
+   "opacity": 0.7,
+   "kind": "raster"
+  },
+  {
+   "id": "walk_rover",
+   "title": "Walkability, rover",
+   "file": "layers/walk_rover.png",
+   "bounds_m": [
+    8141605.492786024,
+    -286730.075189438,
+    8145119.492786024,
+    -282806.075189438
+   ],
+   "resolution_m": 2.0,
+   "sources": [
+    "usgs-gale-dem-1m",
+    "usgs-gale-ortho-25cm",
+    "trek-themis-night-ir"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "legend": [
+    {
+     "value": 0,
+     "color": [
+      0,
+      158,
+      115,
+      70
+     ],
+     "label": "go (slope up to 12\u00b0)"
+    },
+    {
+     "value": 1,
+     "color": [
+      230,
+      159,
+      0,
+      150
+     ],
+     "label": "caution (12 to 20\u00b0)"
+    },
+    {
+     "value": 2,
+     "color": [
+      213,
+      94,
+      0,
+      210
+     ],
+     "label": "no-go (above 20\u00b0 or other hazard)"
+    }
+   ],
+   "group": "safety",
+   "description": "Go, caution or no-go from slope at the traveller's footprint scale, roughness, dark objects, the sand proxy and drop-offs (PLACEHOLDER thresholds; the worst cell of each 2 m block is shown).",
+   "default_visible": false,
+   "opacity": 0.7,
+   "kind": "raster"
+  },
+  {
+   "id": "overcautious_walker",
+   "title": "Map may be over-cautious here",
+   "file": "layers/overcautious_walker.png",
+   "bounds_m": [
+    8141605.492786024,
+    -286731.075189438,
+    8145119.492786024,
+    -282806.075189438
+   ],
+   "resolution_m": 1.0,
+   "sources": [
+    "usgs-gale-dem-1m",
+    "ode-hirise-footprints"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "legend": [
+    {
+     "color": [
+      240,
+      228,
+      66,
+      255
+     ],
+     "label": "hatched: no-go by slope in a DEM seam or low-confidence zone, check by eye"
+    }
+   ],
+   "group": "safety",
+   "pattern": "hatch",
+   "description": "The rover check can only measure false alarms, and they cluster at DEM seams. The planner still avoids these cells; the crew should check them by eye.",
+   "default_visible": true,
+   "opacity": 1.0,
+   "kind": "raster"
+  },
+  {
+   "id": "shielding",
+   "title": "Shielding index S",
+   "file": "layers/shielding.png",
+   "bounds_m": [
+    8141605.492786024,
+    -286730.075189438,
+    8145119.492786024,
+    -282806.075189438
+   ],
+   "resolution_m": 2.0,
+   "sources": [
+    "usgs-gale-dem-1m",
+    "mola-dem-463m"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "group": "science",
+   "ramp": {
+    "min": 0.8,
+    "max": 1.0,
+    "stops": [
+     [
+      8,
+      48,
+      107
+     ],
+     [
+      66,
+      146,
+      198
+     ],
+     [
+      247,
+      251,
+      255
+     ]
+    ],
+    "unit": "S (1 = open sky)"
+   },
+   "legend": [
+    {
+     "color": [
+      8,
+      48,
+      107,
+      200
+     ],
+     "label": "0.8 S (1 = open sky)"
+    },
+    {
+     "color": [
+      247,
+      251,
+      255,
+      200
+     ],
+     "label": "1.0 S (1 = open sky)"
+    }
+   ],
+   "description": "Zenith-weighted open-sky fraction, calibrated on one RAD measurement (Murray Buttes). Lower is better shielded.",
+   "default_visible": false,
+   "opacity": 0.7,
+   "kind": "raster"
+  },
+  {
+   "id": "confidence",
+   "title": "Confidence",
+   "file": "layers/confidence.png",
+   "bounds_m": [
+    8141605.492786024,
+    -286730.075189438,
+    8145119.492786024,
+    -282806.075189438
+   ],
+   "resolution_m": 2.0,
+   "sources": [
+    "usgs-gale-dem-1m",
+    "mola-dem-463m"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "group": "uncertainty",
+   "ramp": {
+    "min": 0.4,
+    "max": 1.0,
+    "stops": [
+     [
+      84,
+      39,
+      143
+     ],
+     [
+      158,
+      154,
+      200
+     ],
+     [
+      242,
+      240,
+      247
+     ]
+    ],
+    "unit": "0 to 1"
+   },
+   "legend": [
+    {
+     "color": [
+      84,
+      39,
+      143,
+      200
+     ],
+     "label": "0.4 0 to 1"
+    },
+    {
+     "color": [
+      242,
+      240,
+      247,
+      200
+     ],
+     "label": "1.0 0 to 1"
+    }
+   ],
+   "description": "From the DEM source, distance to Curiosity's positions and model flags (seams, crop edge). PLACEHOLDER weights.",
+   "default_visible": false,
+   "opacity": 0.7,
+   "kind": "raster"
+  },
+  {
+   "id": "ridges",
+   "title": "Boxwork ridges and hollows",
+   "file": "layers/ridges.png",
+   "bounds_m": [
+    8141605.492786024,
+    -286730.075189438,
+    8145119.492786024,
+    -282806.075189438
+   ],
+   "resolution_m": 2.0,
+   "sources": [
+    "usgs-gale-dem-1m"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "legend": [
+    {
+     "value": 1,
+     "color": [
+      204,
+      121,
+      167,
+      170
+     ],
+     "label": "ridge"
+    },
+    {
+     "value": 2,
+     "color": [
+      86,
+      180,
+      233,
+      150
+     ],
+     "label": "hollow"
+    }
+   ],
+   "group": "science",
+   "description": "From TPI and local relief, PLACEHOLDER thresholds until the team's labels tune them.",
+   "default_visible": false,
+   "opacity": 0.7,
+   "kind": "raster"
+  },
+  {
+   "id": "shelter_minutes",
+   "title": "Minutes to shelter",
+   "file": "layers/shelter_minutes.png",
+   "bounds_m": [
+    8142167.492786024,
+    -285709.075189438,
+    8144567.492786024,
+    -283309.075189438
+   ],
+   "resolution_m": 2.0,
+   "sources": [
+    "usgs-gale-dem-1m"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "group": "safety",
+   "ramp": {
+    "min": 0,
+    "max": 20,
+    "stops": [
+     [
+      0,
+      109,
+      44
+     ],
+     [
+      161,
+      217,
+      155
+     ],
+     [
+      255,
+      255,
+      204
+     ]
+    ],
+    "unit": "minutes"
+   },
+   "legend": [
+    {
+     "color": [
+      0,
+      109,
+      44,
+      190
+     ],
+     "label": "0 minutes"
+    },
+    {
+     "color": [
+      255,
+      255,
+      204,
+      190
+     ],
+     "label": "20 minutes or more"
+    }
+   ],
+   "description": "Walking time on the walker model (PLACEHOLDER suit settings) to the nearest terrain shelter (S at most 0.95) or the rover.",
+   "default_visible": false,
+   "opacity": 0.7,
+   "kind": "raster"
+  },
+  {
+   "id": "fractures",
+   "title": "Fractures",
+   "file": "vectors/fractures.geojson",
+   "kind": "vector",
+   "resolution_m": null,
+   "sources": [
+    "usgs-gale-ortho-25cm"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "legend": null,
+   "group": "context",
+   "description": "Dark central lines on ridges, 10 m or longer (line filter on the 25 cm image).",
+   "default_visible": false,
+   "opacity": 1.0
+  },
+  {
+   "id": "seams",
+   "title": "Candidate DEM seams",
+   "file": "vectors/seams.geojson",
+   "kind": "vector",
+   "resolution_m": null,
+   "sources": [
+    "ode-hirise-footprints"
+   ],
+   "date": "2026-11-09",
+   "label": "DERIVED",
+   "legend": null,
+   "group": "context",
+   "description": "Edges of the USGS stereo-pair footprints; positions uncertain by about 30 m.",
+   "default_visible": false,
+   "opacity": 1.0
+  },
+  {
+   "id": "rover_path",
+   "title": "Curiosity's path",
+   "file": "vectors/rover_path.geojson",
+   "kind": "vector",
+   "resolution_m": null,
+   "sources": [
+    "msl-places"
+   ],
+   "date": "2026-11-09",
+   "label": "MEASURED",
+   "legend": null,
+   "group": "context",
+   "description": "Curiosity's localizations in the site window (PLACES).",
+   "default_visible": true,
+   "opacity": 1.0
+  },
+  {
+   "id": "drill_sites",
+   "title": "Drill holes",
+   "file": "vectors/drill_sites.geojson",
+   "kind": "vector",
+   "resolution_m": null,
+   "sources": [
+    "msl-places",
+    "curiosity-blog-4563"
+   ],
+   "date": "2026-11-09",
+   "label": "MEASURED",
+   "legend": null,
+   "group": "context",
+   "description": "Curiosity's position while drilling.",
+   "default_visible": false,
+   "opacity": 1.0
+  }
+ ],
+ "plans": [
+  {
+   "preset": "balanced",
+   "file": "plans/balanced.json",
+   "title": "Balanced",
+   "totals": {
+    "transects": 7,
+    "stations": 21,
+    "science_value": 18.943,
+    "minutes": 356.087,
+    "consumables_min": 236.822,
+    "relative_dose_min": 39.6477,
+    "distance_m": 1959.7,
+    "min_thread_margin_min": 123.165,
+    "worst_minutes_to_shelter": 3.3,
+    "longest_comm_shadow_min": 1.71,
+    "label": "MODELED"
+   }
+  },
+  {
+   "preset": "most_science",
+   "file": "plans/most_science.json",
+   "title": "Most science",
+   "totals": {
+    "transects": 7,
+    "stations": 21,
+    "science_value": 19.107,
+    "minutes": 359.358,
+    "consumables_min": 240.653,
+    "relative_dose_min": 42.762,
+    "distance_m": 2336.7,
+    "min_thread_margin_min": 119.344,
+    "worst_minutes_to_shelter": 2.47,
+    "longest_comm_shadow_min": 0.62,
+    "label": "MODELED"
+   }
+  },
+  {
+   "preset": "safest",
+   "file": "plans/safest.json",
+   "title": "Safest",
+   "totals": {
+    "transects": 7,
+    "stations": 21,
+    "science_value": 18.943,
+    "minutes": 356.789,
+    "consumables_min": 238.048,
+    "relative_dose_min": 40.3212,
+    "distance_m": 2005.8,
+    "min_thread_margin_min": 106.952,
+    "worst_minutes_to_shelter": 3.3,
+    "longest_comm_shadow_min": 1.73,
+    "label": "MODELED"
+   }
+  }
+ ],
+ "terrain": {
+  "bounds_m": [
+   8142167.492786024,
+   -285709.075189438,
+   8144567.492786024,
+   -283309.075189438
+  ],
+  "resolution_m": 2.0,
+  "coarse_factor": 4,
+  "chunk_cells": 128,
+  "z0": -3979.045654296875,
+  "scale": 0.01,
+  "texture": "terrain/texture.png",
+  "texture_resolution_m": 1.0,
+  "chunks": [
+   {
+    "rows_cols": [
+     0,
+     0,
+     128,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_0_0_fine.bin",
+     "coarse": "terrain/z_0_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     128,
+     128,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_0_128_fine.bin",
+     "coarse": "terrain/z_0_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     256,
+     128,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_0_256_fine.bin",
+     "coarse": "terrain/z_0_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     384,
+     128,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_0_384_fine.bin",
+     "coarse": "terrain/z_0_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     512,
+     128,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_0_512_fine.bin",
+     "coarse": "terrain/z_0_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     640,
+     128,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_0_640_fine.bin",
+     "coarse": "terrain/z_0_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     768,
+     128,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_0_768_fine.bin",
+     "coarse": "terrain/z_0_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     896,
+     128,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_0_896_fine.bin",
+     "coarse": "terrain/z_0_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     1024,
+     128,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_0_1024_fine.bin",
+     "coarse": "terrain/z_0_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     0,
+     1152,
+     128,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_0_1152_fine.bin",
+     "coarse": "terrain/z_0_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     0,
+     256,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_128_0_fine.bin",
+     "coarse": "terrain/z_128_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     128,
+     256,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_128_128_fine.bin",
+     "coarse": "terrain/z_128_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     256,
+     256,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_128_256_fine.bin",
+     "coarse": "terrain/z_128_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     384,
+     256,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_128_384_fine.bin",
+     "coarse": "terrain/z_128_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     512,
+     256,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_128_512_fine.bin",
+     "coarse": "terrain/z_128_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     640,
+     256,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_128_640_fine.bin",
+     "coarse": "terrain/z_128_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     768,
+     256,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_128_768_fine.bin",
+     "coarse": "terrain/z_128_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     896,
+     256,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_128_896_fine.bin",
+     "coarse": "terrain/z_128_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     1024,
+     256,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_128_1024_fine.bin",
+     "coarse": "terrain/z_128_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     128,
+     1152,
+     256,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_128_1152_fine.bin",
+     "coarse": "terrain/z_128_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     0,
+     384,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_256_0_fine.bin",
+     "coarse": "terrain/z_256_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     128,
+     384,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_256_128_fine.bin",
+     "coarse": "terrain/z_256_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     256,
+     384,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_256_256_fine.bin",
+     "coarse": "terrain/z_256_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     384,
+     384,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_256_384_fine.bin",
+     "coarse": "terrain/z_256_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     512,
+     384,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_256_512_fine.bin",
+     "coarse": "terrain/z_256_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     640,
+     384,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_256_640_fine.bin",
+     "coarse": "terrain/z_256_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     768,
+     384,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_256_768_fine.bin",
+     "coarse": "terrain/z_256_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     896,
+     384,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_256_896_fine.bin",
+     "coarse": "terrain/z_256_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     1024,
+     384,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_256_1024_fine.bin",
+     "coarse": "terrain/z_256_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     256,
+     1152,
+     384,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_256_1152_fine.bin",
+     "coarse": "terrain/z_256_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     0,
+     512,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_384_0_fine.bin",
+     "coarse": "terrain/z_384_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     128,
+     512,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_384_128_fine.bin",
+     "coarse": "terrain/z_384_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     256,
+     512,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_384_256_fine.bin",
+     "coarse": "terrain/z_384_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     384,
+     512,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_384_384_fine.bin",
+     "coarse": "terrain/z_384_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     512,
+     512,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_384_512_fine.bin",
+     "coarse": "terrain/z_384_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     640,
+     512,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_384_640_fine.bin",
+     "coarse": "terrain/z_384_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     768,
+     512,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_384_768_fine.bin",
+     "coarse": "terrain/z_384_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     896,
+     512,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_384_896_fine.bin",
+     "coarse": "terrain/z_384_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     1024,
+     512,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_384_1024_fine.bin",
+     "coarse": "terrain/z_384_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     384,
+     1152,
+     512,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_384_1152_fine.bin",
+     "coarse": "terrain/z_384_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     0,
+     640,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_512_0_fine.bin",
+     "coarse": "terrain/z_512_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     128,
+     640,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_512_128_fine.bin",
+     "coarse": "terrain/z_512_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     256,
+     640,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_512_256_fine.bin",
+     "coarse": "terrain/z_512_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     384,
+     640,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_512_384_fine.bin",
+     "coarse": "terrain/z_512_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     512,
+     640,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_512_512_fine.bin",
+     "coarse": "terrain/z_512_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     640,
+     640,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_512_640_fine.bin",
+     "coarse": "terrain/z_512_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     768,
+     640,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_512_768_fine.bin",
+     "coarse": "terrain/z_512_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     896,
+     640,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_512_896_fine.bin",
+     "coarse": "terrain/z_512_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     1024,
+     640,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_512_1024_fine.bin",
+     "coarse": "terrain/z_512_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     512,
+     1152,
+     640,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_512_1152_fine.bin",
+     "coarse": "terrain/z_512_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     0,
+     768,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_640_0_fine.bin",
+     "coarse": "terrain/z_640_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     128,
+     768,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_640_128_fine.bin",
+     "coarse": "terrain/z_640_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     256,
+     768,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_640_256_fine.bin",
+     "coarse": "terrain/z_640_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     384,
+     768,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_640_384_fine.bin",
+     "coarse": "terrain/z_640_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     512,
+     768,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_640_512_fine.bin",
+     "coarse": "terrain/z_640_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     640,
+     768,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_640_640_fine.bin",
+     "coarse": "terrain/z_640_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     768,
+     768,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_640_768_fine.bin",
+     "coarse": "terrain/z_640_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     896,
+     768,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_640_896_fine.bin",
+     "coarse": "terrain/z_640_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     1024,
+     768,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_640_1024_fine.bin",
+     "coarse": "terrain/z_640_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     640,
+     1152,
+     768,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_640_1152_fine.bin",
+     "coarse": "terrain/z_640_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     0,
+     896,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_768_0_fine.bin",
+     "coarse": "terrain/z_768_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     128,
+     896,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_768_128_fine.bin",
+     "coarse": "terrain/z_768_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     256,
+     896,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_768_256_fine.bin",
+     "coarse": "terrain/z_768_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     384,
+     896,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_768_384_fine.bin",
+     "coarse": "terrain/z_768_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     512,
+     896,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_768_512_fine.bin",
+     "coarse": "terrain/z_768_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     640,
+     896,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_768_640_fine.bin",
+     "coarse": "terrain/z_768_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     768,
+     896,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_768_768_fine.bin",
+     "coarse": "terrain/z_768_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     896,
+     896,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_768_896_fine.bin",
+     "coarse": "terrain/z_768_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     1024,
+     896,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_768_1024_fine.bin",
+     "coarse": "terrain/z_768_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     768,
+     1152,
+     896,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_768_1152_fine.bin",
+     "coarse": "terrain/z_768_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     0,
+     1024,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_896_0_fine.bin",
+     "coarse": "terrain/z_896_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     128,
+     1024,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_896_128_fine.bin",
+     "coarse": "terrain/z_896_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     256,
+     1024,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_896_256_fine.bin",
+     "coarse": "terrain/z_896_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     384,
+     1024,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_896_384_fine.bin",
+     "coarse": "terrain/z_896_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     512,
+     1024,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_896_512_fine.bin",
+     "coarse": "terrain/z_896_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     640,
+     1024,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_896_640_fine.bin",
+     "coarse": "terrain/z_896_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     768,
+     1024,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_896_768_fine.bin",
+     "coarse": "terrain/z_896_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     896,
+     1024,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_896_896_fine.bin",
+     "coarse": "terrain/z_896_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     1024,
+     1024,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_896_1024_fine.bin",
+     "coarse": "terrain/z_896_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     896,
+     1152,
+     1024,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_896_1152_fine.bin",
+     "coarse": "terrain/z_896_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     0,
+     1152,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_1024_0_fine.bin",
+     "coarse": "terrain/z_1024_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     128,
+     1152,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_1024_128_fine.bin",
+     "coarse": "terrain/z_1024_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     256,
+     1152,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_1024_256_fine.bin",
+     "coarse": "terrain/z_1024_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     384,
+     1152,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_1024_384_fine.bin",
+     "coarse": "terrain/z_1024_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     512,
+     1152,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_1024_512_fine.bin",
+     "coarse": "terrain/z_1024_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     640,
+     1152,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_1024_640_fine.bin",
+     "coarse": "terrain/z_1024_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     768,
+     1152,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_1024_768_fine.bin",
+     "coarse": "terrain/z_1024_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     896,
+     1152,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_1024_896_fine.bin",
+     "coarse": "terrain/z_1024_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     1024,
+     1152,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_1024_1024_fine.bin",
+     "coarse": "terrain/z_1024_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      128
+     ],
+     "coarse": [
+      32,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1024,
+     1152,
+     1152,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_1024_1152_fine.bin",
+     "coarse": "terrain/z_1024_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      128,
+      48
+     ],
+     "coarse": [
+      32,
+      12
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     0,
+     1200,
+     128
+    ],
+    "files": {
+     "fine": "terrain/z_1152_0_fine.bin",
+     "coarse": "terrain/z_1152_0_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     128,
+     1200,
+     256
+    ],
+    "files": {
+     "fine": "terrain/z_1152_128_fine.bin",
+     "coarse": "terrain/z_1152_128_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     256,
+     1200,
+     384
+    ],
+    "files": {
+     "fine": "terrain/z_1152_256_fine.bin",
+     "coarse": "terrain/z_1152_256_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     384,
+     1200,
+     512
+    ],
+    "files": {
+     "fine": "terrain/z_1152_384_fine.bin",
+     "coarse": "terrain/z_1152_384_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     512,
+     1200,
+     640
+    ],
+    "files": {
+     "fine": "terrain/z_1152_512_fine.bin",
+     "coarse": "terrain/z_1152_512_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     640,
+     1200,
+     768
+    ],
+    "files": {
+     "fine": "terrain/z_1152_640_fine.bin",
+     "coarse": "terrain/z_1152_640_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     768,
+     1200,
+     896
+    ],
+    "files": {
+     "fine": "terrain/z_1152_768_fine.bin",
+     "coarse": "terrain/z_1152_768_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     896,
+     1200,
+     1024
+    ],
+    "files": {
+     "fine": "terrain/z_1152_896_fine.bin",
+     "coarse": "terrain/z_1152_896_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     1024,
+     1200,
+     1152
+    ],
+    "files": {
+     "fine": "terrain/z_1152_1024_fine.bin",
+     "coarse": "terrain/z_1152_1024_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      128
+     ],
+     "coarse": [
+      12,
+      32
+     ]
+    }
+   },
+   {
+    "rows_cols": [
+     1152,
+     1152,
+     1200,
+     1200
+    ],
+    "files": {
+     "fine": "terrain/z_1152_1152_fine.bin",
+     "coarse": "terrain/z_1152_1152_coarse.bin"
+    },
+    "shapes": {
+     "fine": [
+      48,
+      48
+     ],
+     "coarse": [
+      12,
+      12
+     ]
+    }
+   }
+  ],
+  "label": "DERIVED",
+  "sources": [
+   "usgs-gale-dem-1m",
+   "usgs-gale-ortho-25cm"
+  ]
+ },
+ "photos": [
+  {
+   "imageid": "NLB_826010399EDR_F1202366NCAM00255M_",
+   "instrument": "NAV_LEFT_B",
+   "sol": 4827,
+   "site": 120,
+   "drive": 2366,
+   "xy_m": [
+    8143327.11,
+    -285000.63
+   ],
+   "view_azimuth_deg": 77.51,
+   "view_elevation_deg": -12.47,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NLB_826010399EDR_F1202366NCAM00255M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1409,
+   "file": "photos/NLB_826010399EDR_F1202366NCAM00255M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NLB_826010375EDR_F1202366NCAM00255M_",
+   "instrument": "NAV_LEFT_B",
+   "sol": 4827,
+   "site": 120,
+   "drive": 2366,
+   "xy_m": [
+    8143327.11,
+    -285000.63
+   ],
+   "view_azimuth_deg": 48.58,
+   "view_elevation_deg": -9.17,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NLB_826010375EDR_F1202366NCAM00255M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1409,
+   "file": "photos/NLB_826010375EDR_F1202366NCAM00255M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NLB_826276424EDR_F1202726NCAM00258M_",
+   "instrument": "NAV_LEFT_B",
+   "sol": 4830,
+   "site": 120,
+   "drive": 2726,
+   "xy_m": [
+    8143315.12,
+    -285041.47
+   ],
+   "view_azimuth_deg": 77.89,
+   "view_elevation_deg": -9.93,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04830/opgs/edr/ncam/NLB_826276424EDR_F1202726NCAM00258M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1469,
+   "file": "photos/NLB_826276424EDR_F1202726NCAM00258M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NLB_826276393EDR_F1202726NCAM00258M_",
+   "instrument": "NAV_LEFT_B",
+   "sol": 4830,
+   "site": 120,
+   "drive": 2726,
+   "xy_m": [
+    8143315.12,
+    -285041.47
+   ],
+   "view_azimuth_deg": 49.04,
+   "view_elevation_deg": -7.41,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04830/opgs/edr/ncam/NLB_826276393EDR_F1202726NCAM00258M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1469,
+   "file": "photos/NLB_826276393EDR_F1202726NCAM00258M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NLB_826010430EDR_F1202366NCAM00255M_",
+   "instrument": "NAV_LEFT_B",
+   "sol": 4827,
+   "site": 120,
+   "drive": 2366,
+   "xy_m": [
+    8143327.11,
+    -285000.63
+   ],
+   "view_azimuth_deg": 106.76,
+   "view_elevation_deg": -16.96,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NLB_826010430EDR_F1202366NCAM00255M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1652,
+   "file": "photos/NLB_826010430EDR_F1202366NCAM00255M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NRB_826010430EDR_F1202366NCAM00255M_",
+   "instrument": "NAV_RIGHT_B",
+   "sol": 4827,
+   "site": 120,
+   "drive": 2366,
+   "xy_m": [
+    8143327.11,
+    -285000.63
+   ],
+   "view_azimuth_deg": 106.75,
+   "view_elevation_deg": -16.85,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04827/opgs/edr/ncam/NRB_826010430EDR_F1202366NCAM00255M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1652,
+   "file": "photos/NRB_826010430EDR_F1202366NCAM00255M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NRB_826633542EDR_F1210000NCAM00262M_",
+   "instrument": "NAV_RIGHT_B",
+   "sol": 4834,
+   "site": 121,
+   "drive": 0,
+   "xy_m": [
+    8143317.83,
+    -285084.22
+   ],
+   "view_azimuth_deg": 92.33,
+   "view_elevation_deg": -19.9,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633542EDR_F1210000NCAM00262M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1638,
+   "file": "photos/NRB_826633542EDR_F1210000NCAM00262M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NLB_826276448EDR_F1202726NCAM00258M_",
+   "instrument": "NAV_LEFT_B",
+   "sol": 4830,
+   "site": 120,
+   "drive": 2726,
+   "xy_m": [
+    8143315.12,
+    -285041.47
+   ],
+   "view_azimuth_deg": 106.8,
+   "view_elevation_deg": -14.29,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04830/opgs/edr/ncam/NLB_826276448EDR_F1202726NCAM00258M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1638,
+   "file": "photos/NLB_826276448EDR_F1202726NCAM00258M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NLB_826633459EDR_F1210000NCAM00262M_",
+   "instrument": "NAV_LEFT_B",
+   "sol": 4834,
+   "site": 121,
+   "drive": 0,
+   "xy_m": [
+    8143317.83,
+    -285084.22
+   ],
+   "view_azimuth_deg": 62.36,
+   "view_elevation_deg": -15.28,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NLB_826633459EDR_F1210000NCAM00262M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1550,
+   "file": "photos/NLB_826633459EDR_F1210000NCAM00262M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  },
+  {
+   "imageid": "NRB_826633459EDR_F1210000NCAM00262M_",
+   "instrument": "NAV_RIGHT_B",
+   "sol": 4834,
+   "site": 121,
+   "drive": 0,
+   "xy_m": [
+    8143317.83,
+    -285084.22
+   ],
+   "view_azimuth_deg": 62.34,
+   "view_elevation_deg": -15.17,
+   "url": "https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633459EDR_F1210000NCAM00262M_.JPG",
+   "credit": "Courtesy NASA/JPL-Caltech",
+   "source_credit": "NASA/JPL-Caltech",
+   "transect_source_id": 1550,
+   "file": "photos/NRB_826633459EDR_F1210000NCAM00262M_.jpg",
+   "label": "MEASURED",
+   "show_top_fraction": 0.55
+  }
+ ],
+ "eye_height_m": {
+  "value": 1.7,
+  "label": "PLACEHOLDER",
+  "source": "PROMPT.md section 6"
+ },
+ "walker_model": "MODELED with PLACEHOLDER suit settings; EXTRAPOLATED to Mars gravity"
+}

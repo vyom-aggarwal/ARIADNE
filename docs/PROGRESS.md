@@ -11,7 +11,7 @@ Last updated: 2026-11-09 UTC (Phase 3 done; ridge labels awaited).
 | 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
 | 2 Derived layers | Done 2026-11-09: C1 to C21 pass; validation.json holds the calibration (PASS). Follow-up done: footprint-scale slope re-run once (boxwork 79.8%, still FAIL; Murray Buttes held out 99.8%, PASS), DEM seams mapped, ridge labeling page built. Ridge precision and recall wait for the team's labels |
 | 3 Route engine | Done 2026-11-09, revised after review: D1 to D14 pass; plans visit whole transects within the 6 h EVA; presets differ by safety settings; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.2% of the time-limited OR-Tools reference (worst 98.8%). The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
-| 4 Habitat Planner | Next |
+| 4 Habitat Planner | In progress |
 | 5 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
@@ -383,6 +383,48 @@ Turn the derived layers into walk plans: a directional graph on the DEM, cost-to
 - **Thread:** 1000 of 1000 random scenarios hold (least margin above the reserve 2.05 min).
 - **Browser solver:** 101.2% of the time-limited OR-Tools value on average over 60 scenarios, worst case 98.8%. On the earlier station-level nodes it was 101.1% on average with a worst case of 87.8%.
 - **Photo source for Phase 4.** PLACES `view_metadata.csv` describes the PLACES database views, not image positions, so it was the wrong candidate. Two working routes: PLACES `data_ancillary/observations.csv` (every camera observation by SCLK), and NASA's raw-image API (`mars.nasa.gov/api/v1/raw_image_items/`). The API's JPL-processed images (Navcam, Hazcam, ChemCam RMI) carry site, drive, spacecraft clock, camera position and vector, mast azimuth and elevation, and an image credit.
+
+## Phase 4 plan: Habitat Planner
+
+The minimum demoable product: a desktop planner that loads one packaged site and shows the map with its layers and provenance, the three route options side by side, the timeline, and a 3D rehearsal with Curiosity photos as billboards.
+
+1. **`ariadne package --site boxwork`** writes `web/public/sites/boxwork/`:
+   - `manifest.json`: the site, its bounds in site metres, the staging point, and every layer with source IDs, resolution, date, label, legend and description. It also lists the plans, terrain, photos and the pipeline version.
+   - Imagery at 1 m (JPEG) and shaded relief at 2 m.
+   - Colored overlays at 2 m (PNG) with legends:
+     - walker and rover walkability;
+     - shielding index;
+     - confidence;
+     - minutes to shelter;
+     - ridges and hollows;
+     - the over-cautious cells, drawn with hatching so color is not the only cue.
+   - GeoJSON: fractures, candidate seams, Curiosity's path, drill holes, candidate transects.
+   - The three plans, each with a timeline: margin curve, station blocks, comm-shadow segments, and the sun's elevation from Mars24. The start time is PLACEHOLDER: the reference sol at 09:00 local true solar time.
+   - Terrain for 3D: the planning window as 16-bit heightmap chunks at 2 m and 8 m, plus a 1 m image texture.
+   - Photos: Navcam frames from NASA's raw-image API taken from Curiosity's path and looking toward a planned transect (within 800 m and 20°), up to two per transect, one frame per stereo pair. Each is placed at its capture point from PLACES (site, drive) and faces its view direction (rover yaw plus mast azimuth). Only the upper part of each frame is shown, keeping the rover deck and its markings out of view. Credit "Courtesy NASA/JPL-Caltech".
+     The planned transects lie 220 to 640 m from Curiosity's path, because the science score rewards distance from earlier targets, so no frame was taken within 60 m of them.
+2. **Web app** (React; deck.gl OrthographicView in site metres; three.js), in `web/src/planner/`:
+   - Layer panel: toggles, opacity, legend, and source, resolution, date and label for each layer, with the source on hover.
+   - Map: imagery, overlays, Curiosity's path, transects and the selected route.
+   - Route options: the three presets side by side with duration, distance, consumables used, least margin, worst time to shelter, relative dose, stations and transects, and science value. Every number carries its label.
+   - Timeline: margin curve, station blocks, sun elevation and comm-shadow segments.
+   - 3D rehearsal: chunked terrain with two levels of detail, the image texture, the route, and photo billboards. An orbit-or-ground toggle and first-person walking at 1.7 m eye height (PLACEHOLDER) with a speed control.
+3. **Accessibility:** WCAG 2.1 AA, full keyboard access, labels and legends in text, and hatching for the over-cautious cells.
+
+### Phase 4 acceptance tests
+
+| ID | Test | Where |
+| --- | --- | --- |
+| E1 | Package: the manifest lists every layer with source IDs, resolution, date, label and legend; every listed file exists; the site stays under the 1 GB Pages budget | `pipeline/tests/test_package.py` |
+| E2 | Overlays: colors follow the legend on synthetic classes; the over-cautious overlay is hatched; bounds are the raster's corner coordinates | `pipeline/tests/test_package.py` |
+| E3 | Terrain chunks: heights round-trip through 16-bit PNG within 1 cm; chunks tile the window; the 8 m level is the block mean | `pipeline/tests/test_package.py` |
+| E4 | Timeline: the margin curve equals the plan's margins; station blocks match the station times; comm-shadow segments cover the out-of-sight samples; the sun's elevation matches Mars24 at the same times | `pipeline/tests/test_package.py` |
+| E5 | Photos: position from the PLACES localization of the frame's site and drive; facing = rover yaw + mast azimuth; looking toward a planned transect within range and angle; credit present | `pipeline/tests/test_package.py` |
+| E6 | Layer panel shows each layer's source, resolution, date and label, and toggles and fades layers from the keyboard | `web/tests/planner.test.tsx` |
+| E7 | Route options show the eight figures for each preset, each with its label | `web/tests/planner.test.tsx` |
+| E8 | Timeline draws the margin curve, station blocks, sun elevation and comm-shadow segments from the packaged timeline | `web/tests/planner.test.tsx` |
+| E9 | 3D: level-of-detail choice uses the fine chunks near the camera; billboards face their view direction; the walker's eye stays 1.7 m above the terrain | `web/tests/rehearsal.test.ts` |
+| E10 | Judge tour in Chromium on a mid-range laptop profile (1366 × 768, CPU slowed 4 times): the map appears within 5 s; layers toggle; routes switch; the timeline shows; the 3D view opens in orbit and ground modes with billboards; no serious or critical axe violations | `web/e2e/judge-tour.spec.ts` |
 
 ## Next steps
 
