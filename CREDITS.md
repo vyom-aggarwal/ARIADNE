@@ -15,6 +15,12 @@ Sources move here, with their credit lines, when the pipeline first uses them. W
 | MSL mission-clock definition | Sol 0 and the 137.42° E mission clock | Mars24 notes, https://www.giss.nasa.gov/tools/mars24/help/notes.html | US government work (NASA) |
 | MSL LMST clock kernel `msl_lmst_ops120808_v1.tsc` | Touchdown time; independent check of sol starts in tests | NASA/JPL NAIF, https://naif.jpl.nasa.gov/pub/naif/MSL/kernels/sclk/ | NASA public data |
 | MSL REMS daily report feed, 93-sol sample | Test cross-check only (dates and Ls), never app data | NASA/JPL-Caltech/CAB (CSIC-INTA), https://mars.nasa.gov/rss/api/?feed=weather&category=msl&feedtype=json | Provider marks it for outreach purposes only |
+| MSL Gale Merged DEM 1 m (v3) | Elevation crops for each site (`data/sites/<site>/dem.tif`) | USGS Astrogeology (Parker and Calef III), https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_dem_1m; built from HiRISE (NASA/JPL-Caltech/University of Arizona), CTX (NASA/JPL-Caltech/MSSS) and HRSC (ESA/DLR/FU Berlin) stereo, tied to MOLA | US government work (USGS), public domain; credit the authors |
+| MSL Gale Merged Orthophoto Mosaic 25 cm (v3) | Image crops for each site (`ortho.tif`) | USGS Astrogeology, https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_orthophoto_mosaic_25cm; HiRISE images NASA/JPL-Caltech/University of Arizona | US government work (USGS), public domain |
+| MSL Gale HiRISE LRGB color mosaic | Color crop for the boxwork (`color.tif`; it does not cover Murray Buttes) | USGS Astrogeology; HiRISE images NASA/JPL-Caltech/University of Arizona | US government work (USGS), public domain |
+| MSL PLACES localizations (`localized_interp.csv`) | Curiosity's positions: site boxes, the rover path, the georeferencing check; a 3,781-row extract is a test fixture | NASA/JPL-Caltech, PDS Cartography and Imaging Sciences Node, https://planetarydata.jpl.nasa.gov/img/data/msl/msl_places/ | NASA PDS archive data, public domain |
+| HiRISE image and DTM footprints | DEM source-class mask and coverage report | PDS Geosciences Node Orbital Data Explorer (Washington University in St. Louis), https://oderest.rsl.wustl.edu/; HiRISE NASA/JPL-Caltech/University of Arizona | NASA PDS archive metadata, public domain |
+| USGS list of the 12 HiRISE stereo pairs in the merged DEM | Which images count as HiRISE stereo | USGS Astrogeology product page for the merged DEM | US government work (USGS), public domain |
 
 ## Images
 

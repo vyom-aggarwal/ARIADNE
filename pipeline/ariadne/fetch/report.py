@@ -12,7 +12,7 @@ import rasterio
 from affine import Affine
 from rasterio.enums import Resampling
 from rasterio.features import rasterize
-from shapely.geometry import LineString
+from shapely.geometry import MultiPoint
 
 from ariadne import PIPELINE_VERSION
 from ariadne.fetch.places import MARS_RADIUS_M
@@ -38,7 +38,7 @@ def hillshade(dem: np.ndarray, cell_m: float, azimuth=315.0, altitude=45.0) -> n
 def quicklook(
     out_png: Path, dem_path: Path, ortho_path: Path | None, east, north, anchor=None, max_px=1200
 ) -> Path:
-    """RGB overview: orthophoto blended with DEM hillshade, rover path in cyan with a dark edge."""
+    """RGB overview: orthophoto blended with DEM hillshade; Curiosity's localizations in cyan."""
     with rasterio.open(dem_path) as src:
         f = max(1, math.ceil(max(src.width, src.height) / max_px))
         h, w = math.ceil(src.height / f), math.ceil(src.width / f)
@@ -56,11 +56,13 @@ def quicklook(
             )
         gray = 0.65 * img + 0.35 * shade
     rgb = np.repeat((np.clip(gray, 0, 1) * 255).astype("uint8")[None], 3, axis=0)
-    line = LineString(list(zip(east, north, strict=True)))
+    pts = MultiPoint(list(zip(east, north, strict=True)))
     edge = rasterize(
-        [(line.buffer(abs(t.a) * 1.5), 1)], out_shape=(h, w), transform=t, all_touched=True
+        [(pts.buffer(abs(t.a) * 2.0), 1)], out_shape=(h, w), transform=t, all_touched=True
     )
-    core = rasterize([(line, 1)], out_shape=(h, w), transform=t, all_touched=True)
+    core = rasterize(
+        [(pts.buffer(abs(t.a) * 0.9), 1)], out_shape=(h, w), transform=t, all_touched=True
+    )
     for band in range(3):
         rgb[band][edge == 1] = DARK[band]
         rgb[band][core == 1] = CYAN[band]
@@ -79,6 +81,10 @@ def quicklook(
 
 def _fmt(x: float, nd=1) -> str:
     return f"{x:,.{nd}f}".replace("-", "−")
+
+
+def _fmt_deg(x: float) -> str:
+    return f"{x:.5f}".replace("-", "−")
 
 
 def coverage_markdown(summary: dict) -> str:
@@ -104,8 +110,8 @@ def coverage_markdown(summary: dict) -> str:
         f"| Buffer | {box['buffer_m']:,.0f} m | {box['buffer_label']} |",
         f"| Box, easting | {_fmt(left)} to {_fmt(right)} m ({_fmt(right - left, 0)} m) | DERIVED |",
         f"| Box, northing | {_fmt(bottom)} to {_fmt(top)} m ({_fmt(top - bottom, 0)} m) | DERIVED |",
-        f"| Box, longitude (east) | {_deg(left):.5f} to {_deg(right):.5f}° | DERIVED |",
-        f"| Box, latitude (planetocentric) | {_deg(bottom):.5f} to {_deg(top):.5f}° | DERIVED |",
+        f"| Box, longitude (east) | {_fmt_deg(_deg(left))} to {_fmt_deg(_deg(right))}° | DERIVED |",
+        f"| Box, latitude (planetocentric) | {_fmt_deg(_deg(bottom))} to {_fmt_deg(_deg(top))}° | DERIVED |",
     ]
     if box.get("anchor"):
         a = box["anchor"]
@@ -166,6 +172,9 @@ def coverage_markdown(summary: dict) -> str:
         "The DEM crop is sampled at every PLACES localization inside the box (all sols) and compared "
         "with the PLACES elevation; the comparison is repeated for horizontal shifts of up to "
         f"±{geo['search']['max_shift_m']} m to find the best fit.",
+        "PLACES records the DEM pixel of each localization, so its elevations are tied to an orbital "
+        "DEM: close agreement confirms that the crop lines up with Curiosity's recorded positions, "
+        "not the DEM's absolute height accuracy. The shift search is the test of horizontal alignment.",
         "",
         "| Measure | Value | Target |",
         "| --- | --- | --- |",
@@ -180,7 +189,7 @@ def coverage_markdown(summary: dict) -> str:
         f"| Crop bounds agree (DEM and orthophoto) | {s['bounds_check']} | within one DEM pixel |",
         f"| **Result** | **{'PASS' if geo['passed'] else 'FAIL'}** | |",
         "",
-        f"Quicklook for a visual check (orthophoto, hillshade and the rover path in cyan): "
+        f"Quicklook for a visual check (orthophoto, hillshade and every localization in the box in cyan): "
         f"`data/sites/{s['site']}/quicklook.png` (not committed).",
         "",
     ]

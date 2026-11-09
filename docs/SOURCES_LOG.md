@@ -91,3 +91,31 @@ Sol window for the boxwork campaign: sols 4527 to 4852 (2025-05-01 to 2026-03-31
 | `pds-imaging` | https://pds-imaging.jpl.nasa.gov/ | 2 and 4 | PARTIAL. Reachable. Image positions for the uncertainty layer's "distance to nearest ground image" and for the hand-labeled ridge sample still need a source; PLACES `view_metadata.csv` is the first candidate. |
 | `swim` | https://swim.psi.edu/ | 8 | PENDING. Reachable; download format not checked. |
 | `space-com-apollo14` | Space.com on Apollo 14 tracks | 9 | PENDING. |
+
+## Fetch log
+
+Written by `make fetch`; one block per site, replaced on each run. Raw files stay in `data/` (gitignored).
+
+<!-- fetch-log:start -->
+<!-- site:boxwork -->
+### boxwork
+
+| Product | Source | Bounds (E, N; m) | Size | Method | Processed (UTC) | Pipeline |
+| --- | --- | --- | --- | --- | --- | --- |
+| dem.tif | `usgs-gale-dem-1m` | 8,141,605.49 to 8,145,119.49; -286,731.08 to -282,806.08 | 3,514 × 3,925 px | gdal-bands | 2026-11-08T23:59:33Z | 0.0.0 |
+| ortho.tif | `usgs-gale-ortho-25cm` | 8,141,605.50 to 8,145,119.50; -286,730.75 to -282,806.50 | 14,056 × 15,697 px | range-requests | 2026-11-09T00:00:21Z | 0.0.0 |
+| color.tif | `usgs-gale-hirise-lrgb` | 8,141,605.50 to 8,145,119.50; -286,730.75 to -282,806.50 | 14,056 × 15,697 px | gdal-bands | 2026-11-09T00:01:16Z | 0.0.0 |
+| source_class.tif | `ariadne-dem-source-class` | DEM grid | 3,514 × 3,925 px | derived | 2026-11-09T00:01:47Z | 0.0.0 |
+
+<!-- /site -->
+<!-- site:murray-buttes -->
+### murray-buttes
+
+| Product | Source | Bounds (E, N; m) | Size | Method | Processed (UTC) | Pipeline |
+| --- | --- | --- | --- | --- | --- | --- |
+| dem.tif | `usgs-gale-dem-1m` | 8,139,557.49 to 8,143,558.49; -280,307.08 to -276,306.08 | 4,001 × 4,001 px | gdal-bands | 2026-11-08T23:57:02Z | 0.0.0 |
+| ortho.tif | `usgs-gale-ortho-25cm` | 8,139,557.75 to 8,143,558.00; -280,306.75 to -276,306.50 | 16,001 × 16,001 px | range-requests | 2026-11-08T23:53:00Z | 0.0.0 |
+| source_class.tif | `ariadne-dem-source-class` | DEM grid | 4,001 × 4,001 px | derived | 2026-11-08T23:57:14Z | 0.0.0 |
+
+<!-- /site -->
+<!-- fetch-log:end -->

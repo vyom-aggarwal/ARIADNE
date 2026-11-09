@@ -74,8 +74,13 @@ def sidecar_path(target: Path) -> Path:
     return target.with_name(target.name + ".prov.json")
 
 
+def provenance_tag(prov: Provenance) -> dict[str, str]:
+    """The GeoTIFF tag to pass when writing a raster (COGs cannot be re-tagged in place)."""
+    return {TAG: json.dumps(prov.to_dict(), sort_keys=True)}
+
+
 def write_provenance(target: Path, prov: Provenance, embed: bool = False) -> Path:
-    """Write the sidecar; with embed=True also store the record in the GeoTIFF's tags."""
+    """Write the sidecar; with embed=True also tag an existing plain (non-COG) GeoTIFF."""
     text = json.dumps(prov.to_dict(), indent=2, sort_keys=True)
     out = sidecar_path(target)
     out.write_text(text + "\n", encoding="utf-8")

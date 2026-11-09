@@ -10,7 +10,13 @@ from rasterio.transform import from_origin
 
 from ariadne import PIPELINE_VERSION
 from ariadne.labels import Label
-from ariadne.provenance import REQUIRED_FIELDS, Provenance, read_provenance, write_provenance
+from ariadne.provenance import (
+    REQUIRED_FIELDS,
+    Provenance,
+    provenance_tag,
+    read_provenance,
+    write_provenance,
+)
 
 
 def make(**over):
@@ -91,3 +97,21 @@ def test_geotiff_tag_round_trip(tmp_path):
         tagged = json.loads(src.tags()["ARIADNE_PROVENANCE"])
     assert tagged["source_id"] == "usgs-gale-dem-1m"
     assert read_provenance(path) == p
+
+
+def test_provenance_tag_survives_cog_writing(tmp_path):
+    from ariadne.fetch import raster
+
+    crop = raster.Crop(
+        np.ones((64, 64), "float32"),
+        from_origin(0, 64, 1, 1),
+        rasterio.crs.CRS.from_epsg(3857),
+        -32767.0,
+        (0, 0, 64, 64),
+        None,
+        "test",
+    )
+    p = make()
+    out = raster.write_cog(tmp_path / "c.tif", crop, tags=provenance_tag(p))
+    with rasterio.open(out) as src:
+        assert json.loads(src.tags()["ARIADNE_PROVENANCE"]) == p.to_dict()

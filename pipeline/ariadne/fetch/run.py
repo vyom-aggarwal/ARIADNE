@@ -21,7 +21,14 @@ from ariadne.fetch.http import download
 from ariadne.fetch.sites import site_box
 from ariadne.guardrails import repo_root
 from ariadne.labels import Label
-from ariadne.provenance import Provenance, read_provenance, sidecar_path, write_provenance
+from ariadne.provenance import (
+    TAG,
+    Provenance,
+    provenance_tag,
+    read_provenance,
+    sidecar_path,
+    write_provenance,
+)
 
 GAP_FILL_PATH_MIN = 99.0  # percent of Curiosity's localizations on HiRISE stereo (team rule)
 GAP_FILL_BOX_MIN = 90.0  # percent of the site box on HiRISE stereo (team rule)
@@ -67,22 +74,24 @@ def _crop_source(src: Source, bounds, out: Path, force: bool, log) -> dict:
     if out.exists() and sidecar_path(out).exists() and not force:
         prov = read_provenance(out)
         if prov.url == src.url and prov.extra.get("requested_bounds") == [float(b) for b in bounds]:
-            log(f"  {out.name}: cached")
             with rasterio.open(out) as ds:
-                return {
-                    "width": ds.width,
-                    "height": ds.height,
-                    "method": prov.extra["method"],
-                    "seconds": prov.extra["seconds"],
-                    "bounds": list(ds.bounds),
-                    "prov": prov,
-                }
+                complete = TAG in ds.tags()
+            if complete:
+                log(f"  {out.name}: cached")
+                with rasterio.open(out) as ds:
+                    return {
+                        "width": ds.width,
+                        "height": ds.height,
+                        "method": prov.extra["method"],
+                        "seconds": prov.extra["seconds"],
+                        "bounds": list(ds.bounds),
+                        "prov": prov,
+                    }
     fast = raster.is_uncompressed_strip_tiff(src.url)
     log(f"  {out.name}: reading {src.id} ({'range requests' if fast else 'GDAL row bands'})")
     t0 = time.time()
     crop = raster.read_crop(src.url, bounds, workers=64 if fast else 16)
-    raster.write_cog(out, crop)
-    seconds = time.time() - t0
+    seconds = time.time() - t0  # reading time; writing the COG follows
     h, w = crop.data.shape[-2:]
     prov = Provenance.new(
         source_id=src.id,
@@ -102,7 +111,9 @@ def _crop_source(src: Source, bounds, out: Path, force: bool, log) -> dict:
             "license": src.license,
         },
     )
-    write_provenance(out, prov, embed=True)
+    # A COG cannot be re-tagged in place without breaking its layout: tag it while writing.
+    raster.write_cog(out, crop, tags=provenance_tag(prov))
+    write_provenance(out, prov)
     log(f"  {out.name}: {w:,} x {h:,} px in {seconds:.0f} s")
     return {
         "width": w,
@@ -242,22 +253,21 @@ def fetch_site(name: str, force: bool = False, log: Callable[[str], None] = prin
     pairs = coverage.pair_footprints(coverage.observation_footprints(rdr))
     mask = coverage.source_class_mask(dem.shape, t, list(pairs.values()), dem != nod)
     mask_crop = raster.Crop(mask, t, crs, coverage.NODATA, dem_bounds, None, "derived")
-    mask_path = raster.write_cog(site_dir / "source_class.tif", mask_crop)
-    write_provenance(
-        mask_path,
-        Provenance.new(
-            source_id="ariadne-dem-source-class",
-            url=ode.ODE_URL,
-            product_id="DEM source class from USGS stereo-pair footprints",
-            resolution_m=1.0,
-            acquisition_date=None,
-            label=Label.DERIVED,
-            notes="1 = HiRISE stereo (overlap of a USGS pair's two images), 2 = CTX, HRSC or MOLA, "
-            "0 = DEM nodata. Edges uncertain by about 30 m (rounded ODE footprints).",
-            extra={"pairs": sorted(pairs)},
-        ),
-        embed=True,
+    mask_prov = Provenance.new(
+        source_id="ariadne-dem-source-class",
+        url=ode.ODE_URL,
+        product_id="DEM source class from USGS stereo-pair footprints",
+        resolution_m=1.0,
+        acquisition_date=None,
+        label=Label.DERIVED,
+        notes="1 = HiRISE stereo (overlap of a USGS pair's two images), 2 = CTX, HRSC or MOLA, "
+        "0 = DEM nodata. Edges uncertain by about 30 m (rounded ODE footprints).",
+        extra={"pairs": sorted(pairs)},
     )
+    mask_path = raster.write_cog(
+        site_dir / "source_class.tif", mask_crop, tags=provenance_tag(mask_prov)
+    )
+    write_provenance(mask_path, mask_prov)
     rows.append(
         {
             "file": "source_class.tif",
@@ -313,8 +323,8 @@ def fetch_site(name: str, force: bool = False, log: Callable[[str], None] = prin
         site_dir / "quicklook.png",
         dem_path,
         site_dir / sources["usgs-gale-ortho-25cm"].output if ortho else None,
-        window_rover["easting"].to_numpy(),
-        window_rover["northing"].to_numpy(),
+        in_box["easting"].to_numpy(),
+        in_box["northing"].to_numpy(),
         anchor,
     )
 
