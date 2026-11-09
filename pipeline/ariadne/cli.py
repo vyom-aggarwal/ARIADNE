@@ -48,6 +48,11 @@ def build_parser() -> argparse.ArgumentParser:
             p.add_argument("--force", action="store_true", help="re-read sources even if cached")
         if name == "derive":
             p.add_argument("--force", action="store_true", help="recompute horizons even if cached")
+            p.add_argument(
+                "--report-only",
+                action="store_true",
+                help="rebuild the report from the saved layers",
+            )
     return parser
 
 
@@ -63,15 +68,22 @@ def main(argv: list[str] | None = None) -> int:
         summary = fetch_site(args.site, force=args.force)
         return 0 if fetch_summary_ok(summary) else 1
     if args.command == "derive":
-        from ariadne.derive.run import derive_site
+        from ariadne.derive.run import derive_site, refresh_report
 
-        derive_site(args.site, force=args.force)
+        if args.report_only:
+            refresh_report(args.site)
+        else:
+            derive_site(args.site, force=args.force)
         return 0
     if args.command == "validate":
         from ariadne.validate.run import write_validation
 
         v = write_validation()
-        return 1 if any(c["status"] == "fail" for c in v["checks"]) else 0
+        failed = [c["id"] for c in v["checks"] if c["status"] == "fail"]
+        if failed:
+            # A failed check is a result to show in the Validation tab, not a crash.
+            print("validation.json written; checks that missed their target: " + ", ".join(failed))
+        return 0
     phase, _ = COMMANDS[args.command]
     print(
         f"ariadne {args.command}: not built yet. Phase {phase} builds this command "

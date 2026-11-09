@@ -154,3 +154,28 @@ def test_distance_to_box_edge():
     assert d[0, 0] == pytest.approx(5.0)
     assert d[0, 1] == pytest.approx(5.0)
     assert d[0, 2] == pytest.approx(5.0 * math.sqrt(2))
+
+
+def test_coregistration_recovers_a_known_shift_and_offset():
+    def g(x, y):  # smooth terrain: a slope plus broad hills
+        return 0.05 * x + 0.03 * y + 60 * np.sin(x / 700.0) * np.cos(y / 900.0)
+
+    fine_t = grid_transform(10.0, 7000.0, -7000.0)
+    rr, cc = np.mgrid[0:600, 0:600]
+    fx, fy = hz.apply_transform(fine_t, cc + 0.5, rr + 0.5)
+    fine = g(fx, fy)
+    dx, dy, dz = 300.0, -200.0, 20.0
+    coarse_t = grid_transform(400.0, 0.0, 0.0)
+    cr, ccol = np.mgrid[0:50, 0:50]
+    ux, uy = hz.apply_transform(coarse_t, ccol + 0.5, cr + 0.5)
+    coarse = g(ux - dx, uy - dy) - dz  # so coarse(x + dx, y + dy) + dz = g(x, y)
+    co = hz.coregister(fine, fine_t, coarse, coarse_t, search_m=600.0, step=5)
+    assert co.dx == pytest.approx(dx, abs=20)
+    assert co.dy == pytest.approx(dy, abs=20)
+    assert co.dz == pytest.approx(dz, abs=3)
+    assert co.mad < co.mad_vertical_only
+    # sampling through the shifted transform applies the shift
+    st = hz.shifted(coarse_t, co.dx, co.dy)
+    v = hz.sample_bilinear(coarse, st, [10_000.0], [-10_000.0])[0]
+    w = hz.sample_bilinear(coarse, coarse_t, [10_000.0 + co.dx], [-10_000.0 + co.dy])[0]
+    assert v == pytest.approx(w)

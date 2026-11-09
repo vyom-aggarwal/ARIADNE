@@ -95,8 +95,8 @@ line_of_sight:
   max_range_m: {value: 3000, label: PLACEHOLDER}
 
 light:
+  report_min_edge_m: {value: 1000, label: PLACEHOLDER, note: The sunrise and sunset statistics use only cells at least this far from the crop edge, so their 1 m DEM horizons reach at least this far in every direction.}
   time_step_s: {value: 60, label: PLACEHOLDER, note: Sun-track step for sunrise, sunset and daily insolation.}
-  insolation_step_s: {value: 600, label: PLACEHOLDER}
 
 uncertainty:
   source_score: {value: {hirise: 1.0, other: 0.3, nodata: 0.0}, label: PLACEHOLDER}

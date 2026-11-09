@@ -76,3 +76,32 @@ def test_relative_temperature_keeps_the_rems_timing():
 def test_planetographic_latitude_is_slightly_larger():
     assert light.planetographic_latitude(-4.8) < -4.8
     assert light.planetographic_latitude(-4.8) == pytest.approx(-4.856, abs=0.002)
+
+
+@pytest.mark.parametrize(
+    "after", [datetime(2014, 12, 24, tzinfo=UTC), datetime(2023, 12, 23, tzinfo=UTC)]
+)
+def test_all_four_seasons_are_found_for_any_start(after):
+    from ariadne.derive.run import mars_year_dates
+    from ariadne.models import msl_time
+
+    dates = mars_year_dates(after)
+    assert [label for label, _ in dates] == ["Ls 0", "Ls 90", "Ls 180", "Ls 270"]
+    for (label, day), target in zip(dates, (0, 90, 180, 270), strict=True):
+        ls = msl_time.solar_longitude(day)
+        assert abs((ls - target + 180) % 360 - 180) < 1.0, (label, ls)
+    assert dates[0][1] > after
+
+
+def test_sun_statistics_skip_cells_near_the_crop_edge():
+    from ariadne.derive.run import edge_filter
+
+    samples = {
+        "rows": np.array([5, 1500, 1500, 3990]),
+        "cols": np.array([1500, 1500, 10, 1500]),
+        "near": np.zeros((4, 72)),
+        "comb": np.zeros((4, 72)),
+    }
+    kept = edge_filter(samples, (4000, 4000), 1.0, 1000.0)
+    assert list(kept["rows"]) == [1500] and list(kept["cols"]) == [1500]
+    assert kept["near"].shape == (1, 72)

@@ -257,6 +257,7 @@ class FarField:
     transform: Affine  # node (i, j) is at (c + j * spacing, f - i * spacing), clipped to the crop
     az_deg: np.ndarray
     tie_offset_m: float
+    coreg: Coregistration | None = None
 
 
 def coarse_grid(bounds: tuple[float, float, float, float], spacing: float) -> Affine:
@@ -282,6 +283,61 @@ def tie_offset(fine_dem, fine_transform, coarse_dem, coarse_transform, step: int
     return float(np.nanmedian(diff[np.isfinite(diff)]))
 
 
+@dataclass
+class Coregistration:
+    """How to place the coarse DEM on the fine one: sample it at (x + dx, y + dy) and add dz."""
+
+    dx: float
+    dy: float
+    dz: float
+    mad_vertical_only: float  # median absolute deviation with dz alone (no shift)
+    mad: float  # after the shift
+
+
+def shifted(transform: Affine, dx: float, dy: float) -> Affine:
+    """A transform under which sampling at (x, y) reads the original grid at (x + dx, y + dy)."""
+    return Affine(
+        transform.a, transform.b, transform.c - dx, transform.d, transform.e, transform.f - dy
+    )
+
+
+def coregister(
+    fine_dem, fine_transform, coarse_dem, coarse_transform, search_m: float = 800.0, step: int = 25
+) -> Coregistration:
+    """Find the horizontal shift and vertical offset that best place a coarse DEM on a fine one.
+
+    The fine DEM is first smoothed to the coarse pixel size, then the shift that minimises the
+    median absolute deviation of (fine - coarse) is found on a 100 m grid and refined on a 10 m
+    grid; dz is the median difference at that shift.
+    """
+    fine = np.asarray(fine_dem, dtype=np.float64)
+    size = max(1, int(round(abs(coarse_transform.a) / fine_transform.a)))
+    filled = np.where(np.isnan(fine), np.nanmean(fine), fine)
+    smooth = ndimage.uniform_filter(filled, size, mode="nearest")[::step, ::step]
+    rows, cols = np.mgrid[0 : fine.shape[0] : step, 0 : fine.shape[1] : step]
+    xs, ys = apply_transform(fine_transform, cols + 0.5, rows + 0.5)
+    ok = np.isfinite(fine[::step, ::step])
+    coarse = np.asarray(coarse_dem, dtype=np.float64)
+
+    def score(dx, dy):
+        d = smooth - sample_bilinear(coarse, coarse_transform, xs + dx, ys + dy)
+        d = d[ok & np.isfinite(d)]
+        med = float(np.median(d))
+        return float(np.median(np.abs(d - med))), med
+
+    mad0, _ = score(0.0, 0.0)
+    best = (mad0, 0.0, 0.0)
+    for grid, span, centre in ((100.0, search_m, (0.0, 0.0)), (10.0, 100.0, None)):
+        cx, cy = centre if centre is not None else (best[1], best[2])
+        for dx in np.arange(cx - span, cx + span + 1e-9, grid):
+            for dy in np.arange(cy - span, cy + span + 1e-9, grid):
+                m, _ = score(dx, dy)
+                if m < best[0]:
+                    best = (m, float(dx), float(dy))
+    mad, dz = score(best[1], best[2])
+    return Coregistration(dx=best[1], dy=best[2], dz=dz, mad_vertical_only=mad0, mad=mad)
+
+
 def far_field(
     fine_dem: np.ndarray,
     fine_transform: Affine,
@@ -303,8 +359,10 @@ def far_field(
         fine_transform.c + fine_transform.a * w,
         fine_transform.f,
     )
-    offset = tie_offset(fine_dem, fine_transform, regional_dem, regional_transform)
+    co = coregister(fine_dem, fine_transform, regional_dem, regional_transform)
+    offset = co.dz
     reg = np.asarray(regional_dem, dtype=np.float64) + offset
+    regional_transform = shifted(regional_transform, co.dx, co.dy)
     ct = coarse_grid(bounds, grid_m)
     ny, nx = coarse_shape(bounds, grid_m)
     jj, ii = np.meshgrid(np.arange(nx), np.arange(ny))
@@ -325,6 +383,7 @@ def far_field(
         transform=ct,
         az_deg=np.asarray(az_deg, dtype=np.float64),
         tie_offset_m=offset,
+        coreg=co,
     )
 
 

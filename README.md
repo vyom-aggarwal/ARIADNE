@@ -32,7 +32,13 @@ ARIADNE has two parts:
 
 ## NASA data
 
-None used yet. The sources checked so far are listed in [docs/SOURCES_LOG.md](docs/SOURCES_LOG.md), and each one is credited in [CREDITS.md](CREDITS.md) when the pipeline first uses it.
+Used so far (Phases 1 and 2), each credited in [CREDITS.md](CREDITS.md) with the checks in [docs/SOURCES_LOG.md](docs/SOURCES_LOG.md):
+
+- Terrain: the USGS MSL Gale merged 1 m elevation model and 25 cm orthophoto (built from HiRISE, CTX and HRSC), the HiRISE color mosaic, and the MOLA global elevation model for distant horizons such as Mount Sharp.
+- Rover: Curiosity's localizations (PLACES), ChemCam target tables, and the sols of the four boxwork drill holes from NASA's Curiosity blog.
+- Orbital context: HiRISE footprints from the PDS Orbital Data Explorer and THEMIS night-infrared mosaics through NASA Mars Trek.
+- Radiation: RAD's measurement beside the Murray Buttes in 2016 (Ehresmann et al. 2021), which calibrates the shielding layer, and the dose-pressure relation in Guo et al. 2021.
+- Time: the NASA GISS Mars24 algorithm and NAIF's MSL clock.
 
 ## Use of AI
 
@@ -49,7 +55,17 @@ make e2e       # browser tests, including accessibility checks
 make web-dev   # local dev server
 ```
 
-The data commands (`make fetch`, `make derive`, `make plan`, `make validate`, `make package`, `make site`) are defined but not built yet; each one says which phase builds it.
+The data commands so far:
+
+```bash
+make fetch SITE=murray-buttes   # crops for the calibration site (once)
+make fetch SITE=boxwork         # crops, context data and drill sites for the flagship site
+make derive SITE=murray-buttes  # calibrates the shielding layer, then builds the layers
+make derive SITE=boxwork
+make validate                   # writes validation.json
+```
+
+`make plan`, `make package` and `make site` are defined but not built yet; each one says which phase builds it. Raw and derived rasters go to `data/` (not committed); the reports in `docs/coverage/` and `docs/derived/` and `validation.json` are committed.
 
 ## License and credits
 

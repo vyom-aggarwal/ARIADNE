@@ -22,6 +22,15 @@ def _pct(x) -> str:
     return "n/a" if x is None else f"{100 * x:.1f}%"
 
 
+def _coreg(shift, dz) -> str:
+    """'580 m east and 240 m south, then lowered 17.1 m' from a shift (east, north) and dz."""
+    ex, ny = shift
+    ew = f"{abs(ex):.0f} m {'east' if ex >= 0 else 'west'}"
+    ns = f"{abs(ny):.0f} m {'north' if ny >= 0 else 'south'}"
+    ud = f"{'raised' if dz >= 0 else 'lowered'} {abs(dz):.1f} m"
+    return f"sampled {ew} and {ns} of each point, then {ud}"
+
+
 def _calibration_section(cal: dict) -> list[str]:
     r, sky, ref, m = cal["result"], cal["sky_check"], cal["reference"], cal["model"]
     lo, hi = r["n_range_for_uncertainty"]
@@ -43,7 +52,7 @@ def _calibration_section(cal: dict) -> list[str]:
         f"| Model ratio at n = 0 (isotropic sky) and n = 10 | {_n(r['ratio_at_n0'], '{:.3f}')} and {_n(r['ratio_at_n10'], '{:.3f}')} |",
         f"| S at the parking spot, mean S over the baseline (at the fitted n) | {_n(r['s_parking_at_n'], '{:.3f}')}, {_n(r['s_baseline_mean_at_n'], '{:.3f}')} |",
         f"| Observer height | {m['observer_height_m']:g} m above the ground (PLACEHOLDER) |",
-        f"| MOLA tied to the 1 m DEM by | {_n(m['mola_tie_offset_m'], '{:+.1f}')} m (median difference) |",
+        f"| MOLA placed on the 1 m DEM | {_coreg(m['mola_shift_m'], m['mola_tie_offset_m'])} (median absolute difference {m['mola_mad_m']:.1f} m; {m['mola_mad_vertical_only_m']:.1f} m with a height offset alone) |",
         f"| Pressure term spread over the baseline | {m['pressure_factor_spread_over_baseline']:.4f} (negligible) |",
         "",
         f'Result: **{"PASS" if r["passed"] else "NO FIT"}**. Label: "calibrated on one RAD measurement". '
@@ -95,7 +104,9 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
         "",
         f"Shielding uses n = {hz['n']:.2f} from the Murray Buttes calibration. Horizons combine the 1 m DEM out "
         "to 2 km with MOLA out to 100 km, both with the planet's curvature subtracted. "
-        f"MOLA sits {_n(hz['mola_tie_offset_m'], '{:.1f}')} m below the 1 m DEM here (median), and is raised by that much. "
+        f"MOLA is placed on the 1 m DEM by co-registration: {_coreg(hz['mola_shift_m'], hz['mola_tie_offset_m'])}, which brings the median "
+        f"absolute difference between the two (after smoothing the 1 m DEM to MOLA's pixel size) to "
+        f"{hz['mola_mad_m']:.1f} m, from {hz['mola_mad_vertical_only_m']:.1f} m with a height offset alone. "
         f"The far field sets the horizon in {_pct(hz['far_field_sets_horizon_share'])} of all cell and azimuth pairs.",
         "",
         "| Layer | 5th percentile | Median | 95th percentile | Minimum |",
@@ -114,12 +125,16 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
     lines += [
         "## How far-field horizons shift sunrise and sunset",
         "",
-        'Times are local true solar time at the site centre; the sun\'s centre is used. "Far field" is the '
-        'change from adding MOLA beyond 2 km to the 1 m DEM horizons; "all terrain" is the change from a flat, '
-        f"open horizon. Statistics cover every {s['sun']['sample_step_px']}th cell in each direction.",
+        "Times are local true solar time at the site centre; the sun's centre is used. 'Far field' is the "
+        "change from adding MOLA terrain to the 1 m DEM horizons, which reach 2 km or the crop edge; 'all "
+        "terrain' is the change from a flat, open horizon. Statistics cover every "
+        f"{s['sun']['sample_step_px']}th cell in each direction that lies at least "
+        f"{(s['sun'].get('min_edge_m') or 0) / 1000:g} km from the crop edge, so its 1 m DEM horizons reach at "
+        "least that far in every direction; nearer the edge, a near-field-only horizon would be cut short and "
+        "exaggerate the far field.",
         "",
-        "| Date | Ls | Flat-horizon sunrise and sunset | Far field delays sunrise (median, 90th percentile, max) | Far field advances sunset (median, 90th percentile, max) | All terrain delays sunrise (median) | All terrain advances sunset (median) |",
-        "| --- | --- | --- | --- | --- | --- | --- |",
+        "| Date | Ls | Flat-horizon sunrise and sunset | Far field delays sunrise (median, 90th percentile, max) | Cells where the far field delays sunrise over 1 min | Far field advances sunset (median, 90th percentile, max) | All terrain delays sunrise (median) | All terrain advances sunset (median) |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for d in s["sun"]["dates"]:
         fr, fs = d["far_delays_sunrise_min"], d["far_advances_sunset_min"]
@@ -129,8 +144,8 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
             return "n/a" if x is None else f"{x['median']:.1f}, {x['p90']:.1f}, {x['max']:.1f} min"
 
         lines.append(
-            f"| {d['date']} ({d['utc_day']}) | {d['ls']:.0f}° | {_h(d['sunrise_ltst_flat'])} and {_h(d['sunset_ltst_flat'])} | "
-            f"{trio(fr)} | {trio(fs)} | {'n/a' if tr is None else f'{tr["median"]:.1f} min'} | "
+            f"| {d['date']} ({d['utc_day']}) | {round(d['ls']) % 360}° | {_h(d['sunrise_ltst_flat'])} and {_h(d['sunset_ltst_flat'])} | "
+            f"{trio(fr)} | {'n/a' if fr is None else _pct(fr['share_over_1_min'])} | {trio(fs)} | {'n/a' if tr is None else f'{tr["median"]:.1f} min'} | "
             f"{'n/a' if ts is None else f'{ts["median"]:.1f} min'} |"
         )
     lines.append("")
@@ -150,7 +165,14 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
                 )
         lines.append("")
     w, r, sh, sci, un = s["walkability"], s["ridges"], s["shelters"], s["science"], s["uncertainty"]
-    lines += ["## Other layers", "", "| Layer | Summary |", "| --- | --- |"]
+    lines += ["## Other layers", ""]
+    if s.get("role") == "validation":
+        lines += [
+            "This site is for validation only. It has no boxwork, so its ridge and fracture layers run the "
+            "same code as the boxwork but carry no science meaning here.",
+            "",
+        ]
+    lines += ["| Layer | Summary |", "| --- | --- |"]
     if w:
         ww, wr = w["walker_class_share"], w["rover_class_share"]
         lines.append(

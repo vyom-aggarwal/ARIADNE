@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-08 (Phase 2 started).
+Last updated: 2026-11-09 UTC (Phase 2 done).
 
 ## Status
 
@@ -9,8 +9,9 @@ Last updated: 2026-11-08 (Phase 2 started).
 | Kickoff | Done. Sources for Phases 1 and 2 verified (docs/SOURCES_LOG.md); findings applied to PROMPT.md and docs/PLAN.md |
 | 0 Repo and guardrails | Done 2026-11-08: all ten acceptance tests pass; CI green; site live at https://vyom-aggarwal.github.io/ARIADNE/ |
 | 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
-| 2 Derived layers | In progress: spec changes applied and sources verified; plan and tests below |
-| 3 to 9 | Not started |
+| 2 Derived layers | Done 2026-11-09: C1 to C15 pass; validation.json holds the calibration (PASS). The rover-walkability check misses its target (79.7% against 95%); diagnosis below, fix awaiting the team's decision |
+| 3 Route engine | Next |
+| 4 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
 
@@ -148,7 +149,7 @@ Turn the crops into the ten layers of PROMPT.md section 4, each a pure function 
 
 1. **Inputs.** Add the MOLA 463 m regional DEM to `config/sources.yaml`, cropped to the site box plus 102 km (100 km far-field reach, PLACEHOLDER, plus a margin) by the existing range reader. Add the THEMIS night-IR tiles (Trek, level 9, about 81 m) for the sand proxy, the ChemCam oxide tables for prior targets, and the four drill sites (sols from the blog, positions from PLACES). Every threshold goes into `config/derive.yaml` and `config/science.json`, marked PLACEHOLDER.
 2. **Terrain basics.** Horn slope and aspect, roughness (standard deviation of elevation after removing a best-fit plane in a 5 m window), TPI at 5, 10 and 20 m, local relief.
-3. **Horizons.** 72 azimuths. Near field: rays on the 1 m DEM out to 2 km or the crop edge, 1 m steps to 32 m, then steps growing 3% per step, bilinear sampling, curvature drop d²/2R, observer 1 m above the ground (PLACEHOLDER). Far field: on a 100 m coarse grid, rays on MOLA from where the near field stops (less a 100 m overlap) to 100 km, MOLA tied to the 1 m DEM by their median difference; each fine cell takes the interpolated far-field profile maximum, corrected to first order for its own elevation. The horizon is the larger of the two. Stored as a 72-band uint8 COG (0.4° steps from −12° to +90°).
+3. **Horizons.** 72 azimuths. Near field: rays on the 1 m DEM out to 2 km or the crop edge, 1 m steps to 32 m, then steps growing 3% per step, bilinear sampling, curvature drop d²/2R, observer 1 m above the ground (PLACEHOLDER). Far field: on a 100 m coarse grid, rays on MOLA from where the near field stops (less a 100 m overlap) to 100 km, MOLA co-registered to the 1 m DEM (a horizontal shift and a height offset, fitted per site); each fine cell takes the interpolated far-field profile maximum, corrected to first order for its own elevation. The horizon is the larger of the two. Stored as a 72-band uint8 COG (0.4° steps from −12° to +90°).
 4. **Shielding.** S(n) by the closed form; f(p) = 1 + κ (p − p_ref) / D_ref with κ = −0.21 µGy/day per Pa and D_ref = 300 µGy/day (Guo et al. 2021, the published upper limit and its matching dose), p from elevation with the 11.0 km scale height, and p at Murray Buttes from the paper's 23 g/cm² (about 849 Pa). Calibration: the baseline is Curiosity's position on each of sols 1440 to 1455 and 1468 to 1480 (the mean of S at the positions held at the start and end of each sol, since PLACES gives no drive times); the parking spot is site 57, drive 2798. Find n in 0 to 10 where S(parking) f / mean(S f over baseline sols) = 0.962 (the paper's 3.8%), the n range for 3.4% to 4.2%, and the n for exactly 0.96. Also report the blocked sky (n = 0) at the parking spot against the paper's 19%, and the sensitivity to observer height (0.5 m and 2 m) and to near-field-only horizons.
 5. **Walkability** (walker and rover): slope classes (walker go up to 15°, caution 15° to 25°, no-go above 25°; rover go up to 12°, caution 12° to 20°, no-go above 20°; all PLACEHOLDER), roughness, dark-object density (share of 25 cm pixels much darker than their surroundings), a sand proxy (smooth texture, ripple directionality and THEMIS night-IR percentile, all relative within the site) and ridge-edge drop-offs (convex profile curvature with at least 1 m of local relief). Output: class and a continuous cost multiplier. Label MODELED. No boulder sizes (no per-image sun geometry).
 6. **Ridges and fractures.** Ridge where TPI10 > +0.3 m and local relief ≥ 0.8 m; hollow where TPI10 < −0.3 m (PLACEHOLDER). Fractures: multi-scale dark-line filter (Sato) on the 25 cm image inside the ridge mask, skeletonized, lines ≥ 10 m kept, written as GeoJSON. Both sites have HiRISE stereo everywhere, so the DEM route applies.
@@ -183,9 +184,63 @@ C1 to C12 run in CI on synthetic data; C13 to C15 check the committed outputs of
 
 Team targets set before the real run: the calibration passes if some n in 0 to 10 reproduces the ratio; the blocked-sky check is reported, not gated (the paper's horizon mask comes from rover images and a different elevation model); the rover-walkability check passes if at least 95% of Curiosity's boxwork localizations are classed go or caution.
 
+### Phase 2 decisions
+
+- **Regional DEM: MOLA 463 m, not the HRSC and MOLA blend.** Both were checked. The blend is sharper (200 m) but its HRSC part is CC BY-SA 3.0 IGO, which would attach a share-alike term to every derived layer; MOLA is CC0, uses the analysis grid's projection exactly, and is sharp enough beyond 2 km.
+- **MOLA is co-registered to the 1 m DEM, not just raised.** The first run tied MOLA by its median height difference (12 m at Murray Buttes, 59 m at the boxwork). The spread of the difference showed a horizontal offset of about one MOLA pixel between the two mosaics, so the pipeline now fits a shift and a height offset per site (`horizons.coregister`, tested on synthetic terrain). At Murray Buttes that is 580 m east, 240 m south and −17 m, and the median absolute difference falls from 12.0 m to 3.8 m. Both sites were re-derived with it.
+- **Near and far field meet at the crop edge.** Each near-field ray runs to 2 km or the crop edge, whichever is nearer; the far field starts there less a 100 m overlap, and the horizon is the larger of the two. Far-field rays are traced from a 100 m grid and corrected to first order for each cell's own elevation.
+- **Baseline positions per sol.** PLACES gives no drive times, so each baseline sol counts as the mean of S at the position held at its start and the position held at its end. Sols 1455 and 1468, when Curiosity drove to and from the butte, are inside the paper's fit windows and are kept, as the paper does.
+- **The calibration target is the paper's 3.8% ± 0.4%**, reported with the n range for that uncertainty; the n for the rounded 0.96 the team specified is reported too. The two differ by under 0.1 in n.
+- **f(p) uses Guo et al.'s upper-limit pair**, κ = −0.21 µGy/day per Pa with the matching 300 µGy/day, so the pressure term is at most this large. Across the Murray Buttes baseline it changes f by about 0.1%, so it barely touches the calibration.
+- **Observer height 1 m (PLACEHOLDER)** for all horizons, roughly a walker's chest and RAD on the rover deck; the calibration reports 0.5 m and 2 m as sensitivity cases.
+- **Drill holes are placed at Curiosity's position while drilling**; each hole is within the arm's reach of it. Valle de la Luna uses sol 4693 (the hole's first image), since the blog does not number the drill sol.
+- **Ground images are approximated by Curiosity's localizations** in the uncertainty layer until PLACES `view_metadata.csv` is checked.
+- **Deferred, not faked:** relative ground temperature needs the REMS archive (Phase 6); the science score's spectral term needs CRISM summary parameters; ridge thresholds need a hand-labeled sample. Each is marked in the outputs and in validation.json.
+- **Mars24 wording.** The team asked that the worked-example mismatch be called rounding unless shown otherwise. The arithmetic shows that two Spirit-example values differ from the page's own formulas by 5 to 100 times what rounding of the printed inputs can cause, so the docs and test say that plainly and neutrally, note that the page gives no reason, and stress that every gap is under one arcsecond.
+
+### Phase 2 evidence
+
+- **Commits:** `2327a26` spec changes, verified sources and plan; `6f62695` derive modules, inputs and tests C1 to C12 (CI green on Python 3.12 and 3.13); the final commit adds MOLA co-registration, the reports, validation.json and C13 to C15.
+- **Tests:** 206 pipeline tests pass locally, including C13 to C15 against the real outputs; in CI the provenance check (C15) skips because `data/` is not committed.
+- **Runs:** `make derive` took 26 minutes for Murray Buttes (4,001 × 4,001 cells) and 27 minutes for the boxwork (3,514 × 3,925 cells) on this 8-core machine; the 72-azimuth horizon pass is about 10 minutes of that and is cached.
+- **MOLA co-registration:** Murray Buttes 580 m east, 240 m south, −17.1 m (median absolute difference 12.0 m → 3.8 m); boxwork 230 m east, 400 m south, −13.9 m (18.5 m → 14.8 m).
+
+**Shielding calibration** (docs/derived/murray-buttes.md, validation.json):
+
+| Quantity | Result |
+| --- | --- |
+| Fitted n for 3.8% (ratio 0.962) | 1.19 (PASS: one crossing in 0 to 10) |
+| n range for 3.8% ± 0.4% | 1.07 to 1.33 |
+| n for the rounded 4% (0.96) | 1.13 |
+| S at the parking spot; mean S over the 29 baseline sols | 0.952; 0.990 |
+| Blocked sky at the parking spot: model, paper | 18.5%, 19% |
+| Mean blocking angle: model, paper | 10.8°, 11° (butte half 15.8° against 16°, other half 5.9° against 6°, largest 28.8° against about 30°) |
+| Blocked sky with near-field horizons only | 16.2% |
+| Sensitivity of n | observer 0.5 m: 1.38; 2 m: 0.84; near field only: 1.17 |
+| Pressure term across the baseline | 0.14% spread (negligible) |
+
+**Far-field horizons and the sun** (cells at least 1 km from the crop edge; medians, then the share of cells delayed more than 1 minute):
+
+| Site | Ls 0 | Ls 90 | Ls 180 | Ls 270 |
+| --- | --- | --- | --- | --- |
+| Murray Buttes: far field delays sunrise | 9.3 min (78%) | 1.1 min (51%) | 9.0 min (77%) | 30.7 min (95%) |
+| Murray Buttes: far field advances sunset | 14.1 min | 24.5 min | 14.1 min | 5.0 min |
+| Boxwork: far field delays sunrise | 0.0 min (34%) | 0.0 min (3%) | 0.0 min (34%) | 0.0 min (22%) |
+| Boxwork: far field advances sunset | 2.0 min | 19.4 min | 1.7 min | 0.0 min |
+| Boxwork: all terrain delays sunrise | 53 min | 43 min | 53 min | 65 min |
+
+At Murray Buttes, low on the crater floor, Mount Sharp sets the uphill horizon as the team expected: it delays sunrise by about half an hour at Ls 270, when the sun rises in the east-southeast behind it. At the boxwork, higher up the mountain's flank, hills within 2 km already stand higher. At Nevado Sajama, for example, a hill about 84 m high 500 m to the east gives a 10.6° horizon, while Mount Sharp reaches 10.1°. So the far field shifts sunrise at only a minority of boxwork cells (90th percentile 8 to 14 minutes), while the terrain as a whole delays it by 43 to 65 minutes.
+
+**Other layers** (docs/derived/boxwork.md): walker go 55%, caution 26%, no-go 18%; rover go 38%, caution 33%, no-go 30%; ridges 14% and hollows 17% of the site; 2,734 fractures of 10 m or more (62.5 km); terrain shelters (S ≤ 0.95) on 9.5% of the site, with a median 4.2 minutes to shelter at the PLACEHOLDER pace; 2,666 transects (208 on mapped fractures), scored against 254 prior targets (250 ChemCam targets and the 4 drill holes); confidence median 0.60.
+
+**Validation (validation.json):** shielding PASS; Mars24 PASS (largest gap 0.00065° on the Spirit zenith angle, from the printed declination); sols PASS (all five fixtures within one day); **rover walkability FAIL**: 31.7% go, 48.1% caution, 20.3% no-go on Curiosity's 2,893 boxwork localizations, against the 95% go-or-caution target set before the run. The ridge map is not run (no hand-labeled sample), but a spot check at the drill holes gives ridge at both Nevado Sajama holes (TPI10 +0.67 and +0.56 m), "other" at Valle de la Luna (TPI10 −0.18 m, just short of the −0.3 m hollow threshold) and hollow at Altadena. Six checks belong to later phases and are marked not run.
+
+**Why the rover check fails.** Most no-go points are slopes over the PLACEHOLDER 20° limit. Curiosity's own tilt from PLACES roll and pitch (MEASURED) has a median of 8.1°, 99th percentile 17.5° and maximum 22.8° on these points, with only 0.35% above 20°. The 1 m DEM slope under the same points has a median of 11.3°, 99th percentile 38.2°, and 15% above 20°. Smoothing the DEM to the rover's footprint (Gaussian σ = 3 m) gives a median of 8.1°, 2.2% above 20°, and raises the correlation with the rover's tilt from 0.34 to 0.54. The 1 m slope measures ridge flanks shorter than the rover, plus DEM noise. Changing the rover slope to the footprint scale would change a validation result after seeing it, so it waits for the team's decision.
+
 ## Next steps
 
-1. Phase 2: write the C1 to C12 tests, then the derive modules; fetch the MOLA crop; run the calibration and the far-field report; then the remaining layers, `make derive` on both sites and `validation.json`.
+1. Team decision: compute the rover's (and possibly the walker's) slope classes at the traveller's footprint scale, as the PLACES tilt comparison suggests, and re-run the rover check; or keep the 1 m slope and the recorded failure.
+2. Phase 3, route engine: A*, cost-to-home fields, the leg matrix, OR-Tools reference plans, the browser solver, constraints, re-planning and storm mode. It also transcribes the NASA/TP-2010-216125 walking model, replacing the PLACEHOLDER pace in minutes-to-shelter.
 
 ## Open issues
 
@@ -195,4 +250,7 @@ Team targets set before the real run: the calibration passes if some n in 0 to 1
 - Team name and README credits: not given yet; README shows them as "to be added".
 - The georeferencing check is not an independent test of height: PLACES records the DEM pixel of each localization, so its elevations are tied to an orbital DEM. The horizontal shift search is the real alignment test. An independent height check would need ground data, such as rover stereo; this is not planned.
 - HiRISE coverage edges are uncertain by about 30 m, because ODE rounds footprint vertices. It makes no difference at these two sites, which are fully covered, but it matters for the uncertainty layer elsewhere.
-- The orthophoto shows mosaic seams (one is visible in the Murray Buttes quicklook). Phase 2's dark-object density should check that seams do not register as features.
+- The orthophoto shows mosaic seams (one is visible in the Murray Buttes quicklook). The dark-object density compares each pixel with a local median, so a brightness step moves the reference with it (tested), but a seam can still show in the texture-based sand proxy.
+- The 1 m DEM has a straight north-south seam at Murray Buttes that shows faintly in slope-based layers (walkability, ridges). It does not affect the parking spot's horizons, which the sky check confirms.
+- RAD's albedo radiation from the butte is not modeled (the paper could not separate it), and the model treats the whole omnidirectional dose as arriving from the sky. A larger RAD shielding dataset, or the paper's figure data (Ehresmann 2021), would let n be tested rather than fitted.
+- Murray Buttes has no boxwork, so its ridge and fracture layers are only a code check.

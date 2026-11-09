@@ -14,7 +14,7 @@ and RELATIVE: it says which ground runs warmer or colder, not by how many kelvin
 from __future__ import annotations
 
 import math
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 
 import numpy as np
@@ -38,6 +38,17 @@ class SunTrack:
     azimuth: np.ndarray  # degrees clockwise from north
     elevation: np.ndarray  # degrees
     ltst: np.ndarray  # local true solar time, hours
+    seconds: np.ndarray | None = None  # seconds from the first time
+    _lookup: dict = field(default_factory=dict, repr=False)
+
+    def __post_init__(self):
+        if self.seconds is None:
+            self.seconds = np.array([(x - self.times[0]).total_seconds() for x in self.times])
+
+    def lookup(self, n_az: int):
+        if n_az not in self._lookup:
+            self._lookup[n_az] = band_lookup(self.azimuth, n_az)
+        return self._lookup[n_az]
 
 
 def sun_track(start: datetime, hours: float, step_s: float, lon_east: float, lat_centric: float):
@@ -99,10 +110,10 @@ def _crossing(t0, t1, d0, d1):
 
 def sunrise_sunset_point(h_az: np.ndarray, track: SunTrack) -> tuple[float | None, float | None]:
     """Sunrise and sunset (seconds from the track start) for one horizon profile."""
-    i0, i1, f = band_lookup(track.azimuth, h_az.size)
+    i0, i1, f = track.lookup(h_az.size)
     h = h_az[i0] * (1 - f) + h_az[i1] * f
     d = track.elevation - h
-    t = np.array([(x - track.times[0]).total_seconds() for x in track.times])
+    t = track.seconds
     lit = d > 0
     if not lit.any():
         return None, None
@@ -174,8 +185,8 @@ def sun_grid(codes, qmin, qstep, nodata_code, track: SunTrack, slope, aspect):
     The relative insolation is the sum over the track of max(cos incidence, 0) while lit, over
     the same sum for flat ground with no horizon (sum of max(sin elevation, 0)).
     """
-    i0, i1, f = band_lookup(track.azimuth, codes.shape[0])
-    t = np.array([(x - track.times[0]).total_seconds() for x in track.times])
+    i0, i1, f = track.lookup(codes.shape[0])
+    t = track.seconds
     sin_sum = float(np.sum(np.clip(np.sin(np.radians(track.elevation)), 0, None)))
     return _sun_grid(
         codes,

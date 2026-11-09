@@ -42,9 +42,9 @@ def _site_paths(name: str):
     return root, site_dir, out
 
 
-def load_or_run_calibration(root: Path, log) -> dict:
+def load_or_run_calibration(root: Path, log, force: bool = False) -> dict:
     path = calibration_path(root)
-    if path.exists():
+    if path.exists() and not force:
         return json.loads(path.read_text(encoding="utf-8"))
     site_dir = root / "data" / "sites" / CALIBRATION_SITE
     if not (site_dir / "regional_dem.tif").exists():
@@ -140,6 +140,8 @@ def compute_horizons(dem, t, regional, regional_t, cfg, n_shield: float, log):
             "comb": sample_comb,
         },
         "tie_offset_m": ff.tie_offset_m,
+        "mola_shift_m": (ff.coreg.dx, ff.coreg.dy),
+        "mola_mad_m": (ff.coreg.mad_vertical_only, ff.coreg.mad),
         "qmin": qmin,
         "qstep": qstep,
         "az": az,
@@ -152,7 +154,7 @@ def mars_year_dates(after: datetime) -> list[tuple[str, datetime]]:
     prev = msl_time.solar_longitude(day)
     found = []
     targets = [0.0, 90.0, 180.0, 270.0]
-    while len(found) < 4 and (day - after).days < 800:
+    while len(found) < 4 and (day - after).days < 1500:
         day += timedelta(days=1)
         ls = msl_time.solar_longitude(day)
         tgt = targets[len(found)]
@@ -173,7 +175,20 @@ def _clock(track: light.SunTrack, seconds: float | None) -> float | None:
     )
 
 
-def sun_shift_report(samples, named, centre_lonlat, dates, step_s, log) -> dict:
+def edge_filter(samples: dict, shape, res: float, min_edge_m: float) -> dict:
+    """Keep sample cells at least `min_edge_m` from the crop edge.
+
+    Nearer the edge, the 1 m DEM ray in some directions leaves the crop within metres, so a
+    near-field-only horizon there means almost no horizon and would exaggerate the far field.
+    """
+    h, w = shape
+    r, c = samples["rows"], samples["cols"]
+    edge = np.minimum.reduce([r, c, h - 1 - r, w - 1 - c]) * res
+    keep = edge >= min_edge_m
+    return {k: v[keep] for k, v in samples.items()}
+
+
+def sun_shift_report(samples, named, centre_lonlat, dates, step_s, log, min_edge_m=None) -> dict:
     """Sunrise and sunset with no terrain, near-field only and near + far, per date."""
     lon, lat = centre_lonlat
     out = []
@@ -245,7 +260,7 @@ def sun_shift_report(samples, named, centre_lonlat, dates, step_s, log) -> dict:
             f"  {label} ({day.date()}): far field delays sunrise by a median "
             f"{out[-1]['far_delays_sunrise_min']['median'] if shifts_rise else 'n/a'} min"
         )
-    return {"dates": out, "sample_step_px": SAMPLE_STEP}
+    return {"dates": out, "sample_step_px": SAMPLE_STEP, "min_edge_m": min_edge_m}
 
 
 def _load_cached_horizons(out: Path, n_shield: float, cfg) -> dict | None:
@@ -257,7 +272,8 @@ def _load_cached_horizons(out: Path, n_shield: float, cfg) -> dict | None:
     z = np.load(cache, allow_pickle=False)
     settings = json.dumps({k: setting(cfg, "horizons", k) for k in cfg["horizons"]}, sort_keys=True)
     if (
-        str(z["settings"]) != settings
+        "shift" not in z
+        or str(z["settings"]) != settings
         or abs(float(z["n"]) - n_shield) > 1e-9
         or str(z["version"]) != PIPELINE_VERSION
     ):
@@ -273,6 +289,8 @@ def _load_cached_horizons(out: Path, n_shield: float, cfg) -> dict | None:
         "far_share": z["far_share"],
         "samples": {"rows": z["rows"], "cols": z["cols"], "near": z["near"], "comb": z["comb"]},
         "tie_offset_m": float(z["tie"]),
+        "mola_shift_m": tuple(float(v) for v in z["shift"]),
+        "mola_mad_m": tuple(float(v) for v in z["mad"]),
         "qmin": float(setting(cfg, "horizons", "quant_min_deg")),
         "qstep": float(setting(cfg, "horizons", "quant_step_deg")),
         "az": hz.azimuths(int(setting(cfg, "horizons", "azimuths"))),
@@ -290,6 +308,8 @@ def _save_horizon_cache(out: Path, hres: dict, n_shield: float, cfg) -> None:
         near=s["near"],
         comb=s["comb"],
         tie=hres["tie_offset_m"],
+        shift=np.array(hres["mola_shift_m"]),
+        mad=np.array(hres["mola_mad_m"]),
         n=n_shield,
         version=PIPELINE_VERSION,
         settings=json.dumps(
@@ -311,6 +331,7 @@ def _named_points(ctx) -> list[dict]:
     if not pts:
         return []
     regional, regional_t, _ = read_raster(ctx["site_dir"] / "regional_dem.tif")
+    regional_t = hz.shifted(regional_t, *ctx["mola_shift_m"])
     xs = np.array([p["x"] for p in pts])
     ys = np.array([p["y"] for p in pts])
     near, _, comb = calib.point_horizons(
@@ -347,7 +368,7 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
     t_start = time.time()
     log(f"Deriving layers for {name}")
 
-    cal = load_or_run_calibration(root, log)
+    cal = load_or_run_calibration(root, log, force=force and name == CALIBRATION_SITE)
     n_shield = cal["result"]["n"]
     if n_shield is None:
         raise RuntimeError(
@@ -490,6 +511,7 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
         "calibration": cal,
         "drills": drills,
         "tie_offset_m": hres["tie_offset_m"],
+        "mola_shift_m": hres["mola_shift_m"],
         "centre_lonlat": centre_lonlat(t, dem.shape),
     }
 
@@ -504,13 +526,15 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
             ref_day.replace(hour=0, minute=0, second=0, microsecond=0),
         )
     )
+    min_edge = float(setting(cfg, "light", "report_min_edge_m"))
     sun = sun_shift_report(
-        hres["samples"],
+        edge_filter(hres["samples"], dem.shape, res, min_edge),
         named,
         ctx["centre_lonlat"],
         dates,
         float(setting(cfg, "light", "time_step_s")),
         log,
+        min_edge_m=min_edge,
     )
 
     # 4 to 8. Walkability, ridges, shelters and line of sight, science, uncertainty
@@ -528,6 +552,9 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
         "horizons": {
             "n": n_shield,
             "mola_tie_offset_m": round(hres["tie_offset_m"], 2),
+            "mola_shift_m": [round(v, 1) for v in hres["mola_shift_m"]],
+            "mola_mad_vertical_only_m": round(hres["mola_mad_m"][0], 1),
+            "mola_mad_m": round(hres["mola_mad_m"][1], 1),
             "far_field_sets_horizon_share": round(float(np.nanmean(hres["far_share"])), 3),
             "s": _stats(hres["s"]),
             "s_near_only": _stats(hres["s_near"]),
@@ -543,6 +570,7 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
         "science": ctx.get("science"),
         "uncertainty": ctx.get("uncertainty"),
         "drill_sites": drills,
+        "role": site_cfg.role,
         "seconds": round(time.time() - t_start),
     }
     (out / "summary.json").write_text(json.dumps(summary, indent=1), encoding="utf-8")
@@ -554,6 +582,80 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
         derived_markdown(summary, cal if name == CALIBRATION_SITE else None), encoding="utf-8"
     )
     log(f"  report: {report.relative_to(root)} ({summary['seconds']} s in all)")
+    return summary
+
+
+def refresh_report(name: str, log: Callable[[str], None] = print) -> dict:
+    """Rebuild the sunrise report and docs/derived/<site>.md from the saved layers and cache."""
+    import yaml
+
+    from ariadne.fetch import context
+
+    root, site_dir, out = _site_paths(name)
+    summary_path = out / "summary.json"
+    if not summary_path.exists() or not (out / "horizon_cache.npz").exists():
+        raise FileNotFoundError(
+            f"no saved derive run for {name}: run `ariadne derive --site {name}`"
+        )
+    cfg = load_derive_config()
+    site_cfg = load_site_config(name)
+    site_raw = yaml.safe_load(
+        (root / "config" / "sites" / f"{name}.yaml").read_text(encoding="utf-8")
+    )
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    cal = json.loads(calibration_path(root).read_text(encoding="utf-8"))
+    z = np.load(out / "horizon_cache.npz", allow_pickle=False)
+    samples = {"rows": z["rows"], "cols": z["cols"], "near": z["near"], "comb": z["comb"]}
+    dem, t, crs = read_raster(site_dir / "dem.tif")
+    rover = places.load_rover_positions(
+        root / "data" / "sources" / "msl-places" / "localized_interp.csv"
+    )
+    drills = (
+        context.drill_site_positions(site_cfg.drill_sites, rover) if site_cfg.drill_sites else []
+    )
+    ctx = {
+        "site": name,
+        "site_dir": site_dir,
+        "dem": dem,
+        "t": t,
+        "cfg": cfg,
+        "n": summary["horizons"]["n"],
+        "calibration": cal,
+        "drills": drills,
+        "tie_offset_m": float(z["tie"]),
+        "mola_shift_m": tuple(float(v) for v in z["shift"]),
+    }
+    named = _named_points(ctx)
+    ref_day = msl_time.sol_start_utc(int(site_raw["reference_sol"]["value"]))
+    dates = mars_year_dates(ref_day - timedelta(days=690))
+    dates.append(
+        (
+            f"sol {site_raw['reference_sol']['value']} (reference)",
+            ref_day.replace(hour=0, minute=0, second=0, microsecond=0),
+        )
+    )
+    min_edge = float(setting(cfg, "light", "report_min_edge_m"))
+    summary["sun"] = sun_shift_report(
+        edge_filter(samples, dem.shape, float(t.a), min_edge),
+        named,
+        centre_lonlat(t, dem.shape),
+        dates,
+        float(setting(cfg, "light", "time_step_s")),
+        log,
+        min_edge_m=min_edge,
+    )
+    summary["named_points"] = [
+        {k: v for k, v in p.items() if k not in ("near", "comb")} for p in named
+    ]
+    summary["role"] = site_cfg.role
+    summary_path.write_text(json.dumps(summary, indent=1), encoding="utf-8")
+    from ariadne.derive.report import derived_markdown
+
+    report = root / "docs" / "derived" / f"{name}.md"
+    report.write_text(
+        derived_markdown(summary, cal if name == CALIBRATION_SITE else None), encoding="utf-8"
+    )
+    log(f"  report refreshed: {report.relative_to(root)}")
     return summary
 
 

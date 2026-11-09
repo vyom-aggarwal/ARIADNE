@@ -119,7 +119,9 @@ def calibrate(site_dir: Path, places_csv: Path, cfg: dict | None = None) -> dict
         regional = d.read(1).astype(np.float64)
         regional[regional == d.nodata] = np.nan
         regional_t = d.transform
-    tie = hz.tie_offset(dem, dem_t, regional, regional_t)
+    co = hz.coregister(dem, dem_t, regional, regional_t)
+    tie = co.dz
+    regional_t = hz.shifted(regional_t, co.dx, co.dy)
     rover = places.load_rover_positions(places_csv)
     pts = calibration_points(rover, cfg)
 
@@ -213,6 +215,9 @@ def calibrate(site_dir: Path, places_csv: Path, cfg: dict | None = None) -> dict
             "near_max_m": float(setting(cfg, "horizons", "near_max_m")),
             "far_max_m": float(setting(cfg, "horizons", "far_max_m")),
             "mola_tie_offset_m": round(tie, 2),
+            "mola_shift_m": [round(co.dx, 1), round(co.dy, 1)],
+            "mola_mad_vertical_only_m": round(co.mad_vertical_only, 1),
+            "mola_mad_m": round(co.mad, 1),
             "pressure_ref_pa": round(p_ref, 1),
             "pressure_factor_spread_over_baseline": round(f_spread, 6),
         },

@@ -1,6 +1,6 @@
 # Coverage and georeferencing: Mount Sharp boxwork, Gale crater
 
-Written by `ariadne fetch --site boxwork` (pipeline 0.0.0) on 2026-11-09T05:51:11Z. Do not edit by hand; rerun the fetch instead.
+Written by `ariadne fetch --site boxwork` (pipeline 0.0.0) on 2026-11-09T07:34:47Z. Do not edit by hand; rerun the fetch instead.
 
 ## Site box
 
@@ -23,7 +23,7 @@ Written by `ariadne fetch --site boxwork` (pipeline 0.0.0) on 2026-11-09T05:51:1
 | regional_dem.tif | `mola-dem-463m` | 449 × 450 | 463.09 m | range-requests | 6 s | MEASURED |
 | color.tif | `usgs-gale-hirise-lrgb` | 14,056 × 15,697 | 0.25 m | gdal-bands | 13 s | MEASURED |
 | themis_night_ir.tif | `trek-themis-night-ir` | 256 × 256 px | 81.4 m | map tiles | | MEASURED |
-| chemcam_targets.csv | `msl-chemcam-moc` | 250 targets |  | tables joined to PLACES by SCLK | | MEASURED |
+| chemcam_targets.csv | `msl-chemcam-moc` | 250 targets |  | tables joined to PLACES by SCLK | | DERIVED |
 
 ## Where the elevation comes from
 

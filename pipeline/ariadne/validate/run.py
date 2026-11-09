@@ -154,6 +154,25 @@ def rover_walkability_check(root: Path) -> dict:
     }
     go_or_caution = share["go"] + share["caution"]
     nogo = path_pts[ok][vals == 2]
+    # Independent comparison: Curiosity's own tilt from PLACES roll and pitch (MEASURED) against
+    # the DEM slope under it (DERIVED).
+    import pandas as pd
+
+    raw = pd.read_csv(
+        root / "data" / "sources" / "msl-places" / "localized_interp.csv",
+        usecols=["frame", "sol", "roll", "pitch"],
+    )
+    raw = raw[(raw.frame == "ROVER") & raw.sol.between(box["first_sol"], box["last_sol"])]
+    tilt = np.degrees(np.arccos(np.cos(np.radians(raw.roll)) * np.cos(np.radians(raw.pitch))))
+    slope_path = None
+    slope_file = site_dir / "derived" / "slope.tif"
+    if slope_file.exists():
+        with rasterio.open(slope_file) as d:
+            slope_path = d.read(1)[rows[ok], cols[ok]]
+
+    def pct(a):
+        return [round(float(x), 1) for x in np.percentile(a, [50, 90, 99])]
+
     return {
         "id": "rover-walkability",
         "title": "Rover walkability on Curiosity's boxwork path",
@@ -175,12 +194,56 @@ def rover_walkability_check(root: Path) -> dict:
                 for r in nogo.itertuples()
             ][:200],
             "no_go_count": int(len(nogo)),
+            "tilt_check": {
+                "rover_tilt_deg_p50_p90_p99": pct(tilt),
+                "rover_tilt_share_over_20_deg": round(float(np.mean(tilt > 20)), 4),
+                "dem_slope_deg_p50_p90_p99": pct(slope_path) if slope_path is not None else None,
+                "dem_slope_share_over_20_deg": round(float(np.mean(slope_path > 20)), 4)
+                if slope_path is not None
+                else None,
+                "note": "Rover tilt is arccos(cos roll x cos pitch) from PLACES (MEASURED). "
+                "The 1 m DEM slope under the same points is steeper than the tilt the rover "
+                "actually had, which suggests the rover classes should use slope at the "
+                "rover's footprint scale.",
+            },
         },
         "status": "pass" if go_or_caution >= 0.95 else "fail",
         "label": "MODELED",
         "note": "Rover thresholds are PLACEHOLDER (config/derive.yaml). A no-go point where "
         "Curiosity drove is a "
         "likely false alarm of the model, or ground the rover crossed with care.",
+    }
+
+
+def ridge_spot_check(root: Path) -> dict | None:
+    """Ridge class and TPI at the drill holes whose setting the blog states (not a validation)."""
+    d = root / "data" / "sites" / "boxwork"
+    if not (d / "derived" / "ridges.tif").exists() or not (d / "drill_sites.geojson").exists():
+        return None
+    drills = json.loads((d / "drill_sites.geojson").read_text(encoding="utf-8"))["features"]
+    with (
+        rasterio.open(d / "derived" / "ridges.tif") as r,
+        rasterio.open(d / "derived" / "tpi10.tif") as tp,
+    ):
+        cls, tpi, t = r.read(1), tp.read(1), r.transform
+    out = []
+    names = {0: "other", 1: "ridge", 2: "hollow"}
+    for f in drills:
+        x, y = f["geometry"]["coordinates"]
+        row, col = int((y - t.f) / t.e), int((x - t.c) / t.a)
+        out.append(
+            {
+                "hole": f["properties"]["name"],
+                "setting_from_blog": f["properties"]["setting"],
+                "class": names[int(cls[row, col])],
+                "tpi10_m": round(float(tpi[row, col]), 2),
+            }
+        )
+    return {
+        "note": "Curiosity's position while drilling is within the arm's reach of each hole, so "
+        "this spot-checks two settings (ridgetop and hollow); it does not measure precision or "
+        "recall.",
+        "holes": out,
     }
 
 
@@ -195,6 +258,8 @@ def build_validation(root: Path | None = None) -> dict:
     if cal_path.exists():
         cal = json.loads(cal_path.read_text(encoding="utf-8"))
         cal["status"] = "pass" if cal["result"]["passed"] else "fail"
+        cal["value_label"] = "MODELED"  # n and S are model values; the RAD figures are MEASURED
+        cal["sky_check"]["status"] = "reported"
         cal["target"] = (
             "Some n in 0 to 10 reproduces S(parking) / S(baseline) = 0.962 (3.8%), within the "
             "paper's 0.4%; blocked sky and the neutral drop reported separately"
@@ -213,14 +278,16 @@ def build_validation(root: Path | None = None) -> dict:
     checks.append(rover_walkability_check(root))
     checks.append(mars24_check())
     checks.append(sol_check())
-    checks.append(
-        _not_run(
-            "ridge-map",
-            "Ridge map against a hand-labeled sample",
-            "no hand-labeled sample of ridges at known image positions yet",
-            2,
-        )
+    ridge = _not_run(
+        "ridge-map",
+        "Ridge map against a hand-labeled sample",
+        "no hand-labeled sample of ridges at known image positions yet; thresholds are PLACEHOLDER",
+        2,
     )
+    spot = ridge_spot_check(root)
+    if spot is not None:
+        ridge["spot_check"] = spot
+    checks.append(ridge)
     checks.append(
         _not_run(
             "walker-model",

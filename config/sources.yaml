@@ -84,7 +84,7 @@ mola-dem-463m:
   notes: >-
     Elevations above the MOLA areoid, gathered 1999 to 2001; about 100 m horizontal and 1 m
     radial point accuracy, total elevation uncertainty at least 3 m. Used only for far-field
-    horizons beyond 2 km, tied to the 1 m DEM by their median difference over the site.
+    horizons beyond 2 km, co-registered to the 1 m DEM over each site (shift and height offset).
   acquisition_date: 1999 to 2001
   output: regional_dem.tif
   nodata: -32768
