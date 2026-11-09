@@ -100,3 +100,42 @@ def test_percentile_rank_and_regridding():
         wk.Resampling.nearest,
     )
     assert out[0, 0] == 0 and out[7, 7] == 15
+
+
+# --- C17: footprint scales come from config, each with a source ---
+
+
+def test_slope_scales_from_the_real_config():
+    from ariadne.config import load_derive_config
+
+    cfg = load_derive_config()
+    s = wk.slope_scales(cfg)
+    assert s["r_eff_m"] == pytest.approx(2.5)
+    assert s["rover_m"] == pytest.approx(3.05)
+    assert s["walker_m"] == pytest.approx(2.5)
+    assert s["r_eff_coarse_m"] == pytest.approx(5.0)
+    assert s["rover_coarse_m"] == pytest.approx(5.0)
+    assert s["walker_coarse_m"] == pytest.approx(5.0)
+    for key in ("dem_image_pixel_m", "dem_resolution_pixels", "rover_footprint_m"):
+        entry = cfg["walkability"][key]
+        assert entry["label"] in ("MEASURED", "MODELED") and entry.get("source")
+
+
+def test_slope_scales_take_the_larger_of_footprint_and_resolution():
+    def e(v):
+        return {"value": v, "label": "PLACEHOLDER"}
+
+    cfg = {
+        "walkability": {
+            "dem_image_pixel_m": e(0.5),
+            "dem_resolution_pixels": e(10),
+            "dem_resolution_pixels_coarse": e(20),
+            "rover_footprint_m": e(3.0),
+            "walker_footprint_m": e(1.0),
+        }
+    }
+    s = wk.slope_scales(cfg)
+    assert s["r_eff_m"] == pytest.approx(5.0)
+    assert s["rover_m"] == pytest.approx(5.0)  # the DEM, not the rover, limits the scale
+    assert s["walker_m"] == pytest.approx(5.0)
+    assert s["rover_coarse_m"] == pytest.approx(10.0)

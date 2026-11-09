@@ -62,16 +62,19 @@ At named points (sunrise and sunset; near field only, then with the far field):
 
 | Layer | Summary |
 | --- | --- |
-| Walkability, walker (MODELED) | go 55.4%, caution 26.3%, no-go 18.4% |
+| Slope scale (MODELED) | walker 2.50 m disc, rover 3.05 m disc: a plane fit no finer than the DEM's effective resolution (2.5 m) or the rover's length |
+| Walkability, walker (MODELED) | go 55.3%, caution 26.3%, no-go 18.4% |
 | Walkability, rover (MODELED) | go 37.5%, caution 33.0%, no-go 29.5% |
+| Rover, for comparison (not used) | 1 m Horn slope (Phase 2 first run): no-go 29.5%; coarse resolution (5.0 m disc): no-go 28.4% |
 | Sand proxy | uses THEMIS night IR: yes; drop-off cells 5.3% |
 | Ridges and hollows (MODELED, PLACEHOLDER thresholds) | ridges 14.0%, hollows 16.6% of the site |
 | Fractures | 2734 lines of 10 m or more, 62.51 km in all, median 16 m |
-| Terrain shelters (S ≤ 0.95, PLACEHOLDER) | 1,310,826 m² (9.5% of the site) |
-| Minutes to shelter or the staging point (PLACEHOLDER pace) | median 4.2, 95th percentile 12.3, max 33.0 |
+| Terrain shelters (S ≤ 0.95, PLACEHOLDER) | 1,310,076 m² (9.5% of the site) |
+| Minutes to shelter or the staging point (PLACEHOLDER pace) | median 4.2, 95th percentile 12.3, max 33.1 |
 | Line of sight from the staging antenna | 14.8% of the site (line of sight only, no radio model) |
-| Science transects | 2666 transects (208 on mapped fractures); station scores median 0.88 (5th to 95th percentile 0.63 to 0.95); 254 prior targets; missing term: spectral |
+| Science transects | 2655 transects (206 on mapped fractures); station scores median 0.88 (5th to 95th percentile 0.63 to 0.95); 254 prior targets; missing term: spectral |
 | Confidence | median 0.60; 0.0% of cells below 0.5 |
+| Candidate DEM mosaic seams | 10.9 km of stereo-pair footprint edges (T3, Traverse, West); 4.7% of the site within 30 m |
 | Light, sol 4718 | sunrise median 06:45, sunset median 17:51; insolation median 0.99 of flat open ground |
 
 ## Drill sites
@@ -87,5 +90,6 @@ At named points (sunrise and sunset; near field only, then with the far field):
 
 - Relative ground temperature is implemented and tested, but needs the REMS archive, which Phase 6 reads.
 - The spectral term of the science score needs CRISM summary parameters, not read yet; its weight is set aside.
-- Ridge thresholds are PLACEHOLDER until a hand-labeled sample exists, so the ridge map has no precision or recall yet.
+- Ridge thresholds are PLACEHOLDER until the hand labels arrive (`ariadne ridge-sample` builds the labeling page; `ariadne ridge-tune` tunes on one half and tests on the other).
+- Seams between the CCDs inside one HiRISE image are not mapped; only stereo-pair footprint edges are.
 - Minutes-to-shelter uses a PLACEHOLDER pace until Phase 3 brings the NASA/TP-2010-216125 walking model.

@@ -175,12 +175,22 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
     lines += ["| Layer | Summary |", "| --- | --- |"]
     if w:
         ww, wr = w["walker_class_share"], w["rover_class_share"]
+        sc = w.get("slope_scales_m")
+        if sc:
+            lines.append(
+                f"| Slope scale (MODELED) | walker {sc['walker_m']:.2f} m disc, rover {sc['rover_m']:.2f} m disc: a plane fit no finer than the DEM's effective resolution ({sc['r_eff_m']:.1f} m) or the rover's length |"
+            )
         lines.append(
             f"| Walkability, walker (MODELED) | go {_pct(ww['go'])}, caution {_pct(ww['caution'])}, no-go {_pct(ww['no-go'])} |"
         )
         lines.append(
             f"| Walkability, rover (MODELED) | go {_pct(wr['go'])}, caution {_pct(wr['caution'])}, no-go {_pct(wr['no-go'])} |"
         )
+        if w.get("rover_class_share_horn_1m"):
+            h, c = w["rover_class_share_horn_1m"], w["rover_class_share_coarse"]
+            lines.append(
+                f"| Rover, for comparison (not used) | 1 m Horn slope (Phase 2 first run): no-go {_pct(h['no-go'])}; coarse resolution ({sc['rover_coarse_m']:.1f} m disc): no-go {_pct(c['no-go'])} |"
+            )
         lines.append(
             f"| Sand proxy | uses THEMIS night IR: {'yes' if w['sand_proxy_uses_themis'] else 'no (no THEMIS input for this site)'}; drop-off cells {_pct(w['dropoff_share'])} |"
         )
@@ -214,6 +224,11 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
         lines.append(
             f"| Confidence | median {c['median']:.2f}; {_pct(un['share_below_0_5'])} of cells below 0.5 |"
         )
+        if un.get("seams"):
+            sm = un["seams"]
+            lines.append(
+                f"| Candidate DEM mosaic seams | {sm['length_m'] / 1000:.1f} km of stereo-pair footprint edges ({', '.join(sm['pairs_with_edges_in_crop']) or 'none'}); {_pct(sm['zone_share_of_site'])} of the site within {sm['zone_m']:.0f} m |"
+            )
     if s.get("light"):
         lt = s["light"]
         lines.append(
@@ -237,7 +252,8 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
         "",
         "- Relative ground temperature is implemented and tested, but needs the REMS archive, which Phase 6 reads.",
         "- The spectral term of the science score needs CRISM summary parameters, not read yet; its weight is set aside.",
-        "- Ridge thresholds are PLACEHOLDER until a hand-labeled sample exists, so the ridge map has no precision or recall yet.",
+        "- Ridge thresholds are PLACEHOLDER until the hand labels arrive (`ariadne ridge-sample` builds the labeling page; `ariadne ridge-tune` tunes on one half and tests on the other).",
+        "- Seams between the CCDs inside one HiRISE image are not mapped; only stereo-pair footprint edges are.",
         "- Minutes-to-shelter uses a PLACEHOLDER pace until Phase 3 brings the NASA/TP-2010-216125 walking model.",
         "",
     ]

@@ -353,7 +353,44 @@ def _named_points(ctx) -> list[dict]:
     return pts
 
 
-def derive_site(name: str, force: bool = False, log: Callable[[str], None] = print) -> dict:
+def _light_and_sun(ctx, hres, site_raw, log):
+    from ariadne.derive import stages
+
+    cfg, dem, res = ctx["cfg"], ctx["dem"], ctx["res"]
+    stages.stage_light(ctx, log)
+    named = _named_points(ctx)
+    ref_day = msl_time.sol_start_utc(int(site_raw["reference_sol"]["value"]))
+    dates = mars_year_dates(ref_day - timedelta(days=690))
+    dates.append(
+        (
+            f"sol {site_raw['reference_sol']['value']} (reference)",
+            ref_day.replace(hour=0, minute=0, second=0, microsecond=0),
+        )
+    )
+    min_edge = float(setting(cfg, "light", "report_min_edge_m"))
+    sun = sun_shift_report(
+        edge_filter(hres["samples"], dem.shape, res, min_edge),
+        named,
+        ctx["centre_lonlat"],
+        dates,
+        float(setting(cfg, "light", "time_step_s")),
+        log,
+        min_edge_m=min_edge,
+    )
+    return named, sun
+
+
+RERUN_STAGES = ("walkability",)
+
+
+def derive_site(
+    name: str,
+    force: bool = False,
+    log: Callable[[str], None] = print,
+    from_stage: str | None = None,
+) -> dict:
+    """Derive every layer for a site. With `from_stage="walkability"`, reuse the cached horizons
+    and the saved light and sunrise results, and re-run walkability and everything after it."""
     from ariadne.derive import stages
     from ariadne.fetch import context
 
@@ -431,7 +468,16 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
     log(f"  terrain basics written ({time.time() - t_start:.0f} s)")
 
     # 2. Horizons, with the shielding index accumulated on the way (cached between runs)
+    if from_stage is not None and from_stage not in RERUN_STAGES:
+        raise ValueError(f"can re-run from {RERUN_STAGES}, not {from_stage!r}")
+    prev = None
+    if from_stage is not None:
+        if force or not (out / "summary.json").exists():
+            raise RuntimeError("a partial re-run needs a saved full run (and no --force)")
+        prev = json.loads((out / "summary.json").read_text(encoding="utf-8"))
     hres = None if force else _load_cached_horizons(out, n_shield, cfg)
+    if prev is not None and hres is None:
+        raise RuntimeError("a partial re-run needs the horizon cache of the saved run")
     if hres is not None:
         log("  horizons: reusing the cached pass (same n and settings)")
     else:
@@ -516,26 +562,12 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
     }
 
     # 3. Light, then the sunrise and sunset report with and without the far field
-    stages.stage_light(ctx, log)
-    named = _named_points(ctx)
-    ref_day = msl_time.sol_start_utc(int(site_raw["reference_sol"]["value"]))
-    dates = mars_year_dates(ref_day - timedelta(days=690))
-    dates.append(
-        (
-            f"sol {site_raw['reference_sol']['value']} (reference)",
-            ref_day.replace(hour=0, minute=0, second=0, microsecond=0),
-        )
-    )
-    min_edge = float(setting(cfg, "light", "report_min_edge_m"))
-    sun = sun_shift_report(
-        edge_filter(hres["samples"], dem.shape, res, min_edge),
-        named,
-        ctx["centre_lonlat"],
-        dates,
-        float(setting(cfg, "light", "time_step_s")),
-        log,
-        min_edge_m=min_edge,
-    )
+    if prev is not None:
+        log(f"  re-running from {from_stage}: light and sunrise results kept from the saved run")
+        ctx["light"] = prev.get("light")
+        named, sun = prev["named_points"], prev["sun"]
+    else:
+        named, sun = _light_and_sun(ctx, hres, site_raw, log)
 
     # 4 to 8. Walkability, ridges, shelters and line of sight, science, uncertainty
     stages.stage_walkability(ctx, log)

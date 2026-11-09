@@ -128,6 +128,27 @@ def dropoffs(convexity: np.ndarray, relief: np.ndarray, curvature_min: float, re
     return (np.asarray(convexity) > curvature_min) & (np.asarray(relief) >= relief_min)
 
 
+def slope_scales(cfg: dict) -> dict:
+    """Disc diameters (m) for each traveller's slope: the larger of its footprint and the DEM's
+    effective resolution r_eff (image pixels x pixel size), plus the coarse-resolution case."""
+
+    def v(key):
+        return float(cfg["walkability"][key]["value"])
+
+    px = v("dem_image_pixel_m")
+    r_eff = v("dem_resolution_pixels") * px
+    r_coarse = v("dem_resolution_pixels_coarse") * px
+    rover, walker = v("rover_footprint_m"), v("walker_footprint_m")
+    return {
+        "r_eff_m": r_eff,
+        "rover_m": max(rover, r_eff),
+        "walker_m": max(walker, r_eff),
+        "r_eff_coarse_m": r_coarse,
+        "rover_coarse_m": max(rover, r_coarse),
+        "walker_coarse_m": max(walker, r_coarse),
+    }
+
+
 def walkability(
     slope,
     roughness,

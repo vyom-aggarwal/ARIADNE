@@ -125,94 +125,222 @@ def sol_check() -> dict:
     }
 
 
-def rover_walkability_check(root: Path) -> dict:
-    site_dir = root / "data" / "sites" / "boxwork"
-    path = site_dir / "derived" / "walk_class_rover.tif"
-    if not path.exists():
-        return _not_run(
-            "rover-walkability", "Rover walkability", "derive the boxwork site first", 2
-        )
+ROVER_TARGET = 0.95
+FIRST_RUN = Path("docs") / "validation" / "rover-walkability-first-run.json"
+
+
+def _sample(path: Path, rows, cols):
+    with rasterio.open(path) as d:
+        return d.read(1)[rows, cols]
+
+
+def _rover_path_points(root: Path, site: str):
+    """Curiosity's localizations used for a site's rover check, and a description of them."""
     from ariadne.fetch import places
 
-    summary = json.loads((site_dir / "fetch_summary.json").read_text(encoding="utf-8"))
-    box = summary["box"]
+    site_dir = root / "data" / "sites" / site
     rover = places.load_rover_positions(
         root / "data" / "sources" / "msl-places" / "localized_interp.csv"
     )
-    path_pts = places.in_sols(rover, box["first_sol"], box["last_sol"])
-    with rasterio.open(path) as d:
-        cls = d.read(1)
-        t = d.transform
-    rows = np.floor((path_pts.northing.to_numpy() - t.f) / t.e).astype(int)
-    cols = np.floor((path_pts.easting.to_numpy() - t.c) / t.a).astype(int)
-    ok = (rows >= 0) & (rows < cls.shape[0]) & (cols >= 0) & (cols < cls.shape[1])
-    vals = cls[rows[ok], cols[ok]]
-    n = int(vals.size)
+    if site == "boxwork":
+        box = json.loads((site_dir / "fetch_summary.json").read_text(encoding="utf-8"))["box"]
+        pts = places.in_sols(rover, box["first_sol"], box["last_sol"])
+        return pts, f"PLACES localizations, sols {box['first_sol']} to {box['last_sol']}"
+    with rasterio.open(site_dir / "dem.tif") as d:
+        b = d.bounds
+    inside = rover.easting.between(b.left, b.right) & rover.northing.between(b.bottom, b.top)
+    pts = rover[inside]
+    return pts, (
+        f"PLACES localizations inside the {site} box, sols {int(pts.sol.min())} to "
+        f"{int(pts.sol.max())}"
+    )
+
+
+def _class_result(cls_vals, seam_zone) -> dict:
+    from ariadne.derive import seams
+
     share = {
-        name: round(float(np.mean(vals == k)), 4)
+        name: round(float(np.mean(cls_vals == k)), 4)
         for k, name in ((0, "go"), (1, "caution"), (2, "no-go"))
     }
-    go_or_caution = share["go"] + share["caution"]
-    nogo = path_pts[ok][vals == 2]
-    # Independent comparison: Curiosity's own tilt from PLACES roll and pitch (MEASURED) against
-    # the DEM slope under it (DERIVED).
+    nogo = cls_vals == 2
+    out = {
+        "points": int(cls_vals.size),
+        "share": share,
+        "go_or_caution": round(share["go"] + share["caution"], 4),
+        "no_go_count": int(nogo.sum()),
+    }
+    if seam_zone is not None:
+        out["seams"] = seams.zone_statistics(seam_zone, nogo)
+    return out
+
+
+def _site_rover_results(root: Path, site: str) -> dict | None:
+    """Rover classes on Curiosity's path at one site: the footprint method (the result), the
+    Phase 2 first-run method and the coarse-resolution case, with the tilt and seam checks."""
+    d = root / "data" / "sites" / site / "derived"
+    if not (d / "walk_class_rover.tif").exists() or not (d / "slope_rover.tif").exists():
+        return None
+    pts, ref = _rover_path_points(root, site)
+    with rasterio.open(d / "walk_class_rover.tif") as src:
+        t, shape = src.transform, src.shape
+    rows = np.floor((pts.northing.to_numpy() - t.f) / t.e).astype(int)
+    cols = np.floor((pts.easting.to_numpy() - t.c) / t.a).astype(int)
+    ok = (rows >= 0) & (rows < shape[0]) & (cols >= 0) & (cols < shape[1])
+    rows, cols, pts = rows[ok], cols[ok], pts[ok]
+    zone = None
+    if (d / "seam_distance.tif").exists():
+        from ariadne.config import load_derive_config, setting
+
+        zone_m = float(setting(load_derive_config(), "uncertainty", "seam_zone_m"))
+        zone = _sample(d / "seam_distance.tif", rows, cols) <= zone_m
+    new = _sample(d / "walk_class_rover.tif", rows, cols)
+    result = _class_result(new, zone)
+    nogo = pts[new == 2]
+    result["no_go_points"] = [
+        {
+            "sol": int(r.sol),
+            "site": int(r.site),
+            "drive": int(r.drive),
+            "easting": round(float(r.easting), 2),
+            "northing": round(float(r.northing), 2),
+        }
+        for r in nogo.itertuples()
+    ][:200]
+    # Curiosity's own tilt from PLACES roll and pitch (MEASURED) against the slopes under it.
     import pandas as pd
 
     raw = pd.read_csv(
         root / "data" / "sources" / "msl-places" / "localized_interp.csv",
-        usecols=["frame", "sol", "roll", "pitch"],
+        usecols=["frame", "site", "drive", "roll", "pitch"],
     )
-    raw = raw[(raw.frame == "ROVER") & raw.sol.between(box["first_sol"], box["last_sol"])]
-    tilt = np.degrees(np.arccos(np.cos(np.radians(raw.roll)) * np.cos(np.radians(raw.pitch))))
-    slope_path = None
-    slope_file = site_dir / "derived" / "slope.tif"
-    if slope_file.exists():
-        with rasterio.open(slope_file) as d:
-            slope_path = d.read(1)[rows[ok], cols[ok]]
+    raw = raw[raw.frame == "ROVER"].drop_duplicates(["site", "drive"])
+    keyed = pts[["site", "drive"]].merge(raw, on=["site", "drive"], how="left")
+    tilt = np.degrees(np.arccos(np.cos(np.radians(keyed.roll)) * np.cos(np.radians(keyed.pitch))))
+    tilt = tilt.to_numpy()
+    slope_fp = _sample(d / "slope_rover.tif", rows, cols)
+    slope_horn = _sample(d / "slope.tif", rows, cols)
 
     def pct(a):
+        a = a[np.isfinite(a)]
         return [round(float(x), 1) for x in np.percentile(a, [50, 90, 99])]
 
-    return {
-        "id": "rover-walkability",
-        "title": "Rover walkability on Curiosity's boxwork path",
-        "reference": f"PLACES localizations, sols {box['first_sol']} to {box['last_sol']} ({n} "
-        "points)",
-        "target": "At least 95% classed go or caution; every no-go cell listed as a possible false "
-        "alarm",
-        "result": {
-            "share": share,
-            "go_or_caution": round(go_or_caution, 4),
-            "no_go_points": [
-                {
-                    "sol": int(r.sol),
-                    "site": int(r.site),
-                    "drive": int(r.drive),
-                    "easting": round(float(r.easting), 2),
-                    "northing": round(float(r.northing), 2),
-                }
-                for r in nogo.itertuples()
-            ][:200],
-            "no_go_count": int(len(nogo)),
-            "tilt_check": {
-                "rover_tilt_deg_p50_p90_p99": pct(tilt),
-                "rover_tilt_share_over_20_deg": round(float(np.mean(tilt > 20)), 4),
-                "dem_slope_deg_p50_p90_p99": pct(slope_path) if slope_path is not None else None,
-                "dem_slope_share_over_20_deg": round(float(np.mean(slope_path > 20)), 4)
-                if slope_path is not None
-                else None,
-                "note": "Rover tilt is arccos(cos roll x cos pitch) from PLACES (MEASURED). "
-                "The 1 m DEM slope under the same points is steeper than the tilt the rover "
-                "actually had, which suggests the rover classes should use slope at the "
-                "rover's footprint scale.",
-            },
-        },
-        "status": "pass" if go_or_caution >= 0.95 else "fail",
-        "label": "MODELED",
-        "note": "Rover thresholds are PLACEHOLDER (config/derive.yaml). A no-go point where "
-        "Curiosity drove is a "
-        "likely false alarm of the model, or ground the rover crossed with care.",
+    def over20(a):
+        a = a[np.isfinite(a)]
+        return round(float(np.mean(a > 20)), 4)
+
+    both = np.isfinite(tilt) & np.isfinite(slope_fp) & np.isfinite(slope_horn)
+    result["tilt_check"] = {
+        "rover_tilt_deg_p50_p90_p99": pct(tilt),
+        "rover_tilt_share_over_20_deg": over20(tilt),
+        "footprint_slope_deg_p50_p90_p99": pct(slope_fp),
+        "footprint_slope_share_over_20_deg": over20(slope_fp),
+        "horn_1m_slope_deg_p50_p90_p99": pct(slope_horn),
+        "horn_1m_slope_share_over_20_deg": over20(slope_horn),
+        "correlation_tilt_footprint": round(
+            float(np.corrcoef(tilt[both], slope_fp[both])[0, 1]), 3
+        ),
+        "correlation_tilt_horn_1m": round(
+            float(np.corrcoef(tilt[both], slope_horn[both])[0, 1]), 3
+        ),
+        "note": "Rover tilt is arccos(cos roll x cos pitch) from PLACES (MEASURED), matched by "
+        "site and drive. It is a check, not a target: the rover's suspension and its choice of "
+        "route both shape it.",
     }
+    horn = _class_result(_sample(d / "walk_class_rover_horn1m.tif", rows, cols), zone)
+    coarse = _class_result(_sample(d / "walk_class_rover_coarse.tif", rows, cols), None)
+    return {"reference": ref, "result": result, "horn": horn, "coarse": coarse}
+
+
+def rover_walkability_check(root: Path) -> list[dict]:
+    """The boxwork rover check (re-run with footprint slope, first result kept) and the Murray
+    Buttes held-out check."""
+    from ariadne.config import load_derive_config
+    from ariadne.derive.walkability import slope_scales
+
+    scales = {k: round(v, 3) for k, v in slope_scales(load_derive_config()).items()}
+    method = (
+        f"Rover slope at its footprint: least-squares plane over a {scales['rover_m']} m disc "
+        f"(Curiosity's length, no finer than the DEM's effective resolution of "
+        f"{scales['r_eff_m']} m). Fixed on 2026-11-09 before the re-run (docs/PROGRESS.md)."
+    )
+    target = "At least 95% classed go or caution; every no-go cell listed as a possible false alarm"
+    note = (
+        "Rover thresholds are PLACEHOLDER (config/derive.yaml). A no-go point where Curiosity "
+        "drove is a likely false alarm of the model, or ground the rover crossed with care."
+    )
+    out = []
+    box = _site_rover_results(root, "boxwork")
+    frozen_path = root / FIRST_RUN
+    frozen = json.loads(frozen_path.read_text(encoding="utf-8")) if frozen_path.exists() else None
+    if box is None:
+        out.append(
+            _not_run("rover-walkability", "Rover walkability", "derive the boxwork site first", 2)
+        )
+    else:
+        r = box["result"]
+        entry = {
+            "id": "rover-walkability",
+            "title": "Rover walkability on Curiosity's boxwork path",
+            "site": "boxwork",
+            "reference": f"{box['reference']} ({r['points']} points)",
+            "target": target,
+            "method": method,
+            "slope_scales_m": scales,
+            "result": r,
+            "status": "pass" if r["go_or_caution"] >= ROVER_TARGET else "fail",
+            "first_run_reproduced": box["horn"],
+            "sensitivity": {
+                "coarse_resolution": dict(
+                    box["coarse"],
+                    disc_m=scales["rover_coarse_m"],
+                    note="DEM effective resolution at the coarse end (20 image pixels); not "
+                    "the result.",
+                )
+            },
+            "label": "MODELED",
+            "note": note,
+        }
+        if frozen is not None:
+            first = frozen["check"]
+            entry["first_run"] = {
+                "status": first["status"],
+                "method": frozen["method"],
+                "frozen_from": frozen["frozen_from"],
+                "result": first["result"],
+            }
+        out.append(entry)
+    mb = _site_rover_results(root, "murray-buttes")
+    if mb is None:
+        out.append(
+            _not_run(
+                "rover-walkability-held-out",
+                "Rover walkability on Curiosity's Murray Buttes traverse (held out)",
+                "derive the murray-buttes site first",
+                2,
+            )
+        )
+    else:
+        r = mb["result"]
+        out.append(
+            {
+                "id": "rover-walkability-held-out",
+                "title": "Rover walkability on Curiosity's Murray Buttes traverse (held out)",
+                "site": "murray-buttes",
+                "reference": f"{mb['reference']} ({r['points']} points)",
+                "target": target,
+                "method": method + " This site played no part in choosing the method.",
+                "result": r,
+                "status": "pass" if r["go_or_caution"] >= ROVER_TARGET else "fail",
+                "comparison_horn_1m": mb["horn"],
+                "sensitivity": {
+                    "coarse_resolution": dict(mb["coarse"], disc_m=scales["rover_coarse_m"])
+                },
+                "label": "MODELED",
+                "note": note,
+            }
+        )
+    return out
 
 
 def ridge_spot_check(root: Path) -> dict | None:
@@ -275,7 +403,7 @@ def build_validation(root: Path | None = None) -> dict:
                 2,
             )
         )
-    checks.append(rover_walkability_check(root))
+    checks.extend(rover_walkability_check(root))
     checks.append(mars24_check())
     checks.append(sol_check())
     ridge = _not_run(
@@ -284,6 +412,22 @@ def build_validation(root: Path | None = None) -> dict:
         "no hand-labeled sample of ridges at known image positions yet; thresholds are PLACEHOLDER",
         2,
     )
+    tuned = root / "docs" / "validation" / "ridge-map.json"
+    if tuned.exists():
+        rm = json.loads(tuned.read_text(encoding="utf-8"))
+        ridge = {
+            "id": "ridge-map",
+            "title": "Ridge map against a hand-labeled sample",
+            "reference": f"{rm['test_points']} hand labels in the test half (sample "
+            f"{rm['sample_id']}); tuned on {rm['tuning_points']} others",
+            "target": "Precision and recall reported (no pass mark)",
+            "status": "reported",
+            "result": rm["test"],
+            "placeholder_thresholds_on_the_same_test_half": rm["test_with_placeholder_thresholds"],
+            "tuned": rm["tuned"],
+            "method": rm["method"],
+            "label": "MODELED",
+        }
     spot = ridge_spot_check(root)
     if spot is not None:
         ridge["spot_check"] = spot

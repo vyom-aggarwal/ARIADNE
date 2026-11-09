@@ -89,20 +89,24 @@ This site is for validation only. It has no boxwork, so its ridge and fracture l
 
 | Layer | Summary |
 | --- | --- |
+| Slope scale (MODELED) | walker 2.50 m disc, rover 3.05 m disc: a plane fit no finer than the DEM's effective resolution (2.5 m) or the rover's length |
 | Walkability, walker (MODELED) | go 87.2%, caution 11.7%, no-go 1.1% |
 | Walkability, rover (MODELED) | go 73.8%, caution 23.9%, no-go 2.4% |
+| Rover, for comparison (not used) | 1 m Horn slope (Phase 2 first run): no-go 2.4%; coarse resolution (5.0 m disc): no-go 2.2% |
 | Sand proxy | uses THEMIS night IR: no (no THEMIS input for this site); drop-off cells 0.2% |
 | Ridges and hollows (MODELED, PLACEHOLDER thresholds) | ridges 2.4%, hollows 3.9% of the site |
 | Fractures | 908 lines of 10 m or more, 24.62 km in all, median 18 m |
-| Terrain shelters (S ≤ 0.95, PLACEHOLDER) | 18,675 m² (0.1% of the site) |
+| Terrain shelters (S ≤ 0.95, PLACEHOLDER) | 18,693 m² (0.1% of the site) |
 | Minutes to shelter or the staging point (PLACEHOLDER pace) | median 19.5, 95th percentile 61.2, max 100.4 |
 | Line of sight from the staging antenna | 16.6% of the site (line of sight only, no radio model) |
 | Confidence | median 0.60; 0.0% of cells below 0.5 |
+| Candidate DEM mosaic seams | 14.3 km of stereo-pair footprint edges (Traverse, West, West of Center); 5.3% of the site within 30 m |
 | Light, sol 1461 | sunrise median 06:38, sunset median 17:57; insolation median 0.97 of flat open ground |
 
 ## Not done here
 
 - Relative ground temperature is implemented and tested, but needs the REMS archive, which Phase 6 reads.
 - The spectral term of the science score needs CRISM summary parameters, not read yet; its weight is set aside.
-- Ridge thresholds are PLACEHOLDER until a hand-labeled sample exists, so the ridge map has no precision or recall yet.
+- Ridge thresholds are PLACEHOLDER until the hand labels arrive (`ariadne ridge-sample` builds the labeling page; `ariadne ridge-tune` tunes on one half and tests on the other).
+- Seams between the CCDs inside one HiRISE image are not mapped; only stereo-pair footprint edges are.
 - Minutes-to-shelter uses a PLACEHOLDER pace until Phase 3 brings the NASA/TP-2010-216125 walking model.

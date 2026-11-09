@@ -108,3 +108,40 @@ def test_every_derived_product_has_provenance(site):
         prov = read_provenance(path)
         assert prov.label in set(Label)
         assert prov.pipeline_version
+
+
+# --- C21: the rover re-run keeps the first result, adds the held-out site and the seams ---
+
+
+def test_rover_check_keeps_the_frozen_first_result_beside_the_new_one(validation):
+    checks = {c["id"]: c for c in validation["checks"]}
+    rov = checks["rover-walkability"]
+    frozen = json.loads(
+        (ROOT / "docs" / "validation" / "rover-walkability-first-run.json").read_text(
+            encoding="utf-8"
+        )
+    )["check"]
+    first = rov["first_run"]
+    assert first["status"] == frozen["status"] == "fail"
+    assert first["result"]["go_or_caution"] == frozen["result"]["go_or_caution"] == 0.7971
+    assert first["result"]["share"] == frozen["result"]["share"]
+    assert "footprint" in rov["method"]
+    assert rov["status"] in {"pass", "fail"}
+    assert rov["status"] == ("pass" if rov["result"]["go_or_caution"] >= 0.95 else "fail")
+    # the first-run method, recomputed from today's layers, reproduces the frozen numbers
+    assert rov["first_run_reproduced"]["go_or_caution"] == pytest.approx(0.7971, abs=1e-4)
+    assert set(rov["sensitivity"]) >= {"coarse_resolution"}
+    for block in (rov["result"], rov["first_run_reproduced"]):
+        s = block["seams"]
+        assert s["points"] == rov["result"]["points"]
+        assert 0.0 <= s["share_of_points_in_zone"] <= 1.0 and "fisher_p" in s
+
+
+def test_rover_check_has_the_murray_buttes_held_out_result(validation):
+    checks = {c["id"]: c for c in validation["checks"]}
+    held = checks["rover-walkability-held-out"]
+    assert held["site"] == "murray-buttes"
+    assert held["status"] in {"pass", "fail"}
+    assert held["status"] == ("pass" if held["result"]["go_or_caution"] >= 0.95 else "fail")
+    assert held["result"]["points"] > 100
+    assert "seams" in held["result"] and "comparison_horn_1m" in held

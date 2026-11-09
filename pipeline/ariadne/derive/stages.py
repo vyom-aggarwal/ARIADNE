@@ -15,7 +15,7 @@ from scipy.spatial import cKDTree
 
 from ariadne.config import config_dir, setting
 from ariadne.derive import horizons as hz
-from ariadne.derive import light, los, ridges, science, shelters, terrain, uncertainty
+from ariadne.derive import light, los, ridges, science, seams, shelters, terrain, uncertainty
 from ariadne.derive import walkability as wk
 from ariadne.derive.io import feature_collection, read_raster, write_geojson, write_layer
 from ariadne.fetch import places
@@ -153,6 +153,21 @@ def _image_layers(ortho: np.ndarray, background_px: int, ratio: float, window_bl
     }
 
 
+def texture_rank(site_dir, shape, t, crs, cfg) -> np.ndarray:
+    """Image texture (RMS of 1 m block standard deviations over the dark-object window) as a
+    percentile rank within the site, on the DEM grid. The walkability and ridge stages and the
+    ridge tuning all use this one definition."""
+    ortho, ot, _ = read_raster(site_dir / "ortho.tif", as_float=False)
+    ot1 = Affine(ot.a * 4, 0, ot.c, 0, ot.e * 4, ot.f)
+    lay = _image_layers(
+        ortho,
+        int(round(float(setting(cfg, "walkability", "dark_background_m")) / 1.0)),
+        float(setting(cfg, "walkability", "dark_ratio")),
+        int(round(float(setting(cfg, "walkability", "dark_window_m")))),
+    )
+    return wk.percentile_rank(wk.to_grid(lay["texture"], ot1, shape, t, crs))
+
+
 def stage_walkability(ctx, log):
     cfg, t, crs, out, dem, res = (
         ctx["cfg"],
@@ -173,7 +188,8 @@ def stage_walkability(ctx, log):
     )
     ctx["ortho"], ctx["ortho_t"] = ortho, ot
     grid = {k: wk.to_grid(v, ot1, dem.shape, t, crs) for k, v in lay.items()}
-    smooth_rank = 1.0 - wk.percentile_rank(grid["texture"])
+    ctx["texture_rank"] = wk.percentile_rank(grid["texture"])
+    smooth_rank = 1.0 - ctx["texture_rank"]
     coh_rank = wk.percentile_rank(grid["coherence"])
     night_rank = None
     themis_path = site_dir / "themis_night_ir.tif"
@@ -191,34 +207,51 @@ def stage_walkability(ctx, log):
     )
     weights = setting(cfg, "walkability", "cost_weights")
     dark_c = float(setting(cfg, "walkability", "dark_density_caution"))
-    cls_w, cost_w = wk.walkability(
-        ctx["slope"],
-        ctx["rough"],
-        grid["dark"],
-        sand,
-        drop,
-        tuple(setting(cfg, "walkability", "walker_slope_deg")),
-        tuple(setting(cfg, "walkability", "walker_roughness_m")),
-        dark_c,
-        None,
-        wk.CAUTION,
-        weights,
-    )
-    cls_r, cost_r = wk.walkability(
-        ctx["slope"],
-        ctx["rough"],
-        grid["dark"],
-        sand,
-        drop,
-        tuple(setting(cfg, "walkability", "rover_slope_deg")),
-        tuple(setting(cfg, "walkability", "rover_roughness_m")),
-        dark_c,
-        float(setting(cfg, "walkability", "sand_caution")),
-        wk.NOGO,
-        weights,
-    )
+    # Slope at each traveller's footprint scale (fixed 2026-11-09, docs/PROGRESS.md): a plane
+    # fit over a disc no smaller than the DEM's effective resolution.
+    scales = wk.slope_scales(cfg)
+    slope_w, _ = terrain.footprint_slope(dem, res, scales["walker_m"])
+    slope_r, _ = terrain.footprint_slope(dem, res, scales["rover_m"])
+
+    def walker(slope):
+        return wk.walkability(
+            slope,
+            ctx["rough"],
+            grid["dark"],
+            sand,
+            drop,
+            tuple(setting(cfg, "walkability", "walker_slope_deg")),
+            tuple(setting(cfg, "walkability", "walker_roughness_m")),
+            dark_c,
+            None,
+            wk.CAUTION,
+            weights,
+        )
+
+    def rover(slope):
+        return wk.walkability(
+            slope,
+            ctx["rough"],
+            grid["dark"],
+            sand,
+            drop,
+            tuple(setting(cfg, "walkability", "rover_slope_deg")),
+            tuple(setting(cfg, "walkability", "rover_roughness_m")),
+            dark_c,
+            float(setting(cfg, "walkability", "sand_caution")),
+            wk.NOGO,
+            weights,
+        )
+
+    cls_w, cost_w = walker(slope_w)
+    cls_r, cost_r = rover(slope_r)
+    # Kept for comparison, not used downstream: the Phase 2 first-run method (Horn slope of the
+    # 1 m DEM) and the coarse end of the DEM resolution range.
+    cls_r_horn, _ = rover(ctx["slope"])
+    cls_r_coarse, _ = rover(terrain.footprint_slope(dem, res, scales["rover_coarse_m"])[0])
+    cls_w_coarse, _ = walker(terrain.footprint_slope(dem, res, scales["walker_coarse_m"])[0])
     nan = np.isnan(dem)
-    for a in (cls_w, cls_r):
+    for a in (cls_w, cls_r, cls_r_horn, cls_r_coarse, cls_w_coarse):
         a[nan] = 255
     common = dict(
         resolution_m=res, settings={k: setting(cfg, "walkability", k) for k in cfg["walkability"]}
@@ -264,6 +297,60 @@ def stage_walkability(ctx, log):
         inputs=inputs,
         **common,
     )
+    for fname, arr, pid, note in (
+        (
+            "slope_walker.tif",
+            slope_w,
+            f"Slope at the walker's scale ({scales['walker_m']:.2f} m disc), degrees",
+            "Least-squares plane over a disc the size of the DEM's effective resolution.",
+        ),
+        (
+            "slope_rover.tif",
+            slope_r,
+            f"Slope at the rover's footprint ({scales['rover_m']:.2f} m disc), degrees",
+            "Least-squares plane over a disc of Curiosity's length (NASA: 10 ft).",
+        ),
+    ):
+        write_layer(
+            out / fname,
+            arr,
+            t,
+            crs,
+            None,
+            product_id=pid,
+            label=Label.DERIVED,
+            notes=note,
+            inputs=["dem.tif"],
+            resolution_m=res,
+            settings=scales,
+        )
+    for fname, arr, pid, note in (
+        (
+            "walk_class_rover_horn1m.tif",
+            cls_r_horn,
+            "Walkability class, rover, Phase 2 first-run method (1 m Horn slope)",
+            "Kept for comparison with the frozen first result; not used downstream.",
+        ),
+        (
+            "walk_class_rover_coarse.tif",
+            cls_r_coarse,
+            "Walkability class, rover, slope at the coarse DEM resolution "
+            f"({scales['rover_coarse_m']:.1f} m disc)",
+            "Sensitivity case (20 image pixels); not used downstream.",
+        ),
+    ):
+        write_layer(
+            out / fname,
+            arr,
+            t,
+            crs,
+            255,
+            product_id=pid,
+            label=Label.MODELED,
+            notes=cls_note + " " + note,
+            inputs=inputs,
+            **common,
+        )
     write_layer(
         out / "sand_proxy.tif",
         sand,
@@ -303,8 +390,12 @@ def stage_walkability(ctx, log):
     )
     ctx.update(cls_w=cls_w, cost_w=cost_w, cls_r=cls_r, sand=sand, relief=relief)
     ctx["walkability"] = {
+        "slope_scales_m": {k: round(v, 3) for k, v in scales.items()},
         "walker_class_share": _shares(cls_w),
         "rover_class_share": _shares(cls_r),
+        "rover_class_share_horn_1m": _shares(cls_r_horn),
+        "rover_class_share_coarse": _shares(cls_r_coarse),
+        "walker_class_share_coarse": _shares(cls_w_coarse),
         "sand_proxy_uses_themis": night_rank is not None,
         "dropoff_share": round(float(np.mean(drop)), 4),
     }
@@ -313,7 +404,11 @@ def stage_walkability(ctx, log):
 
 def stage_ridges(ctx, log):
     cfg, t, crs, out, res = ctx["cfg"], ctx["t"], ctx["crs"], ctx["out"], ctx["res"]
-    tpi10 = terrain.tpi(ctx["dem"], res, 10.0)
+    from ariadne.derive.ridge_run import smoothed
+
+    sigma = float(setting(cfg, "ridges", "smooth_sigma_m"))
+    radius = float(setting(cfg, "ridges", "tpi_radius_m"))
+    tpi10 = terrain.tpi(smoothed(ctx["dem"], res, sigma), res, radius)
     relief = terrain.local_relief(
         ctx["dem"], res, float(setting(cfg, "terrain", "relief_radius_m"))
     )
@@ -324,6 +419,9 @@ def stage_ridges(ctx, log):
         float(setting(cfg, "ridges", "tpi_hollow_m")),
         float(setting(cfg, "ridges", "ridge_relief_m")),
     )
+    tex_min = setting(cfg, "ridges", "texture_min_rank")
+    if tex_min is not None and "texture_rank" in ctx:
+        cls[(cls == ridges.RIDGE) & ~(ctx["texture_rank"] >= float(tex_min))] = ridges.OTHER
     ortho, ot = ctx["ortho"], ctx["ortho_t"]
     h4, w4 = (ortho.shape[0] // 4) * 4, (ortho.shape[1] // 4) * 4
     ortho = ortho[:h4, :w4]
@@ -597,7 +695,55 @@ def stage_uncertainty(ctx, log):
     h, w = src.shape
     rr, cc = np.mgrid[0:h, 0:w]
     edge = np.minimum.reduce([rr, cc, h - 1 - rr, w - 1 - cc]) * res
-    flags = (src != 1).astype(np.uint8) + (edge < 1000.0).astype(np.uint8)
+    # Candidate DEM mosaic seams: edges of the USGS stereo-pair footprints inside the crop.
+    from shapely.geometry import box, mapping
+
+    from ariadne.fetch import coverage
+
+    ode_path = ctx["root"] / "data" / "sources" / "ode" / f"{ctx['site']}_hirise_rdrv11.json"
+    pairs = coverage.pair_footprints(
+        coverage.observation_footprints(json.loads(ode_path.read_text(encoding="utf-8")))
+    )
+    extent = box(t.c, t.f + t.e * h, t.c + t.a * w, t.f)
+    lines = seams.seam_lines(list(pairs.values()), extent)
+    seam_d = seams.seam_distance(src.shape, t, lines)
+    seam_m = float(setting(cfg, "uncertainty", "seam_zone_m"))
+    zone = seam_d <= seam_m
+    flags = seams.model_flags(src, edge, 1000.0, zone)
+    write_layer(
+        out / "seam_distance.tif",
+        np.where(np.isfinite(seam_d), seam_d, np.nan).astype(np.float32),
+        t,
+        crs,
+        None,
+        product_id="Distance to the nearest candidate DEM mosaic seam, m",
+        label=Label.DERIVED,
+        notes="Seams are the edges of the USGS stereo-pair footprints inside the crop (ODE "
+        "footprints, uncertain by about 30 m); which pair wins in an overlap is not documented.",
+        resolution_m=res,
+        inputs=["ode-hirise-footprints", "dem.tif"],
+        settings={"seam_zone_m": seam_m, "pairs": sorted(pairs)},
+    )
+    feats = []
+    for name, fp in sorted(pairs.items()):
+        part = seams.seam_lines([fp], extent)
+        if not part.is_empty:
+            feats.append(
+                {
+                    "type": "Feature",
+                    "properties": {"pair": name, "length_m": round(part.length, 1)},
+                    "geometry": mapping(part),
+                }
+            )
+    write_geojson(
+        out / "seams.geojson",
+        feature_collection("dem_seams", feats),
+        product_id="Candidate DEM mosaic seams (stereo-pair footprint edges)",
+        label=Label.DERIVED,
+        notes="Edges of each USGS stereo pair's footprint inside the crop. Positions uncertain "
+        "by about 30 m. CCD seams inside one HiRISE image are not mapped.",
+        inputs=["ode-hirise-footprints"],
+    )
     conf = uncertainty.confidence(
         src,
         dist,
@@ -617,14 +763,20 @@ def stage_uncertainty(ctx, log):
         notes="DEM source class, distance to Curiosity's localizations (standing in for image "
         "positions) "
         "and flags (DEM not HiRISE; within 1 km of the crop edge, where near-field horizons are "
-        "cut short).",
+        f"cut short; within {seam_m:.0f} m of a candidate DEM mosaic seam).",
         resolution_m=res,
-        inputs=["source_class.tif", "localized_interp.csv"],
+        inputs=["source_class.tif", "localized_interp.csv", "seam_distance.tif"],
         settings={k: setting(cfg, "uncertainty", k) for k in cfg["uncertainty"]},
     )
     ctx["uncertainty"] = {
         "confidence": _stats(conf),
         "share_below_0_5": round(float(np.mean(conf < 0.5)), 4),
+        "seams": {
+            "pairs_with_edges_in_crop": [f["properties"]["pair"] for f in feats],
+            "length_m": round(float(lines.length), 1),
+            "zone_m": seam_m,
+            "zone_share_of_site": round(float(np.mean(zone)), 4),
+        },
     }
     log("  confidence written")
 

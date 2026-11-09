@@ -14,7 +14,7 @@ import sys
 from ariadne import __version__
 
 NOT_BUILT = 2
-BUILT = {"fetch", "derive", "validate"}  # commands that run; the rest name their phase
+BUILT = {"fetch", "derive", "validate", "ridge-sample", "ridge-tune"}  # the rest name their phase
 
 # Command -> (phase that builds it, one-line description).
 COMMANDS = {
@@ -22,6 +22,8 @@ COMMANDS = {
     "derive": (2, "Build the derived terrain, light, radiation and science layers."),
     "plan": (3, "Build the leg matrix and the OR-Tools reference plans."),
     "validate": (2, "Run every check against measurements and write validation.json."),
+    "ridge-sample": (2, "Draw the ridge-labeling sample and build the local labeling page."),
+    "ridge-tune": (2, "Tune the ridge map on the tuning half of the labels; test on the rest."),
     "package": (4, "Write tiles, GeoJSON, snapshots and the manifest for the web app."),
     "build-site": (8, "Build a whole new site from a config file or a HiRISE DTM."),
 }
@@ -44,6 +46,11 @@ def build_parser() -> argparse.ArgumentParser:
             p.add_argument("--name", default=None, help="short name for the new site")
         else:
             p.add_argument("--site", default="boxwork", help="site name (default: boxwork)")
+        if name == "ridge-tune":
+            p.add_argument("--labels", required=True, help="labels JSON from the labeling page")
+            p.add_argument(
+                "--no-apply", action="store_true", help="report only; leave config unchanged"
+            )
         if name == "fetch":
             p.add_argument("--force", action="store_true", help="re-read sources even if cached")
         if name == "derive":
@@ -52,6 +59,13 @@ def build_parser() -> argparse.ArgumentParser:
                 "--report-only",
                 action="store_true",
                 help="rebuild the report from the saved layers",
+            )
+            p.add_argument(
+                "--from-stage",
+                choices=["walkability"],
+                default=None,
+                help="reuse the saved horizons, light and sunrise results; re-run this stage "
+                "and every stage after it",
             )
     return parser
 
@@ -73,7 +87,19 @@ def main(argv: list[str] | None = None) -> int:
         if args.report_only:
             refresh_report(args.site)
         else:
-            derive_site(args.site, force=args.force)
+            derive_site(args.site, force=args.force, from_stage=args.from_stage)
+        return 0
+    if args.command == "ridge-sample":
+        from ariadne.derive.ridge_run import ridge_sample
+
+        ridge_sample(args.site)
+        return 0
+    if args.command == "ridge-tune":
+        from pathlib import Path
+
+        from ariadne.derive.ridge_run import ridge_tune
+
+        ridge_tune(args.site, Path(args.labels), apply=not args.no_apply)
         return 0
     if args.command == "validate":
         from ariadne.validate.run import write_validation

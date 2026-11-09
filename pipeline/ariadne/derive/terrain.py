@@ -98,3 +98,56 @@ def convexity(dem: np.ndarray, res: float) -> np.ndarray:
     """Negative Laplacian of elevation (1/m): positive on convex edges and crests."""
     z = np.asarray(dem, dtype=np.float64)
     return (-ndimage.laplace(z, mode="nearest") / (res * res)).astype(np.float32)
+
+
+def disc_weights(diameter_m: float, res: float, sub: int = 50, min_share: float = 0.05):
+    """Share of each grid cell's area inside a disc of `diameter_m` centred on a cell centre.
+
+    Shares are found by sampling `sub` x `sub` points per cell; cells less than `min_share`
+    inside are dropped, so slivers do not widen the window. Returns a square, odd-sized array.
+    """
+    r = 0.5 * diameter_m / res
+    k = max(1, int(np.ceil(r + 0.5)) - 1)
+    u = (np.arange(sub) + 0.5) / sub - 0.5  # sample offsets within a cell
+    offs = np.arange(-k, k + 1, dtype=np.float64)
+    px = (offs[:, None] + u[None, :]).ravel()  # every sample coordinate along one axis
+    inside = (px[:, None] ** 2 + px[None, :] ** 2) <= r * r
+    w = inside.reshape(2 * k + 1, sub, 2 * k + 1, sub).mean(axis=(1, 3))
+    w = np.where(w >= min_share, w, 0.0)
+    while w.shape[0] > 3 and not w[0].any():
+        w = w[1:-1, 1:-1]
+    return w
+
+
+def footprint_slope(dem: np.ndarray, res: float, diameter_m: float):
+    """Slope and aspect (degrees) of the least-squares plane over a disc of `diameter_m`.
+
+    Each cell is weighted by its area inside the disc (`disc_weights`). With a symmetric window
+    the plane's east and north gradients separate: g_east = sum(w x z) / sum(w x^2), and the
+    same for north. Exact on any tilted plane. NaN anywhere in the window gives NaN.
+    """
+    w = disc_weights(diameter_m, res)
+    k = w.shape[0] // 2
+    offs = np.arange(-k, k + 1, dtype=np.float64) * res
+    xk = w * offs[None, :]  # east offset of each column
+    yk = w * (-offs)[:, None]  # north offset of each row (rows grow southward)
+    sxx = float((w * offs[None, :] ** 2).sum())
+    z = np.asarray(dem, dtype=np.float64)
+    missing = np.isnan(z)
+    z = np.where(missing, 0.0, z - np.nanmean(z))
+    dz_east = ndimage.correlate(z, xk, mode="nearest") / sxx
+    dz_north = ndimage.correlate(z, yk, mode="nearest") / sxx
+    if missing.any():
+        hole = (
+            ndimage.correlate(
+                missing.astype(np.float64), (w > 0).astype(np.float64), mode="nearest"
+            )
+            > 0
+        )
+        dz_east[hole] = np.nan
+        dz_north[hole] = np.nan
+    grad = np.hypot(dz_east, dz_north)
+    slope = np.degrees(np.arctan(grad))
+    aspect = np.degrees(np.arctan2(-dz_east, -dz_north)) % 360.0
+    aspect = np.where(grad > 1e-12, aspect, np.nan)
+    return slope.astype(np.float32), aspect.astype(np.float32)

@@ -14,7 +14,7 @@ COMMANDS = {
     "package": 4,
     "build-site": 8,
 }
-BUILT_COMMANDS = ["fetch", "derive", "validate"]
+BUILT_COMMANDS = ["fetch", "derive", "validate", "ridge-sample", "ridge-tune"]
 
 
 def test_help_lists_every_command(capsys):

@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-09 UTC (Phase 2 follow-up started).
+Last updated: 2026-11-09 UTC (Phase 2 follow-up done; ridge labels awaited; Phase 3 in progress).
 
 ## Status
 
@@ -9,8 +9,8 @@ Last updated: 2026-11-09 UTC (Phase 2 follow-up started).
 | Kickoff | Done. Sources for Phases 1 and 2 verified (docs/SOURCES_LOG.md); findings applied to PROMPT.md and docs/PLAN.md |
 | 0 Repo and guardrails | Done 2026-11-08: all ten acceptance tests pass; CI green; site live at https://vyom-aggarwal.github.io/ARIADNE/ |
 | 1 Sites and data | Done 2026-11-08: B1 to B7 pass in CI; B8 to B10 pass on the real crops (docs/coverage/) |
-| 2 Derived layers | Done 2026-11-09: C1 to C15 pass; validation.json holds the calibration (PASS). The rover-walkability check misses its target (79.7% against 95%); diagnosis below, fix awaiting the team's decision |
-| 3 Route engine | Next |
+| 2 Derived layers | Done 2026-11-09: C1 to C21 pass; validation.json holds the calibration (PASS). Follow-up done: footprint-scale slope re-run once (boxwork 79.8%, still FAIL; Murray Buttes held out 99.8%, PASS), DEM seams mapped, ridge labeling page built. Ridge precision and recall wait for the team's labels |
+| 3 Route engine | In progress |
 | 4 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
@@ -277,9 +277,30 @@ Written down before any new slope is computed on Curiosity's path. The only earl
 | C20 | Ridge tuning: the chosen parameters do not change when test-half labels are shuffled; precision, recall and their intervals are right on a hand-made confusion table; "unsure" labels are dropped | `pipeline/tests/test_ridge_labels.py` |
 | C21 | validation.json keeps the frozen first rover result beside the new one, has the Murray Buttes held-out result, and the seam statistics for both runs | `pipeline/tests/test_validation_outputs.py` |
 
+### Phase 2 follow-up evidence
+
+- **Commits:** `4a7dc78` fixed the slope method and froze the first result before any new slope was computed; the next commit holds the code, the one re-run, the seams and the labeling sample.
+- **Tests:** C16 to C21 pass, with every earlier pipeline test.
+- **The one re-run (2026-11-09):**
+
+| | Boxwork, footprint slope (result) | Boxwork, first run (frozen) | Murray Buttes, held out |
+| --- | --- | --- | --- |
+| Curiosity's localizations | 2,893 | 2,893 | 16,064 |
+| Go or caution | **79.8% (FAIL)** | 79.7% (FAIL) | **99.8% (PASS)** |
+| No-go | 20.2% | 20.3% | 0.2% |
+| Sensitivity: coarse resolution (5.0 m disc) | 83.8% | | 99.8% |
+| Curiosity's tilt (PLACES), median and 99th percentile | 8.1°, 17.5° | 8.1°, 17.5° | 7.2°, 18.7° |
+| DEM slope under it, median and 99th percentile | 11.3°, 38.1° (3.05 m disc) | 11.3°, 38.2° (1 m Horn) | 6.4°, 17.3° |
+| Correlation of tilt with DEM slope | 0.34 | 0.34 | 0.78 |
+
+- **As written down before the run,** the footprint scale barely changes the result: Curiosity's 3.05 m footprint is the size of the 3 × 3-post window the Horn slope already used. The boxwork check misses 95% and is reported as is. The first run, recomputed from today's layers, reproduces the frozen 79.71% exactly.
+- **Seams matter at the boxwork.** 5.1% of Curiosity's path points lie within 30 m of a candidate seam, but 15.4% of the no-go points do (90 of 584). The no-go rate is 61.6% in the seam zone against 18.0% outside it (odds ratio 7.3, Fisher's exact p = 2 × 10⁻²⁹). Seams explain part of the false alarms, but not the miss: outside the seam zones 18% of the path is still no-go. The candidate seams total 10.9 km at the boxwork (pairs T3, Traverse and West; 4.7% of the site within 30 m). At Murray Buttes none of the 34 no-go points is in a seam zone.
+- **What the two sites say together.** At Murray Buttes the DEM slope tracks Curiosity's tilt (r = 0.78) and the check passes. In the boxwork it does not (r = 0.34): the ridges there are 1 to 2 m high and a few metres wide, about the size of the DEM's resolution and the rover's footprint, so slope at that scale mixes real relief with what the DEM cannot resolve and with its errors (Kirk et al. 2021 note that blocky stereo DTMs overstate slopes). Testing this further needs elevation data finer than the orbital DEM, such as rover stereo; that is not planned.
+- **Ridge labeling sample:** `0052f4ce188f`, 252 points (84 per predicted class, 42 of each in each half), committed in `config/labels/boxwork_ridge_sample.json` before any label exists. The page is `data/labeling/boxwork/index.html` (local only; `ariadne ridge-sample --site boxwork` rebuilds the same sample and chips). Each point shows a 32 m image chip, a 32 m shaded-relief chip and a 128 m context chip.
+
 ## Next steps
 
-1. Phase 2 follow-up: footprint-scale slope and the one re-run, DEM seams, the ridge labeling page (plan above).
+1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
 2. Phase 3, route engine: A*, cost-to-home fields, the leg matrix, OR-Tools reference plans, the browser solver, constraints, re-planning and storm mode. It also transcribes the NASA/TP-2010-216125 walking model, replacing the PLACEHOLDER pace in minutes-to-shelter.
 
 ## Open issues
@@ -294,3 +315,5 @@ Written down before any new slope is computed on Curiosity's path. The only earl
 - The 1 m DEM has a straight north-south seam at Murray Buttes that shows faintly in slope-based layers (walkability, ridges). It does not affect the parking spot's horizons, which the sky check confirms.
 - RAD's albedo radiation from the butte is not modeled (the paper could not separate it), and the model treats the whole omnidirectional dose as arriving from the sky. A larger RAD shielding dataset, or the paper's figure data (Ehresmann 2021), would let n be tested rather than fitted.
 - Murray Buttes has no boxwork, so its ridge and fracture layers are only a code check.
+- The boxwork rover check fails (79.8%) after the footprint-scale re-run; DEM seams account for part of the false alarms. The rover's walkability classes are still used for the rover constraint, with this caveat shown.
+- Seams between the CCDs inside one HiRISE image are not mapped.

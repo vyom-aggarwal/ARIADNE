@@ -50,3 +50,5 @@ select = ["E", "F", "W", "I", "B", "UP"]
 # Markdown table templates read better on one line each.
 "ariadne/fetch/report.py" = ["E501"]
 "ariadne/derive/report.py" = ["E501"]
+# The labeling page template is HTML and JavaScript.
+"ariadne/derive/ridge_labels.py" = ["E501"]
