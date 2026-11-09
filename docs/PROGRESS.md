@@ -280,7 +280,7 @@ Written down before any new slope is computed on Curiosity's path. The only earl
 
 ### Phase 2 follow-up evidence
 
-- **Commits:** `4a7dc78` fixed the slope method and froze the first result before any new slope was computed; the next commit holds the code, the one re-run, the seams and the labeling sample.
+- **Commits:** `4a7dc78` fixed the slope method and froze the first result before any new slope was computed; `5be172a` holds the code, the one re-run, the seams and the labeling sample (CI green).
 - **Tests:** C16 to C21 pass, with every earlier pipeline test.
 - **The one re-run (2026-11-09):**
 
@@ -347,7 +347,7 @@ Turn the derived layers into walk plans: a directional graph on the DEM, cost-to
 
 ### Phase 3 evidence
 
-- **Commits:** `5a6097d` (plan, walker model, graph, selection, constraints; CI green); the next commit holds `ariadne plan`, the boxwork plans, the browser modules and tests D9 to D13.
+- **Commits:** `5a6097d` (plan, walker model, graph, selection, constraints; CI green); `102fc72` (`ariadne plan`, the boxwork plans, the browser modules and tests D9 to D13; CI run 42601859862 green on Python 3.12, 3.13 and web, Pages deploy 42602021587 succeeded).
 - **Run:** `make plan SITE=boxwork` took 12 minutes on this machine. Planning grid: 2 m cells, 1200 × 1200 around the staging point (Altadena drill position, PLACEHOLDER). 74.8% of it is walkable; 22.0% is in line of sight of the 3 m rover antenna. 40 candidate stations passed the filters (within 800 m, walkable, in line of sight, with an overwatch point). Line of sight rejected 115 otherwise-eligible stations, the strongest limit.
 - **Reference plans** (docs/plan/boxwork-*.json, all valid against the schema):
 
