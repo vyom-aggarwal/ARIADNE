@@ -59,7 +59,7 @@ def load_or_run_calibration(root: Path, log, force: bool = False) -> dict:
     result["pipeline_version"] = PIPELINE_VERSION
     result["computed_utc"] = datetime.now(UTC).replace(microsecond=0).isoformat()
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(result, indent=1), encoding="utf-8")
+    path.write_text(json.dumps(result, indent=1), encoding="utf-8", newline="\n")
     return result
 
 
@@ -573,13 +573,15 @@ def derive_site(name: str, force: bool = False, log: Callable[[str], None] = pri
         "role": site_cfg.role,
         "seconds": round(time.time() - t_start),
     }
-    (out / "summary.json").write_text(json.dumps(summary, indent=1), encoding="utf-8")
+    (out / "summary.json").write_text(json.dumps(summary, indent=1), encoding="utf-8", newline="\n")
     from ariadne.derive.report import derived_markdown
 
     report = root / "docs" / "derived" / f"{name}.md"
     report.parent.mkdir(parents=True, exist_ok=True)
     report.write_text(
-        derived_markdown(summary, cal if name == CALIBRATION_SITE else None), encoding="utf-8"
+        derived_markdown(summary, cal if name == CALIBRATION_SITE else None),
+        encoding="utf-8",
+        newline="\n",
     )
     log(f"  report: {report.relative_to(root)} ({summary['seconds']} s in all)")
     return summary
@@ -648,12 +650,14 @@ def refresh_report(name: str, log: Callable[[str], None] = print) -> dict:
         {k: v for k, v in p.items() if k not in ("near", "comb")} for p in named
     ]
     summary["role"] = site_cfg.role
-    summary_path.write_text(json.dumps(summary, indent=1), encoding="utf-8")
+    summary_path.write_text(json.dumps(summary, indent=1), encoding="utf-8", newline="\n")
     from ariadne.derive.report import derived_markdown
 
     report = root / "docs" / "derived" / f"{name}.md"
     report.write_text(
-        derived_markdown(summary, cal if name == CALIBRATION_SITE else None), encoding="utf-8"
+        derived_markdown(summary, cal if name == CALIBRATION_SITE else None),
+        encoding="utf-8",
+        newline="\n",
     )
     log(f"  report refreshed: {report.relative_to(root)}")
     return summary

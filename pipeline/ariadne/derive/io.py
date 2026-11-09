@@ -69,7 +69,7 @@ def write_geojson(
     settings: dict | None = None,
 ) -> Path:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(collection), encoding="utf-8")
+    path.write_text(json.dumps(collection), encoding="utf-8", newline="\n")
     write_provenance(
         path,
         Provenance.new(

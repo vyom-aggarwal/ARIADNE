@@ -332,7 +332,9 @@ def build_validation(root: Path | None = None) -> dict:
 def write_validation(root: Path | None = None, log=print) -> dict:
     root = root or repo_root()
     v = build_validation(root)
-    (root / "validation.json").write_text(json.dumps(v, indent=1) + "\n", encoding="utf-8")
+    (root / "validation.json").write_text(
+        json.dumps(v, indent=1) + "\n", encoding="utf-8", newline="\n"
+    )
     for c in v["checks"]:
         log(f"  {c['id']}: {c['status']}")
     return v

@@ -200,7 +200,7 @@ Team targets set before the real run: the calibration passes if some n in 0 to 1
 
 ### Phase 2 evidence
 
-- **Commits:** `2327a26` spec changes, verified sources and plan; `6f62695` derive modules, inputs and tests C1 to C12 (CI green on Python 3.12 and 3.13); the final commit adds MOLA co-registration, the reports, validation.json and C13 to C15.
+- **Commits:** `2327a26` spec changes, verified sources and plan; `6f62695` derive modules, inputs and tests C1 to C12 (CI green on Python 3.12 and 3.13); `9ce3e64` MOLA co-registration, both sites derived, the reports, validation.json and C13 to C15 (CI run 42580284086: Python 3.12, Python 3.13 and web all green; the Pages deploy followed).
 - **Tests:** 206 pipeline tests pass locally, including C13 to C15 against the real outputs; in CI the provenance check (C15) skips because `data/` is not committed.
 - **Runs:** `make derive` took 26 minutes for Murray Buttes (4,001 × 4,001 cells) and 27 minutes for the boxwork (3,514 × 3,925 cells) on this 8-core machine; the 72-azimuth horizon pass is about 10 minutes of that and is cached.
 - **MOLA co-registration:** Murray Buttes 580 m east, 240 m south, −17.1 m (median absolute difference 12.0 m → 3.8 m); boxwork 230 m east, 400 m south, −13.9 m (18.5 m → 14.8 m).

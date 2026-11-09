@@ -225,7 +225,7 @@ def _ode(bounds, site: str, data: Path, product_type: str, force: bool, log) -> 
         return json.loads(path.read_text(encoding="utf-8"))
     products, query = ode.query_products(bounds, product_type)
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(products, indent=1), encoding="utf-8")
+    path.write_text(json.dumps(products, indent=1), encoding="utf-8", newline="\n")
     write_provenance(
         path,
         Provenance.new(
@@ -280,7 +280,7 @@ def fetch_site(name: str, force: bool = False, log: Callable[[str], None] = prin
     window_rover = places.in_sols(rover, box.first_sol, box.last_sol)
     path_file = site_dir / "rover_path.geojson"
     path_file.write_text(
-        json.dumps(places.rover_path_geojson(window_rover, name)), encoding="utf-8"
+        json.dumps(places.rover_path_geojson(window_rover, name)), encoding="utf-8", newline="\n"
     )
     ps = sources["msl-places"]
     write_provenance(
@@ -361,7 +361,9 @@ def fetch_site(name: str, force: bool = False, log: Callable[[str], None] = prin
     if cfg.drill_sites:
         drills = context.drill_site_positions(cfg.drill_sites, rover)
         drill_file = site_dir / "drill_sites.geojson"
-        drill_file.write_text(json.dumps(_drill_geojson(drills, name), indent=1), encoding="utf-8")
+        drill_file.write_text(
+            json.dumps(_drill_geojson(drills, name), indent=1), encoding="utf-8", newline="\n"
+        )
         write_provenance(
             drill_file,
             Provenance.new(
@@ -485,7 +487,7 @@ def fetch_site(name: str, force: bool = False, log: Callable[[str], None] = prin
         "bounds_check": bounds_check,
     }
     (site_dir / "fetch_summary.json").write_text(
-        json.dumps(summary, indent=2, default=float), encoding="utf-8"
+        json.dumps(summary, indent=2, default=float), encoding="utf-8", newline="\n"
     )
     cov_md = root / "docs" / "coverage" / f"{name}.md"
     cov_md.parent.mkdir(parents=True, exist_ok=True)
