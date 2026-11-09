@@ -1,0 +1,156 @@
+{
+ "_about": "Walker-model values from pipeline/ariadne/models/metabolic.py with config/suits.json 'default'. The TypeScript twin (web/src/core/models/metabolic.ts) must reproduce them. Regenerate only when the model or the suit profile changes.",
+ "suit": "default",
+ "rows": [
+  {
+   "gradient": -0.6,
+   "cw_j_kg_m": 3.605069218749999,
+   "speed_m_s": 1.0,
+   "rate_ratio": 1.4420276874999995
+  },
+  {
+   "gradient": -0.55,
+   "cw_j_kg_m": 3.605069218749999,
+   "speed_m_s": 1.0,
+   "rate_ratio": 1.4420276874999995
+  },
+  {
+   "gradient": -0.5,
+   "cw_j_kg_m": 3.605069218749999,
+   "speed_m_s": 1.0,
+   "rate_ratio": 1.4420276874999995
+  },
+  {
+   "gradient": -0.45,
+   "cw_j_kg_m": 3.605069218749999,
+   "speed_m_s": 1.0,
+   "rate_ratio": 1.4420276874999995
+  },
+  {
+   "gradient": -0.4,
+   "cw_j_kg_m": 3.504159999999999,
+   "speed_m_s": 1.0,
+   "rate_ratio": 1.4016639999999996
+  },
+  {
+   "gradient": -0.35,
+   "cw_j_kg_m": 2.936444531249999,
+   "speed_m_s": 1.0,
+   "rate_ratio": 1.1745778124999995
+  },
+  {
+   "gradient": -0.3,
+   "cw_j_kg_m": 2.207514999999999,
+   "speed_m_s": 1.0,
+   "rate_ratio": 0.8830059999999996
+  },
+  {
+   "gradient": -0.25,
+   "cw_j_kg_m": 1.5405273437499996,
+   "speed_m_s": 1.0,
+   "rate_ratio": 0.6162109374999998
+  },
+  {
+   "gradient": -0.2,
+   "cw_j_kg_m": 1.0867199999999997,
+   "speed_m_s": 1.0,
+   "rate_ratio": 0.43468799999999985
+  },
+  {
+   "gradient": -0.15,
+   "cw_j_kg_m": 0.9359326562499999,
+   "speed_m_s": 1.0,
+   "rate_ratio": 0.37437306249999996
+  },
+  {
+   "gradient": -0.1,
+   "cw_j_kg_m": 1.1271249999999997,
+   "speed_m_s": 1.0,
+   "rate_ratio": 0.45084999999999986
+  },
+  {
+   "gradient": -0.05,
+   "cw_j_kg_m": 1.65889546875,
+   "speed_m_s": 1.0,
+   "rate_ratio": 0.6635581875
+  },
+  {
+   "gradient": 0.0,
+   "cw_j_kg_m": 2.5,
+   "speed_m_s": 1.0,
+   "rate_ratio": 1.0
+  },
+  {
+   "gradient": 0.05,
+   "cw_j_kg_m": 3.59987078125,
+   "speed_m_s": 1.0,
+   "rate_ratio": 1.4399483124999999
+  },
+  {
+   "gradient": 0.1,
+   "cw_j_kg_m": 4.899135,
+   "speed_m_s": 0.8164706626782074,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.15,
+   "cw_j_kg_m": 6.34013359375,
+   "speed_m_s": 0.6309015324129975,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.2,
+   "cw_j_kg_m": 7.87744,
+   "speed_m_s": 0.50777917699151,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.25,
+   "cw_j_kg_m": 9.48837890625,
+   "speed_m_s": 0.42156832473935013,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.3,
+   "cw_j_kg_m": 11.183544999999999,
+   "speed_m_s": 0.35766834219382143,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.35,
+   "cw_j_kg_m": 13.017321718749999,
+   "speed_m_s": 0.3072828717322432,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.4,
+   "cw_j_kg_m": 15.098400000000002,
+   "speed_m_s": 0.2649287341705081,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.45,
+   "cw_j_kg_m": 17.60029703125,
+   "speed_m_s": 0.2272688917066483,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.5,
+   "cw_j_kg_m": 17.60029703125,
+   "speed_m_s": 0.2272688917066483,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.55,
+   "cw_j_kg_m": 17.60029703125,
+   "speed_m_s": 0.2272688917066483,
+   "rate_ratio": 1.6
+  },
+  {
+   "gradient": 0.6,
+   "cw_j_kg_m": 17.60029703125,
+   "speed_m_s": 0.2272688917066483,
+   "rate_ratio": 1.6
+  }
+ ]
+}

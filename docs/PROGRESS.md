@@ -298,10 +298,56 @@ Written down before any new slope is computed on Curiosity's path. The only earl
 - **What the two sites say together.** At Murray Buttes the DEM slope tracks Curiosity's tilt (r = 0.78) and the check passes. In the boxwork it does not (r = 0.34): the ridges there are 1 to 2 m high and a few metres wide, about the size of the DEM's resolution and the rover's footprint, so slope at that scale mixes real relief with what the DEM cannot resolve and with its errors (Kirk et al. 2021 note that blocky stereo DTMs overstate slopes). Testing this further needs elevation data finer than the orbital DEM, such as rover stereo; that is not planned.
 - **Ridge labeling sample:** `0052f4ce188f`, 252 points (84 per predicted class, 42 of each in each half), committed in `config/labels/boxwork_ridge_sample.json` before any label exists. The page is `data/labeling/boxwork/index.html` (local only; `ariadne ridge-sample --site boxwork` rebuilds the same sample and chips). Each point shows a 32 m image chip, a 32 m shaded-relief chip and a 128 m context chip.
 
+## Phase 3 plan: route engine
+
+Turn the derived layers into walk plans: a directional graph on the DEM, cost-to-home and storm fields, a leg matrix between candidate stations, OR-Tools reference plans, and a browser solver with constraints, re-planning and storm mode.
+
+**Walker model: the NASA report cannot be transcribed.** NASA/TP-2010-216125 gives the form of its predictive equation (eq. 1, p. 70) but says on p. 79 that "equation coefficients were not reported". As PROMPT.md 5.2 allows, the model uses a labeled stand-in. The slope dependence is Minetti et al. 2002 (J Appl Physiol 93:1039, p. 1041): a published polynomial for the cost of walking per kg and metre between gradients −0.45 and +0.45, measured on Earth, unsuited. A PLACEHOLDER factor stands for Mars gravity and the suit, and the pace is a PLACEHOLDER top speed capped by a PLACEHOLDER power ceiling (config/suits.json). The NASA report's tested ranges (0.56 to 0.97 m/s and 0 to 30% grade, p. 70; 0.12 to 0.32 g and 6.9 to 44.8 kPa, Table 7, p. 71) set the EXTRAPOLATED flags. Mars's 0.38 g is outside them, so every Mars walk is flagged. Both implementations, `pipeline/ariadne/models/metabolic.py` and `web/src/core/models/metabolic.ts`, meet a shared fixture (`config/models/metabolic_fixture.json`).
+
+1. **Graph** (`pipeline/ariadne/plan/graph.py`): cells link to 16 neighbours with no corner cutting. The edge cost is c(e) = Δt [w_t + w_m Ṁ/Ṁ_nom + w_r R + w_d D + w_u U] with the signed grade, where R is the walker cost multiplier less 1, D the shielding index S (relative dose rate) and U = 1 − confidence. A numba Dijkstra runs forward or on the reversed graph, with ties broken by a secondary key. A* uses the heuristic straight-line distance × the least cost per metre of any move. Smoothing never crosses a no-go cell and never raises the cost.
+2. **Planning grid:** 2 m (PROMPT.md's level for long legs), from 2 × 2 blocks of the 1 m layers: mean elevation, the worst walker class, mean hazard, S and confidence. It is cropped to the stations' reach plus a margin.
+3. **Fields:** C_home, the least consumables to walk back to the staging point (the rover), from the reversed graph. Minutes to shelter on the walker model, from the terrain shelters (S ≤ 0.95) and the rover, with pointers for storm mode: the earliest arrival, ties to the lower S. Comms: the Phase 2 viewshed from the rover antenna. Planning excludes cells more than 20 minutes from shelter.
+4. **Candidate stations:** the Phase 2 transect stations within 800 m of the staging point (PLACEHOLDER). Each must be walkable, in comms line of sight (station work is 15 minutes, longer than the 10-minute shadow limit) and have a buddy overwatch point within 50 m with mutual helmet line of sight. The 40 highest-scoring are kept. Their science value is the Phase 2 station score (MODELED, spectral term missing).
+5. **Leg matrix:** one forward Dijkstra per station and preset. Legs are smoothed, and the matrices (minutes, consumables, relative dose, preset cost, longest comm shadow, worst minutes to shelter) describe the smoothed legs.
+6. **Reference plans:** OR-Tools routing with time and consumables dimensions, 15-minute service (PLACEHOLDER), and an optional-visit disjunction per station penalised by value × the preset's value weight. Presets Safest, Balanced and Most science are in `config/presets.json`, all PLACEHOLDER. Default scenario (PLACEHOLDER): 240-minute EVA limit, 300 minutes of consumables, 30-minute reserve, staging at the Altadena drill position.
+7. **Constraints, checked at least every 5 m:**
+   - Thread: C_left − C_home ≥ C_reserve.
+   - Buddy: an overwatch point at every station.
+   - Shelter: at most 20 minutes away.
+   - Comms: no shadow longer than 10 continuous minutes.
+   - Rover: the staging point is passable for the rover.
+
+   The thread holds for any plan within the consumables budget, because the rest of the route always includes a walk home. A 2-minute allowance (PLACEHOLDER) covers smoothed legs being slightly cheaper than grid paths, and the check measures this rather than assuming it.
+8. **Outputs:** `plan.json` per preset, following PROMPT.md's schema in `config/schemas/plan.schema.json`. `ariadne plan` writes the fields, the leg bundle for the browser, the benchmark fixture, docs/plan/<site>.md, and the thread run over 1,000 random scenarios.
+9. **Browser** (`web/src/core/`, run in a Web Worker):
+   - Walker model.
+   - Solver: greedy value-per-minute insertion, then 2-opt, Or-opt and simulated annealing.
+   - Constraint re-check from the leg matrix.
+   - Re-planning on pace drift over 15%, a margin crossing its threshold, or an alert: drop the lowest value per minute first, re-check, and show the diff.
+   - Storm mode: follow the pointers to the earliest shelter, with the dose avoided labeled MODELED and PLACEHOLDER until Phase 6 brings replay data.
+
+### Phase 3 acceptance tests
+
+| ID | Test | Where |
+| --- | --- | --- |
+| D1 | Walker model: Minetti's polynomial lies within one SD of the paper's Table 2 means at 12 of 13 gradients; the level value (2.5 against 1.64 ± 0.50 J/kg/m) is recorded as the known gap; pace follows the power ceiling; Mars walks are flagged EXTRAPOLATED; the shared fixture matches | `pipeline/tests/test_metabolic.py` |
+| D2 | Graph: 16 neighbours; flat-ground time exact along axes and knight moves and within 3% elsewhere; uphill slower than downhill; no-go cells never entered and corners never cut; the cost terms add up as in the formula | `pipeline/tests/test_plan_graph.py` |
+| D3 | A* returns Dijkstra's cost on random terrain; smoothing never crosses no-go and never costs more | `pipeline/tests/test_plan_graph.py` |
+| D4 | Cost-to-home equals the forward cost from each cell; following the pointers walks home; the storm field picks the earliest shelter and breaks ties by lower S | `pipeline/tests/test_plan_graph.py` |
+| D5 | Leg matrix: zero diagonal, asymmetric on a ramp, grid cost equal to A*, smoothed legs no dearer | `pipeline/tests/test_plan_graph.py` |
+| D6 | OR-Tools finds the brute-force optimum on small cases, respects both budgets, and skips stations not worth their cost at a low value weight | `pipeline/tests/test_plan_select.py` |
+| D7 | Constraints: margins at most 5 m apart that add up to the route totals; thread, shelter and comms failures found; buddy needs an overwatch point with line of sight | `pipeline/tests/test_plan_constraints.py` |
+| D8 | The thread holds in 1,000 random scenarios (synthetic terrain in CI; the real boxwork in `make plan`, recorded in validation.json) | `pipeline/tests/test_plan_constraints.py`, `ariadne plan` |
+| D9 | Every plan.json validates against `config/schemas/plan.schema.json`, in Python and TypeScript | `pipeline/tests/test_plan_outputs.py`, `web/tests/plan.test.ts` |
+| D10 | The TypeScript walker model reproduces the shared fixture | `web/tests/metabolic.test.ts` |
+| D11 | Browser solver: at least 95% of the OR-Tools science value on average over 50 or more boxwork scenarios, every plan feasible, with the per-scenario ratios recorded | `web/tests/solver.test.ts`, `docs/validation/station-solver.json` |
+| D12 | Re-planning triggers on more than 15% pace drift, drops the lowest value per minute first, re-checks every constraint and returns a diff; storm mode follows the pointers to the earliest shelter | `web/tests/replan.test.ts`, `web/tests/storm.test.ts` |
+| D13 | `ariadne plan` is built; docs/plan/<site>.md and validation.json carry the plans, the 1,000-scenario thread run, the walker model and the solver benchmark | `pipeline/tests/test_cli.py`, `pipeline/tests/test_plan_outputs.py` |
+
 ## Next steps
 
 1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
-2. Phase 3, route engine: A*, cost-to-home fields, the leg matrix, OR-Tools reference plans, the browser solver, constraints, re-planning and storm mode. It also transcribes the NASA/TP-2010-216125 walking model, replacing the PLACEHOLDER pace in minutes-to-shelter.
+2. Phase 3, route engine (plan above).
 
 ## Open issues
 

@@ -1,0 +1,12 @@
+{
+ "_about": "Suit profiles for the walker model (pipeline/ariadne/models/metabolic.py, web/src/core/models/metabolic.ts). Each value has a label and a source or note.",
+ "default": {
+  "body_mass_kg": {"value": 82, "label": "PLACEHOLDER", "source": "NASA/TP-2010-216125 p. 11: an average subject body mass of 82 kg (180 lb), typical of the male astronaut population then"},
+  "suit_gravity_factor": {"value": 1.0, "label": "PLACEHOLDER", "note": "Multiplies Minetti et al.'s Earth, unsuited cost of walking. Mars gravity lowers the cost and a pressurized suit raises it; no verified source quantifies either here, so 1.0 is used and every Mars walk is flagged EXTRAPOLATED."},
+  "max_speed_m_s": {"value": 1.0, "label": "PLACEHOLDER", "source": "Minetti et al. 2002: the lowest level cost of walking was at 1.0 +/- 0.3 m/s"},
+  "power_ceiling_w_kg": {"value": 4.0, "label": "PLACEHOLDER", "note": "Highest sustained metabolic power per kg of body mass; sets the pace uphill."},
+  "station_rate_ratio": {"value": 0.6, "label": "PLACEHOLDER", "note": "Metabolic rate during station work, relative to the nominal walking rate."},
+  "suit_pressure_kpa": {"value": 29.6, "label": "PLACEHOLDER", "note": "Used only for the extrapolation flag; 29.6 kPa is a pressure NASA/TP-2010-216125 tested (Table 7)."},
+  "gravity_m_s2": {"value": 3.69, "label": "MEASURED", "source": "NASA NSSDCA Mars Fact Sheet: surface gravity 3.69 m/s^2"}
+ }
+}
