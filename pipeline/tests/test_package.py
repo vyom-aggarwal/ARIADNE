@@ -209,3 +209,66 @@ def test_no_layer_calls_terrain_a_shelter():
     assert "shelter_minutes" not in ids and "minutes_to_rover" in ids
     shielding = next(lay for lay in m["layers"] if lay["id"] == "shielding")
     assert "not counted as shelter" in shielding["description"]
+
+
+# --- G5 and the timeline's comm shadows with the rover as a relay ---
+
+
+def test_numpy_line_of_sight_matches_the_derive_version():
+    from ariadne.package import sight
+
+    los = pytest.importorskip("ariadne.derive.los", exc_type=ImportError)  # numba; CI runs it
+    rng = np.random.default_rng(5)
+    z = rng.normal(0, 1.5, (80, 80)).cumsum(0).cumsum(1) * 0.02
+    t = Affine(1.0, 0, 1000.0, 0, -1.0, 2000.0)
+    for _ in range(200):
+        a = (1000 + rng.uniform(1, 79), 2000 - rng.uniform(1, 79))
+        b = (1000 + rng.uniform(1, 79), 2000 - rng.uniform(1, 79))
+        assert sight.line_of_sight(z, t, a, b, 3.0, 1.8) == los.line_of_sight(z, t, a, b, 3.0, 1.8)
+
+
+def test_line_of_sight_is_blocked_by_a_wall_and_follows_the_rover_relay():
+    from ariadne.package import sight
+
+    z = np.zeros((40, 40))
+    z[:, 20] = 10.0  # a wall down the middle
+    t = Affine(1.0, 0, 0.0, 0, -1.0, 40.0)
+    assert not sight.line_of_sight(z, t, (5.5, 20.5), (35.5, 20.5), 3.0, 1.8)
+    assert sight.line_of_sight(z, t, (5.5, 20.5), (15.5, 30.5), 3.0, 1.8)
+    plan = {
+        "stations": [{"relay": "STAGING"}, {"relay": "RELAY1"}],
+        "rover": {"ends_at": "RELAY1",
+                  "relays": [{"id": "STAGING", "xy_m": [5.5, 20.5]},
+                             {"id": "RELAY1", "xy_m": [35.5, 20.5]}]},
+        "margins": [
+            {"xy_m": [10.5, 20.5], "leg": 0, "station": None},
+            {"xy_m": [10.5, 20.5], "leg": 0, "station": 0},  # the rover moves during this visit
+            {"xy_m": [30.5, 20.5], "leg": 1, "station": None},
+            {"xy_m": [30.5, 20.5], "leg": 2, "station": None},
+        ],
+    }  # fmt: skip
+    assert sight.relays_per_sample(plan) == [["STAGING"], ["STAGING", "RELAY1"], ["RELAY1"],
+                                              ["RELAY1"]]  # fmt: skip
+    assert sight.samples_in_sight(plan, z, t, 3.0, 1.8) == [True, False, True, True]
+
+
+def test_overcautious_marks_list_the_samples_near_a_flagged_cell():
+    plan = {"margins": [{"t_min": float(i), "xy_m": [float(10 * i), 0.0]} for i in range(6)]}
+    near = timeline.overcautious_near(plan, np.array([[30.0, 20.0], [500.0, 0.0]]), 25.0)
+    assert [x["t_min"] for x in near] == [2.0, 3.0, 4.0]  # 22.4, 20.0 and 22.4 m away
+    assert near[1]["nearest_xy_m"] == [30.0, 20.0] and near[1]["distance_m"] == 20.0
+    assert timeline.overcautious_near(plan, np.zeros((0, 2)), 25.0) == []
+
+
+@pytest.mark.parametrize("preset", ["safest", "balanced", "most_science"])
+def test_packaged_plans_carry_relay_comm_shadows_and_overcautious_marks(preset):
+    plan = json.loads((SITE / "plans" / f"{preset}.json").read_text(encoding="utf-8"))
+    oc = plan["overcautious"]
+    assert oc["label"] == "MODELED" and oc["radius_m"] == 25
+    assert all(x["distance_m"] <= oc["radius_m"] for x in oc["samples"])
+    # comm shadows now come from the relay the rover is parked at, so they agree with the plan's
+    # own comms check (pairwise on the 1 m DEM against a viewshed on the 2 m grid: close, not equal)
+    longest = max((c["end_min"] - c["start_min"] for c in plan["timeline"]["comm_shadows"]),
+                  default=0.0)  # fmt: skip
+    assert longest <= plan["totals"]["longest_comm_shadow_min"] + 1.0
+    assert "relay site it is parked at" in plan["timeline"]["comm_note"]

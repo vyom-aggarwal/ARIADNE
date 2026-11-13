@@ -3,13 +3,14 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from datetime import datetime, timedelta
 
 import numpy as np
 
 
-def build(plan: dict, in_sight: Callable, sun: list[float] | None) -> dict:
+def build(plan: dict, in_sight, sun: list[float] | None) -> dict:
+    """`in_sight` is either a function of a sample's xy or one bool per margin sample (line of
+    sight from wherever the rover is parked, ariadne.package.sight)."""
     margins = [
         {
             "t_min": m["t_min"],
@@ -31,8 +32,9 @@ def build(plan: dict, in_sight: Callable, sun: list[float] | None) -> dict:
             )
             t += service[leg["to"]]
     shadows, start = [], None
-    for m in plan["margins"]:
-        visible = bool(in_sight(m["xy_m"]))
+    flags = None if callable(in_sight) else list(in_sight)
+    for i, m in enumerate(plan["margins"]):
+        visible = bool(in_sight(m["xy_m"])) if flags is None else bool(flags[i])
         if not visible and start is None:
             start = m["t_min"]
         elif visible and start is not None:
@@ -46,6 +48,27 @@ def build(plan: dict, in_sight: Callable, sun: list[float] | None) -> dict:
             {"t_min": m["t_min"], "deg": round(float(s), 2)}
             for m, s in zip(plan["margins"], sun, strict=True)
         ]
+    return out
+
+
+def overcautious_near(plan: dict, flagged_xy: np.ndarray, radius_m: float) -> list[dict]:
+    """Margin samples within radius_m of a flagged cell (slope no-go in a seam or low-confidence
+    zone), with the nearest such cell: where the HUD and tablet say "map may be over-cautious
+    here, check by eye"."""
+    if len(flagged_xy) == 0:
+        return []
+    from scipy.spatial import cKDTree
+
+    tree = cKDTree(np.asarray(flagged_xy, dtype=np.float64))
+    xy = np.array([m["xy_m"] for m in plan["margins"]], dtype=np.float64)
+    d, idx = tree.query(xy, distance_upper_bound=radius_m)
+    out = []
+    for m, dd, ii in zip(plan["margins"], d, idx, strict=True):
+        if np.isfinite(dd):
+            nx, ny = flagged_xy[ii]
+            out.append({"t_min": m["t_min"], "xy_m": m["xy_m"],
+                        "nearest_xy_m": [round(float(nx), 2), round(float(ny), 2)],
+                        "distance_m": round(float(dd), 1)})  # fmt: skip
     return out
 
 

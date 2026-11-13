@@ -1,16 +1,56 @@
 // Written with AI assistance (Claude Code). See AI_USE.md.
 // The page: a short introduction and project links, then the app in tabs: the Habitat Planner
-// (Phase 4) and the Validation tab (PROMPT.md section 7).
-import { type KeyboardEvent, useRef, useState } from "react";
+// (Phase 4), the Visor HUD, Cuff Tablet and printed cuff card (Phase 5), and the Validation tab
+// (PROMPT.md section 7). One simulated-EVA clock drives the surfaces.
+import { type KeyboardEvent, lazy, Suspense, useEffect, useRef, useState } from "react";
+import { endTime } from "./core/eva/sim";
+import { getEva, runClock } from "./core/eva/store";
+import { loadSite } from "./core/site";
 import { AI_USE_URL, CREDITS_URL, REPO_URL } from "./links";
 import Planner from "./planner/Planner";
+import type { Plan } from "./planner/types";
 import ValidationView from "./validation/ValidationView";
+
+const VisorHud = lazy(() => import("./hud/VisorHud"));
+const CuffTablet = lazy(() => import("./tablet/CuffTablet"));
+const CuffCard = lazy(() => import("./card/CuffCard"));
 
 const TABS = [
   { id: "planner", title: "Habitat Planner" },
+  { id: "hud", title: "Visor HUD" },
+  { id: "tablet", title: "Cuff Tablet" },
+  { id: "card", title: "Cuff card" },
   { id: "validation", title: "Validation" },
 ] as const;
 type TabId = (typeof TABS)[number]["id"];
+
+function panel(id: TabId) {
+  switch (id) {
+    case "planner":
+      return <Planner />;
+    case "hud":
+      return <VisorHud />;
+    case "tablet":
+      return <CuffTablet />;
+    case "card":
+      return <CuffCard />;
+    default:
+      return <ValidationView />;
+  }
+}
+
+/** The one clock for the simulated EVA, whichever surface is showing. */
+function EvaClock() {
+  useEffect(() => {
+    let plans: Record<string, Plan> | null = null;
+    loadSite("boxwork").then((s) => (plans = s.plans)).catch(() => {});
+    return runClock(() => {
+      const p = plans?.[getEva().preset];
+      return p ? endTime(p) : 0;
+    });
+  }, []);
+  return null;
+}
 
 function Tabs() {
   const [active, setActive] = useState<TabId>("planner");
@@ -62,7 +102,9 @@ function Tabs() {
           aria-labelledby={`tab-${t.id}`}
           hidden={active !== t.id}
         >
-          {seen.has(t.id) && (t.id === "planner" ? <Planner /> : <ValidationView />)}
+          {seen.has(t.id) && (
+            <Suspense fallback={<p role="status">Loading…</p>}>{panel(t.id)}</Suspense>
+          )}
         </div>
       ))}
     </>
@@ -98,6 +140,7 @@ export default function App() {
         </nav>
       </header>
       <main>
+        <EvaClock />
         <Tabs />
       </main>
       <footer className="footer">

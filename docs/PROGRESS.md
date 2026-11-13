@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-13 UTC (Phase 4 review applied: the rover is the shelter, storm mode by lowest dose; Phase 5 next; ridge labels awaited).
+Last updated: 2026-11-13 UTC (Phase 4 review and Phase 5 done; ridge labels awaited; local numba, OR-Tools and pyproj blocked by Windows Application Control).
 
 ## Status
 
@@ -13,8 +13,8 @@ Last updated: 2026-11-13 UTC (Phase 4 review applied: the rover is the shelter, 
 | 3 Route engine | Done 2026-11-09, revised after review: D1 to D14 pass; plans visit whole transects within the 6 h EVA; presets differ by safety settings; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.2% of the time-limited OR-Tools reference (worst 98.8%). The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
 | 4 Habitat Planner | Done 2026-11-09: E1 to E10 pass (CI run 42684297699 green; Pages deploy 42684506684 serves the planner); first map 2.1 s (3 s target) and 3.1 to 4.5 s at 4× CPU slowdown in four of five runs (5 s budget; one run over) |
 | 4b Rover as mobile comms relay | Done 2026-11-09: F1 to F5 pass (CI run 42696159967 green, Pages deploy 42696408772); 3 relay sites put 112 of 150 pool transects in sight (staging alone: 41); the 6 h limit, not comms, still caps the boxwork plans; thread holds in 1000 of 1000 |
-| 4c Phase 4 review | Done locally 2026-11-13: E11 to E15 pass; the rover is the shelter and the presets separate (Safest 4 transects, value 10.93; Balanced 7, 18.94; Most science 7, 19.11); storm mode by lowest dose; price of safety; assumptions panel and Validation tab. CI pending |
-| 5 Visor HUD, Cuff Tablet, printed card | Next |
+| 4c Phase 4 review | Done 2026-11-13 (CI run 43482693282 green): E11 to E15 pass; the rover is the shelter and the presets separate (Safest 4 transects, value 10.93; Balanced 7, 18.94; Most science 7, 19.11); storm mode by lowest dose; price of safety; assumptions panel and Validation tab. CI pending |
+| 5 Visor HUD, Cuff Tablet, printed card | Done locally 2026-11-13: G1 to G9 pass (89 Vitest, 14 Playwright); HUD never shows more than four elements; colorblind check passes; card prints on one page; tablet works offline. CI pending |
 | 6 to 9 | Not started |
 
 ## Human decisions (2026-11-08)
@@ -547,7 +547,7 @@ Three surfaces driven by one EVA state store, simulated from the plan in the dem
    - caution and warning: the highest-priority alert (storm, low margin, "map may be over-cautious here, check by eye"), with a count of any others.
    White and cyan with dark outlines, never red or orange; every element has its own shape. Voice commands ("distance home", "next station", "drop pin") through the Web Speech API where supported, with buttons for the same commands.
 3. **Over-cautious marking:** `ariadne package` adds to each plan the samples within 25 m (PLACEHOLDER) of an over-cautious walker cell (slope no-go in a seam or low-confidence zone), with the nearest such cell. The HUD and tablet show "map may be over-cautious here, check by eye" there; the planner still avoids those cells.
-4. **Cuff Tablet** (`web/src/tablet/`), in a 1024×768 frame: controls of at least 64 CSS px (PLACEHOLDER for gloved use); a next-station card with a "what you'll see" photo (a Navcam frame looking toward that transect, where one exists, with its credit); station steps Look, Observe, Describe, Document (after SUITS); the margin, the line home and alerts; a sample log with a photo field, stored in the browser (IndexedDB); offline through a service worker that caches the app and the site package.
+4. **Cuff Tablet** (`web/src/tablet/`), in a 1024×768 frame: controls of at least 64 CSS px (PLACEHOLDER for gloved use); a next-station card with a "what you'll see" photo (a Navcam frame looking toward that transect, where one exists, with its credit); station steps Look, Observe, Describe, Document (from the team brief; their SUITS source is not yet confirmed); the margin, the line home and alerts; a sample log with a photo field, stored in the browser (IndexedDB); offline through a service worker that caches the app and the site package.
 5. **Printed cuff card** (`web/src/card/`): a print stylesheet giving one page with the route map (legs, stations, relay sites, abort routes to the rover), a station table with bearings and distances, landmark thumbnails, and a compact timeline.
 
 ### Phase 5 acceptance tests
@@ -565,10 +565,25 @@ Three surfaces driven by one EVA state store, simulated from the plan in the dem
 | G9 | No serious or critical axe violations on the HUD, tablet and card in light and dark mode; every control reachable from the keyboard | `web/e2e/surfaces.spec.ts` |
 | G10 | CI green on `main`; the Pages deploy serves the new tabs | GitHub Actions and a fetch of the Pages URL |
 
+### Phase 5 evidence
+
+- **Surfaces** (new tabs beside the Habitat Planner and Validation; one EVA state store, simulated from the plan):
+  - **Visor HUD** (`web/src/hud/`): the first-person 3D view follows the simulated walker; the overlay is drawn on a 1920 × 1080 frame scaled to fit. Four fixed slots: alert (top left), next station or the storm arrow (top centre), thread map with the line home, margin, breadcrumbs and pins (bottom left), buddy (bottom right). White (#ffffff) and cyan (#7df9ff) with a dark outline (#05080b); shapes: chevron and ring (next station), double chevron (storm), polyline (thread), diamond (buddy), octagon, triangle, circle and hatched square (alerts). Buttons and, where the browser has speech recognition, voice for "distance home", "next station" and "drop pin"; answers are spoken and shown below the visor, not as a fifth element.
+  - **Cuff Tablet** (`web/src/tablet/`): 1024 × 768 frame, every control at least 64 × 64 px; next-station card with a Navcam "what you'll see" photo (credit shown); the four station steps; alerts with shape and level in words; the line home; a sample log with photo in IndexedDB.
+  - **Cuff card** (`web/src/card/`): one landscape page with the route map (route, abort routes to the rover from each station, relay sites, transect labels, north arrow, scale bar), a station table (bearing and straight-line distance from the previous point, arrival and departure, the rover's relay, the walk to the rover), three landmark thumbnails and a compact timeline.
+  - **Offline:** `web/public/sw.js` caches the app shell, the chunks it loads, and the site package's manifest, plans, photos and validation on install; pages and data are network-first, hashed assets cache-first.
+- **Package additions:** each plan lists the samples within 25 m (PLACEHOLDER) of an over-cautious walker cell. **None of the three committed routes comes within 25 m of one** (nearest 279 m for Most science, 290 m for Safest and Balanced): the flagged cells lie in seams and low-confidence ground, which the uncertainty penalty already steers routes away from. The HUD and tablet marking is therefore tested on synthetic samples. The manifest records the ground's luminance in the 3D view (1st, 50th and 99th percentiles 0.0033, 0.1441, 1.0; DERIVED).
+- **Timeline comm shadows fixed.** Since the relay work they had been computed from the staging point's viewshed only, so Balanced's timeline showed a 30.5-minute shadow while its plan check (sight from wherever the rover is parked) gave 2.1 minutes. The package step now checks line of sight from the rover's relay for each sample (a NumPy twin of `los.line_of_sight`, tested against it in CI); the longest timeline shadows are now 1.3, 2.3 and 0.7 minutes against the plans' 1.1, 2.1 and 0.3 (pairwise on the 1 m DEM against a viewshed on the 2 m grid).
+- **Colorblind check (G3):** with Machado et al. 2009 severity 1.0 matrices for protanopia, deuteranopia and tritanopia, applied in linear and in gamma-encoded RGB (the source does not say which), both HUD colors keep at least 3:1 against their outline, and each symbol with its outline stays at least 3:1 against every ground luminance from 0 to 1, including the measured percentiles. Neither color is red or orange.
+- **Tests:** G1 to G9 pass locally: 89 Vitest tests (14 files) and 14 Playwright tests in Chromium (the judge tour, the page checks, the Validation tab, and the seven surface tests: HUD with storm and voice buttons, tablet sizes and sample log across a reload, offline reload, the card on exactly one printed page, axe in light and dark mode, keyboard reach). The HUD test walks every minute of every plan, storm on and off, with pins and with every sample marked over-cautious: never more than four elements.
+- **Station steps:** the four steps come from the team brief. Its SUITS source could not be confirmed: the 2023-2024 SUITS mission description linked in docs/PLAN.md now returns 404, and the 2026-2027 edition (lunar) lists different geology tasks (docs/SOURCES_LOG.md).
+- **Performance:** a hidden 3D view no longer draws (the HUD and planner views pause when their tab is hidden). First map in the judge tour 2.0 s.
+
 ## Next steps
 
 1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
-2. Phase 5: Visor HUD, Cuff Tablet and printed card, with the over-cautious marking ("map may be over-cautious here, check by eye") on the HUD and tablet.
+2. Phase 6: the May 2024 storm replay (DONKI), REMS ground temperature and the light-time table; the replay replaces the manual storm alert in the HUD and tablet.
+3. Team: name the source of the station steps (Look, Observe, Describe, Document), or confirm they stay the team's own.
 
 ## Open issues
 
@@ -586,6 +601,7 @@ Three surfaces driven by one EVA state store, simulated from the plan in the dem
 - Seams between the CCDs inside one HiRISE image are not mapped.
 - The walker model is a stand-in: Minetti et al. 2002 (Earth, unsuited) with PLACEHOLDER suit, gravity and pace settings, because NASA/TP-2010-216125 publishes no coefficients. A suited, reduced-gravity source with published coefficients would replace it.
 - Comms is line of sight only (no radio model), from a 3 m antenna on the rover at the staging point or one of three relay sites.
+- The SUITS 2023-2024 mission description cited in docs/PLAN.md (in-suit display, local console, 20-minute delay) now returns 404; the 2026-2027 edition is a lunar scenario. The station steps and the delay figure need a confirmed source.
 - The rover relay assumes contact from the rover's destination while it drives during the first leg. The buddy's walk to the overwatch point is not timed.
 - Balanced and Most science share their limits and still choose similar transects (7 each); only Safest's limits separate it. Relay sites are still chosen for comms coverage alone; choosing them for walking distance as well (now that the rover is the shelter) might give Safest more usable transects.
 - The shelter check while the rover drives during the first leg takes the larger of two rover positions half a minute apart, an approximation within about 15 seconds of driving. While it drives during a station visit, the check takes the farthest point of its drive (conservative).

@@ -21,7 +21,11 @@ This README follows the NASA Space Apps project form and is filled in as the pro
 
 ## Summary
 
-To be written when the first demo works (Phase 4). The plan is in [docs/PLAN.md](docs/PLAN.md), and the full build brief is in [PROMPT.md](PROMPT.md).
+ARIADNE plans, rehearses and guards a two-astronaut walk through the boxwork ridges of Mount Sharp, where Curiosity has been exploring since 2025. From NASA and USGS terrain models, orbital images and Curiosity's own positions, a pipeline maps where a suited walker can go, how much sky each spot sees (a guide to radiation shielding), and which ridge, wall and hollow stops would teach the most. It then plans three walks (Safest, Balanced and Most science) that always keep enough air to get back to the rover, with the rover as both radio relay and shelter.
+
+The web app shows those plans on a map with every layer's source, lets you rehearse the walk in 3D past real Curiosity photos, and drives three surfaces for the walkers: a visor display that never shows more than four things at once, a glove-friendly cuff tablet that works offline, and a one-page printed cuff card as the backup. A Validation tab shows every check, including the ones that failed. Every number is labeled measured, derived, modeled or placeholder; the suit and walking settings are placeholders, so the plans are a concept, not mission guidance.
+
+The plan is in [docs/PLAN.md](docs/PLAN.md), progress in [docs/PROGRESS.md](docs/PROGRESS.md), and the full build brief in [PROMPT.md](PROMPT.md).
 
 ## How it works
 

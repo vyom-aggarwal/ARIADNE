@@ -63,6 +63,8 @@ export interface Station {
   label: Label;
   relay?: string;
   transect_source_id?: number;
+  overwatch_xy_m?: [number, number];
+  overwatch_distance_m?: number;
 }
 
 export interface Leg {
@@ -79,6 +81,14 @@ export interface Timeline {
   stations: { id: string; start_min: number; end_min: number }[];
   comm_shadows: { start_min: number; end_min: number }[];
   sun_elevation_deg?: { t_min: number; deg: number }[];
+  comm_note?: string;
+}
+
+export interface OvercautiousSample {
+  t_min: number;
+  xy_m: [number, number];
+  nearest_xy_m: [number, number];
+  distance_m: number;
 }
 
 export interface Plan {
@@ -95,6 +105,7 @@ export interface Plan {
   timeline: Timeline;
   rover?: RoverPlan;
   storm?: PlanStorm | null;
+  overcautious?: { radius_m: number; label: Label; note: string; samples: OvercautiousSample[] };
 }
 
 export interface Photo {
@@ -108,6 +119,7 @@ export interface Photo {
   credit: string;
   label: Label;
   show_top_fraction: number;
+  transect_source_id?: number;
 }
 
 export interface TerrainChunk {
@@ -142,6 +154,7 @@ export interface Manifest {
   assumptions?: Assumption[];
   site_notes?: SiteNote[];
   validation?: string;
+  ground_tone?: { p01: number; p50: number; p99: number; label: Label; source: string };
 }
 
 export interface Assumption {

@@ -2,7 +2,7 @@
  "site": "boxwork",
  "title": "Mount Sharp boxwork, Gale crater",
  "pipeline_version": "0.0.0",
- "packaged_utc": "2026-11-13T18:17:14+00:00",
+ "packaged_utc": "2026-11-13T18:37:17+00:00",
  "crs": "Equirectangular metres on the 3,396,190 m Mars sphere (east, north)",
  "bounds_m": [
   8141605.492786024,
@@ -661,6 +661,13 @@
   "scale": 0.01,
   "texture": "terrain/texture.png",
   "texture_resolution_m": 1.0,
+  "ground_tone": {
+   "p01": 0.0033,
+   "p50": 0.1441,
+   "p99": 1.0,
+   "label": "DERIVED",
+   "source": "WCAG relative luminance of the 3D view's ground texture (25 cm orthophoto at 1 m, stretched 2 to 98%), 1st, 50th and 99th percentiles"
+  },
   "chunks": [
    {
     "rows_cols": [
@@ -3136,6 +3143,14 @@
   },
   {
    "group": "Walk and checks",
+   "key": "overcautious_warn_radius_m",
+   "title": "overcautious warn radius m",
+   "value": 25,
+   "label": "PLACEHOLDER",
+   "note": "The HUD and tablet say \"map may be over-cautious here, check by eye\" within this distance of a slope no-go cell in a DEM seam or low-confidence zone."
+  },
+  {
+   "group": "Walk and checks",
    "key": "rover_track_step_min",
    "title": "rover track step min",
    "value": 0.5,
@@ -3432,6 +3447,13 @@
    "note": "Used only for the sun track on the timeline."
   }
  ],
+ "ground_tone": {
+  "p01": 0.0033,
+  "p50": 0.1441,
+  "p99": 1.0,
+  "label": "DERIVED",
+  "source": "WCAG relative luminance of the 3D view's ground texture (25 cm orthophoto at 1 m, stretched 2 to 98%), 1st, 50th and 99th percentiles"
+ },
  "site_notes": [
   {
    "id": "conservative-slope-no-go",

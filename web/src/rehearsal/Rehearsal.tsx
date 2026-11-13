@@ -23,6 +23,11 @@ interface Props {
   manifest: Manifest;
   base: string;
   plan: Plan | null;
+  /** First-person view that follows a walker (the Visor HUD): position in site metres and the
+   * direction of travel in degrees clockwise from north, read every frame. */
+  follow?: () => { xy: [number, number]; heading: number } | null;
+  /** Only the 3D canvas, without the heading, controls and notes. */
+  embedded?: boolean;
 }
 
 const LOD_SWITCH_M = 450;
@@ -87,7 +92,7 @@ function chunkMesh(g: HeightGrid, r0: number, c0: number, r1: number, c1: number
   return new THREE.Mesh(geo, material);
 }
 
-export default function Rehearsal({ manifest, base, plan }: Props) {
+export default function Rehearsal({ manifest, base, plan, follow, embedded = false }: Props) {
   const host = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<"orbit" | "ground">("orbit");
   const [speed, setSpeed] = useState(5);
@@ -97,6 +102,8 @@ export default function Rehearsal({ manifest, base, plan }: Props) {
   const modeRef = useRef(mode);
   const speedRef = useRef(speed);
   const playRef = useRef(playing);
+  const followRef = useRef(follow);
+  followRef.current = follow;
   modeRef.current = mode;
   speedRef.current = speed;
   playRef.current = playing;
@@ -217,7 +224,22 @@ export default function Rehearsal({ manifest, base, plan }: Props) {
       if (disposed) return;
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
-      if (modeRef.current === "ground" && grid && route.length > 1) {
+      if (el.offsetParent === null) {
+        // hidden (another tab is showing): draw nothing until it is shown again
+        frame = requestAnimationFrame(loop);
+        return;
+      }
+      const pose = followRef.current?.() ?? null;
+      if (pose && grid) {
+        controls.enabled = false;
+        const [x, z] = toLocal(pose.xy, origin);
+        const h = (pose.heading * Math.PI) / 180;
+        const ax = x + 8 * Math.sin(h);
+        const az = z - 8 * Math.cos(h); // north is -z in the scene
+        const p = eyePosition(grid, x, z, eye);
+        camera.position.set(p.x, p.y - zRef, p.z);
+        camera.lookAt(ax, groundHeight(grid, ax, az) - zRef + eye, az);
+      } else if (modeRef.current === "ground" && grid && route.length > 1) {
         controls.enabled = false;
         const total = routeLength(route);
         if (playRef.current) walked = (walked + dt * 1.0 * speedRef.current) % total;
@@ -255,6 +277,12 @@ export default function Rehearsal({ manifest, base, plan }: Props) {
     };
   }, [manifest, base, plan, eye]);
 
+  if (embedded) {
+    return (
+      <div ref={host} className="rehearsal-canvas embedded" data-mode="follow" data-billboards={billboards}
+        data-status={status} aria-hidden="true" />
+    );
+  }
   return (
     <section className="rehearsal" aria-labelledby="rehearsal-heading">
       <h2 id="rehearsal-heading">3D rehearsal</h2>

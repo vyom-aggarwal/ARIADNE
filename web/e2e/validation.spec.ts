@@ -10,7 +10,7 @@ for (const scheme of ["light", "dark"] as const) {
     await page.goto("./");
     const planner = page.getByRole("tab", { name: "Habitat Planner" });
     await planner.focus();
-    await page.keyboard.press("ArrowRight");
+    await page.keyboard.press("End"); // the last tab
     const tab = page.getByRole("tab", { name: "Validation" });
     await expect(tab).toBeFocused();
     await expect(tab).toHaveAttribute("aria-selected", "true");

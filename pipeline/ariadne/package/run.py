@@ -225,13 +225,21 @@ def vector_layers(site_dir: Path, out: Path, derived_date: str) -> list:
 
 
 def plans_with_timelines(root: Path, site: str, site_dir: Path, out: Path, ref_sol: int, log):
-    (out / "plans").mkdir(parents=True, exist_ok=True)
-    view, vt, _ = read_raster(site_dir / "derived" / "viewshed_staging.tif", as_float=False)
+    from ariadne.package import sight
 
-    def in_sight(xy):
-        r = int((xy[1] - vt.f) / vt.e)
-        c = int((xy[0] - vt.c) / vt.a)
-        return 0 <= r < view.shape[0] and 0 <= c < view.shape[1] and bool(view[r, c])
+    (out / "plans").mkdir(parents=True, exist_ok=True)
+    dem, dt, _ = read_raster(site_dir / "dem.tif")
+    rover = json.loads((root / "config" / "rovers.json").read_text("utf-8"))["default"]
+    scen = json.loads((root / "config" / "presets.json").read_text("utf-8"))["scenario"]
+    antenna = float(rover["antenna_height_m"]["value"])
+    helmet = float(scen["helmet_height_m"]["value"])
+    radius = float(scen["overcautious_warn_radius_m"]["value"])
+    oc_path = site_dir / "derived" / "overcautious_walker.tif"
+    flagged = np.zeros((0, 2))
+    if oc_path.exists():
+        oc, ot, _ = read_raster(oc_path, as_float=False)
+        rr, cc = np.nonzero(oc > 0)
+        flagged = np.column_stack([ot.c + (cc + 0.5) * ot.a, ot.f + (rr + 0.5) * ot.e])
 
     entries = []
     for f in sorted((root / "docs" / "plan").glob(f"{site}-*.json")):
@@ -241,7 +249,20 @@ def plans_with_timelines(root: Path, site: str, site_dir: Path, out: Path, ref_s
         lat = math.degrees(sy / places.MARS_RADIUS_M)
         start = T.ltst_start(msl_time.sol_start_utc(ref_sol), 9.0, lon, lat)
         sun = T.sun_elevation(start, [m["t_min"] for m in plan["margins"]], lon, lat)
-        plan["timeline"] = T.build(plan, in_sight, sun)
+        visible = sight.samples_in_sight(plan, dem, dt, antenna, helmet)
+        plan["timeline"] = T.build(plan, visible, sun)
+        plan["timeline"]["comm_note"] = (
+            "Line of sight from the rover at the relay site it is parked at (3 m antenna to a "
+            "1.8 m helmet, pairwise on the 1 m DEM); line of sight only, no radio model."
+        )
+        plan["overcautious"] = {
+            "radius_m": radius,
+            "label": "MODELED",
+            "note": "Samples within this distance of a cell that is no-go by slope but lies in a "
+            "DEM seam or low-confidence zone: map may be over-cautious here, check by eye. The "
+            "planner still avoids those cells.",
+            "samples": T.overcautious_near(plan, flagged, radius),
+        }
         plan["scenario"]["start_utc"] = start.replace(microsecond=0).isoformat()
         plan["scenario"]["start_note"] = (
             f"PLACEHOLDER: sol {ref_sol} at 09:00 local true solar time, for the sun track"
@@ -287,8 +308,13 @@ def terrain(site_dir: Path, out: Path, ctx: dict, log) -> dict:
     span = int(round(wshape[0] * abs(wt.a) / abs(ot.a)))
     tex = ortho[orr : orr + span, occ : occ + span].astype(np.float32)
     tex = block(np.where(tex > 0, tex, np.nan), kk)
-    png.write_png(out / "terrain" / "texture.png", gray(tex))
+    g8 = gray(tex)
+    png.write_png(out / "terrain" / "texture.png", g8)
     log(f"  terrain: {len(chunks)} chunks, texture {tex.shape[1]} x {tex.shape[0]}")
+    # relative luminance (WCAG) of the ground as the 3D view shows it, for the HUD color check
+    v = g8[g8 > 0].astype(np.float64) / 255.0
+    lum = np.where(v <= 0.04045, v / 12.92, ((v + 0.055) / 1.055) ** 2.4)
+    p01, p50, p99 = (round(float(x), 4) for x in np.percentile(lum, [1, 50, 99]))
     return {
         "bounds_m": L.bounds(wt, wshape),
         "resolution_m": float(abs(wt.a)),
@@ -298,6 +324,15 @@ def terrain(site_dir: Path, out: Path, ctx: dict, log) -> dict:
         "scale": 0.01,
         "texture": "terrain/texture.png",
         "texture_resolution_m": 1.0,
+        "ground_tone": {
+            "p01": p01,
+            "p50": p50,
+            "p99": p99,
+            "label": "DERIVED",
+            "source": "WCAG relative luminance of the 3D view's ground texture "
+            "(25 cm orthophoto at 1 m, stretched 2 to 98%), 1st, 50th and 99th "
+            "percentiles",
+        },  # fmt: skip
         "chunks": chunks,
         "label": "DERIVED",
         "sources": ["usgs-gale-dem-1m", "usgs-gale-ortho-25cm"],
@@ -516,6 +551,7 @@ def package_site(site: str = "boxwork", log=print) -> dict:
         "eye_height_m": {"value": 1.7, "label": "PLACEHOLDER", "source": "PROMPT.md section 6"},
         "walker_model": "MODELED with PLACEHOLDER suit settings; EXTRAPOLATED to Mars gravity",
         "assumptions": assumptions(root, site_raw, ref_sol),
+        "ground_tone": ter["ground_tone"],
         "site_notes": [n for n in validation.get("site_notes", []) if n.get("site") == site],
         "validation": "validation.json",
     }

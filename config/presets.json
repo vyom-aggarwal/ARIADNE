@@ -13,6 +13,7 @@
   "shelter_max_min": {"value": 20, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9; team decision 2026-11-10: walking minutes to the rover, wherever it is on its relay schedule (terrain is not shelter)"},
   "storm_event_duration_min": {"value": 120, "label": "PLACEHOLDER", "note": "Length of a solar-particle event for storm mode doses, until Phase 6 replays the May 2024 event."},
   "storm_sample_every_min": {"value": 5, "label": "PLACEHOLDER", "note": "Storm responses are precomputed along each plan this often."},
+  "overcautious_warn_radius_m": {"value": 25, "label": "PLACEHOLDER", "note": "The HUD and tablet say \"map may be over-cautious here, check by eye\" within this distance of a slope no-go cell in a DEM seam or low-confidence zone."},
   "rover_track_step_min": {"value": 0.5, "label": "PLACEHOLDER", "note": "While the rover drives during the first leg, its position is sampled this often for the shelter check."},
   "comm_shadow_max_min": {"value": 10, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
   "buddy_max_m": {"value": 50, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
