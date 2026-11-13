@@ -2,6 +2,7 @@
 // Habitat Planner: loads one packaged site and shows the layers, the map or the 3D rehearsal,
 // the three route options and the timeline of the selected route.
 import { lazy, Suspense, useEffect, useState } from "react";
+import AssumptionsPanel from "./AssumptionsPanel";
 import LayerPanel, { type LayerState } from "./LayerPanel";
 import RouteOptions from "./RouteOptions";
 import Timeline from "./Timeline";
@@ -83,9 +84,12 @@ export default function Planner({ site = "boxwork" }: { site?: string }) {
             </Suspense>
             {plan && <Timeline plan={plan} />}
           </div>
-          {Object.keys(plans).length > 0 && (
-            <RouteOptions plans={plans} selected={preset} onSelect={setPreset} />
-          )}
+          <div className="planner-side">
+            {Object.keys(plans).length > 0 && (
+              <RouteOptions plans={plans} selected={preset} onSelect={setPreset} />
+            )}
+            <AssumptionsPanel items={manifest.assumptions ?? []} notes={manifest.site_notes ?? []} />
+          </div>
         </div>
       )}
     </section>

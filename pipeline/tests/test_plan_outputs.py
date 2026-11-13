@@ -113,3 +113,50 @@ def test_plans_carry_the_rover_relay_schedule_and_end_at_the_rover(path):
 def test_report_compares_plans_with_and_without_the_relay():
     report = (ROOT / "docs" / "plan" / "boxwork.md").read_text(encoding="utf-8")
     assert "Rover as a mobile comms relay" in report and "staging only, with relay" in report
+
+
+# --- E11 to E13: the rover is the shelter, storm mode by lowest dose, price of safety ---
+
+
+@pytest.mark.parametrize("path", PLANS, ids=lambda p: p.name)
+def test_every_sample_stays_within_the_walking_limit_to_the_rover(path):
+    plan = json.loads(path.read_text(encoding="utf-8"))
+    lim = plan["scenario"]["shelter_max_min"]
+    mins = [m["minutes_to_rover"] for m in plan["margins"]]
+    assert mins and all(x is not None and x <= lim + 1e-6 for x in mins)
+    assert max(mins) <= plan["totals"]["worst_minutes_to_shelter"] + 1e-6
+
+
+@pytest.mark.parametrize("path", PLANS, ids=lambda p: p.name)
+def test_plans_carry_storm_responses_by_lowest_dose(path):
+    plan = json.loads(path.read_text(encoding="utf-8"))
+    st = plan["storm"]
+    assert st["label"] == "MODELED"
+    assert {"event_duration_min", "rover_s"} <= set(st["placeholders"])
+    sm = st["samples"]
+    assert all(b["t_min"] > a["t_min"] for a, b in zip(sm, sm[1:], strict=False))
+    # a response at least every 5 minutes of walking (the crew stands still during a visit)
+    mg = plan["margins"]
+    service = plan["stations"][0]["service_min"] if plan["stations"] else 0.0
+    for a, b in zip(sm, sm[1:], strict=False):
+        walked = sum(
+            q["t_min"] - p["t_min"] - (service if q["station"] is not None else 0.0)
+            for p, q in zip(mg, mg[1:], strict=False)
+            if a["t_min"] <= p["t_min"] and q["t_min"] <= b["t_min"] and p["xy_m"] != q["xy_m"]
+        )
+        assert walked <= 5.0 + 0.5, (a["t_min"], b["t_min"], walked)
+    assert sm[-1]["t_min"] >= plan["totals"]["minutes"] - 5.5
+    for x in sm:
+        assert x["choice"] in {"rover", "terrain", "stay"}
+        assert x["dose"] <= x["dose_staying"] + 1e-6  # staying put is always an option
+        assert x["dose_avoided"] == pytest.approx(x["dose_staying"] - x["dose"], abs=0.011)
+        assert len(x["path_xy_m"]) >= 1
+        if x["choice"] == "rover":
+            assert x["s_dest"] == pytest.approx(st["rover_s"])
+
+
+def test_report_gives_the_price_of_safety_and_says_whether_the_presets_separate():
+    report = (ROOT / "docs" / "plan" / "boxwork.md").read_text(encoding="utf-8")
+    assert "## Price of safety" in report and "Do the presets separate?" in report
+    assert "## Storm mode along the plans" in report
+    assert "terrain shelter" not in report.lower()

@@ -51,8 +51,8 @@ def build(plan: dict, in_sight: Callable, sun: list[float] | None) -> dict:
 
 def sun_elevation(start: datetime, t_min, lon_east: float, lat_centric: float) -> list[float]:
     """Sun elevation (degrees) from Mars24 at start + t minutes, at a planetocentric latitude."""
-    from ariadne.derive.light import planetographic_latitude
     from ariadne.models import mars24
+    from ariadne.models.sun import planetographic_latitude
 
     lat = planetographic_latitude(lat_centric)
     return [
@@ -63,7 +63,7 @@ def sun_elevation(start: datetime, t_min, lon_east: float, lat_centric: float) -
 
 def ltst_start(sol_start: datetime, ltst_hours: float, lon_east: float, lat_centric: float):
     """The UTC time on a sol when local true solar time reaches `ltst_hours` (1-minute search)."""
-    from ariadne.derive.light import sun_track
+    from ariadne.models.sun import sun_track
 
     track = sun_track(sol_start, 25.0, 60.0, lon_east, lat_centric)
     lt = np.asarray(track.ltst)

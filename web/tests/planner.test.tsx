@@ -60,7 +60,7 @@ describe("route options (E7)", () => {
     const rows = within(table).getAllByRole("row");
     const names = rows.slice(1).map((r) => r.querySelector("th")?.textContent ?? "");
     for (const m of ["Duration", "Distance", "Consumables used", "Least margin",
-      "Worst time to shelter", "Relative dose", "Stations", "Science value"]) {
+      "Worst walk to the rover", "Relative dose", "Stations", "Science value"]) {
       expect(names.some((n) => n.startsWith(m))).toBe(true);
     }
     for (const row of rows.slice(1)) {

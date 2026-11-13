@@ -57,6 +57,7 @@ class Field:
     consumables: np.ndarray
     dose: np.ndarray
     pred: np.ndarray  # offset index used to reach each cell (-1 at sources and unreached)
+    tie: np.ndarray | None = None  # the tie-break value of the source each cell reached
 
 
 @dataclass
@@ -177,7 +178,7 @@ def _search(z, passable, hazard, dose, unc, res, wv, sv, offs, src, src_key, src
                 if tr >= 0:
                     hk = hmin * res * math.hypot(rr - tr, cc - tc)
                 heapq.heappush(heap, (nc + hk, tie[kk], np.int64(kk)))
-    return cost, tim, con, dos, pred
+    return cost, tim, con, dos, pred, tie
 
 
 def dijkstra(
@@ -193,7 +194,7 @@ def dijkstra(
     src = np.array(sources, dtype=np.int64).reshape(-1, 2)
     keys = np.zeros(len(src)) if source_keys is None else np.asarray(source_keys, float)
     ties = np.zeros(len(src)) if tie_break is None else np.asarray(tie_break, float)
-    cost, tim, con, dos, pred = _search(
+    cost, tim, con, dos, pred, tie = _search(
         np.ascontiguousarray(gr.z, dtype=np.float64), np.ascontiguousarray(gr.passable),
         np.ascontiguousarray(gr.hazard, dtype=np.float64),
         np.ascontiguousarray(gr.dose, dtype=np.float64),
@@ -201,7 +202,14 @@ def dijkstra(
         _suit_vec(suit), OFFSETS, src, keys, ties, reverse, float(max_cost), -1, -1, 0.0,
     )  # fmt: skip
     s = gr.z.shape
-    return Field(cost.reshape(s), tim.reshape(s), con.reshape(s), dos.reshape(s), pred.reshape(s))
+    return Field(
+        cost.reshape(s),
+        tim.reshape(s),
+        con.reshape(s),
+        dos.reshape(s),
+        pred.reshape(s),
+        tie.reshape(s),
+    )
 
 
 def min_cost_per_metre(suit: mb.Suit, w: dict) -> float:
@@ -233,7 +241,7 @@ def follow_pointers(field: Field, start) -> list[tuple[int, int]]:
 
 def astar(gr: Grid, suit: mb.Suit, w: dict, start, goal) -> Path | None:
     src = np.array([start], dtype=np.int64)
-    cost, tim, con, dos, pred = _search(
+    cost, tim, con, dos, pred, tie = _search(
         np.ascontiguousarray(gr.z, dtype=np.float64), np.ascontiguousarray(gr.passable),
         np.ascontiguousarray(gr.hazard, dtype=np.float64),
         np.ascontiguousarray(gr.dose, dtype=np.float64),
@@ -242,7 +250,8 @@ def astar(gr: Grid, suit: mb.Suit, w: dict, start, goal) -> Path | None:
         int(goal[0]), int(goal[1]), min_cost_per_metre(suit, w),
     )  # fmt: skip
     s = gr.z.shape
-    f = Field(cost.reshape(s), tim.reshape(s), con.reshape(s), dos.reshape(s), pred.reshape(s))
+    f = Field(cost.reshape(s), tim.reshape(s), con.reshape(s), dos.reshape(s), pred.reshape(s),
+              tie.reshape(s))  # fmt: skip
     r, c = goal
     if not np.isfinite(f.cost[r, c]):
         return None

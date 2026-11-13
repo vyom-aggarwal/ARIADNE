@@ -4,8 +4,14 @@
 Nodes are (transect, relay) pairs. Legs run from one transect's exit to the next transect's
 entry, or from the last transect's exit to the relay where the rover ends the EVA. The comms and
 shelter checks of a leg use the relay the rover is parked at during it; the rover changes relay
-only during the last station of a transect (relay.switch_feasible), and the thread ends at the
-rover's last relay. See docs/PROGRESS.md (rover relay plan).
+only during the last station of a transect (relay.switch_feasible) or during the first leg, and
+the thread ends at the rover's last relay. See docs/PROGRESS.md (rover relay plan).
+
+Shelter is the rover (team decision, 2026-11-10): the shelter value at a point is the walking
+time from it to the rover. While the rover is parked that is the walk to its relay; while it
+drives during a station visit, the walk from the station to the farthest point of its drive
+(switch_shelter); while it drives during the first leg, the walk to where it is at that moment,
+from rover positions sampled every half minute of the drive (moving_rover_fields).
 """
 
 from __future__ import annotations
@@ -84,7 +90,10 @@ def longest_shadow(visible: np.ndarray, t: np.ndarray) -> float:
     return float(longest)
 
 
-def leg_extras_by_relay(gr, suit, w, paths, shape, views, shelters) -> dict:
+def leg_extras_by_relay(gr, suit, w, paths, shape, views, shelters, first_leg=None) -> dict:
+    """Longest comm shadow and worst walking minutes to the rover of every leg, per relay. Legs
+    from the staging point (source 0) to a node served from another relay are walked while the
+    rover drives there, so their shelter follows the moving rover (`first_leg`)."""
     R = len(views)
     shadow = np.zeros((R,) + shape)
     shelter = np.zeros((R,) + shape)
@@ -92,7 +101,10 @@ def leg_extras_by_relay(gr, suit, w, paths, shape, views, shelters) -> dict:
         rr, cc, t = path_samples(gr, suit, w, pts)
         for r in range(R):
             shadow[(r, *key)] = longest_shadow(views[r][rr, cc], t)
-            shelter[(r, *key)] = float(shelters[r][rr, cc].max())
+            if key[0] == 0 and r > 0 and first_leg is not None and r in first_leg:
+                shelter[(r, *key)] = float(moving_shelter(rr, cc, t, first_leg[r]).max())
+            else:
+                shelter[(r, *key)] = float(shelters[r][rr, cc].max())
     return {"shadow": shadow, "shelter": shelter}
 
 
@@ -148,13 +160,81 @@ def switches(gr, nodes, rel: dict, service_min: float, antenna: float) -> np.nda
     return ok
 
 
-def relay_fields(gr, suit, cells, views, shelter_terrain, rover_ok):
+def relay_fields(gr, suit, cells, views, walk, rover_ok):
+    """Per relay: C_home to it on the preset's grid, walking minutes to it (`walk`, computed on
+    every walkable cell, since in an emergency the crew may cross any of them) and comms."""
     out = []
-    for rc, v in zip(cells, views, strict=True):
+    for rc, v, wk in zip(cells, views, walk, strict=True):
         home = g.dijkstra(gr, suit, CONSUMABLES, [rc], reverse=True).consumables
-        walk = g.dijkstra(gr, suit, TIME_ONLY, [rc], reverse=True).time
-        out.append(cs.Fields(gr, home, np.minimum(shelter_terrain, walk), v, rover_ok))
+        out.append(cs.Fields(gr, home, wk, v, rover_ok))
     return out
+
+
+def walk_fields(gr, suit, cells, rover_s: float) -> list:
+    """Walking-time fields to each relay (reversed graph, every walkable cell); each Field's
+    dose accumulates S x dt along the walk, for storm mode."""
+    return [g.dijkstra(gr, suit, TIME_ONLY, [tuple(c)], reverse=True, tie_break=[rover_s])
+            for c in cells]  # fmt: skip
+
+
+def rover_track(rel: dict, r: int, step_min: float) -> list[tuple[float, tuple[int, int]]]:
+    """(minutes since the start, cell) of the rover driving from the staging point to relay r,
+    every `step_min` minutes of the drive, ending at the relay."""
+    path = relay.drive_path(rel["times"][0], rel["cells"][r])
+    if not path:
+        return []
+    mins = rel["times"][0].minutes
+    out, nxt = [], 0.0
+    for c in path:
+        tt = float(mins[c])
+        if tt >= nxt - 1e-9:
+            out.append((tt, c))
+            nxt = tt + step_min
+    if out[-1][1] != tuple(rel["cells"][r]):
+        out.append((float(mins[rel["cells"][r]]), tuple(rel["cells"][r])))
+    return out
+
+
+def moving_rover_fields(gr, suit, rel: dict, walks: list, step_min: float = 0.5) -> dict:
+    """For each relay r the rover may drive to during the first leg: the sample times of its
+    drive and the walking-minute field to the rover at each sample."""
+    out = {}
+    for r in range(1, len(rel["cells"])):
+        track = rover_track(rel, r, step_min)
+        if not track:
+            continue
+        fields = []
+        for k, (_tt, c) in enumerate(track):
+            if k == 0:
+                fields.append(walks[0])
+            elif k == len(track) - 1:
+                fields.append(walks[r])
+            else:
+                f = g.dijkstra(gr, suit, TIME_ONLY, [c], reverse=True)
+                fields.append(f.time.astype(np.float32))
+        out[r] = (np.array([x[0] for x in track]), fields)
+    return out
+
+
+def moving_shelter(rr, cc, t, mv) -> np.ndarray:
+    """Walking minutes to the rover at each sample (rr, cc, t) of a first leg during which the
+    rover drives: the larger of the two rover samples around time t (half a minute apart), then
+    the relay's field once the rover has arrived."""
+    return np.array([cs.rover_walk_at(mv, (r, c), tt) for r, c, tt in zip(rr, cc, t, strict=True)])
+
+
+def switch_shelter(gr, suit, nodes, rel: dict) -> np.ndarray:
+    """sh[t, ra, rb]: the longest walk from transect t's last station to any point of the
+    rover's drive from relay ra to rb (the rover drives while the crew works that station)."""
+    R = len(rel["cells"])
+    sh = np.zeros((len(nodes), R, R))
+    paths = {(ra, rb): relay.drive_path(rel["times"][ra], rel["cells"][rb])
+             for ra in range(R) for rb in range(R) if ra != rb}  # fmt: skip
+    for t, nd in enumerate(nodes):
+        f = g.dijkstra(gr, suit, TIME_ONLY, [nd["points"][-1]]).time
+        for (ra, rb), path in paths.items():
+            sh[t, ra, rb] = max(float(f[c]) for c in path) if path else np.inf
+    return sh
 
 
 def pairs_for(nodes, views) -> list[tuple[int, int]]:
@@ -249,7 +329,8 @@ def usable_pairs(m, nodes, pairs, lim) -> list[tuple[int, int]]:
 
 
 def expand(m, nodes, pairs, route, fields_r):
-    """Legs, stations, per-leg fields and station info of a node route [0, ..., END]."""
+    """Legs, stations, per-leg fields and station info of a node route [0, ..., END]. Leg k
+    ends at station k; station info carries the relay the rover is parked at for it."""
     T = len(nodes)
     legs, lf, stations, info = [], [], [], []
     prev = 0
@@ -287,11 +368,28 @@ def schedule(seq, rel) -> list[dict]:
     return out
 
 
-def check(fields_r, suit, w, m, nodes, pairs, route, sc, lim, cons_total):
+def moving(seq, info, sw_shelter, mv):
+    """Where the rover drives: walking minutes to it during each station visit at which it moves
+    (None elsewhere), and its first-leg track if it drives during the first leg."""
+    visit = [None] * len(info)
+    for k in range(len(info) - 1):
+        a, b = info[k], info[k + 1]
+        if a["node"] != b["node"] and a["relay"] != b["relay"] and sw_shelter is not None:
+            visit[k] = float(sw_shelter[a["node"] - 1, a["relay"], b["relay"]])
+    first = None
+    if seq and seq[0][1] != 0 and mv is not None:
+        first = mv.get(seq[0][1])
+    return visit, first
+
+
+def check(fields_r, suit, w, m, nodes, pairs, route, sc, lim, cons_total, sw_shelter=None,
+          mv=None):  # fmt: skip
     legs, lf, stations, info, seq, r_end = expand(m, nodes, pairs, route, fields_r)
     if not legs:
         return None, legs, stations, info, seq, r_end, lf
+    visit, first = moving(seq, info, sw_shelter, mv)
     res = cs.check_route(lf[0], suit, w, legs, stations, sc["service_min"],
                          sc["service_min"] * suit.station_rate_ratio, cons_total, lim,
-                         buddy_ok=[True] * len(stations), leg_fields=lf)  # fmt: skip
+                         buddy_ok=[True] * len(stations), leg_fields=lf,
+                         visit_shelter=visit, first_leg_rover=first)  # fmt: skip
     return res, legs, stations, info, seq, r_end, lf

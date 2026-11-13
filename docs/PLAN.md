@@ -98,7 +98,7 @@ Eight derived layers turn raw data into decisions; each is computed in the build
 | Walkability | DEM, 25 cm imagery, THEMIS | Slope (Horn method), roughness of detrended elevation in a 5 m window, boulders of about 1 m and up from shadow detection, sand from the night-infrared proxy plus image texture, ridge-edge drop-offs from curvature | Classes compared with Curiosity's Navcam and Mastcam views at known positions |
 | Boxwork ridges and fractures | DEM, 25 cm imagery | Topographic position index at 5 to 20 m scales separates ridges from hollows; line detection traces the dark central fractures | Matched against ridges and hollows on Curiosity's route |
 | Radiation shielding index | DEM horizons (1 m DEM to 2 km, MOLA to about 100 km), elevation | Open-sky fraction from horizon angles in 72 azimuths, weighted toward the zenith because low-angle particles cross more atmosphere, then scaled for air column with a published dose-pressure coefficient | Must reproduce RAD's 4% drop beside the Murray Buttes cliff in September 2016, measured against the rover's positions in the weeks before and after |
-| Shelters and time-to-shelter | Shielding index, rover position, walking cost | High-shielding cells plus the rover become shelters; a cost-distance pass gives minutes-to-shelter everywhere | Route stays inside a chosen limit, because May 2024's particles reached Mars within tens of minutes |
+| Time to the rover | Rover relay schedule, walking cost | A cost-distance pass gives walking minutes to the rover for each place it parks; terrain shielding zones are mapped as information, not shelter, since terrain blocks only a few percent of the dose | Route stays inside a chosen limit, because May 2024's particles reached Mars within tens of minutes |
 | Line of sight | DEM | Viewsheds from the rover antenna and between crew helmets | Flags comm shadows behind ridges; enforces the buddy rule |
 | Light and ground temperature | DEM, Mars24 sun position, REMS, THEMIS night IR | Sun angle from the [Mars24 algorithm](https://www.giss.nasa.gov/tools/mars24/help/algorithm.html), cast shadows from horizons (including Mount Sharp's far-field horizon, which can delay sunrise), relative temperature from REMS daily curves scaled by insolation and thermal inertia | Compared with REMS ground temperature at Curiosity's position |
 | Science value | Ridge map, drill sites, CRISM, objectives | Score per station: hypothesis role, novelty, spectral context | Weights visible and editable |
@@ -132,17 +132,17 @@ Ariadne's Thread is the hard constraint behind the name. A reverse cost-distance
 C_{\text{left}}(x) - C_{\text{home}}(x) \geq C_{\text{reserve}} \quad \text{for every point } x \text{ on the route}
 ```
 
-Three more constraints ride along. The buddy rule keeps both crew within a set distance and in mutual line of sight, and plans the moments one waits while the other samples. The shelter rule keeps every point within a set time-to-shelter. The rover rule lets the rover relocate to a pickup point on its own cost surface, which moves the end of the thread and shortens the walk home.
+Three more constraints ride along. The buddy rule keeps both crew within a set distance and in mutual line of sight, and plans the moments one waits while the other samples. The shelter rule keeps every point within a set walking time of the rover, wherever it is parked. The rover rule lets the rover relocate to a pickup point on its own cost surface, which moves the end of the thread and shortens the walk home.
 
 | Planner setting | Default | Status |
 | --- | --- | --- |
 | EVA budget | 6 h plus reserve | Placeholder, editable per suit profile |
 | Return reserve | 30 min at nominal metabolic rate | Placeholder, editable |
 | Buddy separation | 50 m with line of sight | Placeholder, editable |
-| Time-to-shelter limit | 20 min | Placeholder, motivated by May 2024's tens-of-minutes particle arrival |
+| Walking time to the rover | 20 min (Safest 10) | Placeholder, motivated by May 2024's tens-of-minutes particle arrival |
 | Rover profile | Wheel slope limit and sand avoidance | Tuned to Curiosity's boxwork experience |
 
-During the walk, ARIADNE re-plans whenever actual pace drifts from the plan, a margin crosses a threshold, or an alert arrives. It drops the lowest-value stations first and shows exactly what changed. On a solar-particle alert it switches to storm mode: fastest path to the best reachable shelter, with the estimated dose avoided.
+During the walk, ARIADNE re-plans whenever actual pace drifts from the plan, a margin crosses a threshold, or an alert arrives. It drops the lowest-value stations first and shows exactly what changed. On a solar-particle alert it switches to storm mode: of the reachable refuges (the rover, the most shielded terrain, or staying put), the one with the lowest modeled dose over the event, counting the exposed walk there, with the estimated dose avoided.
 
 &#91;embedded content: EVA re-planning loop · 5 steps, 1 decision\]
 
@@ -178,7 +178,7 @@ A single scenario clock drives every condition, so the same EVA can run on today
 
 The headline demo is the May 20, 2024 replay. That day an X12-class flare's particles reached Mars within tens of minutes, and RAD recorded 8,100 micrograys, the biggest surge since landing, about 30 chest X-rays for an astronaut beside the rover ([JPL](https://www.jpl.nasa.gov/news/nasa-watches-mars-light-up-during-epic-solar-storm/)). RAD's PI added that cliffsides would provide additional shielding.
 
-In the replay, the crew is mid-EVA in the boxwork when the event begins. ARIADNE flips to storm mode, routes both crew to the best reachable shelter, and shows modeled dose with and without shelter. Every number is labeled measured or modeled, and the measured one comes from Curiosity in Gediz Vallis channel on Mount Sharp, a months-long drive from the boxwork it reached in 2025.
+In the replay, the crew is mid-EVA in the boxwork when the event begins. ARIADNE flips to storm mode, routes both crew to the refuge with the lowest modeled dose (usually the rover), and shows modeled dose with and without it. Every number is labeled measured or modeled, and the measured one comes from Curiosity in Gediz Vallis channel on Mount Sharp, a months-long drive from the boxwork it reached in 2025.
 
 DONKI's model runs already list predicted CME shock arrival times at Mars, for example a [May 2024 run](https://kauai.ccmc.gsfc.nasa.gov/DONKI/view/WSA-ENLIL/30925/1) predicting arrival on May 17. ARIADNE turns those lines into a plain banner: storm expected in N hours, keep EVAs inside the shelter limit.
 
@@ -261,7 +261,7 @@ Submit a 30-second video as the demo, with English subtitles burned in, and keep
 | 0:02 to 0:05 | Apollo 14 traverse photo, then the boxwork from orbit | "1971: two moonwalkers turned back 30 meters short of their goal. They couldn't tell where they were." |
 | 0:05 to 0:10 | Globe dives to Mount Sharp; title and tagline appear | "On Mars, Earth is up to 22 light-minutes away. ARIADNE: every Marswalk has a thread home." |
 | 0:10 to 0:20 | Layers stack up, three routes draw, first-person rehearsal past a real Curiosity photo, then the visor with the glowing thread | "Eight kinds of NASA data become one meter-scale plan, rehearsed in 3D, then guided from the visor." |
-| 0:20 to 0:27 | May 2024 storm replay: alert, storm mode, both crew rerouted to a cliff shelter | "When the real May 2024 solar storm hits, ARIADNE routes both astronauts to shelter." |
+| 0:20 to 0:27 | May 2024 storm replay: alert, storm mode, both crew rerouted to the lowest-dose refuge | "When the real May 2024 solar storm hits, ARIADNE routes both astronauts to shelter." |
 | 0:27 to 0:30 | Tagline, live link, QR code | "Any site on Mars. Every step home." |
 
 Record screen captures of the real app and real NASA imagery with credit lines. Use your own voices, and either no music or music you made yourselves; that avoids AI-watermark and copyright issues entirely.

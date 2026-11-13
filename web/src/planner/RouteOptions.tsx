@@ -19,17 +19,46 @@ const ROWS: { name: string; unit: string; value: (t: Totals) => string }[] = [
   { name: "Distance", unit: "m", value: (t) => Math.round(t.distance_m).toLocaleString("en-US") },
   { name: "Consumables used", unit: "min at nominal rate", value: (t) => t.consumables_min.toFixed(0) },
   { name: "Least margin above reserve", unit: "min", value: (t) => t.min_thread_margin_min.toFixed(1) },
-  { name: "Worst time to shelter", unit: "min", value: (t) => t.worst_minutes_to_shelter.toFixed(1) },
+  { name: "Worst walk to the rover", unit: "min", value: (t) => t.worst_minutes_to_shelter.toFixed(1) },
   { name: "Relative dose", unit: "open-sky minutes", value: (t) => t.relative_dose_min.toFixed(0) },
   { name: "Stations (transects)", unit: "", value: (t) => `${t.stations} (${t.transects})` },
   { name: "Science value", unit: "sum of station scores", value: (t) => t.science_value.toFixed(2) },
 ];
 const ROVER_SOURCE =
-  "The rover is a mobile comms relay: it parks at a relay site for each transect and moves during " +
-  "the last station of a transect; the walk ends where the rover is (PLACEHOLDER rover settings).";
+  "The rover is a mobile comms relay and the shelter: it parks at a relay site for each transect " +
+  "and moves during the last station of a transect or the first leg; the walk ends where the " +
+  "rover is (PLACEHOLDER rover settings).";
+
+export interface PriceOfSafety {
+  valueGivenUp: number;
+  shareGivenUp: number;
+  transectsGivenUp: number;
+  marginGained: number;
+  sameTransects: boolean;
+}
+
+/** What Safest gives up in science value, and gains in least thread margin, against Most science. */
+export function priceOfSafety(plans: Record<string, Plan>): PriceOfSafety | null {
+  const a = plans.safest;
+  const b = plans.most_science;
+  if (!a || !b) return null;
+  const ids = (p: Plan) => new Set(p.stations.map((s) => s.transect_source_id ?? s.transect));
+  const ta = ids(a);
+  const tb = ids(b);
+  const same = ta.size === tb.size && [...ta].every((x) => tb.has(x));
+  const given = b.totals.science_value - a.totals.science_value;
+  return {
+    valueGivenUp: given,
+    shareGivenUp: b.totals.science_value > 0 ? given / b.totals.science_value : 0,
+    transectsGivenUp: b.totals.transects - a.totals.transects,
+    marginGained: a.totals.min_thread_margin_min - b.totals.min_thread_margin_min,
+    sameTransects: same,
+  };
+}
 
 export default function RouteOptions({ plans, selected, onSelect }: Props) {
   const presets = ORDER.filter((p) => plans[p]);
+  const price = priceOfSafety(plans);
   return (
     <section className="panel route-options" aria-labelledby="routes-heading">
       <h2 id="routes-heading">Route options</h2>
@@ -93,9 +122,25 @@ export default function RouteOptions({ plans, selected, onSelect }: Props) {
           </tr>
         </tbody>
       </table>
+      {price && (
+        <p className="price-of-safety" data-testid="price-of-safety">
+          <strong>Price of safety:</strong> Safest gives up {price.valueGivenUp.toFixed(2)} of science
+          value ({(100 * price.shareGivenUp).toFixed(0)}% of Most science
+          {price.transectsGivenUp > 0
+            ? `, ${price.transectsGivenUp} transect${price.transectsGivenUp === 1 ? "" : "s"}`
+            : ""}
+          ) and gains {price.marginGained.toFixed(1)} min of least margin above its reserve.{" "}
+          {price.sameTransects
+            ? "The two visit the same transects; they differ in paths and margins only."
+            : "The two visit different transects."}{" "}
+          <LabelBadge label="MODELED" source={`${SOURCE} Most science minus Safest, from the plans above.`} />
+        </p>
+      )}
       <p className="note">
-        Reserve and shelter limits differ by preset (Safest: 45 min reserve, shelter within 10 min).
-        All settings are PLACEHOLDER; the walker model is EXTRAPOLATED to Mars gravity.
+        Reserve and walking limits to the rover differ by preset (Safest: 45 min reserve, the rover
+        within 10 min on foot; the others 30 and 20). The rover is the shelter: terrain blocks a few
+        percent of the dose at most. All settings are PLACEHOLDER; the walker model is EXTRAPOLATED
+        to Mars gravity.
       </p>
     </section>
   );

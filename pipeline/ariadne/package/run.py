@@ -133,7 +133,8 @@ def raster_layers(site_dir: Path, out: Path, cfg, derived_date: str, log) -> tup
         ("shielding", "shielding.tif", "Shielding index S", 0.8, 1.0,
          [[8, 48, 107], [66, 146, 198], [247, 251, 255]], "S (1 = open sky)", "MODELED",
          "Zenith-weighted open-sky fraction, calibrated on one RAD measurement (Murray Buttes). "
-         "Lower is better shielded."),
+         "Lower is better shielded. Information only: terrain blocks a few percent of the dose "
+         "at most, so it is not counted as shelter; the rover is the shelter."),
         ("confidence", "confidence.tif", "Confidence", 0.4, 1.0,
          [[84, 39, 143], [158, 154, 200], [242, 240, 247]], "0 to 1", "MODELED",
          "From the DEM source, distance to Curiosity's positions and model flags (seams, crop "
@@ -165,22 +166,30 @@ def raster_layers(site_dir: Path, out: Path, cfg, derived_date: str, log) -> tup
          "labels tune them.", "default_visible": False, "opacity": 0.7}
     )  # fmt: skip
     plan_dir = site_dir / "plan"
-    if (plan_dir / "shelter_minutes.tif").exists():
-        sm, st, _ = read_raster(plan_dir / "shelter_minutes.tif")
+    for lid, fname, title, desc in (
+        ("minutes_to_rover", "minutes_to_rover.tif", "Minutes to the rover at the staging point",
+         "Walking time on the walker model (PLACEHOLDER suit settings) to the rover parked at "
+         "the staging point. The rover is the shelter; the plans follow it across its relay "
+         "sites."),
+        ("minutes_to_nearest_relay", "minutes_to_nearest_relay.tif",
+         "Minutes to the nearest rover parking place",
+         "Walking time to the nearest place the rover can park on its relay schedule (the "
+         "staging point or a relay site): the outer limit of where any plan can go under a "
+         "shelter limit."),
+    ):  # fmt: skip
+        if not (plan_dir / fname).exists():
+            continue
+        sm, st, _ = read_raster(plan_dir / fname)
         stops = [[0, 109, 44], [161, 217, 155], [255, 255, 204]]
-        png.write_png(out / "layers" / "shelter_minutes.png",
-                      L.colorize_ramp(sm, 0.0, 20.0, stops, 190))  # fmt: skip
+        png.write_png(out / "layers" / f"{lid}.png", L.colorize_ramp(sm, 0.0, 20.0, stops, 190))
         entries.append(
-            {"id": "shelter_minutes", "title": "Minutes to shelter", "file":
-             "layers/shelter_minutes.png", "bounds_m": L.bounds(st, sm.shape),
-             "resolution_m": float(abs(st.a)), "sources": ["usgs-gale-dem-1m"],
-             "date": derived_date, "label": "MODELED", "group": "safety",
-             "ramp": {"min": 0, "max": 20, "stops": stops, "unit": "minutes"},
+            {"id": lid, "title": title, "file": f"layers/{lid}.png",
+             "bounds_m": L.bounds(st, sm.shape), "resolution_m": float(abs(st.a)),
+             "sources": ["usgs-gale-dem-1m"], "date": derived_date, "label": "MODELED",
+             "group": "safety", "ramp": {"min": 0, "max": 20, "stops": stops, "unit": "minutes"},
              "legend": [{"color": stops[0] + [190], "label": "0 minutes"},
                         {"color": stops[-1] + [190], "label": "20 minutes or more"}],
-             "description": "Walking time on the walker model (PLACEHOLDER suit settings) to "
-             "the nearest terrain shelter (S at most 0.95) or the rover.",
-             "default_visible": False, "opacity": 0.7}
+             "description": desc, "default_visible": False, "opacity": 0.7}
         )  # fmt: skip
     log(f"  {len(entries)} raster layers written")
     return entries, {"site_transform": t, "dem": dem}
@@ -414,6 +423,58 @@ def billboards(
     return chosen
 
 
+def assumptions(root: Path, site_raw: dict, ref_sol: int) -> list[dict]:
+    """Every PLACEHOLDER setting the plans rest on, for the planner's assumptions panel."""
+    import yaml
+
+    cfg = root / "config"
+    out = []
+
+    def add(group, key, entry, title=None):
+        if entry.get("label") != "PLACEHOLDER":
+            return
+        out.append(
+            {
+                "group": group,
+                "key": key,
+                "title": title or key.replace("_", " "),
+                "value": entry["value"],
+                "label": "PLACEHOLDER",
+                "note": entry.get("source") or entry.get("note") or "",
+            }
+        )
+
+    pr = json.loads((cfg / "presets.json").read_text(encoding="utf-8"))
+    for k, e in pr["scenario"].items():
+        add("Walk and checks", k, e)
+    for name, preset in pr["presets"].items():
+        for k, v in preset.get("limits", {}).items():
+            add("Presets", f"{name}.{k}", {"value": v, "label": "PLACEHOLDER",
+                                         "note": preset.get("note", "")},
+                f"{preset['title']}: {k.replace('_', ' ')}")  # fmt: skip
+    for k, e in json.loads((cfg / "rovers.json").read_text("utf-8"))["default"].items():
+        add("Rover", k, e)
+    for k, e in json.loads((cfg / "suits.json").read_text("utf-8"))["default"].items():
+        add("Suit and walker model", k, e)
+    dv = yaml.safe_load((cfg / "derive.yaml").read_text(encoding="utf-8"))
+    for k in ("walker_slope_deg", "rover_slope_deg", "walker_roughness_m"):
+        if k in dv.get("walkability", {}):
+            add("Terrain classes", k, dv["walkability"][k])
+    add("Placement", "staging_point", {"value": "Altadena drill position", "label":
+        "PLACEHOLDER", "note": "Where the rover parks at the start (Curiosity's position "
+        "while drilling Altadena)."})  # fmt: skip
+    add(
+        "Placement",
+        "start_time",
+        {
+            "value": f"sol {ref_sol}, 09:00 local true solar time",
+            "label": "PLACEHOLDER",
+            "note": "Used only for the sun track on the timeline.",
+        },
+    )
+    return out
+
+
 def package_site(site: str = "boxwork", log=print) -> dict:
     t0 = time.time()
     root = repo_root()
@@ -436,6 +497,9 @@ def package_site(site: str = "boxwork", log=print) -> dict:
     ter = terrain(site_dir, out, ctx, log)
     pics = billboards(root, site_dir, out, plans, log)
     t = ctx["site_transform"]
+    validation = json.loads((root / "validation.json").read_text(encoding="utf-8"))
+    (out / "validation.json").write_text(json.dumps(validation, separators=(",", ":")),
+                                         encoding="utf-8", newline="\n")  # fmt: skip
     manifest = {
         "site": site,
         "title": site_raw.get("title", site),
@@ -451,6 +515,9 @@ def package_site(site: str = "boxwork", log=print) -> dict:
         "photos": pics,
         "eye_height_m": {"value": 1.7, "label": "PLACEHOLDER", "source": "PROMPT.md section 6"},
         "walker_model": "MODELED with PLACEHOLDER suit settings; EXTRAPOLATED to Mars gravity",
+        "assumptions": assumptions(root, site_raw, ref_sol),
+        "site_notes": [n for n in validation.get("site_notes", []) if n.get("site") == site],
+        "validation": "validation.json",
     }
     (out / "manifest.json").write_text(json.dumps(manifest, indent=1) + "\n", encoding="utf-8",
                                        newline="\n")  # fmt: skip

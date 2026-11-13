@@ -1,5 +1,5 @@
 {
- "_about": "Route presets and the default scenario for the route engine (PROMPT.md 5.3 and 5.9). Every value is PLACEHOLDER unless a source is given. Weights multiply the terms of the edge cost c(e) = dt [w_t + w_m M/M_nom + w_r R + w_d D + w_u U]: R is the hazard (caution) term, the walker cost multiplier less 1, which rises through caution ground; U is 1 - confidence. Each preset's limits override the scenario's. value_weight is what one unit of objective is worth in weighted minutes when a transect is skipped. The objective 'value' maximises science value; 'transects' maximises the number of complete transects, then value. Presets set by the team on 2026-11-09.",
+ "_about": "Route presets and the default scenario for the route engine (PROMPT.md 5.3 and 5.9). Every value is PLACEHOLDER unless a source is given. Weights multiply the terms of the edge cost c(e) = dt [w_t + w_m M/M_nom + w_r R + w_d D + w_u U]: R is the hazard (caution) term, the walker cost multiplier less 1, which rises through caution ground; U is 1 - confidence. Each preset's limits override the scenario's. value_weight is what one unit of objective is worth in weighted minutes when a transect is skipped. The objective 'value' maximises science value; 'transects' maximises the number of complete transects, then value. Presets set by the team on 2026-11-09. Shelter limits are walking minutes to the rover, wherever it is parked or driving (team decision, 2026-11-10).",
  "presets": {
   "safest": {"title": "Safest", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 3.0, "dose": 1.0, "uncertainty": 3.0}, "limits": {"reserve_min": 45, "shelter_max_min": 10}, "objective": "value", "value_weight": 1000, "note": "Reserve 45 min, shelter within 10 min, caution (hazard) and uncertainty penalties three times Balanced's."},
   "balanced": {"title": "Balanced", "label": "PLACEHOLDER", "weights": {"time": 1.0, "metabolic": 0.5, "hazard": 1.0, "dose": 1.0, "uncertainty": 1.0}, "limits": {"reserve_min": 30, "shelter_max_min": 20}, "objective": "value", "value_weight": 1000, "note": "The defaults."},
@@ -10,7 +10,10 @@
   "consumables_total_min": {"value": 390, "label": "PLACEHOLDER", "source": "PROMPT.md section 2: 6 h plus the 30 min reserve, in minutes at the nominal metabolic rate"},
   "reserve_min": {"value": 30, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9: C_reserve = 30 min"},
   "service_min": {"value": 15, "label": "PLACEHOLDER", "source": "PROMPT.md 5.8: 15 min per station"},
-  "shelter_max_min": {"value": 20, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
+  "shelter_max_min": {"value": 20, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9; team decision 2026-11-10: walking minutes to the rover, wherever it is on its relay schedule (terrain is not shelter)"},
+  "storm_event_duration_min": {"value": 120, "label": "PLACEHOLDER", "note": "Length of a solar-particle event for storm mode doses, until Phase 6 replays the May 2024 event."},
+  "storm_sample_every_min": {"value": 5, "label": "PLACEHOLDER", "note": "Storm responses are precomputed along each plan this often."},
+  "rover_track_step_min": {"value": 0.5, "label": "PLACEHOLDER", "note": "While the rover drives during the first leg, its position is sampled this often for the shelter check."},
   "comm_shadow_max_min": {"value": 10, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
   "buddy_max_m": {"value": 50, "label": "PLACEHOLDER", "source": "PROMPT.md 5.9"},
   "buddy_min_m": {"value": 3, "label": "PLACEHOLDER", "note": "The overwatch point is at least this far from the station."},

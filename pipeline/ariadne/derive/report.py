@@ -204,11 +204,11 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
     if sh:
         m = sh["minutes_to_shelter"]
         lines.append(
-            f"| Terrain shelters (S ≤ 0.95, PLACEHOLDER) | {sh['shelter_area_m2']:,} m² ({_pct(sh['shelter_share'])} of the site) |"
+            f"| Terrain shielding zones (S ≤ 0.95, PLACEHOLDER; information only, not shelter) | {sh['shelter_area_m2']:,} m² ({_pct(sh['shelter_share'])} of the site) |"
         )
         if m:
             lines.append(
-                f"| Minutes to shelter or the staging point (PLACEHOLDER pace) | median {m['median']:.1f}, 95th percentile {m['p95']:.1f}, max {m['max']:.1f} |"
+                f"| Minutes to a shielding zone or the staging point (PLACEHOLDER pace; the route engine uses walking minutes to the rover) | median {m['median']:.1f}, 95th percentile {m['p95']:.1f}, max {m['max']:.1f} |"
             )
     if s["line_of_sight"]:
         lines.append(
@@ -259,7 +259,7 @@ def derived_markdown(summary: dict, calibration: dict | None) -> str:
         "- The spectral term of the science score needs CRISM summary parameters, not read yet; its weight is set aside.",
         "- Ridge thresholds are PLACEHOLDER until the hand labels arrive (`ariadne ridge-sample` builds the labeling page; `ariadne ridge-tune` tunes on one half and tests on the other).",
         "- Seams between the CCDs inside one HiRISE image are not mapped; only stereo-pair footprint edges are.",
-        "- Minutes-to-shelter uses a PLACEHOLDER pace until Phase 3 brings the NASA/TP-2010-216125 walking model.",
+        "- Terrain shielding zones block a few percent of the dose at most, so they are information only, not shelter; the rover is the shelter (team decision, 2026-11-10). Their minutes use a PLACEHOLDER pace; the route engine works out walking minutes to the rover with the walker model.",
         "",
     ]
     return "\n".join(lines)

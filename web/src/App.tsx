@@ -1,7 +1,73 @@
 // Written with AI assistance (Claude Code). See AI_USE.md.
-// The page: a short introduction and project links, then the Habitat Planner (Phase 4).
+// The page: a short introduction and project links, then the app in tabs: the Habitat Planner
+// (Phase 4) and the Validation tab (PROMPT.md section 7).
+import { type KeyboardEvent, useRef, useState } from "react";
 import { AI_USE_URL, CREDITS_URL, REPO_URL } from "./links";
 import Planner from "./planner/Planner";
+import ValidationView from "./validation/ValidationView";
+
+const TABS = [
+  { id: "planner", title: "Habitat Planner" },
+  { id: "validation", title: "Validation" },
+] as const;
+type TabId = (typeof TABS)[number]["id"];
+
+function Tabs() {
+  const [active, setActive] = useState<TabId>("planner");
+  const [seen, setSeen] = useState<Set<TabId>>(new Set(["planner"]));
+  const refs = useRef<Record<string, HTMLButtonElement | null>>({});
+  const open = (id: TabId) => {
+    setActive(id);
+    setSeen((s) => new Set(s).add(id));
+  };
+  const onKey = (e: KeyboardEvent<HTMLDivElement>) => {
+    const i = TABS.findIndex((t) => t.id === active);
+    const next =
+      e.key === "ArrowRight" ? (i + 1) % TABS.length
+      : e.key === "ArrowLeft" ? (i - 1 + TABS.length) % TABS.length
+      : e.key === "Home" ? 0
+      : e.key === "End" ? TABS.length - 1
+      : -1;
+    if (next < 0) return;
+    e.preventDefault();
+    open(TABS[next].id);
+    refs.current[TABS[next].id]?.focus();
+  };
+  return (
+    <>
+      <div className="tabs" role="tablist" aria-label="ARIADNE views" onKeyDown={onKey}>
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            ref={(el) => {
+              refs.current[t.id] = el;
+            }}
+            type="button"
+            role="tab"
+            id={`tab-${t.id}`}
+            aria-selected={active === t.id}
+            aria-controls={`panel-${t.id}`}
+            tabIndex={active === t.id ? 0 : -1}
+            onClick={() => open(t.id)}
+          >
+            {t.title}
+          </button>
+        ))}
+      </div>
+      {TABS.map((t) => (
+        <div
+          key={t.id}
+          role="tabpanel"
+          id={`panel-${t.id}`}
+          aria-labelledby={`tab-${t.id}`}
+          hidden={active !== t.id}
+        >
+          {seen.has(t.id) && (t.id === "planner" ? <Planner /> : <ValidationView />)}
+        </div>
+      ))}
+    </>
+  );
+}
 
 export default function App() {
   return (
@@ -32,7 +98,7 @@ export default function App() {
         </nav>
       </header>
       <main>
-        <Planner />
+        <Tabs />
       </main>
       <footer className="footer">
         <p>

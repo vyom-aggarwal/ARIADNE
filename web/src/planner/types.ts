@@ -1,5 +1,6 @@
 // Written with AI assistance (Claude Code). See AI_USE.md.
 // Shapes of the packaged site (written by `ariadne package`, web/public/sites/<site>/).
+import type { PlanStorm } from "../core/plan/storm";
 
 export type Label = "MEASURED" | "DERIVED" | "MODELED" | "PLACEHOLDER";
 
@@ -61,6 +62,7 @@ export interface Station {
   service_min: number;
   label: Label;
   relay?: string;
+  transect_source_id?: number;
 }
 
 export interface Leg {
@@ -86,11 +88,13 @@ export interface Plan {
   stations: Station[];
   legs: Leg[];
   margins: { t_min: number; c_left: number; c_home: number | null; c_reserve: number;
-    xy_m: [number, number] }[];
+    xy_m: [number, number]; minutes_to_rover?: number | null; leg?: number;
+    station?: number | null }[];
   checks: Record<string, string>;
   totals: Totals;
   timeline: Timeline;
   rover?: RoverPlan;
+  storm?: PlanStorm | null;
 }
 
 export interface Photo {
@@ -135,6 +139,49 @@ export interface Manifest {
   terrain: Terrain;
   photos: Photo[];
   eye_height_m: { value: number; label: Label; source: string };
+  assumptions?: Assumption[];
+  site_notes?: SiteNote[];
+  validation?: string;
+}
+
+export interface Assumption {
+  group: string;
+  key: string;
+  title: string;
+  value: number | string | number[];
+  label: Label;
+  note: string;
+}
+
+export interface SiteNote {
+  id: string;
+  site: string;
+  title: string;
+  text: string;
+  label: Label;
+  source: string;
+}
+
+export interface ValidationCheck {
+  id: string;
+  title: string;
+  status: string;
+  target?: string;
+  reference?: string;
+  label?: string;
+  note?: string;
+  reason?: string;
+  phase?: number;
+  result?: unknown;
+}
+
+export interface Validation {
+  title: string;
+  pipeline_version: string;
+  generated_utc: string;
+  note: string;
+  site_notes?: SiteNote[];
+  checks: ValidationCheck[];
 }
 
 export const PRESET_TITLES: Record<string, string> = {

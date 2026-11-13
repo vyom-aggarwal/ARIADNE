@@ -1905,6 +1905,9 @@
    "c_home": 0.0,
    "c_reserve": 30.0,
    "step_m": 0.0,
+   "minutes_to_rover": 0.0,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143368.49,
     -284510.08
@@ -1916,6 +1919,9 @@
    "c_home": 0.014,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 0.03,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143370.49,
     -284510.08
@@ -1927,6 +1933,9 @@
    "c_home": 0.052,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 0.09,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143372.49,
     -284514.08
@@ -1938,6 +1947,9 @@
    "c_home": 0.127,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 0.14,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143374.49,
     -284516.08
@@ -1949,6 +1961,9 @@
    "c_home": 0.192,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 0.19,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143376.49,
     -284518.08
@@ -1960,6 +1975,9 @@
    "c_home": 0.269,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 0.24,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143378.49,
     -284520.08
@@ -1971,6 +1989,9 @@
    "c_home": 0.318,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 0.31,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143382.49,
     -284522.08
@@ -1982,6 +2003,9 @@
    "c_home": 0.346,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 0.36,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143384.49,
     -284524.08
@@ -1993,6 +2017,9 @@
    "c_home": 0.398,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 0.43,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143388.49,
     -284526.08
@@ -2004,6 +2031,9 @@
    "c_home": 0.46,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 0.51,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143392.49,
     -284528.08
@@ -2015,6 +2045,9 @@
    "c_home": 0.612,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 0.58,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143396.49,
     -284530.74
@@ -2026,6 +2059,9 @@
    "c_home": 0.661,
    "c_reserve": 30.0,
    "step_m": 2.404,
+   "minutes_to_rover": 0.63,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143398.49,
     -284532.08
@@ -2037,6 +2073,9 @@
    "c_home": 0.715,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 0.7,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143402.49,
     -284534.08
@@ -2048,6 +2087,9 @@
    "c_home": 0.764,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 0.78,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143406.49,
     -284536.08
@@ -2059,6 +2101,9 @@
    "c_home": 0.842,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 0.85,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143410.49,
     -284538.08
@@ -2070,6 +2115,9 @@
    "c_home": 0.894,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 0.93,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143414.49,
     -284540.08
@@ -2081,6 +2129,9 @@
    "c_home": 0.98,
    "c_reserve": 30.0,
    "step_m": 4.308,
+   "minutes_to_rover": 1.0,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143418.49,
     -284541.68
@@ -2092,6 +2143,9 @@
    "c_home": 1.035,
    "c_reserve": 30.0,
    "step_m": 4.308,
+   "minutes_to_rover": 1.08,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143422.49,
     -284543.28
@@ -2103,6 +2157,9 @@
    "c_home": 1.182,
    "c_reserve": 30.0,
    "step_m": 4.308,
+   "minutes_to_rover": 1.15,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143426.49,
     -284544.88
@@ -2114,6 +2171,9 @@
    "c_home": 1.23,
    "c_reserve": 30.0,
    "step_m": 4.308,
+   "minutes_to_rover": 1.22,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143430.49,
     -284546.48
@@ -2125,6 +2185,9 @@
    "c_home": 1.347,
    "c_reserve": 30.0,
    "step_m": 4.308,
+   "minutes_to_rover": 1.29,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143434.49,
     -284548.08
@@ -2136,6 +2199,9 @@
    "c_home": 1.454,
    "c_reserve": 30.0,
    "step_m": 4.308,
+   "minutes_to_rover": 1.37,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143438.49,
     -284549.68
@@ -2147,6 +2213,9 @@
    "c_home": 1.548,
    "c_reserve": 30.0,
    "step_m": 4.308,
+   "minutes_to_rover": 1.44,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143442.49,
     -284551.28
@@ -2158,6 +2227,9 @@
    "c_home": 1.574,
    "c_reserve": 30.0,
    "step_m": 2.154,
+   "minutes_to_rover": 1.47,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143444.49,
     -284552.08
@@ -2169,6 +2241,9 @@
    "c_home": 1.708,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.56,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143448.49,
     -284554.08
@@ -2180,6 +2255,9 @@
    "c_home": 1.749,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.63,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143452.49,
     -284556.08
@@ -2191,6 +2269,9 @@
    "c_home": 1.798,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.71,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143456.49,
     -284558.08
@@ -2202,6 +2283,9 @@
    "c_home": 1.833,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.78,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143460.49,
     -284560.08
@@ -2213,6 +2297,9 @@
    "c_home": 1.859,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 1.83,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143462.49,
     -284562.08
@@ -2224,6 +2311,9 @@
    "c_home": 1.899,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.9,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143466.49,
     -284564.08
@@ -2235,6 +2325,9 @@
    "c_home": 1.913,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 1.93,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143468.49,
     -284564.08
@@ -2246,6 +2339,9 @@
    "c_home": 1.94,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.01,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143472.49,
     -284566.08
@@ -2257,6 +2353,9 @@
    "c_home": 1.971,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.08,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143476.49,
     -284568.08
@@ -2268,6 +2367,9 @@
    "c_home": 2.003,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.15,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143480.49,
     -284570.08
@@ -2279,6 +2381,9 @@
    "c_home": 2.028,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.23,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143484.49,
     -284572.08
@@ -2290,6 +2395,9 @@
    "c_home": 2.069,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.3,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143488.49,
     -284574.08
@@ -2301,6 +2409,9 @@
    "c_home": 2.097,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.38,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143492.49,
     -284576.08
@@ -2312,6 +2423,9 @@
    "c_home": 2.127,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 2.45,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143496.49,
     -284578.74
@@ -2323,6 +2437,9 @@
    "c_home": 2.146,
    "c_reserve": 30.0,
    "step_m": 2.404,
+   "minutes_to_rover": 2.5,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143498.49,
     -284580.08
@@ -2334,6 +2451,9 @@
    "c_home": 2.184,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.57,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143502.49,
     -284582.08
@@ -2345,6 +2465,9 @@
    "c_home": 2.215,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.65,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143506.49,
     -284584.08
@@ -2356,6 +2479,9 @@
    "c_home": 2.241,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.72,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143510.49,
     -284586.08
@@ -2367,6 +2493,9 @@
    "c_home": 2.271,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.8,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143514.49,
     -284588.08
@@ -2378,6 +2507,9 @@
    "c_home": 2.301,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.87,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143518.49,
     -284590.08
@@ -2389,6 +2521,9 @@
    "c_home": 2.339,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 2.95,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143522.49,
     -284592.08
@@ -2400,6 +2535,9 @@
    "c_home": 2.373,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.02,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143526.49,
     -284594.08
@@ -2411,6 +2549,9 @@
    "c_home": 2.386,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 3.05,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143528.49,
     -284594.08
@@ -2422,6 +2563,9 @@
    "c_home": 2.42,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.12,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143532.49,
     -284596.08
@@ -2433,6 +2577,9 @@
    "c_home": 2.477,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.2,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143536.49,
     -284598.08
@@ -2444,6 +2591,9 @@
    "c_home": 2.511,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.27,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143540.49,
     -284600.08
@@ -2455,6 +2605,9 @@
    "c_home": 2.551,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.35,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143544.49,
     -284602.08
@@ -2466,6 +2619,9 @@
    "c_home": 2.577,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 3.39,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143546.49,
     -284604.08
@@ -2477,6 +2633,9 @@
    "c_home": 2.596,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 3.44,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143548.49,
     -284606.08
@@ -2488,6 +2647,9 @@
    "c_home": 2.635,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.52,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143552.49,
     -284608.08
@@ -2499,6 +2661,9 @@
    "c_home": 2.663,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 3.56,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143554.49,
     -284610.08
@@ -2510,6 +2675,9 @@
    "c_home": 2.702,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.64,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143558.49,
     -284612.08
@@ -2521,6 +2689,9 @@
    "c_home": 2.751,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.71,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143562.49,
     -284614.08
@@ -2532,6 +2703,9 @@
    "c_home": 2.803,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.79,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143566.49,
     -284616.08
@@ -2543,6 +2717,9 @@
    "c_home": 2.844,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 3.86,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143570.49,
     -284618.08
@@ -2554,6 +2731,9 @@
    "c_home": 2.895,
    "c_reserve": 30.0,
    "step_m": 4.16,
+   "minutes_to_rover": 3.9,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143574.49,
     -284616.94
@@ -2565,6 +2745,9 @@
    "c_home": 2.923,
    "c_reserve": 30.0,
    "step_m": 4.16,
+   "minutes_to_rover": 3.97,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143578.49,
     -284615.8
@@ -2576,6 +2759,9 @@
    "c_home": 2.953,
    "c_reserve": 30.0,
    "step_m": 4.16,
+   "minutes_to_rover": 4.03,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143582.49,
     -284614.66
@@ -2587,6 +2773,9 @@
    "c_home": 2.989,
    "c_reserve": 30.0,
    "step_m": 4.08,
+   "minutes_to_rover": 4.09,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143586.49,
     -284614.08
@@ -2598,6 +2787,9 @@
    "c_home": 3.018,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 4.16,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143590.49,
     -284614.08
@@ -2609,6 +2801,9 @@
    "c_home": 3.047,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.21,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143594.49,
     -284612.08
@@ -2620,6 +2815,9 @@
    "c_home": 3.087,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.29,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143598.49,
     -284610.08
@@ -2631,6 +2829,9 @@
    "c_home": 3.133,
    "c_reserve": 30.0,
    "step_m": 4.216,
+   "minutes_to_rover": 4.36,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143602.49,
     -284608.74
@@ -2642,6 +2843,9 @@
    "c_home": 3.155,
    "c_reserve": 30.0,
    "step_m": 2.108,
+   "minutes_to_rover": 4.39,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143604.49,
     -284608.08
@@ -2653,6 +2857,9 @@
    "c_home": 3.191,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.45,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143608.49,
     -284610.08
@@ -2664,6 +2871,9 @@
    "c_home": 3.232,
    "c_reserve": 30.0,
    "step_m": 4.041,
+   "minutes_to_rover": 4.52,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143612.49,
     -284610.66
@@ -2675,6 +2885,9 @@
    "c_home": 3.317,
    "c_reserve": 30.0,
    "step_m": 4.041,
+   "minutes_to_rover": 4.58,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143616.49,
     -284611.22
@@ -2686,6 +2899,9 @@
    "c_home": 3.359,
    "c_reserve": 30.0,
    "step_m": 4.041,
+   "minutes_to_rover": 4.65,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143620.49,
     -284611.8
@@ -2697,6 +2913,9 @@
    "c_home": 3.399,
    "c_reserve": 30.0,
    "step_m": 2.02,
+   "minutes_to_rover": 4.68,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143622.49,
     -284612.08
@@ -2708,6 +2927,9 @@
    "c_home": 3.457,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.75,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143626.49,
     -284614.08
@@ -2719,6 +2941,9 @@
    "c_home": 3.505,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.83,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143630.49,
     -284616.08
@@ -2730,6 +2955,9 @@
    "c_home": 3.554,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.9,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143634.49,
     -284618.08
@@ -2741,6 +2969,9 @@
    "c_home": 3.567,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 4.93,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143636.49,
     -284618.08
@@ -2752,6 +2983,9 @@
    "c_home": 3.602,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.01,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143640.49,
     -284620.08
@@ -2763,6 +2997,9 @@
    "c_home": 3.644,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.08,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143644.49,
     -284622.08
@@ -2774,6 +3011,9 @@
    "c_home": 3.675,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 5.15,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143648.49,
     -284622.08
@@ -2785,6 +3025,9 @@
    "c_home": 3.692,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 5.18,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143650.49,
     -284622.08
@@ -2796,6 +3039,9 @@
    "c_home": 3.732,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.26,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143654.49,
     -284624.08
@@ -2807,6 +3053,9 @@
    "c_home": 3.754,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 5.3,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143656.49,
     -284626.08
@@ -2818,6 +3067,9 @@
    "c_home": 3.788,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.35,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143658.49,
     -284630.08
@@ -2829,6 +3081,9 @@
    "c_home": 3.827,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.42,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143662.49,
     -284632.08
@@ -2840,6 +3095,9 @@
    "c_home": 3.854,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 5.46,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143664.49,
     -284634.08
@@ -2851,6 +3109,9 @@
    "c_home": 3.889,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.54,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143668.49,
     -284636.08
@@ -2862,6 +3123,9 @@
    "c_home": 3.907,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 5.59,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143670.49,
     -284638.08
@@ -2873,6 +3137,9 @@
    "c_home": 3.976,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.66,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143674.49,
     -284640.08
@@ -2884,6 +3151,9 @@
    "c_home": 4.018,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.73,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143676.49,
     -284644.08
@@ -2895,6 +3165,9 @@
    "c_home": 4.076,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 5.8,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143680.49,
     -284647.08
@@ -2906,6 +3179,9 @@
    "c_home": 4.106,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 5.9,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143684.49,
     -284650.08
@@ -2917,6 +3193,9 @@
    "c_home": 4.135,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.97,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143688.49,
     -284652.08
@@ -2928,6 +3207,9 @@
    "c_home": 4.155,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.04,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143692.49,
     -284654.08
@@ -2939,6 +3221,9 @@
    "c_home": 4.214,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.12,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143696.49,
     -284652.08
@@ -2950,6 +3235,9 @@
    "c_home": 4.247,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 6.19,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143700.49,
     -284652.08
@@ -2961,6 +3249,9 @@
    "c_home": 4.286,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.26,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143704.49,
     -284654.08
@@ -2972,6 +3263,9 @@
    "c_home": 4.396,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.33,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143708.49,
     -284656.08
@@ -2983,6 +3277,9 @@
    "c_home": 4.427,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.41,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143712.49,
     -284658.08
@@ -2994,6 +3291,9 @@
    "c_home": 4.455,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 6.48,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143716.49,
     -284659.2
@@ -3005,6 +3305,9 @@
    "c_home": 4.487,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 6.55,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143720.49,
     -284660.32
@@ -3016,6 +3319,9 @@
    "c_home": 4.518,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 6.62,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143724.49,
     -284661.44
@@ -3027,6 +3333,9 @@
    "c_home": 4.563,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 6.69,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143728.49,
     -284662.56
@@ -3038,6 +3347,9 @@
    "c_home": 4.591,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 6.76,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143732.49,
     -284663.68
@@ -3049,6 +3361,9 @@
    "c_home": 4.622,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 6.83,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143736.49,
     -284664.8
@@ -3060,6 +3375,9 @@
    "c_home": 4.641,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 6.9,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143740.49,
     -284665.92
@@ -3071,6 +3389,9 @@
    "c_home": 4.672,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 6.97,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143744.49,
     -284667.04
@@ -3082,6 +3403,9 @@
    "c_home": 4.701,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 7.04,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143748.49,
     -284668.16
@@ -3093,6 +3417,9 @@
    "c_home": 4.74,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 7.12,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143752.49,
     -284669.28
@@ -3104,6 +3431,9 @@
    "c_home": 4.772,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 7.19,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143756.49,
     -284670.4
@@ -3115,6 +3445,9 @@
    "c_home": 4.801,
    "c_reserve": 30.0,
    "step_m": 4.154,
+   "minutes_to_rover": 7.26,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143760.49,
     -284671.52
@@ -3126,6 +3459,9 @@
    "c_home": 4.823,
    "c_reserve": 30.0,
    "step_m": 2.077,
+   "minutes_to_rover": 7.29,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143762.49,
     -284672.08
@@ -3137,6 +3473,9 @@
    "c_home": 4.867,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.37,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143766.49,
     -284674.08
@@ -3148,6 +3487,9 @@
    "c_home": 4.91,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.44,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143770.49,
     -284676.08
@@ -3159,6 +3501,9 @@
    "c_home": 4.948,
    "c_reserve": 30.0,
    "step_m": 4.216,
+   "minutes_to_rover": 7.52,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143774.49,
     -284677.42
@@ -3170,6 +3515,9 @@
    "c_home": 4.99,
    "c_reserve": 30.0,
    "step_m": 4.216,
+   "minutes_to_rover": 7.58,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143778.49,
     -284678.74
@@ -3181,6 +3529,9 @@
    "c_home": 5.02,
    "c_reserve": 30.0,
    "step_m": 4.216,
+   "minutes_to_rover": 7.66,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143782.49,
     -284680.08
@@ -3192,6 +3543,9 @@
    "c_home": 5.048,
    "c_reserve": 30.0,
    "step_m": 4.216,
+   "minutes_to_rover": 7.73,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143786.49,
     -284681.42
@@ -3203,6 +3557,9 @@
    "c_home": 5.084,
    "c_reserve": 30.0,
    "step_m": 4.108,
+   "minutes_to_rover": 7.8,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143790.49,
     -284682.08
@@ -3214,6 +3571,9 @@
    "c_home": 5.14,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 7.9,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143795.49,
     -284682.08
@@ -3225,6 +3585,9 @@
    "c_home": 5.14,
    "c_reserve": 30.0,
    "step_m": 1.0,
+   "minutes_to_rover": 7.9,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143796.49,
     -284682.08
@@ -3236,6 +3599,9 @@
    "c_home": 5.186,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.96,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143800.49,
     -284680.08
@@ -3247,6 +3613,9 @@
    "c_home": 5.222,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.03,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143804.49,
     -284682.08
@@ -3258,6 +3627,9 @@
    "c_home": 5.25,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 8.1,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143809.49,
     -284682.08
@@ -3269,6 +3641,9 @@
    "c_home": 5.286,
    "c_reserve": 30.0,
    "step_m": 3.0,
+   "minutes_to_rover": 8.17,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143812.49,
     -284682.08
@@ -3280,6 +3655,9 @@
    "c_home": 5.319,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.24,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143816.49,
     -284684.08
@@ -3291,6 +3669,9 @@
    "c_home": 5.36,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.32,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143820.49,
     -284686.08
@@ -3302,6 +3683,9 @@
    "c_home": 5.395,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.39,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143824.49,
     -284688.08
@@ -3313,6 +3697,9 @@
    "c_home": 5.427,
    "c_reserve": 30.0,
    "step_m": 4.031,
+   "minutes_to_rover": 8.46,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143828.49,
     -284687.58
@@ -3324,6 +3711,9 @@
    "c_home": 5.519,
    "c_reserve": 30.0,
    "step_m": 4.031,
+   "minutes_to_rover": 8.53,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143832.49,
     -284687.08
@@ -3335,6 +3725,9 @@
    "c_home": 5.591,
    "c_reserve": 30.0,
    "step_m": 4.031,
+   "minutes_to_rover": 8.6,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143836.49,
     -284686.58
@@ -3346,6 +3739,9 @@
    "c_home": 5.62,
    "c_reserve": 30.0,
    "step_m": 4.031,
+   "minutes_to_rover": 8.66,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143840.49,
     -284686.08
@@ -3357,6 +3753,9 @@
    "c_home": 5.663,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.74,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143842.49,
     -284690.08
@@ -3368,6 +3767,9 @@
    "c_home": 5.721,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.8,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143846.49,
     -284692.08
@@ -3379,6 +3781,9 @@
    "c_home": 5.754,
    "c_reserve": 30.0,
    "step_m": 4.216,
+   "minutes_to_rover": 8.87,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143850.49,
     -284693.42
@@ -3390,6 +3795,9 @@
    "c_home": 5.773,
    "c_reserve": 30.0,
    "step_m": 2.108,
+   "minutes_to_rover": 8.9,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143852.49,
     -284694.08
@@ -3401,6 +3809,9 @@
    "c_home": 5.818,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.98,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143856.49,
     -284696.08
@@ -3412,6 +3823,9 @@
    "c_home": 5.863,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.05,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143860.49,
     -284698.08
@@ -3423,6 +3837,9 @@
    "c_home": 5.901,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.12,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143864.49,
     -284700.08
@@ -3434,6 +3851,9 @@
    "c_home": 5.927,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 9.19,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143868.49,
     -284700.08
@@ -3445,6 +3865,9 @@
    "c_home": 5.955,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.24,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143872.49,
     -284698.08
@@ -3456,6 +3879,9 @@
    "c_home": 5.983,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.31,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143876.49,
     -284696.08
@@ -3467,6 +3893,9 @@
    "c_home": 6.026,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 9.38,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143880.49,
     -284696.08
@@ -3478,6 +3907,9 @@
    "c_home": 6.062,
    "c_reserve": 30.0,
    "step_m": 4.041,
+   "minutes_to_rover": 9.44,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143881.07,
     -284700.08
@@ -3489,6 +3921,9 @@
    "c_home": 6.09,
    "c_reserve": 30.0,
    "step_m": 4.041,
+   "minutes_to_rover": 9.52,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143881.63,
     -284704.08
@@ -3500,6 +3935,9 @@
    "c_home": 6.116,
    "c_reserve": 30.0,
    "step_m": 4.041,
+   "minutes_to_rover": 9.58,
+   "leg": 0,
+   "station": null,
    "xy_m": [
     8143882.21,
     -284708.08
@@ -3511,6 +3949,9 @@
    "c_home": 6.129,
    "c_reserve": 30.0,
    "step_m": 2.02,
+   "minutes_to_rover": 9.59,
+   "leg": 0,
+   "station": 0,
    "xy_m": [
     8143882.49,
     -284710.08
@@ -3522,6 +3963,9 @@
    "c_home": 6.116,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 9.58,
+   "leg": 1,
+   "station": 1,
    "xy_m": [
     8143882.49,
     -284708.08
@@ -3533,6 +3977,9 @@
    "c_home": 6.115,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.57,
+   "leg": 2,
+   "station": null,
    "xy_m": [
     8143886.49,
     -284706.08
@@ -3544,6 +3991,9 @@
    "c_home": 12.222,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.21,
+   "leg": 2,
+   "station": 2,
    "xy_m": [
     8143890.49,
     -284704.08
@@ -3555,6 +4005,9 @@
    "c_home": 12.213,
    "c_reserve": 30.0,
    "step_m": 4.109,
+   "minutes_to_rover": 15.21,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143887.69,
     -284707.08
@@ -3566,6 +4019,9 @@
    "c_home": 12.223,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 15.25,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143885.29,
     -284710.08
@@ -3577,6 +4033,9 @@
    "c_home": 12.245,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 15.29,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143882.89,
     -284713.08
@@ -3588,6 +4047,9 @@
    "c_home": 12.259,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 15.25,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143880.49,
     -284716.08
@@ -3599,6 +4061,9 @@
    "c_home": 12.227,
    "c_reserve": 30.0,
    "step_m": 4.078,
+   "minutes_to_rover": 15.21,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143877.73,
     -284719.08
@@ -3610,6 +4075,9 @@
    "c_home": 12.17,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 15.13,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143874.73,
     -284723.08
@@ -3621,6 +4089,9 @@
    "c_home": 12.185,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 15.12,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143871.73,
     -284727.08
@@ -3632,6 +4103,9 @@
    "c_home": 12.19,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 15.12,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143868.73,
     -284731.08
@@ -3643,6 +4117,9 @@
    "c_home": 12.207,
    "c_reserve": 30.0,
    "step_m": 3.75,
+   "minutes_to_rover": 15.13,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143866.49,
     -284734.08
@@ -3654,6 +4131,9 @@
    "c_home": 12.183,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.16,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143864.49,
     -284738.08
@@ -3665,6 +4145,9 @@
    "c_home": 12.137,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.17,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143862.49,
     -284742.08
@@ -3676,6 +4159,9 @@
    "c_home": 12.142,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.17,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143860.49,
     -284746.08
@@ -3687,6 +4173,9 @@
    "c_home": 12.124,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.18,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143858.49,
     -284750.08
@@ -3698,6 +4187,9 @@
    "c_home": 12.099,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.15,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143854.49,
     -284752.08
@@ -3709,6 +4201,9 @@
    "c_home": 12.088,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.14,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143852.49,
     -284754.08
@@ -3720,6 +4215,9 @@
    "c_home": 12.093,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.16,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143850.49,
     -284758.08
@@ -3731,6 +4229,9 @@
    "c_home": 12.08,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.15,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143848.49,
     -284760.08
@@ -3742,6 +4243,9 @@
    "c_home": 12.07,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.11,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143844.49,
     -284762.08
@@ -3753,6 +4257,9 @@
    "c_home": 12.071,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.11,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143842.49,
     -284764.08
@@ -3764,6 +4271,9 @@
    "c_home": 12.041,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.12,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143840.49,
     -284766.08
@@ -3775,6 +4285,9 @@
    "c_home": 12.017,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.12,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143838.49,
     -284768.08
@@ -3786,6 +4299,9 @@
    "c_home": 12.013,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.11,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143836.49,
     -284770.08
@@ -3797,6 +4313,9 @@
    "c_home": 12.031,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.12,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143834.49,
     -284772.08
@@ -3808,6 +4327,9 @@
    "c_home": 12.059,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.2,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143830.49,
     -284774.08
@@ -3819,6 +4341,9 @@
    "c_home": 12.091,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.27,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143826.49,
     -284776.08
@@ -3830,6 +4355,9 @@
    "c_home": 12.119,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.35,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143822.49,
     -284778.08
@@ -3841,6 +4369,9 @@
    "c_home": 12.163,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.42,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143818.49,
     -284780.08
@@ -3852,6 +4383,9 @@
    "c_home": 12.192,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.5,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143814.49,
     -284782.08
@@ -3863,6 +4397,9 @@
    "c_home": 12.234,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.57,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143812.49,
     -284786.08
@@ -3874,6 +4411,9 @@
    "c_home": 12.256,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.61,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143810.49,
     -284788.08
@@ -3885,6 +4425,9 @@
    "c_home": 12.285,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.69,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143806.49,
     -284790.08
@@ -3896,6 +4439,9 @@
    "c_home": 12.309,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.73,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143804.49,
     -284792.08
@@ -3907,6 +4453,9 @@
    "c_home": 12.362,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.76,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143800.49,
     -284794.08
@@ -3918,6 +4467,9 @@
    "c_home": 12.387,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.71,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143798.49,
     -284796.08
@@ -3929,6 +4481,9 @@
    "c_home": 12.438,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.63,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143794.49,
     -284798.08
@@ -3940,6 +4495,9 @@
    "c_home": 12.459,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.59,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143792.49,
     -284800.08
@@ -3951,6 +4509,9 @@
    "c_home": 12.379,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.51,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143788.49,
     -284802.08
@@ -3962,6 +4523,9 @@
    "c_home": 12.142,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.36,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143784.49,
     -284804.08
@@ -3973,6 +4537,9 @@
    "c_home": 12.128,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 15.36,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143782.49,
     -284806.08
@@ -3984,6 +4551,9 @@
    "c_home": 12.13,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.39,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143778.49,
     -284808.08
@@ -3995,6 +4565,9 @@
    "c_home": 12.179,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.47,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143776.49,
     -284812.08
@@ -4006,6 +4579,9 @@
    "c_home": 12.215,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.47,
+   "leg": 3,
+   "station": null,
    "xy_m": [
     8143772.49,
     -284814.08
@@ -4017,6 +4593,9 @@
    "c_home": 12.239,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.44,
+   "leg": 3,
+   "station": 3,
    "xy_m": [
     8143768.49,
     -284816.08
@@ -4028,6 +4607,9 @@
    "c_home": 12.239,
    "c_reserve": 30.0,
    "step_m": 0.0,
+   "minutes_to_rover": 15.44,
+   "leg": 4,
+   "station": 4,
    "xy_m": [
     8143768.49,
     -284816.08
@@ -4039,6 +4621,9 @@
    "c_home": 12.173,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 15.39,
+   "leg": 5,
+   "station": 5,
    "xy_m": [
     8143770.49,
     -284820.08
@@ -4050,6 +4635,9 @@
    "c_home": 5.406,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.96,
+   "leg": 6,
+   "station": null,
    "xy_m": [
     8143768.49,
     -284824.08
@@ -4061,6 +4649,9 @@
    "c_home": 5.28,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.96,
+   "leg": 6,
+   "station": null,
    "xy_m": [
     8143770.49,
     -284828.08
@@ -4072,6 +4663,9 @@
    "c_home": 5.268,
    "c_reserve": 30.0,
    "step_m": 4.055,
+   "minutes_to_rover": 8.98,
+   "leg": 6,
+   "station": null,
    "xy_m": [
     8143769.83,
     -284832.08
@@ -4083,6 +4677,9 @@
    "c_home": 5.298,
    "c_reserve": 30.0,
    "step_m": 4.055,
+   "minutes_to_rover": 9.06,
+   "leg": 6,
+   "station": null,
    "xy_m": [
     8143769.15,
     -284836.08
@@ -4094,6 +4691,9 @@
    "c_home": 5.339,
    "c_reserve": 30.0,
    "step_m": 4.055,
+   "minutes_to_rover": 9.13,
+   "leg": 6,
+   "station": null,
    "xy_m": [
     8143768.49,
     -284840.08
@@ -4105,6 +4705,9 @@
    "c_home": 5.382,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 9.11,
+   "leg": 6,
+   "station": 6,
    "xy_m": [
     8143764.49,
     -284840.08
@@ -4116,6 +4719,9 @@
    "c_home": 5.364,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 9.09,
+   "leg": 7,
+   "station": 7,
    "xy_m": [
     8143766.49,
     -284840.08
@@ -4127,6 +4733,9 @@
    "c_home": 5.377,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.16,
+   "leg": 8,
+   "station": 8,
    "xy_m": [
     8143770.49,
     -284842.08
@@ -4138,6 +4747,9 @@
    "c_home": 5.36,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 9.13,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143770.49,
     -284840.08
@@ -4149,6 +4761,9 @@
    "c_home": 5.321,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.06,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143772.49,
     -284836.08
@@ -4160,6 +4775,9 @@
    "c_home": 5.268,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.98,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143770.49,
     -284832.08
@@ -4171,6 +4789,9 @@
    "c_home": 5.201,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 8.92,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143768.49,
     -284830.08
@@ -4182,6 +4803,9 @@
    "c_home": 5.168,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.84,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143764.49,
     -284828.08
@@ -4193,6 +4817,9 @@
    "c_home": 5.139,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 8.78,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143759.49,
     -284828.08
@@ -4204,6 +4831,9 @@
    "c_home": 5.089,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 8.68,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143754.49,
     -284828.08
@@ -4215,6 +4845,9 @@
    "c_home": 5.038,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.6,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143750.49,
     -284826.08
@@ -4226,6 +4859,9 @@
    "c_home": 4.994,
    "c_reserve": 30.0,
    "step_m": 4.014,
+   "minutes_to_rover": 8.55,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143747.49,
     -284823.42
@@ -4237,6 +4873,9 @@
    "c_home": 4.964,
    "c_reserve": 30.0,
    "step_m": 4.014,
+   "minutes_to_rover": 8.45,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143744.49,
     -284820.74
@@ -4248,6 +4887,9 @@
    "c_home": 4.945,
    "c_reserve": 30.0,
    "step_m": 4.014,
+   "minutes_to_rover": 8.39,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143741.49,
     -284818.08
@@ -4259,6 +4901,9 @@
    "c_home": 4.928,
    "c_reserve": 30.0,
    "step_m": 4.014,
+   "minutes_to_rover": 8.34,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143738.49,
     -284815.42
@@ -4270,6 +4915,9 @@
    "c_home": 4.873,
    "c_reserve": 30.0,
    "step_m": 4.014,
+   "minutes_to_rover": 8.26,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143735.49,
     -284812.74
@@ -4281,6 +4929,9 @@
    "c_home": 4.847,
    "c_reserve": 30.0,
    "step_m": 4.014,
+   "minutes_to_rover": 8.19,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143732.49,
     -284810.08
@@ -4292,6 +4943,9 @@
    "c_home": 4.845,
    "c_reserve": 30.0,
    "step_m": 4.146,
+   "minutes_to_rover": 8.12,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143728.49,
     -284808.98
@@ -4303,6 +4957,9 @@
    "c_home": 4.853,
    "c_reserve": 30.0,
    "step_m": 4.146,
+   "minutes_to_rover": 8.05,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143724.49,
     -284807.9
@@ -4314,6 +4971,9 @@
    "c_home": 4.873,
    "c_reserve": 30.0,
    "step_m": 4.146,
+   "minutes_to_rover": 7.97,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143720.49,
     -284806.8
@@ -4325,6 +4985,9 @@
    "c_home": 4.916,
    "c_reserve": 30.0,
    "step_m": 4.146,
+   "minutes_to_rover": 7.91,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143716.49,
     -284805.72
@@ -4336,6 +4999,9 @@
    "c_home": 4.904,
    "c_reserve": 30.0,
    "step_m": 4.146,
+   "minutes_to_rover": 7.83,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143712.49,
     -284804.62
@@ -4347,6 +5013,9 @@
    "c_home": 4.909,
    "c_reserve": 30.0,
    "step_m": 2.073,
+   "minutes_to_rover": 7.8,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143710.49,
     -284804.08
@@ -4358,6 +5027,9 @@
    "c_home": 4.971,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.73,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143706.49,
     -284802.08
@@ -4369,6 +5041,9 @@
    "c_home": 4.877,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.65,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143702.49,
     -284800.08
@@ -4380,6 +5055,9 @@
    "c_home": 4.805,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.58,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143698.49,
     -284798.08
@@ -4391,6 +5069,9 @@
    "c_home": 4.71,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.5,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143694.49,
     -284796.08
@@ -4402,6 +5083,9 @@
    "c_home": 4.68,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.43,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143690.49,
     -284794.08
@@ -4413,6 +5097,9 @@
    "c_home": 4.66,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 7.38,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143688.49,
     -284792.08
@@ -4424,6 +5111,9 @@
    "c_home": 4.557,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.31,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143684.49,
     -284790.08
@@ -4435,6 +5125,9 @@
    "c_home": 4.454,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.23,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143682.49,
     -284786.08
@@ -4446,6 +5139,9 @@
    "c_home": 4.322,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.15,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143678.49,
     -284784.08
@@ -4457,6 +5153,9 @@
    "c_home": 4.304,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 7.12,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143676.49,
     -284784.08
@@ -4468,6 +5167,9 @@
    "c_home": 4.28,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.04,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143672.49,
     -284782.08
@@ -4479,6 +5181,9 @@
    "c_home": 4.254,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 6.97,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143668.49,
     -284779.42
@@ -4490,6 +5195,9 @@
    "c_home": 4.246,
    "c_reserve": 30.0,
    "step_m": 2.404,
+   "minutes_to_rover": 6.92,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143666.49,
     -284778.08
@@ -4501,6 +5209,9 @@
    "c_home": 4.148,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.84,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143664.49,
     -284774.08
@@ -4512,6 +5223,9 @@
    "c_home": 4.12,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.77,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143662.49,
     -284770.08
@@ -4523,6 +5237,9 @@
    "c_home": 4.056,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 6.7,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143662.49,
     -284765.08
@@ -4534,6 +5251,9 @@
    "c_home": 4.034,
    "c_reserve": 30.0,
    "step_m": 1.0,
+   "minutes_to_rover": 6.67,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143662.49,
     -284764.08
@@ -4545,6 +5265,9 @@
    "c_home": 3.976,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.6,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143660.49,
     -284760.08
@@ -4556,6 +5279,9 @@
    "c_home": 3.947,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 6.52,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143656.49,
     -284757.42
@@ -4567,6 +5293,9 @@
    "c_home": 3.909,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 6.43,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143652.49,
     -284754.74
@@ -4578,6 +5307,9 @@
    "c_home": 3.877,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 6.35,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143648.49,
     -284752.08
@@ -4589,6 +5321,9 @@
    "c_home": 3.831,
    "c_reserve": 30.0,
    "step_m": 4.607,
+   "minutes_to_rover": 6.28,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143646.21,
     -284748.08
@@ -4600,6 +5335,9 @@
    "c_home": 3.79,
    "c_reserve": 30.0,
    "step_m": 4.607,
+   "minutes_to_rover": 6.2,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143643.91,
     -284744.08
@@ -4611,6 +5349,9 @@
    "c_home": 3.744,
    "c_reserve": 30.0,
    "step_m": 4.607,
+   "minutes_to_rover": 6.13,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143641.63,
     -284740.08
@@ -4622,6 +5363,9 @@
    "c_home": 3.721,
    "c_reserve": 30.0,
    "step_m": 2.304,
+   "minutes_to_rover": 6.08,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143640.49,
     -284738.08
@@ -4633,6 +5377,9 @@
    "c_home": 3.693,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.01,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143638.49,
     -284734.08
@@ -4644,6 +5391,9 @@
    "c_home": 3.661,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.93,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143636.49,
     -284730.08
@@ -4655,6 +5405,9 @@
    "c_home": 3.633,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.86,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143634.49,
     -284726.08
@@ -4666,6 +5419,9 @@
    "c_home": 3.612,
    "c_reserve": 30.0,
    "step_m": 4.631,
+   "minutes_to_rover": 5.78,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143632.15,
     -284722.08
@@ -4677,6 +5433,9 @@
    "c_home": 3.575,
    "c_reserve": 30.0,
    "step_m": 4.631,
+   "minutes_to_rover": 5.71,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143629.83,
     -284718.08
@@ -4688,6 +5447,9 @@
    "c_home": 3.529,
    "c_reserve": 30.0,
    "step_m": 4.631,
+   "minutes_to_rover": 5.63,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143627.49,
     -284714.08
@@ -4699,6 +5461,9 @@
    "c_home": 3.495,
    "c_reserve": 30.0,
    "step_m": 4.631,
+   "minutes_to_rover": 5.54,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143625.15,
     -284710.08
@@ -4710,6 +5475,9 @@
    "c_home": 3.465,
    "c_reserve": 30.0,
    "step_m": 4.631,
+   "minutes_to_rover": 5.47,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143622.83,
     -284706.08
@@ -4721,6 +5489,9 @@
    "c_home": 3.431,
    "c_reserve": 30.0,
    "step_m": 4.631,
+   "minutes_to_rover": 5.39,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143620.49,
     -284702.08
@@ -4732,6 +5503,9 @@
    "c_home": 3.4,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.32,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143618.49,
     -284698.08
@@ -4743,6 +5517,9 @@
    "c_home": 3.371,
    "c_reserve": 30.0,
    "step_m": 4.916,
+   "minutes_to_rover": 5.24,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143614.49,
     -284695.22
@@ -4754,6 +5531,9 @@
    "c_home": 3.335,
    "c_reserve": 30.0,
    "step_m": 4.916,
+   "minutes_to_rover": 5.15,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143610.49,
     -284692.36
@@ -4765,6 +5545,9 @@
    "c_home": 3.309,
    "c_reserve": 30.0,
    "step_m": 4.916,
+   "minutes_to_rover": 5.07,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143606.49,
     -284689.5
@@ -4776,6 +5559,9 @@
    "c_home": 3.27,
    "c_reserve": 30.0,
    "step_m": 4.916,
+   "minutes_to_rover": 4.98,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143602.49,
     -284686.66
@@ -4787,6 +5573,9 @@
    "c_home": 3.245,
    "c_reserve": 30.0,
    "step_m": 4.916,
+   "minutes_to_rover": 4.9,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143598.49,
     -284683.8
@@ -4798,6 +5587,9 @@
    "c_home": 3.174,
    "c_reserve": 30.0,
    "step_m": 4.916,
+   "minutes_to_rover": 4.81,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143594.49,
     -284680.94
@@ -4809,6 +5601,9 @@
    "c_home": 3.123,
    "c_reserve": 30.0,
    "step_m": 4.916,
+   "minutes_to_rover": 4.74,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143590.49,
     -284678.08
@@ -4820,6 +5615,9 @@
    "c_home": 3.094,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.68,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143586.49,
     -284677.5
@@ -4831,6 +5629,9 @@
    "c_home": 3.065,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.61,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143582.49,
     -284676.9
@@ -4842,6 +5643,9 @@
    "c_home": 3.047,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.55,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143578.49,
     -284676.32
@@ -4853,6 +5657,9 @@
    "c_home": 3.03,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.5,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143574.49,
     -284675.72
@@ -4864,6 +5671,9 @@
    "c_home": 3.011,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.46,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143570.49,
     -284675.14
@@ -4875,6 +5685,9 @@
    "c_home": 2.987,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.4,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143566.49,
     -284674.56
@@ -4886,6 +5699,9 @@
    "c_home": 2.987,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.37,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143562.49,
     -284673.96
@@ -4897,6 +5713,9 @@
    "c_home": 2.963,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.32,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143558.49,
     -284673.38
@@ -4908,6 +5727,9 @@
    "c_home": 2.94,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.24,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143554.49,
     -284672.78
@@ -4919,6 +5741,9 @@
    "c_home": 2.942,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.19,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143550.49,
     -284672.2
@@ -4930,6 +5755,9 @@
    "c_home": 2.925,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.15,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143546.49,
     -284671.6
@@ -4941,6 +5769,9 @@
    "c_home": 2.904,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.08,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143542.49,
     -284671.02
@@ -4952,6 +5783,9 @@
    "c_home": 2.87,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.04,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143538.49,
     -284670.44
@@ -4963,6 +5797,9 @@
    "c_home": 2.848,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 4.0,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143534.49,
     -284669.84
@@ -4974,6 +5811,9 @@
    "c_home": 2.85,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 3.96,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143530.49,
     -284669.26
@@ -4985,6 +5825,9 @@
    "c_home": 2.816,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 3.9,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143526.49,
     -284668.66
@@ -4996,6 +5839,9 @@
    "c_home": 2.801,
    "c_reserve": 30.0,
    "step_m": 4.043,
+   "minutes_to_rover": 3.87,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143522.49,
     -284668.08
@@ -5007,6 +5853,9 @@
    "c_home": 2.825,
    "c_reserve": 30.0,
    "step_m": 4.717,
+   "minutes_to_rover": 3.89,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143518.49,
     -284670.58
@@ -5018,6 +5867,9 @@
    "c_home": 2.852,
    "c_reserve": 30.0,
    "step_m": 4.717,
+   "minutes_to_rover": 3.94,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143514.49,
     -284673.08
@@ -5029,6 +5881,9 @@
    "c_home": 2.879,
    "c_reserve": 30.0,
    "step_m": 4.717,
+   "minutes_to_rover": 3.96,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143510.49,
     -284675.58
@@ -5040,6 +5895,9 @@
    "c_home": 2.931,
    "c_reserve": 30.0,
    "step_m": 4.717,
+   "minutes_to_rover": 3.97,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143506.49,
     -284678.08
@@ -5051,6 +5909,9 @@
    "c_home": 2.967,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 4.0,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143504.49,
     -284680.08
@@ -5062,6 +5923,9 @@
    "c_home": 2.986,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.02,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143500.49,
     -284682.08
@@ -5073,6 +5937,9 @@
    "c_home": 3.057,
    "c_reserve": 30.0,
    "step_m": 3.801,
+   "minutes_to_rover": 4.03,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143497.49,
     -284684.42
@@ -5084,6 +5951,9 @@
    "c_home": 3.082,
    "c_reserve": 30.0,
    "step_m": 3.801,
+   "minutes_to_rover": 4.06,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143494.49,
     -284686.74
@@ -5095,6 +5965,9 @@
    "c_home": 3.112,
    "c_reserve": 30.0,
    "step_m": 3.801,
+   "minutes_to_rover": 4.12,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143491.49,
     -284689.08
@@ -5106,6 +5979,9 @@
    "c_home": 3.124,
    "c_reserve": 30.0,
    "step_m": 3.801,
+   "minutes_to_rover": 4.14,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143488.49,
     -284691.42
@@ -5117,6 +5993,9 @@
    "c_home": 3.155,
    "c_reserve": 30.0,
    "step_m": 3.801,
+   "minutes_to_rover": 4.17,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143485.49,
     -284693.74
@@ -5128,6 +6007,9 @@
    "c_home": 3.183,
    "c_reserve": 30.0,
    "step_m": 3.801,
+   "minutes_to_rover": 4.21,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143482.49,
     -284696.08
@@ -5139,6 +6021,9 @@
    "c_home": 3.243,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 4.25,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143480.49,
     -284698.08
@@ -5150,6 +6035,9 @@
    "c_home": 3.29,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.3,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143476.49,
     -284700.08
@@ -5161,6 +6049,9 @@
    "c_home": 3.325,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 4.38,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143474.49,
     -284704.08
@@ -5172,6 +6063,9 @@
    "c_home": 3.385,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 4.44,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143474.49,
     -284708.08
@@ -5183,6 +6077,9 @@
    "c_home": 3.414,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 4.52,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143471.83,
     -284712.08
@@ -5194,6 +6091,9 @@
    "c_home": 3.554,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 4.62,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143469.15,
     -284716.08
@@ -5205,6 +6105,9 @@
    "c_home": 3.56,
    "c_reserve": 30.0,
    "step_m": 4.807,
+   "minutes_to_rover": 4.7,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143466.49,
     -284720.08
@@ -5216,6 +6119,9 @@
    "c_home": 3.587,
    "c_reserve": 30.0,
    "step_m": 4.055,
+   "minutes_to_rover": 4.77,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143467.15,
     -284724.08
@@ -5227,6 +6133,9 @@
    "c_home": 3.642,
    "c_reserve": 30.0,
    "step_m": 4.055,
+   "minutes_to_rover": 4.84,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143467.83,
     -284728.08
@@ -5238,6 +6147,9 @@
    "c_home": 3.741,
    "c_reserve": 30.0,
    "step_m": 4.055,
+   "minutes_to_rover": 4.91,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143468.49,
     -284732.08
@@ -5249,6 +6161,9 @@
    "c_home": 3.907,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 5.02,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143468.49,
     -284737.08
@@ -5260,6 +6175,9 @@
    "c_home": 4.004,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 5.1,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143468.49,
     -284742.08
@@ -5271,6 +6189,9 @@
    "c_home": 4.098,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 5.17,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143468.49,
     -284747.08
@@ -5282,6 +6203,9 @@
    "c_home": 4.185,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 5.27,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143468.49,
     -284752.08
@@ -5293,6 +6217,9 @@
    "c_home": 4.353,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 5.37,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143468.49,
     -284756.08
@@ -5304,6 +6231,9 @@
    "c_home": 4.365,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 5.4,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143468.49,
     -284758.08
@@ -5315,6 +6245,9 @@
    "c_home": 4.395,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.48,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143470.49,
     -284762.08
@@ -5326,6 +6259,9 @@
    "c_home": 4.419,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 5.53,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143472.49,
     -284764.08
@@ -5337,6 +6273,9 @@
    "c_home": 4.458,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.6,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143474.49,
     -284768.08
@@ -5348,6 +6287,9 @@
    "c_home": 4.487,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 5.67,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143475.49,
     -284772.08
@@ -5359,6 +6301,9 @@
    "c_home": 4.553,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 5.74,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143476.49,
     -284776.08
@@ -5370,6 +6315,9 @@
    "c_home": 4.601,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 5.82,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143478.49,
     -284780.08
@@ -5381,6 +6329,9 @@
    "c_home": 4.64,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 5.88,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143478.99,
     -284784.08
@@ -5392,6 +6343,9 @@
    "c_home": 4.711,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 5.96,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143479.99,
     -284788.08
@@ -5403,6 +6357,9 @@
    "c_home": 4.754,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 6.02,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143480.49,
     -284792.08
@@ -5414,6 +6371,9 @@
    "c_home": 4.794,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 6.08,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143480.49,
     -284796.08
@@ -5425,6 +6385,9 @@
    "c_home": 4.864,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 6.15,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143481.49,
     -284800.08
@@ -5436,6 +6399,9 @@
    "c_home": 4.899,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 6.23,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143482.49,
     -284804.08
@@ -5447,6 +6413,9 @@
    "c_home": 4.957,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 6.33,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143482.49,
     -284809.08
@@ -5458,6 +6427,9 @@
    "c_home": 5.012,
    "c_reserve": 30.0,
    "step_m": 4.092,
+   "minutes_to_rover": 6.39,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143483.25,
     -284813.08
@@ -5469,6 +6441,9 @@
    "c_home": 5.062,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 6.47,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143484.25,
     -284817.08
@@ -5480,6 +6455,9 @@
    "c_home": 5.113,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 6.53,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143485.25,
     -284821.08
@@ -5491,6 +6469,9 @@
    "c_home": 5.151,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 6.61,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143486.25,
     -284825.08
@@ -5502,6 +6483,9 @@
    "c_home": 5.151,
    "c_reserve": 30.0,
    "step_m": 1.031,
+   "minutes_to_rover": 6.61,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143486.49,
     -284826.08
@@ -5513,6 +6497,9 @@
    "c_home": 5.204,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.68,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143488.49,
     -284830.08
@@ -5524,6 +6511,9 @@
    "c_home": 5.193,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 6.75,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143489.49,
     -284834.08
@@ -5535,6 +6525,9 @@
    "c_home": 5.147,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 6.82,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143490.49,
     -284838.08
@@ -5546,6 +6539,9 @@
    "c_home": 5.144,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 6.9,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143492.49,
     -284842.08
@@ -5557,6 +6553,9 @@
    "c_home": 5.094,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 6.97,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143493.29,
     -284846.08
@@ -5568,6 +6567,9 @@
    "c_home": 5.085,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.04,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143494.09,
     -284850.08
@@ -5579,6 +6581,9 @@
    "c_home": 5.083,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.09,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143494.89,
     -284854.08
@@ -5590,6 +6595,9 @@
    "c_home": 5.108,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.1,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143495.69,
     -284858.08
@@ -5601,6 +6609,9 @@
    "c_home": 5.1,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.09,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143496.49,
     -284862.08
@@ -5612,6 +6623,9 @@
    "c_home": 5.086,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.07,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143497.29,
     -284866.08
@@ -5623,6 +6637,9 @@
    "c_home": 5.073,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.09,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143498.09,
     -284870.08
@@ -5634,6 +6651,9 @@
    "c_home": 5.07,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.11,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143498.89,
     -284874.08
@@ -5645,6 +6665,9 @@
    "c_home": 5.101,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.15,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143499.69,
     -284878.08
@@ -5656,6 +6679,9 @@
    "c_home": 5.095,
    "c_reserve": 30.0,
    "step_m": 4.079,
+   "minutes_to_rover": 7.17,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143500.49,
     -284882.08
@@ -5667,6 +6693,9 @@
    "c_home": 5.105,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 7.19,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143500.49,
     -284886.08
@@ -5678,6 +6707,9 @@
    "c_home": 5.137,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.26,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143502.49,
     -284890.08
@@ -5689,6 +6721,9 @@
    "c_home": 5.152,
    "c_reserve": 30.0,
    "step_m": 4.047,
+   "minutes_to_rover": 7.26,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143503.11,
     -284894.08
@@ -5700,6 +6735,9 @@
    "c_home": 5.16,
    "c_reserve": 30.0,
    "step_m": 4.047,
+   "minutes_to_rover": 7.32,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143503.73,
     -284898.08
@@ -5711,6 +6749,9 @@
    "c_home": 5.174,
    "c_reserve": 30.0,
    "step_m": 4.047,
+   "minutes_to_rover": 7.36,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143504.33,
     -284902.08
@@ -5722,6 +6763,9 @@
    "c_home": 5.198,
    "c_reserve": 30.0,
    "step_m": 4.047,
+   "minutes_to_rover": 7.4,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143504.95,
     -284906.08
@@ -5733,6 +6777,9 @@
    "c_home": 5.226,
    "c_reserve": 30.0,
    "step_m": 4.047,
+   "minutes_to_rover": 7.46,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143505.57,
     -284910.08
@@ -5744,6 +6791,9 @@
    "c_home": 5.239,
    "c_reserve": 30.0,
    "step_m": 4.047,
+   "minutes_to_rover": 7.5,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143506.19,
     -284914.08
@@ -5755,6 +6805,9 @@
    "c_home": 5.252,
    "c_reserve": 30.0,
    "step_m": 2.024,
+   "minutes_to_rover": 7.52,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143506.49,
     -284916.08
@@ -5766,6 +6819,9 @@
    "c_home": 5.297,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 7.59,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143508.49,
     -284920.08
@@ -5777,6 +6833,9 @@
    "c_home": 5.32,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 7.64,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143509.01,
     -284924.08
@@ -5788,6 +6847,9 @@
    "c_home": 5.35,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 7.71,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143509.51,
     -284928.08
@@ -5799,6 +6861,9 @@
    "c_home": 5.387,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 7.77,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143510.03,
     -284932.08
@@ -5810,6 +6875,9 @@
    "c_home": 5.444,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 7.82,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143510.55,
     -284936.08
@@ -5821,6 +6889,9 @@
    "c_home": 5.465,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 7.88,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143511.05,
     -284940.08
@@ -5832,6 +6903,9 @@
    "c_home": 5.487,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 7.95,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143511.57,
     -284944.08
@@ -5843,6 +6917,9 @@
    "c_home": 5.509,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.01,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143512.07,
     -284948.08
@@ -5854,6 +6931,9 @@
    "c_home": 5.538,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.06,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143512.59,
     -284952.08
@@ -5865,6 +6945,9 @@
    "c_home": 5.581,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.11,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143513.11,
     -284956.08
@@ -5876,6 +6959,9 @@
    "c_home": 5.607,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.19,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143513.61,
     -284960.08
@@ -5887,6 +6973,9 @@
    "c_home": 5.627,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.24,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143514.13,
     -284964.08
@@ -5898,6 +6987,9 @@
    "c_home": 5.656,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.3,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143514.65,
     -284968.08
@@ -5909,6 +7001,9 @@
    "c_home": 5.686,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.35,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143515.15,
     -284972.08
@@ -5920,6 +7015,9 @@
    "c_home": 5.714,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.43,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143515.67,
     -284976.08
@@ -5931,6 +7029,9 @@
    "c_home": 5.742,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.48,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143516.19,
     -284980.08
@@ -5942,6 +7043,9 @@
    "c_home": 5.793,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.54,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143516.69,
     -284984.08
@@ -5953,6 +7057,9 @@
    "c_home": 5.822,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.59,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143517.21,
     -284988.08
@@ -5964,6 +7071,9 @@
    "c_home": 5.851,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.67,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143517.73,
     -284992.08
@@ -5975,6 +7085,9 @@
    "c_home": 5.878,
    "c_reserve": 30.0,
    "step_m": 4.033,
+   "minutes_to_rover": 8.73,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143518.23,
     -284996.08
@@ -5986,6 +7099,9 @@
    "c_home": 5.907,
    "c_reserve": 30.0,
    "step_m": 4.016,
+   "minutes_to_rover": 8.8,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143518.49,
     -285000.08
@@ -5997,6 +7113,9 @@
    "c_home": 5.935,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.87,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143520.49,
     -285004.08
@@ -6008,6 +7127,9 @@
    "c_home": 5.964,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 8.93,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143524.49,
     -285006.08
@@ -6019,6 +7141,9 @@
    "c_home": 6.0,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.0,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143526.49,
     -285010.08
@@ -6030,6 +7155,9 @@
    "c_home": 6.028,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 9.07,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143526.99,
     -285014.08
@@ -6041,6 +7169,9 @@
    "c_home": 6.055,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 9.14,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143527.99,
     -285018.08
@@ -6052,6 +7183,9 @@
    "c_home": 6.095,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 9.21,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143528.99,
     -285022.08
@@ -6063,6 +7197,9 @@
    "c_home": 6.127,
    "c_reserve": 30.0,
    "step_m": 4.123,
+   "minutes_to_rover": 9.28,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143529.99,
     -285026.08
@@ -6074,6 +7211,9 @@
    "c_home": 6.162,
    "c_reserve": 30.0,
    "step_m": 2.062,
+   "minutes_to_rover": 9.31,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143530.49,
     -285028.08
@@ -6085,6 +7225,9 @@
    "c_home": 6.2,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.39,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143532.49,
     -285032.08
@@ -6096,6 +7239,9 @@
    "c_home": 6.234,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 9.46,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143532.49,
     -285036.08
@@ -6107,6 +7253,9 @@
    "c_home": 6.273,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.53,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143534.49,
     -285040.08
@@ -6118,6 +7267,9 @@
    "c_home": 6.313,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.6,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143536.49,
     -285044.08
@@ -6129,6 +7281,9 @@
    "c_home": 6.367,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 9.68,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143538.49,
     -285048.08
@@ -6140,6 +7295,9 @@
    "c_home": 6.404,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 9.72,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143540.49,
     -285050.08
@@ -6151,6 +7309,9 @@
    "c_home": 6.433,
    "c_reserve": 30.0,
    "step_m": 4.109,
+   "minutes_to_rover": 9.79,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143543.29,
     -285053.08
@@ -6162,6 +7323,9 @@
    "c_home": 6.469,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 9.85,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143545.69,
     -285056.08
@@ -6173,6 +7337,9 @@
    "c_home": 6.481,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 9.89,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143548.09,
     -285059.08
@@ -6184,6 +7351,9 @@
    "c_home": 6.514,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 9.96,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143550.49,
     -285062.08
@@ -6195,6 +7365,9 @@
    "c_home": 6.55,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 10.04,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143552.89,
     -285065.08
@@ -6206,6 +7379,9 @@
    "c_home": 6.587,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 10.08,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143555.29,
     -285068.08
@@ -6217,6 +7393,9 @@
    "c_home": 6.625,
    "c_reserve": 30.0,
    "step_m": 3.842,
+   "minutes_to_rover": 10.16,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143557.69,
     -285071.08
@@ -6228,6 +7407,9 @@
    "c_home": 6.626,
    "c_reserve": 30.0,
    "step_m": 1.281,
+   "minutes_to_rover": 10.18,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143558.49,
     -285072.08
@@ -6239,6 +7421,9 @@
    "c_home": 6.654,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 10.25,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143560.49,
     -285076.08
@@ -6250,6 +7435,9 @@
    "c_home": 6.684,
    "c_reserve": 30.0,
    "step_m": 4.216,
+   "minutes_to_rover": 10.33,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143559.15,
     -285080.08
@@ -6261,6 +7449,9 @@
    "c_home": 6.698,
    "c_reserve": 30.0,
    "step_m": 2.108,
+   "minutes_to_rover": 10.36,
+   "leg": 9,
+   "station": null,
    "xy_m": [
     8143558.49,
     -285082.08
@@ -6272,6 +7463,9 @@
    "c_home": 6.738,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 10.43,
+   "leg": 9,
+   "station": 9,
    "xy_m": [
     8143556.49,
     -285086.08
@@ -6283,6 +7477,9 @@
    "c_home": 6.738,
    "c_reserve": 30.0,
    "step_m": 0.0,
+   "minutes_to_rover": 10.43,
+   "leg": 10,
+   "station": 10,
    "xy_m": [
     8143556.49,
     -285086.08
@@ -6294,6 +7491,9 @@
    "c_home": 6.839,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 10.46,
+   "leg": 11,
+   "station": 11,
    "xy_m": [
     8143554.49,
     -285090.08
@@ -6305,6 +7505,9 @@
    "c_home": 6.86,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 10.49,
+   "leg": 12,
+   "station": null,
    "xy_m": [
     8143554.49,
     -285092.08
@@ -6316,6 +7519,9 @@
    "c_home": 6.843,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 10.54,
+   "leg": 12,
+   "station": null,
    "xy_m": [
     8143552.49,
     -285096.08
@@ -6327,6 +7533,9 @@
    "c_home": 6.899,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 10.6,
+   "leg": 12,
+   "station": null,
    "xy_m": [
     8143550.49,
     -285100.08
@@ -6338,6 +7547,9 @@
    "c_home": 6.934,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 10.65,
+   "leg": 12,
+   "station": 12,
    "xy_m": [
     8143550.49,
     -285102.08
@@ -6349,6 +7561,9 @@
    "c_home": 6.915,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 10.69,
+   "leg": 13,
+   "station": 13,
    "xy_m": [
     8143548.49,
     -285102.08
@@ -6360,6 +7575,9 @@
    "c_home": 6.895,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 10.67,
+   "leg": 14,
+   "station": 14,
    "xy_m": [
     8143546.49,
     -285104.08
@@ -6371,6 +7589,9 @@
    "c_home": 6.925,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 10.74,
+   "leg": 15,
+   "station": null,
    "xy_m": [
     8143546.49,
     -285109.08
@@ -6382,6 +7603,9 @@
    "c_home": 6.925,
    "c_reserve": 30.0,
    "step_m": 1.0,
+   "minutes_to_rover": 10.74,
+   "leg": 15,
+   "station": null,
    "xy_m": [
     8143546.49,
     -285110.08
@@ -6393,6 +7617,9 @@
    "c_home": 6.95,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 10.8,
+   "leg": 15,
+   "station": null,
    "xy_m": [
     8143544.49,
     -285114.08
@@ -6404,6 +7631,9 @@
    "c_home": 6.962,
    "c_reserve": 30.0,
    "step_m": 2.0,
+   "minutes_to_rover": 10.84,
+   "leg": 15,
+   "station": 15,
    "xy_m": [
     8143544.49,
     -285116.08
@@ -6415,6 +7645,9 @@
    "c_home": 6.949,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 10.81,
+   "leg": 16,
+   "station": 16,
    "xy_m": [
     8143546.49,
     -285114.08
@@ -6426,6 +7659,9 @@
    "c_home": 6.956,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 10.79,
+   "leg": 17,
+   "station": null,
    "xy_m": [
     8143548.49,
     -285112.08
@@ -6437,6 +7673,9 @@
    "c_home": 7.013,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 10.79,
+   "leg": 17,
+   "station": 17,
    "xy_m": [
     8143550.49,
     -285110.08
@@ -6448,6 +7687,9 @@
    "c_home": 6.956,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 10.79,
+   "leg": 18,
+   "station": null,
    "xy_m": [
     8143548.49,
     -285112.08
@@ -6459,6 +7701,9 @@
    "c_home": 6.949,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 10.81,
+   "leg": 18,
+   "station": null,
    "xy_m": [
     8143546.49,
     -285114.08
@@ -6470,6 +7715,9 @@
    "c_home": 6.977,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 10.87,
+   "leg": 18,
+   "station": null,
    "xy_m": [
     8143544.49,
     -285118.08
@@ -6481,6 +7729,9 @@
    "c_home": 7.004,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 10.94,
+   "leg": 18,
+   "station": null,
    "xy_m": [
     8143544.49,
     -285122.08
@@ -6492,6 +7743,9 @@
    "c_home": 7.043,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 11.01,
+   "leg": 18,
+   "station": null,
    "xy_m": [
     8143546.49,
     -285126.08
@@ -6503,6 +7757,9 @@
    "c_home": 7.069,
    "c_reserve": 30.0,
    "step_m": 2.828,
+   "minutes_to_rover": 11.04,
+   "leg": 18,
+   "station": null,
    "xy_m": [
     8143544.49,
     -285128.08
@@ -6514,6 +7771,9 @@
    "c_home": 7.185,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 11.11,
+   "leg": 18,
+   "station": 18,
    "xy_m": [
     8143540.49,
     -285130.08
@@ -6525,6 +7785,9 @@
    "c_home": 7.185,
    "c_reserve": 30.0,
    "step_m": 0.0,
+   "minutes_to_rover": 11.11,
+   "leg": 19,
+   "station": 19,
    "xy_m": [
     8143540.49,
     -285130.08
@@ -6536,6 +7799,9 @@
    "c_home": 7.159,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 11.15,
+   "leg": 20,
+   "station": null,
    "xy_m": [
     8143540.49,
     -285134.08
@@ -6547,6 +7813,9 @@
    "c_home": 7.131,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 11.17,
+   "leg": 20,
+   "station": null,
    "xy_m": [
     8143538.49,
     -285136.08
@@ -6558,6 +7827,9 @@
    "c_home": 7.102,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 11.1,
+   "leg": 20,
+   "station": null,
    "xy_m": [
     8143536.49,
     -285133.08
@@ -6569,6 +7841,9 @@
    "c_home": 7.086,
    "c_reserve": 30.0,
    "step_m": 3.0,
+   "minutes_to_rover": 11.04,
+   "leg": 20,
+   "station": 20,
    "xy_m": [
     8143536.49,
     -285130.08
@@ -6580,6 +7855,9 @@
    "c_home": 7.051,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.97,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143535.61,
     -285126.08
@@ -6591,6 +7869,9 @@
    "c_home": 7.025,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.9,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143534.73,
     -285122.08
@@ -6602,6 +7883,9 @@
    "c_home": 6.997,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.83,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143533.85,
     -285118.08
@@ -6613,6 +7897,9 @@
    "c_home": 6.969,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.76,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143532.97,
     -285114.08
@@ -6624,6 +7911,9 @@
    "c_home": 6.93,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.69,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143532.09,
     -285110.08
@@ -6635,6 +7925,9 @@
    "c_home": 6.913,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.61,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143531.21,
     -285106.08
@@ -6646,6 +7939,9 @@
    "c_home": 6.845,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.55,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143530.33,
     -285102.08
@@ -6657,6 +7953,9 @@
    "c_home": 6.802,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.47,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143529.45,
     -285098.08
@@ -6668,6 +7967,9 @@
    "c_home": 6.769,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.41,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143528.57,
     -285094.08
@@ -6679,6 +7981,9 @@
    "c_home": 6.742,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.34,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143527.69,
     -285090.08
@@ -6690,6 +7995,9 @@
    "c_home": 6.715,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.27,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143526.81,
     -285086.08
@@ -6701,6 +8009,9 @@
    "c_home": 6.654,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.2,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143525.93,
     -285082.08
@@ -6712,6 +8023,9 @@
    "c_home": 6.625,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.12,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143525.05,
     -285078.08
@@ -6723,6 +8037,9 @@
    "c_home": 6.594,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 10.06,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143524.17,
     -285074.08
@@ -6734,6 +8051,9 @@
    "c_home": 6.563,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.98,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143523.29,
     -285070.08
@@ -6745,6 +8065,9 @@
    "c_home": 6.532,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.92,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143522.41,
     -285066.08
@@ -6756,6 +8079,9 @@
    "c_home": 6.5,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.85,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143521.53,
     -285062.08
@@ -6767,6 +8093,9 @@
    "c_home": 6.47,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.77,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143520.65,
     -285058.08
@@ -6778,6 +8107,9 @@
    "c_home": 6.457,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.71,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143519.77,
     -285054.08
@@ -6789,6 +8121,9 @@
    "c_home": 6.415,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.63,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143518.89,
     -285050.08
@@ -6800,6 +8135,9 @@
    "c_home": 6.389,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.57,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143518.01,
     -285046.08
@@ -6811,6 +8149,9 @@
    "c_home": 6.348,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.49,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143517.13,
     -285042.08
@@ -6822,6 +8163,9 @@
    "c_home": 6.323,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.43,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143516.25,
     -285038.08
@@ -6833,6 +8177,9 @@
    "c_home": 6.289,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.35,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143515.37,
     -285034.08
@@ -6844,6 +8191,9 @@
    "c_home": 6.262,
    "c_reserve": 30.0,
    "step_m": 4.096,
+   "minutes_to_rover": 9.28,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143514.49,
     -285030.08
@@ -6855,6 +8205,9 @@
    "c_home": 6.228,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 9.21,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143512.83,
     -285026.08
@@ -6866,6 +8219,9 @@
    "c_home": 6.213,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 9.14,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143511.17,
     -285022.08
@@ -6877,6 +8233,9 @@
    "c_home": 6.173,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 9.07,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143509.53,
     -285018.08
@@ -6888,6 +8247,9 @@
    "c_home": 6.142,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.99,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143507.87,
     -285014.08
@@ -6899,6 +8261,9 @@
    "c_home": 6.126,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.92,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143506.21,
     -285010.08
@@ -6910,6 +8275,9 @@
    "c_home": 6.098,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.85,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143504.55,
     -285006.08
@@ -6921,6 +8289,9 @@
    "c_home": 6.04,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.77,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143502.91,
     -285002.08
@@ -6932,6 +8303,9 @@
    "c_home": 6.005,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.7,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143501.25,
     -284998.08
@@ -6943,6 +8317,9 @@
    "c_home": 5.95,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.63,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143499.59,
     -284994.08
@@ -6954,6 +8331,9 @@
    "c_home": 5.92,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.56,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143497.93,
     -284990.08
@@ -6965,6 +8345,9 @@
    "c_home": 5.878,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.48,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143496.29,
     -284986.08
@@ -6976,6 +8359,9 @@
    "c_home": 5.837,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.41,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143494.63,
     -284982.08
@@ -6987,6 +8373,9 @@
    "c_home": 5.806,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.33,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143492.97,
     -284978.08
@@ -6998,6 +8387,9 @@
    "c_home": 5.769,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.26,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143491.31,
     -284974.08
@@ -7009,6 +8401,9 @@
    "c_home": 5.707,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.19,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143489.67,
     -284970.08
@@ -7020,6 +8415,9 @@
    "c_home": 5.678,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.12,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143488.01,
     -284966.08
@@ -7031,6 +8429,9 @@
    "c_home": 5.643,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 8.04,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143486.35,
     -284962.08
@@ -7042,6 +8443,9 @@
    "c_home": 5.6,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.97,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143484.69,
     -284958.08
@@ -7053,6 +8457,9 @@
    "c_home": 5.583,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.89,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143483.05,
     -284954.08
@@ -7064,6 +8471,9 @@
    "c_home": 5.54,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.82,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143481.39,
     -284950.08
@@ -7075,6 +8485,9 @@
    "c_home": 5.5,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.75,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143479.73,
     -284946.08
@@ -7086,6 +8499,9 @@
    "c_home": 5.449,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.68,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143478.07,
     -284942.08
@@ -7097,6 +8513,9 @@
    "c_home": 5.442,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.6,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143476.43,
     -284938.08
@@ -7108,6 +8527,9 @@
    "c_home": 5.345,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.53,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143474.77,
     -284934.08
@@ -7119,6 +8541,9 @@
    "c_home": 5.345,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.45,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143473.11,
     -284930.08
@@ -7130,6 +8555,9 @@
    "c_home": 5.312,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.38,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143471.45,
     -284926.08
@@ -7141,6 +8569,9 @@
    "c_home": 5.248,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.31,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143469.81,
     -284922.08
@@ -7152,6 +8583,9 @@
    "c_home": 5.208,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.24,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143468.15,
     -284918.08
@@ -7163,6 +8597,9 @@
    "c_home": 5.178,
    "c_reserve": 30.0,
    "step_m": 4.329,
+   "minutes_to_rover": 7.16,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143466.49,
     -284914.08
@@ -7174,6 +8611,9 @@
    "c_home": 5.132,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 7.1,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143465.55,
     -284910.08
@@ -7185,6 +8625,9 @@
    "c_home": 5.109,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 7.02,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143464.59,
     -284906.08
@@ -7196,6 +8639,9 @@
    "c_home": 5.052,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.95,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143463.65,
     -284902.08
@@ -7207,6 +8653,9 @@
    "c_home": 5.01,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.88,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143462.71,
     -284898.08
@@ -7218,6 +8667,9 @@
    "c_home": 4.953,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.81,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143461.75,
     -284894.08
@@ -7229,6 +8681,9 @@
    "c_home": 4.901,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.74,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143460.81,
     -284890.08
@@ -7240,6 +8695,9 @@
    "c_home": 4.887,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.67,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143459.85,
     -284886.08
@@ -7251,6 +8709,9 @@
    "c_home": 4.869,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.6,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143458.91,
     -284882.08
@@ -7262,6 +8723,9 @@
    "c_home": 4.808,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.53,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143457.97,
     -284878.08
@@ -7273,6 +8737,9 @@
    "c_home": 4.778,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.46,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143457.01,
     -284874.08
@@ -7284,6 +8751,9 @@
    "c_home": 4.754,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.39,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143456.07,
     -284870.08
@@ -7295,6 +8765,9 @@
    "c_home": 4.702,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.32,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143455.13,
     -284866.08
@@ -7306,6 +8779,9 @@
    "c_home": 4.675,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.25,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143454.17,
     -284862.08
@@ -7317,6 +8793,9 @@
    "c_home": 4.607,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.17,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143453.23,
     -284858.08
@@ -7328,6 +8807,9 @@
    "c_home": 4.57,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.11,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143452.27,
     -284854.08
@@ -7339,6 +8821,9 @@
    "c_home": 4.554,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 6.03,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143451.33,
     -284850.08
@@ -7350,6 +8835,9 @@
    "c_home": 4.52,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 5.97,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143450.39,
     -284846.08
@@ -7361,6 +8849,9 @@
    "c_home": 4.484,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 5.89,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143449.43,
     -284842.08
@@ -7372,6 +8863,9 @@
    "c_home": 4.433,
    "c_reserve": 30.0,
    "step_m": 4.111,
+   "minutes_to_rover": 5.83,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143448.49,
     -284838.08
@@ -7383,6 +8877,9 @@
    "c_home": 4.393,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.75,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143447.11,
     -284834.08
@@ -7394,6 +8891,9 @@
    "c_home": 4.357,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.68,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143445.73,
     -284830.08
@@ -7405,6 +8905,9 @@
    "c_home": 4.301,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.61,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143444.35,
     -284826.08
@@ -7416,6 +8919,9 @@
    "c_home": 4.252,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.53,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143442.99,
     -284822.08
@@ -7427,6 +8933,9 @@
    "c_home": 4.233,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.47,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143441.61,
     -284818.08
@@ -7438,6 +8947,9 @@
    "c_home": 4.169,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.39,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143440.23,
     -284814.08
@@ -7449,6 +8961,9 @@
    "c_home": 4.134,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.32,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143438.85,
     -284810.08
@@ -7460,6 +8975,9 @@
    "c_home": 4.093,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.24,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143437.47,
     -284806.08
@@ -7471,6 +8989,9 @@
    "c_home": 4.061,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.18,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143436.09,
     -284802.08
@@ -7482,6 +9003,9 @@
    "c_home": 4.044,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.1,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143434.71,
     -284798.08
@@ -7493,6 +9017,9 @@
    "c_home": 4.024,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 5.03,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143433.35,
     -284794.08
@@ -7504,6 +9031,9 @@
    "c_home": 3.979,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.96,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143431.97,
     -284790.08
@@ -7515,6 +9045,9 @@
    "c_home": 3.971,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.89,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143430.59,
     -284786.08
@@ -7526,6 +9059,9 @@
    "c_home": 3.951,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.81,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143429.21,
     -284782.08
@@ -7537,6 +9073,9 @@
    "c_home": 3.906,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.75,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143427.83,
     -284778.08
@@ -7548,6 +9087,9 @@
    "c_home": 3.878,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.67,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143426.45,
     -284774.08
@@ -7559,6 +9101,9 @@
    "c_home": 3.846,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.6,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143425.09,
     -284770.08
@@ -7570,6 +9115,9 @@
    "c_home": 3.819,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.53,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143423.71,
     -284766.08
@@ -7581,6 +9129,9 @@
    "c_home": 3.773,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.46,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143422.33,
     -284762.08
@@ -7592,6 +9143,9 @@
    "c_home": 3.68,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.38,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143420.95,
     -284758.08
@@ -7603,6 +9157,9 @@
    "c_home": 3.641,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.31,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143419.57,
     -284754.08
@@ -7614,6 +9171,9 @@
    "c_home": 3.619,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.24,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143418.19,
     -284750.08
@@ -7625,6 +9185,9 @@
    "c_home": 3.576,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.17,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143416.81,
     -284746.08
@@ -7636,6 +9199,9 @@
    "c_home": 3.534,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.09,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143415.45,
     -284742.08
@@ -7647,6 +9213,9 @@
    "c_home": 3.507,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 4.02,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143414.07,
     -284738.08
@@ -7658,6 +9227,9 @@
    "c_home": 3.478,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 3.95,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143412.69,
     -284734.08
@@ -7669,6 +9241,9 @@
    "c_home": 3.442,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 3.88,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143411.31,
     -284730.08
@@ -7680,6 +9255,9 @@
    "c_home": 3.389,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 3.81,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143409.93,
     -284726.08
@@ -7691,6 +9269,9 @@
    "c_home": 3.387,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 3.73,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143408.55,
     -284722.08
@@ -7702,6 +9283,9 @@
    "c_home": 3.349,
    "c_reserve": 30.0,
    "step_m": 4.23,
+   "minutes_to_rover": 3.66,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143407.17,
     -284718.08
@@ -7713,6 +9297,9 @@
    "c_home": 3.288,
    "c_reserve": 30.0,
    "step_m": 4.182,
+   "minutes_to_rover": 3.59,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143405.97,
     -284714.08
@@ -7724,6 +9311,9 @@
    "c_home": 3.215,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 3.52,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143404.93,
     -284710.08
@@ -7735,6 +9325,9 @@
    "c_home": 3.121,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 3.45,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143403.89,
     -284706.08
@@ -7746,6 +9339,9 @@
    "c_home": 3.067,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 3.38,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143402.83,
     -284702.08
@@ -7757,6 +9353,9 @@
    "c_home": 3.049,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 3.31,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143401.79,
     -284698.08
@@ -7768,6 +9367,9 @@
    "c_home": 3.028,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 3.24,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143400.75,
     -284694.08
@@ -7779,6 +9381,9 @@
    "c_home": 2.962,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 3.17,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143399.71,
     -284690.08
@@ -7790,6 +9395,9 @@
    "c_home": 2.847,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 3.09,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143398.67,
     -284686.08
@@ -7801,6 +9409,9 @@
    "c_home": 2.752,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 3.03,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143397.63,
     -284682.08
@@ -7812,6 +9423,9 @@
    "c_home": 2.669,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.95,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143396.57,
     -284678.08
@@ -7823,6 +9437,9 @@
    "c_home": 2.6,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.89,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143395.53,
     -284674.08
@@ -7834,6 +9451,9 @@
    "c_home": 2.525,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.81,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143394.49,
     -284670.08
@@ -7845,6 +9465,9 @@
    "c_home": 2.433,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.74,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143393.45,
     -284666.08
@@ -7856,6 +9479,9 @@
    "c_home": 2.361,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.67,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143392.41,
     -284662.08
@@ -7867,6 +9493,9 @@
    "c_home": 2.291,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.6,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143391.35,
     -284658.08
@@ -7878,6 +9507,9 @@
    "c_home": 2.243,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.53,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143390.31,
     -284654.08
@@ -7889,6 +9521,9 @@
    "c_home": 2.214,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.46,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143389.27,
     -284650.08
@@ -7900,6 +9535,9 @@
    "c_home": 2.156,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.39,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143388.23,
     -284646.08
@@ -7911,6 +9549,9 @@
    "c_home": 2.064,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.31,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143387.19,
     -284642.08
@@ -7922,6 +9563,9 @@
    "c_home": 2.031,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.25,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143386.15,
     -284638.08
@@ -7933,6 +9577,9 @@
    "c_home": 2.001,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.17,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143385.09,
     -284634.08
@@ -7944,6 +9591,9 @@
    "c_home": 1.976,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.11,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143384.05,
     -284630.08
@@ -7955,6 +9605,9 @@
    "c_home": 1.944,
    "c_reserve": 30.0,
    "step_m": 4.134,
+   "minutes_to_rover": 2.03,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143383.01,
     -284626.08
@@ -7966,6 +9619,9 @@
    "c_home": 1.923,
    "c_reserve": 30.0,
    "step_m": 2.067,
+   "minutes_to_rover": 2.0,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143382.49,
     -284624.08
@@ -7977,6 +9633,9 @@
    "c_home": 1.864,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.92,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143380.49,
     -284620.08
@@ -7988,6 +9647,9 @@
    "c_home": 1.768,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.85,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143378.49,
     -284616.08
@@ -7999,6 +9661,9 @@
    "c_home": 1.658,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.78,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143376.49,
     -284612.08
@@ -8010,6 +9675,9 @@
    "c_home": 1.608,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.7,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143374.49,
     -284608.08
@@ -8021,6 +9689,9 @@
    "c_home": 1.528,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.63,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143372.49,
     -284604.08
@@ -8032,6 +9703,9 @@
    "c_home": 1.461,
    "c_reserve": 30.0,
    "step_m": 4.0,
+   "minutes_to_rover": 1.56,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143372.49,
     -284600.08
@@ -8043,6 +9717,9 @@
    "c_home": 1.407,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.48,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143370.49,
     -284596.08
@@ -8054,6 +9731,9 @@
    "c_home": 1.274,
    "c_reserve": 30.0,
    "step_m": 5.0,
+   "minutes_to_rover": 1.38,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143370.49,
     -284591.08
@@ -8065,6 +9745,9 @@
    "c_home": 1.274,
    "c_reserve": 30.0,
    "step_m": 1.0,
+   "minutes_to_rover": 1.38,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143370.49,
     -284590.08
@@ -8076,6 +9759,9 @@
    "c_home": 1.156,
    "c_reserve": 30.0,
    "step_m": 4.472,
+   "minutes_to_rover": 1.31,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143372.49,
     -284586.08
@@ -8087,6 +9773,9 @@
    "c_home": 1.048,
    "c_reserve": 30.0,
    "step_m": 4.031,
+   "minutes_to_rover": 1.23,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143372.13,
     -284582.08
@@ -8098,6 +9787,9 @@
    "c_home": 0.926,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 1.16,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143371.43,
     -284578.08
@@ -8109,6 +9801,9 @@
    "c_home": 0.87,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 1.09,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143370.73,
     -284574.08
@@ -8120,6 +9815,9 @@
    "c_home": 0.766,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 1.02,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143370.01,
     -284570.08
@@ -8131,6 +9829,9 @@
    "c_home": 0.701,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 0.95,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143369.31,
     -284566.08
@@ -8142,6 +9843,9 @@
    "c_home": 0.613,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 0.88,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143368.61,
     -284562.08
@@ -8153,6 +9857,9 @@
    "c_home": 0.603,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 0.82,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143367.91,
     -284558.08
@@ -8164,6 +9871,9 @@
    "c_home": 0.565,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 0.74,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143367.19,
     -284554.08
@@ -8175,6 +9885,9 @@
    "c_home": 0.469,
    "c_reserve": 30.0,
    "step_m": 4.062,
+   "minutes_to_rover": 0.67,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143366.49,
     -284550.08
@@ -8186,6 +9899,9 @@
    "c_home": 0.439,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.61,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143366.69,
     -284546.08
@@ -8197,6 +9913,9 @@
    "c_home": 0.396,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.54,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143366.89,
     -284542.08
@@ -8208,6 +9927,9 @@
    "c_home": 0.305,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.47,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143367.09,
     -284538.08
@@ -8219,6 +9941,9 @@
    "c_home": 0.286,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.41,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143367.29,
     -284534.08
@@ -8230,6 +9955,9 @@
    "c_home": 0.219,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.33,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143367.49,
     -284530.08
@@ -8241,6 +9969,9 @@
    "c_home": 0.143,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.27,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143367.69,
     -284526.08
@@ -8252,6 +9983,9 @@
    "c_home": 0.123,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.2,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143367.89,
     -284522.08
@@ -8263,6 +9997,9 @@
    "c_home": 0.06,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.13,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143368.09,
     -284518.08
@@ -8274,6 +10011,9 @@
    "c_home": 0.041,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.07,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143368.29,
     -284514.08
@@ -8285,6 +10025,9 @@
    "c_home": 0.0,
    "c_reserve": 30.0,
    "step_m": 4.005,
+   "minutes_to_rover": 0.0,
+   "leg": 21,
+   "station": null,
    "xy_m": [
     8143368.49,
     -284510.08
@@ -8351,7 +10094,3999 @@
   ],
   "ends_at": "STAGING",
   "label": "PLACEHOLDER",
-  "note": "The rover is a mobile comms relay: it parks at a relay site for each transect and moves only during the last station of a transect (or the first leg); the walk ends at the rover."
+  "note": "The rover is a mobile comms relay and the crew's shelter: it parks at a relay site for each transect and moves only during the last station of a transect (or the first leg); the walk ends at the rover."
+ },
+ "storm": {
+  "label": "MODELED",
+  "event_duration_min": 120.0,
+  "rover_s": 0.5,
+  "placeholders": [
+   "event_duration_min",
+   "rover_s"
+  ],
+  "note": "Relative dose in open-sky minutes over the event: the exposed walk (S along the fastest path) plus the rest of the event at the refuge's S. Refuges: the rover where it is parked (S PLACEHOLDER), the nearest terrain shielding zone (its own S), or staying put; the lowest dose wins. While the rover drives, the higher dose of its two parking places is shown.",
+  "samples": [
+   {
+    "t_min": 0.0,
+    "xy_m": [
+     8143368.49,
+     -284510.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 0.0,
+    "s_dest": 0.5,
+    "dose": 60.0,
+    "dose_staying": 118.78,
+    "dose_avoided": 58.78,
+    "path_xy_m": [
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 0.0,
+    "home_path_xy_m": [
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 5.056,
+    "xy_m": [
+     8143586.49,
+     -284614.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 4.09,
+    "s_dest": 0.5,
+    "dose": 61.99,
+    "dose_staying": 116.98,
+    "dose_avoided": 54.99,
+    "path_xy_m": [
+     [
+      8143586.49,
+      -284614.08
+     ],
+     [
+      8143520.49,
+      -284582.08
+     ],
+     [
+      8143506.49,
+      -284582.08
+     ],
+     [
+      8143402.49,
+      -284534.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 4.09,
+    "home_path_xy_m": [
+     [
+      8143586.49,
+      -284614.08
+     ],
+     [
+      8143520.49,
+      -284582.08
+     ],
+     [
+      8143506.49,
+      -284582.08
+     ],
+     [
+      8143402.49,
+      -284534.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 10.068,
+    "xy_m": [
+     8143808.49,
+     -284682.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 8.1,
+    "s_dest": 0.5,
+    "dose": 63.88,
+    "dose_staying": 115.63,
+    "dose_avoided": 51.75,
+    "path_xy_m": [
+     [
+      8143808.49,
+      -284682.08
+     ],
+     [
+      8143766.49,
+      -284662.08
+     ],
+     [
+      8143750.49,
+      -284658.08
+     ],
+     [
+      8143692.49,
+      -284654.08
+     ],
+     [
+      8143644.49,
+      -284632.08
+     ],
+     [
+      8143632.49,
+      -284620.08
+     ],
+     [
+      8143620.49,
+      -284614.08
+     ],
+     [
+      8143592.49,
+      -284612.08
+     ],
+     [
+      8143504.49,
+      -284568.08
+     ],
+     [
+      8143494.49,
+      -284568.08
+     ],
+     [
+      8143428.49,
+      -284536.08
+     ],
+     [
+      8143422.49,
+      -284536.08
+     ],
+     [
+      8143384.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 8.1,
+    "home_path_xy_m": [
+     [
+      8143808.49,
+      -284682.08
+     ],
+     [
+      8143766.49,
+      -284662.08
+     ],
+     [
+      8143750.49,
+      -284658.08
+     ],
+     [
+      8143692.49,
+      -284654.08
+     ],
+     [
+      8143644.49,
+      -284632.08
+     ],
+     [
+      8143632.49,
+      -284620.08
+     ],
+     [
+      8143620.49,
+      -284614.08
+     ],
+     [
+      8143592.49,
+      -284612.08
+     ],
+     [
+      8143504.49,
+      -284568.08
+     ],
+     [
+      8143494.49,
+      -284568.08
+     ],
+     [
+      8143428.49,
+      -284536.08
+     ],
+     [
+      8143422.49,
+      -284536.08
+     ],
+     [
+      8143384.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 27.109,
+    "xy_m": [
+     8143882.49,
+     -284710.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 9.59,
+    "s_dest": 0.5,
+    "dose": 64.57,
+    "dose_staying": 113.83,
+    "dose_avoided": 49.26,
+    "path_xy_m": [
+     [
+      8143882.49,
+      -284710.08
+     ],
+     [
+      8143866.49,
+      -284722.08
+     ],
+     [
+      8143810.49,
+      -284692.08
+     ],
+     [
+      8143802.49,
+      -284692.08
+     ],
+     [
+      8143734.49,
+      -284658.08
+     ],
+     [
+      8143692.49,
+      -284654.08
+     ],
+     [
+      8143644.49,
+      -284632.08
+     ],
+     [
+      8143632.49,
+      -284620.08
+     ],
+     [
+      8143620.49,
+      -284614.08
+     ],
+     [
+      8143592.49,
+      -284612.08
+     ],
+     [
+      8143504.49,
+      -284568.08
+     ],
+     [
+      8143494.49,
+      -284568.08
+     ],
+     [
+      8143428.49,
+      -284536.08
+     ],
+     [
+      8143422.49,
+      -284536.08
+     ],
+     [
+      8143384.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 9.59,
+    "home_path_xy_m": [
+     [
+      8143882.49,
+      -284710.08
+     ],
+     [
+      8143866.49,
+      -284722.08
+     ],
+     [
+      8143810.49,
+      -284692.08
+     ],
+     [
+      8143802.49,
+      -284692.08
+     ],
+     [
+      8143734.49,
+      -284658.08
+     ],
+     [
+      8143692.49,
+      -284654.08
+     ],
+     [
+      8143644.49,
+      -284632.08
+     ],
+     [
+      8143632.49,
+      -284620.08
+     ],
+     [
+      8143620.49,
+      -284614.08
+     ],
+     [
+      8143592.49,
+      -284612.08
+     ],
+     [
+      8143504.49,
+      -284568.08
+     ],
+     [
+      8143494.49,
+      -284568.08
+     ],
+     [
+      8143428.49,
+      -284536.08
+     ],
+     [
+      8143422.49,
+      -284536.08
+     ],
+     [
+      8143384.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 42.142,
+    "xy_m": [
+     8143882.49,
+     -284708.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 9.58,
+    "s_dest": 0.5,
+    "dose": 64.56,
+    "dose_staying": 113.8,
+    "dose_avoided": 49.24,
+    "path_xy_m": [
+     [
+      8143882.49,
+      -284708.08
+     ],
+     [
+      8143880.49,
+      -284696.08
+     ],
+     [
+      8143870.49,
+      -284698.08
+     ],
+     [
+      8143796.49,
+      -284662.08
+     ],
+     [
+      8143760.49,
+      -284662.08
+     ],
+     [
+      8143750.49,
+      -284658.08
+     ],
+     [
+      8143692.49,
+      -284654.08
+     ],
+     [
+      8143644.49,
+      -284632.08
+     ],
+     [
+      8143632.49,
+      -284620.08
+     ],
+     [
+      8143620.49,
+      -284614.08
+     ],
+     [
+      8143592.49,
+      -284612.08
+     ],
+     [
+      8143504.49,
+      -284568.08
+     ],
+     [
+      8143494.49,
+      -284568.08
+     ],
+     [
+      8143428.49,
+      -284536.08
+     ],
+     [
+      8143422.49,
+      -284536.08
+     ],
+     [
+      8143384.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 9.58,
+    "home_path_xy_m": [
+     [
+      8143882.49,
+      -284708.08
+     ],
+     [
+      8143880.49,
+      -284696.08
+     ],
+     [
+      8143870.49,
+      -284698.08
+     ],
+     [
+      8143796.49,
+      -284662.08
+     ],
+     [
+      8143760.49,
+      -284662.08
+     ],
+     [
+      8143750.49,
+      -284658.08
+     ],
+     [
+      8143692.49,
+      -284654.08
+     ],
+     [
+      8143644.49,
+      -284632.08
+     ],
+     [
+      8143632.49,
+      -284620.08
+     ],
+     [
+      8143620.49,
+      -284614.08
+     ],
+     [
+      8143592.49,
+      -284612.08
+     ],
+     [
+      8143504.49,
+      -284568.08
+     ],
+     [
+      8143494.49,
+      -284568.08
+     ],
+     [
+      8143428.49,
+      -284536.08
+     ],
+     [
+      8143422.49,
+      -284536.08
+     ],
+     [
+      8143384.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 57.291,
+    "xy_m": [
+     8143890.49,
+     -284704.08
+    ],
+    "rover_relay": 2,
+    "rover_moving": true,
+    "choice": "rover",
+    "walk_min": 15.21,
+    "s_dest": 0.5,
+    "dose": 67.31,
+    "dose_staying": 113.32,
+    "dose_avoided": 46.0,
+    "path_xy_m": [
+     [
+      8143890.49,
+      -284704.08
+     ],
+     [
+      8143878.49,
+      -284696.08
+     ],
+     [
+      8143870.49,
+      -284698.08
+     ],
+     [
+      8143784.49,
+      -284656.08
+     ],
+     [
+      8143766.49,
+      -284640.08
+     ],
+     [
+      8143728.49,
+      -284620.08
+     ],
+     [
+      8143714.49,
+      -284606.08
+     ],
+     [
+      8143686.49,
+      -284590.08
+     ],
+     [
+      8143548.49,
+      -284520.08
+     ],
+     [
+      8143500.49,
+      -284494.08
+     ],
+     [
+      8143494.49,
+      -284488.08
+     ],
+     [
+      8143438.49,
+      -284460.08
+     ],
+     [
+      8143422.49,
+      -284444.08
+     ],
+     [
+      8143410.49,
+      -284438.08
+     ],
+     [
+      8143346.49,
+      -284378.08
+     ],
+     [
+      8143322.49,
+      -284344.08
+     ],
+     [
+      8143288.49,
+      -284304.08
+     ],
+     [
+      8143272.49,
+      -284298.08
+     ],
+     [
+      8143258.49,
+      -284288.08
+     ],
+     [
+      8143246.49,
+      -284284.08
+     ],
+     [
+      8143232.49,
+      -284284.08
+     ],
+     [
+      8143224.49,
+      -284280.08
+     ],
+     [
+      8143212.49,
+      -284262.08
+     ],
+     [
+      8143206.49,
+      -284258.08
+     ],
+     [
+      8143200.49,
+      -284246.08
+     ],
+     [
+      8143178.49,
+      -284226.08
+     ],
+     [
+      8143168.49,
+      -284210.08
+     ]
+    ],
+    "home_relay": 2,
+    "home_walk_min": 15.21,
+    "home_path_xy_m": [
+     [
+      8143890.49,
+      -284704.08
+     ],
+     [
+      8143878.49,
+      -284696.08
+     ],
+     [
+      8143870.49,
+      -284698.08
+     ],
+     [
+      8143784.49,
+      -284656.08
+     ],
+     [
+      8143766.49,
+      -284640.08
+     ],
+     [
+      8143728.49,
+      -284620.08
+     ],
+     [
+      8143714.49,
+      -284606.08
+     ],
+     [
+      8143686.49,
+      -284590.08
+     ],
+     [
+      8143548.49,
+      -284520.08
+     ],
+     [
+      8143500.49,
+      -284494.08
+     ],
+     [
+      8143494.49,
+      -284488.08
+     ],
+     [
+      8143438.49,
+      -284460.08
+     ],
+     [
+      8143422.49,
+      -284444.08
+     ],
+     [
+      8143410.49,
+      -284438.08
+     ],
+     [
+      8143346.49,
+      -284378.08
+     ],
+     [
+      8143322.49,
+      -284344.08
+     ],
+     [
+      8143288.49,
+      -284304.08
+     ],
+     [
+      8143272.49,
+      -284298.08
+     ],
+     [
+      8143258.49,
+      -284288.08
+     ],
+     [
+      8143246.49,
+      -284284.08
+     ],
+     [
+      8143232.49,
+      -284284.08
+     ],
+     [
+      8143224.49,
+      -284280.08
+     ],
+     [
+      8143212.49,
+      -284262.08
+     ],
+     [
+      8143206.49,
+      -284258.08
+     ],
+     [
+      8143200.49,
+      -284246.08
+     ],
+     [
+      8143178.49,
+      -284226.08
+     ],
+     [
+      8143168.49,
+      -284210.08
+     ]
+    ]
+   },
+   {
+    "t_min": 75.82,
+    "xy_m": [
+     8143768.49,
+     -284816.08
+    ],
+    "rover_relay": 2,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 15.44,
+    "s_dest": 0.5,
+    "dose": 67.44,
+    "dose_staying": 115.82,
+    "dose_avoided": 48.38,
+    "path_xy_m": [
+     [
+      8143768.49,
+      -284816.08
+     ],
+     [
+      8143766.49,
+      -284824.08
+     ],
+     [
+      8143754.49,
+      -284828.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143666.49,
+      -284778.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143610.49,
+      -284670.08
+     ],
+     [
+      8143602.49,
+      -284666.08
+     ],
+     [
+      8143582.49,
+      -284646.08
+     ],
+     [
+      8143570.49,
+      -284640.08
+     ],
+     [
+      8143550.49,
+      -284600.08
+     ],
+     [
+      8143420.49,
+      -284466.08
+     ],
+     [
+      8143402.49,
+      -284440.08
+     ],
+     [
+      8143334.49,
+      -284364.08
+     ],
+     [
+      8143322.49,
+      -284344.08
+     ],
+     [
+      8143296.49,
+      -284312.08
+     ],
+     [
+      8143288.49,
+      -284304.08
+     ],
+     [
+      8143272.49,
+      -284298.08
+     ],
+     [
+      8143258.49,
+      -284288.08
+     ],
+     [
+      8143246.49,
+      -284284.08
+     ],
+     [
+      8143232.49,
+      -284284.08
+     ],
+     [
+      8143224.49,
+      -284280.08
+     ],
+     [
+      8143212.49,
+      -284262.08
+     ],
+     [
+      8143206.49,
+      -284258.08
+     ],
+     [
+      8143200.49,
+      -284246.08
+     ],
+     [
+      8143178.49,
+      -284226.08
+     ],
+     [
+      8143168.49,
+      -284210.08
+     ]
+    ],
+    "home_relay": 2,
+    "home_walk_min": 15.44,
+    "home_path_xy_m": [
+     [
+      8143768.49,
+      -284816.08
+     ],
+     [
+      8143766.49,
+      -284824.08
+     ],
+     [
+      8143754.49,
+      -284828.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143666.49,
+      -284778.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143610.49,
+      -284670.08
+     ],
+     [
+      8143602.49,
+      -284666.08
+     ],
+     [
+      8143582.49,
+      -284646.08
+     ],
+     [
+      8143570.49,
+      -284640.08
+     ],
+     [
+      8143550.49,
+      -284600.08
+     ],
+     [
+      8143420.49,
+      -284466.08
+     ],
+     [
+      8143402.49,
+      -284440.08
+     ],
+     [
+      8143334.49,
+      -284364.08
+     ],
+     [
+      8143322.49,
+      -284344.08
+     ],
+     [
+      8143296.49,
+      -284312.08
+     ],
+     [
+      8143288.49,
+      -284304.08
+     ],
+     [
+      8143272.49,
+      -284298.08
+     ],
+     [
+      8143258.49,
+      -284288.08
+     ],
+     [
+      8143246.49,
+      -284284.08
+     ],
+     [
+      8143232.49,
+      -284284.08
+     ],
+     [
+      8143224.49,
+      -284280.08
+     ],
+     [
+      8143212.49,
+      -284262.08
+     ],
+     [
+      8143206.49,
+      -284258.08
+     ],
+     [
+      8143200.49,
+      -284246.08
+     ],
+     [
+      8143178.49,
+      -284226.08
+     ],
+     [
+      8143168.49,
+      -284210.08
+     ]
+    ]
+   },
+   {
+    "t_min": 90.82,
+    "xy_m": [
+     8143768.49,
+     -284816.08
+    ],
+    "rover_relay": 2,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 15.44,
+    "s_dest": 0.5,
+    "dose": 67.44,
+    "dose_staying": 115.82,
+    "dose_avoided": 48.38,
+    "path_xy_m": [
+     [
+      8143768.49,
+      -284816.08
+     ],
+     [
+      8143766.49,
+      -284824.08
+     ],
+     [
+      8143754.49,
+      -284828.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143666.49,
+      -284778.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143610.49,
+      -284670.08
+     ],
+     [
+      8143602.49,
+      -284666.08
+     ],
+     [
+      8143582.49,
+      -284646.08
+     ],
+     [
+      8143570.49,
+      -284640.08
+     ],
+     [
+      8143550.49,
+      -284600.08
+     ],
+     [
+      8143420.49,
+      -284466.08
+     ],
+     [
+      8143402.49,
+      -284440.08
+     ],
+     [
+      8143334.49,
+      -284364.08
+     ],
+     [
+      8143322.49,
+      -284344.08
+     ],
+     [
+      8143296.49,
+      -284312.08
+     ],
+     [
+      8143288.49,
+      -284304.08
+     ],
+     [
+      8143272.49,
+      -284298.08
+     ],
+     [
+      8143258.49,
+      -284288.08
+     ],
+     [
+      8143246.49,
+      -284284.08
+     ],
+     [
+      8143232.49,
+      -284284.08
+     ],
+     [
+      8143224.49,
+      -284280.08
+     ],
+     [
+      8143212.49,
+      -284262.08
+     ],
+     [
+      8143206.49,
+      -284258.08
+     ],
+     [
+      8143200.49,
+      -284246.08
+     ],
+     [
+      8143178.49,
+      -284226.08
+     ],
+     [
+      8143168.49,
+      -284210.08
+     ]
+    ],
+    "home_relay": 2,
+    "home_walk_min": 15.44,
+    "home_path_xy_m": [
+     [
+      8143768.49,
+      -284816.08
+     ],
+     [
+      8143766.49,
+      -284824.08
+     ],
+     [
+      8143754.49,
+      -284828.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143666.49,
+      -284778.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143610.49,
+      -284670.08
+     ],
+     [
+      8143602.49,
+      -284666.08
+     ],
+     [
+      8143582.49,
+      -284646.08
+     ],
+     [
+      8143570.49,
+      -284640.08
+     ],
+     [
+      8143550.49,
+      -284600.08
+     ],
+     [
+      8143420.49,
+      -284466.08
+     ],
+     [
+      8143402.49,
+      -284440.08
+     ],
+     [
+      8143334.49,
+      -284364.08
+     ],
+     [
+      8143322.49,
+      -284344.08
+     ],
+     [
+      8143296.49,
+      -284312.08
+     ],
+     [
+      8143288.49,
+      -284304.08
+     ],
+     [
+      8143272.49,
+      -284298.08
+     ],
+     [
+      8143258.49,
+      -284288.08
+     ],
+     [
+      8143246.49,
+      -284284.08
+     ],
+     [
+      8143232.49,
+      -284284.08
+     ],
+     [
+      8143224.49,
+      -284280.08
+     ],
+     [
+      8143212.49,
+      -284262.08
+     ],
+     [
+      8143206.49,
+      -284258.08
+     ],
+     [
+      8143200.49,
+      -284246.08
+     ],
+     [
+      8143178.49,
+      -284226.08
+     ],
+     [
+      8143168.49,
+      -284210.08
+     ]
+    ]
+   },
+   {
+    "t_min": 105.894,
+    "xy_m": [
+     8143770.49,
+     -284820.08
+    ],
+    "rover_relay": 2,
+    "rover_moving": true,
+    "choice": "rover",
+    "walk_min": 15.39,
+    "s_dest": 0.5,
+    "dose": 67.41,
+    "dose_staying": 115.72,
+    "dose_avoided": 48.3,
+    "path_xy_m": [
+     [
+      8143770.49,
+      -284820.08
+     ],
+     [
+      8143754.49,
+      -284828.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143666.49,
+      -284778.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143610.49,
+      -284670.08
+     ],
+     [
+      8143602.49,
+      -284666.08
+     ],
+     [
+      8143582.49,
+      -284646.08
+     ],
+     [
+      8143570.49,
+      -284640.08
+     ],
+     [
+      8143550.49,
+      -284600.08
+     ],
+     [
+      8143420.49,
+      -284466.08
+     ],
+     [
+      8143402.49,
+      -284440.08
+     ],
+     [
+      8143334.49,
+      -284364.08
+     ],
+     [
+      8143322.49,
+      -284344.08
+     ],
+     [
+      8143296.49,
+      -284312.08
+     ],
+     [
+      8143288.49,
+      -284304.08
+     ],
+     [
+      8143272.49,
+      -284298.08
+     ],
+     [
+      8143258.49,
+      -284288.08
+     ],
+     [
+      8143246.49,
+      -284284.08
+     ],
+     [
+      8143232.49,
+      -284284.08
+     ],
+     [
+      8143224.49,
+      -284280.08
+     ],
+     [
+      8143212.49,
+      -284262.08
+     ],
+     [
+      8143206.49,
+      -284258.08
+     ],
+     [
+      8143200.49,
+      -284246.08
+     ],
+     [
+      8143178.49,
+      -284226.08
+     ],
+     [
+      8143168.49,
+      -284210.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 9.12,
+    "home_path_xy_m": [
+     [
+      8143770.49,
+      -284820.08
+     ],
+     [
+      8143754.49,
+      -284828.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143668.49,
+      -284780.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143628.49,
+      -284708.08
+     ],
+     [
+      8143622.49,
+      -284702.08
+     ],
+     [
+      8143610.49,
+      -284696.08
+     ],
+     [
+      8143594.49,
+      -284680.08
+     ],
+     [
+      8143566.49,
+      -284666.08
+     ],
+     [
+      8143554.49,
+      -284656.08
+     ],
+     [
+      8143494.49,
+      -284594.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 121.79,
+    "xy_m": [
+     8143764.49,
+     -284840.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 9.11,
+    "s_dest": 0.5,
+    "dose": 64.33,
+    "dose_staying": 115.66,
+    "dose_avoided": 51.33,
+    "path_xy_m": [
+     [
+      8143764.49,
+      -284840.08
+     ],
+     [
+      8143762.49,
+      -284844.08
+     ],
+     [
+      8143756.49,
+      -284842.08
+     ],
+     [
+      8143752.49,
+      -284826.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143668.49,
+      -284780.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143628.49,
+      -284708.08
+     ],
+     [
+      8143610.49,
+      -284696.08
+     ],
+     [
+      8143594.49,
+      -284680.08
+     ],
+     [
+      8143566.49,
+      -284666.08
+     ],
+     [
+      8143554.49,
+      -284656.08
+     ],
+     [
+      8143494.49,
+      -284594.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 9.11,
+    "home_path_xy_m": [
+     [
+      8143764.49,
+      -284840.08
+     ],
+     [
+      8143762.49,
+      -284844.08
+     ],
+     [
+      8143756.49,
+      -284842.08
+     ],
+     [
+      8143752.49,
+      -284826.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143668.49,
+      -284780.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143628.49,
+      -284708.08
+     ],
+     [
+      8143610.49,
+      -284696.08
+     ],
+     [
+      8143594.49,
+      -284680.08
+     ],
+     [
+      8143566.49,
+      -284666.08
+     ],
+     [
+      8143554.49,
+      -284656.08
+     ],
+     [
+      8143494.49,
+      -284594.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 136.823,
+    "xy_m": [
+     8143766.49,
+     -284840.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 9.09,
+    "s_dest": 0.5,
+    "dose": 64.33,
+    "dose_staying": 115.65,
+    "dose_avoided": 51.32,
+    "path_xy_m": [
+     [
+      8143766.49,
+      -284840.08
+     ],
+     [
+      8143756.49,
+      -284842.08
+     ],
+     [
+      8143752.49,
+      -284826.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143668.49,
+      -284780.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143628.49,
+      -284708.08
+     ],
+     [
+      8143622.49,
+      -284702.08
+     ],
+     [
+      8143610.49,
+      -284696.08
+     ],
+     [
+      8143594.49,
+      -284680.08
+     ],
+     [
+      8143566.49,
+      -284666.08
+     ],
+     [
+      8143554.49,
+      -284656.08
+     ],
+     [
+      8143494.49,
+      -284594.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 9.09,
+    "home_path_xy_m": [
+     [
+      8143766.49,
+      -284840.08
+     ],
+     [
+      8143756.49,
+      -284842.08
+     ],
+     [
+      8143752.49,
+      -284826.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143668.49,
+      -284780.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143628.49,
+      -284708.08
+     ],
+     [
+      8143622.49,
+      -284702.08
+     ],
+     [
+      8143610.49,
+      -284696.08
+     ],
+     [
+      8143594.49,
+      -284680.08
+     ],
+     [
+      8143566.49,
+      -284666.08
+     ],
+     [
+      8143554.49,
+      -284656.08
+     ],
+     [
+      8143494.49,
+      -284594.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 151.898,
+    "xy_m": [
+     8143770.49,
+     -284842.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 9.16,
+    "s_dest": 0.5,
+    "dose": 64.36,
+    "dose_staying": 115.5,
+    "dose_avoided": 51.14,
+    "path_xy_m": [
+     [
+      8143770.49,
+      -284842.08
+     ],
+     [
+      8143770.49,
+      -284830.08
+     ],
+     [
+      8143754.49,
+      -284828.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143668.49,
+      -284780.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143628.49,
+      -284708.08
+     ],
+     [
+      8143622.49,
+      -284702.08
+     ],
+     [
+      8143610.49,
+      -284696.08
+     ],
+     [
+      8143594.49,
+      -284680.08
+     ],
+     [
+      8143566.49,
+      -284666.08
+     ],
+     [
+      8143554.49,
+      -284656.08
+     ],
+     [
+      8143494.49,
+      -284594.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 9.16,
+    "home_path_xy_m": [
+     [
+      8143770.49,
+      -284842.08
+     ],
+     [
+      8143770.49,
+      -284830.08
+     ],
+     [
+      8143754.49,
+      -284828.08
+     ],
+     [
+      8143746.49,
+      -284824.08
+     ],
+     [
+      8143736.49,
+      -284812.08
+     ],
+     [
+      8143710.49,
+      -284804.08
+     ],
+     [
+      8143668.49,
+      -284780.08
+     ],
+     [
+      8143660.49,
+      -284760.08
+     ],
+     [
+      8143652.49,
+      -284756.08
+     ],
+     [
+      8143628.49,
+      -284708.08
+     ],
+     [
+      8143622.49,
+      -284702.08
+     ],
+     [
+      8143610.49,
+      -284696.08
+     ],
+     [
+      8143594.49,
+      -284680.08
+     ],
+     [
+      8143566.49,
+      -284666.08
+     ],
+     [
+      8143554.49,
+      -284656.08
+     ],
+     [
+      8143494.49,
+      -284594.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 156.899,
+    "xy_m": [
+     8143554.49,
+     -284672.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 4.24,
+    "s_dest": 0.5,
+    "dose": 62.06,
+    "dose_staying": 117.49,
+    "dose_avoided": 55.43,
+    "path_xy_m": [
+     [
+      8143554.49,
+      -284672.08
+     ],
+     [
+      8143536.49,
+      -284658.08
+     ],
+     [
+      8143522.49,
+      -284630.08
+     ],
+     [
+      8143490.49,
+      -284598.08
+     ],
+     [
+      8143484.49,
+      -284588.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 4.24,
+    "home_path_xy_m": [
+     [
+      8143554.49,
+      -284672.08
+     ],
+     [
+      8143536.49,
+      -284658.08
+     ],
+     [
+      8143522.49,
+      -284630.08
+     ],
+     [
+      8143490.49,
+      -284598.08
+     ],
+     [
+      8143484.49,
+      -284588.08
+     ],
+     [
+      8143456.49,
+      -284574.08
+     ],
+     [
+      8143424.49,
+      -284546.08
+     ],
+     [
+      8143378.49,
+      -284520.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 161.94,
+    "xy_m": [
+     8143498.49,
+     -284874.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 7.11,
+    "s_dest": 0.5,
+    "dose": 63.39,
+    "dose_staying": 112.9,
+    "dose_avoided": 49.51,
+    "path_xy_m": [
+     [
+      8143498.49,
+      -284874.08
+     ],
+     [
+      8143490.49,
+      -284870.08
+     ],
+     [
+      8143454.49,
+      -284868.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 7.11,
+    "home_path_xy_m": [
+     [
+      8143498.49,
+      -284874.08
+     ],
+     [
+      8143490.49,
+      -284870.08
+     ],
+     [
+      8143454.49,
+      -284868.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 181.864,
+    "xy_m": [
+     8143556.49,
+     -285086.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.43,
+    "s_dest": 0.5,
+    "dose": 64.87,
+    "dose_staying": 113.2,
+    "dose_avoided": 48.33,
+    "path_xy_m": [
+     [
+      8143556.49,
+      -285086.08
+     ],
+     [
+      8143560.49,
+      -285076.08
+     ],
+     [
+      8143544.49,
+      -285050.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.43,
+    "home_path_xy_m": [
+     [
+      8143556.49,
+      -285086.08
+     ],
+     [
+      8143560.49,
+      -285076.08
+     ],
+     [
+      8143544.49,
+      -285050.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 196.864,
+    "xy_m": [
+     8143556.49,
+     -285086.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.43,
+    "s_dest": 0.5,
+    "dose": 64.87,
+    "dose_staying": 113.2,
+    "dose_avoided": 48.33,
+    "path_xy_m": [
+     [
+      8143556.49,
+      -285086.08
+     ],
+     [
+      8143560.49,
+      -285076.08
+     ],
+     [
+      8143544.49,
+      -285050.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.43,
+    "home_path_xy_m": [
+     [
+      8143556.49,
+      -285086.08
+     ],
+     [
+      8143560.49,
+      -285076.08
+     ],
+     [
+      8143544.49,
+      -285050.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 211.939,
+    "xy_m": [
+     8143554.49,
+     -285090.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.46,
+    "s_dest": 0.5,
+    "dose": 64.89,
+    "dose_staying": 113.19,
+    "dose_avoided": 48.3,
+    "path_xy_m": [
+     [
+      8143554.49,
+      -285090.08
+     ],
+     [
+      8143538.49,
+      -285064.08
+     ],
+     [
+      8143538.49,
+      -285050.08
+     ],
+     [
+      8143528.49,
+      -285030.08
+     ],
+     [
+      8143526.49,
+      -285014.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.46,
+    "home_path_xy_m": [
+     [
+      8143554.49,
+      -285090.08
+     ],
+     [
+      8143538.49,
+      -285064.08
+     ],
+     [
+      8143538.49,
+      -285050.08
+     ],
+     [
+      8143528.49,
+      -285030.08
+     ],
+     [
+      8143526.49,
+      -285014.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 227.197,
+    "xy_m": [
+     8143550.49,
+     -285102.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.65,
+    "s_dest": 0.5,
+    "dose": 64.98,
+    "dose_staying": 113.69,
+    "dose_avoided": 48.71,
+    "path_xy_m": [
+     [
+      8143550.49,
+      -285102.08
+     ],
+     [
+      8143550.49,
+      -285088.08
+     ],
+     [
+      8143538.49,
+      -285064.08
+     ],
+     [
+      8143538.49,
+      -285050.08
+     ],
+     [
+      8143528.49,
+      -285030.08
+     ],
+     [
+      8143526.49,
+      -285014.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.65,
+    "home_path_xy_m": [
+     [
+      8143550.49,
+      -285102.08
+     ],
+     [
+      8143550.49,
+      -285088.08
+     ],
+     [
+      8143538.49,
+      -285064.08
+     ],
+     [
+      8143538.49,
+      -285050.08
+     ],
+     [
+      8143528.49,
+      -285030.08
+     ],
+     [
+      8143526.49,
+      -285014.08
+     ],
+     [
+      8143398.49,
+      -284756.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 242.231,
+    "xy_m": [
+     8143548.49,
+     -285102.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.69,
+    "s_dest": 0.5,
+    "dose": 65.03,
+    "dose_staying": 113.75,
+    "dose_avoided": 48.71,
+    "path_xy_m": [
+     [
+      8143548.49,
+      -285102.08
+     ],
+     [
+      8143540.49,
+      -285100.08
+     ],
+     [
+      8143430.49,
+      -284878.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.69,
+    "home_path_xy_m": [
+     [
+      8143548.49,
+      -285102.08
+     ],
+     [
+      8143540.49,
+      -285100.08
+     ],
+     [
+      8143430.49,
+      -284878.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 257.278,
+    "xy_m": [
+     8143546.49,
+     -285104.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.67,
+    "s_dest": 0.5,
+    "dose": 65.02,
+    "dose_staying": 113.8,
+    "dose_avoided": 48.78,
+    "path_xy_m": [
+     [
+      8143546.49,
+      -285104.08
+     ],
+     [
+      8143542.49,
+      -285102.08
+     ],
+     [
+      8143430.49,
+      -284878.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.67,
+    "home_path_xy_m": [
+     [
+      8143546.49,
+      -285104.08
+     ],
+     [
+      8143542.49,
+      -285102.08
+     ],
+     [
+      8143430.49,
+      -284878.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 272.543,
+    "xy_m": [
+     8143544.49,
+     -285116.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.84,
+    "s_dest": 0.5,
+    "dose": 65.1,
+    "dose_staying": 114.15,
+    "dose_avoided": 49.06,
+    "path_xy_m": [
+     [
+      8143544.49,
+      -285116.08
+     ],
+     [
+      8143518.49,
+      -285060.08
+     ],
+     [
+      8143518.49,
+      -285054.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.84,
+    "home_path_xy_m": [
+     [
+      8143544.49,
+      -285116.08
+     ],
+     [
+      8143518.49,
+      -285060.08
+     ],
+     [
+      8143518.49,
+      -285054.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 287.59,
+    "xy_m": [
+     8143546.49,
+     -285114.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.81,
+    "s_dest": 0.5,
+    "dose": 65.09,
+    "dose_staying": 114.0,
+    "dose_avoided": 48.91,
+    "path_xy_m": [
+     [
+      8143546.49,
+      -285114.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.81,
+    "home_path_xy_m": [
+     [
+      8143546.49,
+      -285114.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 302.684,
+    "xy_m": [
+     8143550.49,
+     -285110.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 10.79,
+    "s_dest": 0.5,
+    "dose": 65.07,
+    "dose_staying": 113.64,
+    "dose_avoided": 48.56,
+    "path_xy_m": [
+     [
+      8143550.49,
+      -285110.08
+     ],
+     [
+      8143544.49,
+      -285104.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 10.79,
+    "home_path_xy_m": [
+     [
+      8143550.49,
+      -285110.08
+     ],
+     [
+      8143544.49,
+      -285104.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 318.223,
+    "xy_m": [
+     8143540.49,
+     -285130.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 11.11,
+    "s_dest": 0.5,
+    "dose": 65.22,
+    "dose_staying": 114.55,
+    "dose_avoided": 49.32,
+    "path_xy_m": [
+     [
+      8143540.49,
+      -285130.08
+     ],
+     [
+      8143544.49,
+      -285128.08
+     ],
+     [
+      8143544.49,
+      -285120.08
+     ],
+     [
+      8143520.49,
+      -285072.08
+     ],
+     [
+      8143518.49,
+      -285054.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 11.11,
+    "home_path_xy_m": [
+     [
+      8143540.49,
+      -285130.08
+     ],
+     [
+      8143544.49,
+      -285128.08
+     ],
+     [
+      8143544.49,
+      -285120.08
+     ],
+     [
+      8143520.49,
+      -285072.08
+     ],
+     [
+      8143518.49,
+      -285054.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 333.223,
+    "xy_m": [
+     8143540.49,
+     -285130.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 11.11,
+    "s_dest": 0.5,
+    "dose": 65.22,
+    "dose_staying": 114.55,
+    "dose_avoided": 49.32,
+    "path_xy_m": [
+     [
+      8143540.49,
+      -285130.08
+     ],
+     [
+      8143544.49,
+      -285128.08
+     ],
+     [
+      8143544.49,
+      -285120.08
+     ],
+     [
+      8143520.49,
+      -285072.08
+     ],
+     [
+      8143518.49,
+      -285054.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 11.11,
+    "home_path_xy_m": [
+     [
+      8143540.49,
+      -285130.08
+     ],
+     [
+      8143544.49,
+      -285128.08
+     ],
+     [
+      8143544.49,
+      -285120.08
+     ],
+     [
+      8143520.49,
+      -285072.08
+     ],
+     [
+      8143518.49,
+      -285054.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 348.515,
+    "xy_m": [
+     8143536.49,
+     -285130.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 11.04,
+    "s_dest": 0.5,
+    "dose": 65.19,
+    "dose_staying": 114.38,
+    "dose_avoided": 49.19,
+    "path_xy_m": [
+     [
+      8143536.49,
+      -285130.08
+     ],
+     [
+      8143524.49,
+      -285106.08
+     ],
+     [
+      8143518.49,
+      -285054.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 11.04,
+    "home_path_xy_m": [
+     [
+      8143536.49,
+      -285130.08
+     ],
+     [
+      8143524.49,
+      -285106.08
+     ],
+     [
+      8143518.49,
+      -285054.08
+     ],
+     [
+      8143414.49,
+      -284844.08
+     ],
+     [
+      8143414.49,
+      -284830.08
+     ],
+     [
+      8143400.49,
+      -284802.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 353.548,
+    "xy_m": [
+     8143448.49,
+     -284842.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 5.89,
+    "s_dest": 0.5,
+    "dose": 62.84,
+    "dose_staying": 115.36,
+    "dose_avoided": 52.52,
+    "path_xy_m": [
+     [
+      8143448.49,
+      -284842.08
+     ],
+     [
+      8143398.49,
+      -284742.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 5.89,
+    "home_path_xy_m": [
+     [
+      8143448.49,
+      -284842.08
+     ],
+     [
+      8143398.49,
+      -284742.08
+     ],
+     [
+      8143396.49,
+      -284694.08
+     ],
+     [
+      8143390.49,
+      -284680.08
+     ],
+     [
+      8143390.49,
+      -284666.08
+     ],
+     [
+      8143378.49,
+      -284638.08
+     ],
+     [
+      8143370.49,
+      -284596.08
+     ],
+     [
+      8143372.49,
+      -284584.08
+     ],
+     [
+      8143366.49,
+      -284560.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   },
+   {
+    "t_min": 358.548,
+    "xy_m": [
+     8143368.49,
+     -284558.08
+    ],
+    "rover_relay": 0,
+    "rover_moving": false,
+    "choice": "rover",
+    "walk_min": 0.82,
+    "s_dest": 0.5,
+    "dose": 60.4,
+    "dose_staying": 118.77,
+    "dose_avoided": 58.37,
+    "path_xy_m": [
+     [
+      8143368.49,
+      -284558.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ],
+    "home_relay": 0,
+    "home_walk_min": 0.82,
+    "home_path_xy_m": [
+     [
+      8143368.49,
+      -284558.08
+     ],
+     [
+      8143368.49,
+      -284510.08
+     ]
+    ]
+   }
+  ]
  },
  "totals": {
   "transects": 7,
@@ -8362,7 +14097,7 @@
   "relative_dose_min": 42.762,
   "distance_m": 2336.7,
   "min_thread_margin_min": 119.344,
-  "worst_minutes_to_shelter": 2.47,
+  "worst_minutes_to_shelter": 15.76,
   "longest_comm_shadow_min": 0.34,
   "rover_moves": 2,
   "label": "MODELED"

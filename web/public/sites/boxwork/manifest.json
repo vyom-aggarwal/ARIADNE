@@ -2,7 +2,7 @@
  "site": "boxwork",
  "title": "Mount Sharp boxwork, Gale crater",
  "pipeline_version": "0.0.0",
- "packaged_utc": "2026-11-09T20:40:16+00:00",
+ "packaged_utc": "2026-11-13T18:17:14+00:00",
  "crs": "Equirectangular metres on the 3,396,190 m Mars sphere (east, north)",
  "bounds_m": [
   8141605.492786024,
@@ -276,7 +276,7 @@
      "label": "1.0 S (1 = open sky)"
     }
    ],
-   "description": "Zenith-weighted open-sky fraction, calibrated on one RAD measurement (Murray Buttes). Lower is better shielded.",
+   "description": "Zenith-weighted open-sky fraction, calibrated on one RAD measurement (Murray Buttes). Lower is better shielded. Information only: terrain blocks a few percent of the dose at most, so it is not counted as shelter; the rover is the shelter.",
    "default_visible": false,
    "opacity": 0.7,
    "kind": "raster"
@@ -391,9 +391,9 @@
    "kind": "raster"
   },
   {
-   "id": "shelter_minutes",
-   "title": "Minutes to shelter",
-   "file": "layers/shelter_minutes.png",
+   "id": "minutes_to_rover",
+   "title": "Minutes to the rover at the staging point",
+   "file": "layers/minutes_to_rover.png",
    "bounds_m": [
     8142167.492786024,
     -285709.075189438,
@@ -449,7 +449,71 @@
      "label": "20 minutes or more"
     }
    ],
-   "description": "Walking time on the walker model (PLACEHOLDER suit settings) to the nearest terrain shelter (S at most 0.95) or the rover.",
+   "description": "Walking time on the walker model (PLACEHOLDER suit settings) to the rover parked at the staging point. The rover is the shelter; the plans follow it across its relay sites.",
+   "default_visible": false,
+   "opacity": 0.7,
+   "kind": "raster"
+  },
+  {
+   "id": "minutes_to_nearest_relay",
+   "title": "Minutes to the nearest rover parking place",
+   "file": "layers/minutes_to_nearest_relay.png",
+   "bounds_m": [
+    8142167.492786024,
+    -285709.075189438,
+    8144567.492786024,
+    -283309.075189438
+   ],
+   "resolution_m": 2.0,
+   "sources": [
+    "usgs-gale-dem-1m"
+   ],
+   "date": "2026-11-09",
+   "label": "MODELED",
+   "group": "safety",
+   "ramp": {
+    "min": 0,
+    "max": 20,
+    "stops": [
+     [
+      0,
+      109,
+      44
+     ],
+     [
+      161,
+      217,
+      155
+     ],
+     [
+      255,
+      255,
+      204
+     ]
+    ],
+    "unit": "minutes"
+   },
+   "legend": [
+    {
+     "color": [
+      0,
+      109,
+      44,
+      190
+     ],
+     "label": "0 minutes"
+    },
+    {
+     "color": [
+      255,
+      255,
+      204,
+      190
+     ],
+     "label": "20 minutes or more"
+    }
+   ],
+   "description": "Walking time to the nearest place the rover can park on its relay schedule (the staging point or a relay site): the outer limit of where any plan can go under a shelter limit.",
    "default_visible": false,
    "opacity": 0.7,
    "kind": "raster"
@@ -538,7 +602,7 @@
     "relative_dose_min": 38.7687,
     "distance_m": 1912.1,
     "min_thread_margin_min": 123.959,
-    "worst_minutes_to_shelter": 4.19,
+    "worst_minutes_to_shelter": 19.57,
     "longest_comm_shadow_min": 2.1,
     "rover_moves": 2,
     "label": "MODELED"
@@ -557,7 +621,7 @@
     "relative_dose_min": 42.762,
     "distance_m": 2336.7,
     "min_thread_margin_min": 119.344,
-    "worst_minutes_to_shelter": 2.47,
+    "worst_minutes_to_shelter": 15.76,
     "longest_comm_shadow_min": 0.34,
     "rover_moves": 2,
     "label": "MODELED"
@@ -568,17 +632,17 @@
    "file": "plans/safest.json",
    "title": "Safest",
    "totals": {
-    "transects": 7,
-    "stations": 21,
-    "science_value": 18.943,
-    "minutes": 355.89,
-    "consumables_min": 237.171,
-    "relative_dose_min": 39.4667,
-    "distance_m": 1958.5,
-    "min_thread_margin_min": 107.829,
-    "worst_minutes_to_shelter": 4.19,
-    "longest_comm_shadow_min": 2.15,
-    "rover_moves": 2,
+    "transects": 4,
+    "stations": 12,
+    "science_value": 10.931,
+    "minutes": 216.15,
+    "consumables_min": 149.85,
+    "relative_dose_min": 34.9997,
+    "distance_m": 1878.4,
+    "min_thread_margin_min": 195.135,
+    "worst_minutes_to_shelter": 9.67,
+    "longest_comm_shadow_min": 1.11,
+    "rover_moves": 0,
     "label": "MODELED"
    }
   }
@@ -3012,5 +3076,371 @@
   "label": "PLACEHOLDER",
   "source": "PROMPT.md section 6"
  },
- "walker_model": "MODELED with PLACEHOLDER suit settings; EXTRAPOLATED to Mars gravity"
+ "walker_model": "MODELED with PLACEHOLDER suit settings; EXTRAPOLATED to Mars gravity",
+ "assumptions": [
+  {
+   "group": "Walk and checks",
+   "key": "eva_max_min",
+   "title": "eva max min",
+   "value": 360,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md section 2 and docs/PLAN.md: an EVA budget of 6 h plus a 30 min reserve"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "consumables_total_min",
+   "title": "consumables total min",
+   "value": 390,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md section 2: 6 h plus the 30 min reserve, in minutes at the nominal metabolic rate"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "reserve_min",
+   "title": "reserve min",
+   "value": 30,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 5.9: C_reserve = 30 min"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "service_min",
+   "title": "service min",
+   "value": 15,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 5.8: 15 min per station"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "shelter_max_min",
+   "title": "shelter max min",
+   "value": 20,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 5.9; team decision 2026-11-10: walking minutes to the rover, wherever it is on its relay schedule (terrain is not shelter)"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "storm_event_duration_min",
+   "title": "storm event duration min",
+   "value": 120,
+   "label": "PLACEHOLDER",
+   "note": "Length of a solar-particle event for storm mode doses, until Phase 6 replays the May 2024 event."
+  },
+  {
+   "group": "Walk and checks",
+   "key": "storm_sample_every_min",
+   "title": "storm sample every min",
+   "value": 5,
+   "label": "PLACEHOLDER",
+   "note": "Storm responses are precomputed along each plan this often."
+  },
+  {
+   "group": "Walk and checks",
+   "key": "rover_track_step_min",
+   "title": "rover track step min",
+   "value": 0.5,
+   "label": "PLACEHOLDER",
+   "note": "While the rover drives during the first leg, its position is sampled this often for the shelter check."
+  },
+  {
+   "group": "Walk and checks",
+   "key": "comm_shadow_max_min",
+   "title": "comm shadow max min",
+   "value": 10,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 5.9"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "buddy_max_m",
+   "title": "buddy max m",
+   "value": 50,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 5.9"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "buddy_min_m",
+   "title": "buddy min m",
+   "value": 3,
+   "label": "PLACEHOLDER",
+   "note": "The overwatch point is at least this far from the station."
+  },
+  {
+   "group": "Walk and checks",
+   "key": "helmet_height_m",
+   "title": "helmet height m",
+   "value": 1.8,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 4.7"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "pace_drift_trigger",
+   "title": "pace drift trigger",
+   "value": 0.15,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 5.10"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "sample_step_m",
+   "title": "sample step m",
+   "value": 5,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 5.9: checked at least every 5 m"
+  },
+  {
+   "group": "Walk and checks",
+   "key": "max_station_distance_m",
+   "title": "max station distance m",
+   "value": 800,
+   "label": "PLACEHOLDER",
+   "note": "Every point of a candidate transect lies within this distance of the staging point."
+  },
+  {
+   "group": "Walk and checks",
+   "key": "candidate_transects",
+   "title": "candidate transects",
+   "value": 30,
+   "label": "PLACEHOLDER",
+   "note": "Highest-value valid transects kept for the leg matrix."
+  },
+  {
+   "group": "Walk and checks",
+   "key": "grid_margin_m",
+   "title": "grid margin m",
+   "value": 400,
+   "label": "PLACEHOLDER",
+   "note": "Planning grid extends this far beyond the farthest candidate."
+  },
+  {
+   "group": "Walk and checks",
+   "key": "planning_resolution_m",
+   "title": "planning resolution m",
+   "value": 2,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 5.1: a 2 m level for long legs"
+  },
+  {
+   "group": "Presets",
+   "key": "safest.reserve_min",
+   "title": "Safest: reserve min",
+   "value": 45,
+   "label": "PLACEHOLDER",
+   "note": "Reserve 45 min, shelter within 10 min, caution (hazard) and uncertainty penalties three times Balanced's."
+  },
+  {
+   "group": "Presets",
+   "key": "safest.shelter_max_min",
+   "title": "Safest: shelter max min",
+   "value": 10,
+   "label": "PLACEHOLDER",
+   "note": "Reserve 45 min, shelter within 10 min, caution (hazard) and uncertainty penalties three times Balanced's."
+  },
+  {
+   "group": "Presets",
+   "key": "balanced.reserve_min",
+   "title": "Balanced: reserve min",
+   "value": 30,
+   "label": "PLACEHOLDER",
+   "note": "The defaults."
+  },
+  {
+   "group": "Presets",
+   "key": "balanced.shelter_max_min",
+   "title": "Balanced: shelter max min",
+   "value": 20,
+   "label": "PLACEHOLDER",
+   "note": "The defaults."
+  },
+  {
+   "group": "Presets",
+   "key": "most_science.reserve_min",
+   "title": "Most science: reserve min",
+   "value": 30,
+   "label": "PLACEHOLDER",
+   "note": "Balanced's hard limits, no caution penalty, maximises complete transects."
+  },
+  {
+   "group": "Presets",
+   "key": "most_science.shelter_max_min",
+   "title": "Most science: shelter max min",
+   "value": 20,
+   "label": "PLACEHOLDER",
+   "note": "Balanced's hard limits, no caution penalty, maximises complete transects."
+  },
+  {
+   "group": "Rover",
+   "key": "speed_go_m_s",
+   "title": "speed go m s",
+   "value": 1.0,
+   "label": "PLACEHOLDER",
+   "note": "Driving speed on rover-go ground (Phase 2 rover walkability class 0)."
+  },
+  {
+   "group": "Rover",
+   "key": "speed_caution_m_s",
+   "title": "speed caution m s",
+   "value": 0.5,
+   "label": "PLACEHOLDER",
+   "note": "Driving speed on rover-caution ground (class 1); no-go ground is impassable."
+  },
+  {
+   "group": "Rover",
+   "key": "antenna_height_m",
+   "title": "antenna height m",
+   "value": 3.0,
+   "label": "PLACEHOLDER",
+   "note": "PROMPT.md 4.7 and config/derive.yaml line_of_sight"
+  },
+  {
+   "group": "Rover",
+   "key": "relay_sites",
+   "title": "relay sites",
+   "value": 3,
+   "label": "PLACEHOLDER",
+   "note": "Relay sites chosen besides the staging point."
+  },
+  {
+   "group": "Rover",
+   "key": "relay_spacing_m",
+   "title": "relay spacing m",
+   "value": 50,
+   "label": "PLACEHOLDER",
+   "note": "Spacing of the candidate relay grid."
+  },
+  {
+   "group": "Rover",
+   "key": "relay_max_distance_m",
+   "title": "relay max distance m",
+   "value": 800,
+   "label": "PLACEHOLDER",
+   "note": "Candidate relay sites lie within this distance of the staging point."
+  },
+  {
+   "group": "Rover",
+   "key": "viewshed_range_m",
+   "title": "viewshed range m",
+   "value": 1500,
+   "label": "PLACEHOLDER",
+   "note": "Line-of-sight range from the rover antenna."
+  },
+  {
+   "group": "Rover",
+   "key": "shelter_s",
+   "title": "shelter s",
+   "value": 0.5,
+   "label": "PLACEHOLDER",
+   "note": "config/derive.yaml shielding.rover_shelter_s"
+  },
+  {
+   "group": "Suit and walker model",
+   "key": "body_mass_kg",
+   "title": "body mass kg",
+   "value": 82,
+   "label": "PLACEHOLDER",
+   "note": "NASA/TP-2010-216125 p. 11: an average subject body mass of 82 kg (180 lb), typical of the male astronaut population then"
+  },
+  {
+   "group": "Suit and walker model",
+   "key": "suit_gravity_factor",
+   "title": "suit gravity factor",
+   "value": 1.0,
+   "label": "PLACEHOLDER",
+   "note": "Multiplies Minetti et al.'s Earth, unsuited cost of walking. Mars gravity lowers the cost and a pressurized suit raises it; no verified source quantifies either here, so 1.0 is used and every Mars walk is flagged EXTRAPOLATED."
+  },
+  {
+   "group": "Suit and walker model",
+   "key": "max_speed_m_s",
+   "title": "max speed m s",
+   "value": 1.0,
+   "label": "PLACEHOLDER",
+   "note": "Minetti et al. 2002: the lowest level cost of walking was at 1.0 +/- 0.3 m/s"
+  },
+  {
+   "group": "Suit and walker model",
+   "key": "power_ceiling_w_kg",
+   "title": "power ceiling w kg",
+   "value": 4.0,
+   "label": "PLACEHOLDER",
+   "note": "Highest sustained metabolic power per kg of body mass; sets the pace uphill."
+  },
+  {
+   "group": "Suit and walker model",
+   "key": "station_rate_ratio",
+   "title": "station rate ratio",
+   "value": 0.6,
+   "label": "PLACEHOLDER",
+   "note": "Metabolic rate during station work, relative to the nominal walking rate."
+  },
+  {
+   "group": "Suit and walker model",
+   "key": "suit_pressure_kpa",
+   "title": "suit pressure kpa",
+   "value": 29.6,
+   "label": "PLACEHOLDER",
+   "note": "Used only for the extrapolation flag; 29.6 kPa is a pressure NASA/TP-2010-216125 tested (Table 7)."
+  },
+  {
+   "group": "Terrain classes",
+   "key": "walker_slope_deg",
+   "title": "walker slope deg",
+   "value": [
+    15,
+    25
+   ],
+   "label": "PLACEHOLDER",
+   "note": "go up to 15"
+  },
+  {
+   "group": "Terrain classes",
+   "key": "rover_slope_deg",
+   "title": "rover slope deg",
+   "value": [
+    12,
+    20
+   ],
+   "label": "PLACEHOLDER",
+   "note": "go up to 12"
+  },
+  {
+   "group": "Terrain classes",
+   "key": "walker_roughness_m",
+   "title": "walker roughness m",
+   "value": [
+    0.15,
+    0.35
+   ],
+   "label": "PLACEHOLDER",
+   "note": "go"
+  },
+  {
+   "group": "Placement",
+   "key": "staging_point",
+   "title": "staging point",
+   "value": "Altadena drill position",
+   "label": "PLACEHOLDER",
+   "note": "Where the rover parks at the start (Curiosity's position while drilling Altadena)."
+  },
+  {
+   "group": "Placement",
+   "key": "start_time",
+   "title": "start time",
+   "value": "sol 4718, 09:00 local true solar time",
+   "label": "PLACEHOLDER",
+   "note": "Used only for the sun track on the timeline."
+  }
+ ],
+ "site_notes": [
+  {
+   "id": "conservative-slope-no-go",
+   "site": "boxwork",
+   "title": "Slope no-go is conservative in boxwork terrain",
+   "text": "Slope no-go classes in boxwork terrain are conservative. On Curiosity's own path the rover check classed 20% of 2,893 positions no-go where the rover actually drove (79.8% go or caution, against a 95% target): the boxwork ridges sit at the elevation model's resolution limit, and DEM seams add false alarms. The walker classes come from the same slopes, so they share this bias. The planner still avoids every no-go cell, so routes may be longer than they need to be, and some good ground is closed. The hatched over-cautious cells (0.9% of the site) mark only the seam and low-confidence part of this; elsewhere no-go cells are not marked. At Murray Buttes, outside the boxwork, the same check passes (99.8%).",
+   "label": "MEASURED",
+   "source": "validation.json rover-walkability check: PLACES localizations against the derived rover walkability classes"
+  }
+ ],
+ "validation": "validation.json"
 }

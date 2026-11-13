@@ -47,8 +47,8 @@ Core concepts:
 
 - The thread: a continuously recomputed return path to the nearest safe haven, with a consumables margin.
 - Buddy rule: the pair stays within a set distance and in mutual line of sight.
-- Shelter rule: every point on the route stays within a set walking time of radiation shelter.
-- Storm mode: on a solar-particle alert, both crew are routed to the best reachable shelter.
+- Shelter rule: every point on the route stays within a set walking time of the rover, wherever it is on its relay schedule. Terrain blocks only a few percent of the radiation (3.8% at Murray Buttes), so terrain is not counted as shelter.
+- Storm mode: on a solar-particle alert, both crew are routed to the destination with the lowest modeled dose over the event, counting the exposed walk there.
 - Rover rendezvous: the rover's position moves the end of the thread.
 
 Science facts to build around, cited in the app:
@@ -115,7 +115,7 @@ Implement each layer as a pure function in pipeline/ariadne/derive/, unit-tested
 3. Walkability for the suited walker and the rover: go, caution or no-go, plus a continuous cost. Inputs are slope, roughness, dark-object density in the 25 cm imagery, a sand proxy (THEMIS night-infrared percentile plus smooth texture and ripple directionality) and ridge-edge drop-offs (curvature with local relief of 1 m or more). Walker slope classes (PLACEHOLDER): go up to 15°, caution 15 to 25°, no-go above 25°. Label the layer MODELED, and report boulder sizes only if per-image sun geometry is available.
 4. Boxwork ridges and fractures: ridges where TPI at 10 m exceeds +0.3 m with local relief of at least 0.8 m, hollows below −0.3 m (PLACEHOLDER thresholds, tuned on a hand-labeled sample). Trace dark central fractures with a multi-scale line filter on the imagery inside the ridge mask; skeletonize and keep lines 10 m or longer. If the DEM over the site is CTX-derived, map ridges from imagery texture only and say so.
 5. Radiation shielding index: with zenith weighting cos^n θ, the zenith-weighted open-sky fraction S has the closed form below, averaged over azimuths φ with horizon angle h. Relative dose is D(x) ≈ D_RAD · S(x) · f(p(x)), where f(p) = 1 + κ (p − p_ref) / D_ref uses the published dose-pressure coefficient κ and its matching mean dose D_ref (Guo et al. 2021, section 3.2), and p follows elevation with the 11.0 km scale height from NASA's Mars fact sheet. Calibrate n so that S(parking spot) / S(baseline) = 0.96, where the baseline is the positions the RAD study used as its reference: Curiosity's positions on sols 1440 to 1455 and 1468 to 1480 (Ehresmann et al. 2021), averaged over sols. Use far-field horizons at both. Search n from 0 to 10, report the n range that matches the paper's 3.8% ± 0.4%, and label the result "calibrated on one RAD measurement", or report the mismatch if no n fits. Check the horizons against the paper's 19% blocked sky (n = 0). Tests: flat open terrain gives S = 1; a cell enclosed by vertical walls gives S = 0.
-6. Shelters and time-to-shelter: shelter cells have S of 0.95 or less (PLACEHOLDER) and are walkable, grouped into zones of at least 4 m² (PLACEHOLDER). The rover and habitat count as shelters with PLACEHOLDER shielding. A multi-source Dijkstra on walking time gives minutes-to-shelter everywhere.
+6. Terrain shielding zones and time to the rover: cells with S of 0.95 or less (PLACEHOLDER), walkable and grouped into zones of at least 4 m², are mapped as information only; terrain blocks a few percent of the dose at most, so they are not shelter. The rover (and habitat) is the shelter, with PLACEHOLDER shielding. A reverse Dijkstra on walking time gives minutes to the rover everywhere, for each place the rover parks.
 7. Line of sight: viewsheds from the rover antenna at 3 m and between helmets at 1.8 m (both PLACEHOLDER). This is line of sight only; radio propagation is not modeled, and the app says so.
 8. Light and ground temperature: sun azimuth and elevation from Mars24; shadow wherever sun elevation is below the horizon angle at the sun's azimuth; insolation from incidence on the local slope. Relative ground temperature comes from the REMS daily curve scaled by insolation ratio and a thermal-inertia class. Label it MODELED and RELATIVE.
 9. Science value: generate transect triples along mapped ridge segments 20 m or longer: a fracture point on the crest, a wall point 1 to 2 m down the flank, and a hollow point 3 to 10 m away, each walkable. Score each station as a weighted sum of hypothesis role, novelty (distance to Curiosity's prior targets), spectral context and access, with weights in config/science.json.
@@ -140,12 +140,12 @@ Why this form: integrating cos^n θ · sin θ over the open zenith angles, from 
 9. Hard constraints, checked at least every 5 m along the route:
    - Thread: the second formula below, with C_reserve = 30 min (PLACEHOLDER).
    - Buddy: the pair moves together; during station work the partner holds an overwatch point within 50 m (PLACEHOLDER) with mutual line of sight, or the station is invalid.
-   - Shelter: minutes-to-shelter of 20 or less (PLACEHOLDER).
+   - Shelter: walking minutes to the rover, wherever it is on its relay schedule, of 20 or less (PLACEHOLDER; Safest 10).
    - Comms: no comm shadow longer than 10 continuous minutes (PLACEHOLDER).
    - Rover: the rover follows its own cost surface (PLACEHOLDER slope limit, sand avoidance) to any pickup point, and the thread ends at the rover. The rover also serves as a mobile comms relay: it moves between a few overwatch points it can reach during the EVA, so more stations stay in line of sight, and the thread ends wherever the rover is.
    - Any violation triggers a re-solve with the offending station removed or the budget tightened.
 10. Re-planning during the walk: triggers are pace drifting more than 15% from plan (PLACEHOLDER), a margin crossing its threshold, or an alert. Drop the lowest value-per-minute stations first, re-check every constraint, and show a diff of what changed.
-11. Storm mode: Dijkstra on time from the current position to every shelter zone; take the earliest arrival, breaking ties by lower S. Show the MODELED dose avoided over the event duration, taken from replay data or marked PLACEHOLDER.
+11. Storm mode: for each destination (the rover where it is parked, the most shielded reachable terrain, or staying put), the fastest path from the current position and the modeled dose over the event: the exposed walk (S along the path) plus the rest of the event at the destination's S. Take the destination with the lowest dose; the rover's S stays a labeled PLACEHOLDER. Show the MODELED dose avoided over the event duration, taken from replay data or marked PLACEHOLDER.
 12. Output: plan.json plus GeoJSON layers, following the schema below.
 
 ```latex
@@ -175,7 +175,8 @@ Five surfaces share one state store. The Habitat Planner and Visor HUD mirror th
 Habitat Planner, desktop:
 
 - 2D map with deck.gl OrthographicView in site meters; a layer panel showing source, resolution, date and label for each layer; legends and opacity.
-- Three route options side by side: duration, distance, consumables used, minimum margin, worst time-to-shelter, relative dose, stations and science value.
+- Three route options side by side: duration, distance, consumables used, minimum margin, worst time to the rover, relative dose, stations and science value, plus a price-of-safety line: the science value Safest gives up and the margin it gains against Most science.
+- An assumptions panel listing every PLACEHOLDER setting and site-level notes, including that slope no-go classes in boxwork terrain are conservative (the rover check found about 20% false alarms on Curiosity's path).
 - Timeline: margin curve, station blocks, sun elevation and comm-shadow segments.
 - 3D view in three.js: chunked terrain with level of detail and the imagery as texture. First-person rehearsal at eye height (PLACEHOLDER: 1.7 m) with a speed control, Curiosity photos as billboards at their capture points facing their view direction, and an orbit-versus-ground toggle.
 - EVA mode: live map of EV1, EV2 and the rover (simulated from the plan in the demo), pins, caution and warning, mission elapsed time and time at each station, mirroring the SUITS console requirements.
@@ -185,7 +186,7 @@ Visor HUD, an overlay on the first-person view at 1920×1080:
 
 - At most four elements at once, kept in the periphery; white and cyan with dark outlines, never red or orange; every color paired with a shape.
 - Slope no-go cells in a DEM seam zone or a low-confidence zone are marked "map may be over-cautious here, check by eye"; the planner still avoids them.
-- Heading and distance to the next station; the thread drawn as a line home with the margin in minutes; buddy bearing, distance and suit status; caution and warning, with a shelter arrow in storm mode; breadcrumbs and dropped pins.
+- Heading and distance to the next station; the thread drawn as a line home with the margin in minutes; buddy bearing, distance and suit status; caution and warning, with an arrow to the lowest-dose refuge in storm mode; breadcrumbs and dropped pins.
 - Voice commands through the Web Speech API where the browser supports it: "distance home", "next station", "drop pin".
 
 Cuff Tablet, 1024×768:
@@ -197,7 +198,7 @@ Cuff Tablet, 1024×768:
 
 Other surfaces:
 
-- Printed cuff card: a print stylesheet producing one page with the route map, stations, bearings and distances, landmark thumbnails, abort routes to shelters and the timeline.
+- Printed cuff card: a print stylesheet producing one page with the route map, stations, bearings and distances, landmark thumbnails, abort routes to the rover and the timeline.
 - Judge tour: a three-minute guided overlay covering story, layers, plan, rehearsal, HUD, storm replay, Validation tab and site 2.
 - About and Data pages: provenance table, credits, AI disclosure, limitations, and the Apollo 14 story.
 
@@ -213,7 +214,7 @@ One scenario clock drives every condition, in three modes: Now, Future date and 
 - Space weather: a DONKI snapshot around each scenario date, showing CMEs with predicted Mars arrival, flares and solar energetic particle events.
 - Storm replay preset: align the EVA so the May 20, 2024 event begins mid-walk, raise the alert at the event time, and enter storm mode. Show the measured 8,100 micrograys (MEASURED, JPL) beside modeled doses with and without shelter (MODELED).
 
-make validate writes validation.json, and the app's Validation tab renders it. Targets are team targets, not published standards.
+make validate writes validation.json, and the app's Validation tab renders it, with site-level notes such as the conservative slope no-go classes in boxwork terrain. Targets are team targets, not published standards.
 
 | Check | Reference | Target |
 | --- | --- | --- |

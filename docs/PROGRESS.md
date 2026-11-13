@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-09 UTC (Phase 4 and the rover relay done; ridge labels awaited).
+Last updated: 2026-11-13 UTC (Phase 4 review applied: the rover is the shelter, storm mode by lowest dose; Phase 5 next; ridge labels awaited).
 
 ## Status
 
@@ -13,6 +13,7 @@ Last updated: 2026-11-09 UTC (Phase 4 and the rover relay done; ridge labels awa
 | 3 Route engine | Done 2026-11-09, revised after review: D1 to D14 pass; plans visit whole transects within the 6 h EVA; presets differ by safety settings; thread holds in 1000 of 1000 boxwork scenarios; browser solver at 101.2% of the time-limited OR-Tools reference (worst 98.8%). The walker model is a labeled stand-in (NASA/TP-2010-216125 publishes no coefficients) |
 | 4 Habitat Planner | Done 2026-11-09: E1 to E10 pass (CI run 42684297699 green; Pages deploy 42684506684 serves the planner); first map 2.1 s (3 s target) and 3.1 to 4.5 s at 4× CPU slowdown in four of five runs (5 s budget; one run over) |
 | 4b Rover as mobile comms relay | Done 2026-11-09: F1 to F5 pass (CI run 42696159967 green, Pages deploy 42696408772); 3 relay sites put 112 of 150 pool transects in sight (staging alone: 41); the 6 h limit, not comms, still caps the boxwork plans; thread holds in 1000 of 1000 |
+| 4c Phase 4 review | Done locally 2026-11-13: E11 to E15 pass; the rover is the shelter and the presets separate (Safest 4 transects, value 10.93; Balanced 7, 18.94; Most science 7, 19.11); storm mode by lowest dose; price of safety; assumptions panel and Validation tab. CI pending |
 | 5 Visor HUD, Cuff Tablet, printed card | Next |
 | 6 to 9 | Not started |
 
@@ -26,6 +27,7 @@ Last updated: 2026-11-09 UTC (Phase 4 and the rover relay done; ridge labels awa
 - **Phase 2 spec changes (2026-11-08):** (1) far-field horizons: 2 km on the 1 m DEM, then to about 100 km on a coarse regional DEM, reporting the sunrise and sunset shift; (2) calibrate n so that S(parking spot) / S(the RAD study's baseline positions) = 0.96, with far-field horizons at both; (3) use Ehresmann et al. 2021 (doi:10.1029/2021JE006851) for the Murray Buttes figures and Guo et al. 2021 (doi:10.1007/s00159-021-00136-5) for a dose-pressure coefficient, verified first; (4) drill sites Altadena, Valle de la Luna, Nevado Sajama and Nevado Sajama2, sols from NASA's Curiosity blog and positions from PLACES; (5) describe the Mars24 example mismatch as rounding unless it can be shown otherwise. Applied to PROMPT.md and docs/PLAN.md; evidence in docs/SOURCES_LOG.md (Phase 2 verification pass).
 - **Phase 2 follow-up (2026-11-09):** (1) compute slope at each traveller's footprint scale on physical grounds, not to hit the target: the rover from Curiosity's published dimensions, the walker no finer than the DEM's effective resolution; fix the method before re-running, re-run the check once, keep the failed first result in validation.json beside the new one, and run the rover check on the Murray Buttes traverse as a held-out test; report a miss as is. (2) Map the DEM mosaic seams from the stereo-pair footprints into the uncertainty layer and check whether no-go cells on Curiosity's path sit on a seam. (3) Build a local labeling page (25 cm image and hillshade chips at random points, stratified by predicted class) for about 250 labels; split them into tuning and test halves before tuning; tune on the first half only and report precision and recall on the second; consider a smoothed DEM for TPI and image texture; regenerate the transects from the tuned map. (4) Continue with Phase 3 without waiting for the labels.
 - **Phase 3 review (2026-11-09):** (1) walkability: no more re-runs; report the boxwork FAIL (79.8%) beside the Murray Buttes PASS (99.8%) with the diagnosis (ridges at the DEM's resolution limit, seams add false alarms), say that the check can only measure false alarms, keep the planner conservative, and mark slope no-go cells in seam or low-confidence zones on the HUD and tablet as "map may be over-cautious here, check by eye". (2) EVA length: align with the spec's 6 h plus a 30 min reserve (PLACEHOLDER). (3) Route each fracture-wall-hollow transect as one node with its combined service time and internal walk. (4) Presets differ by safety settings: Safest reserve 45 min, shelter limit 10 min, caution and uncertainty penalties ×3; Balanced the defaults; Most science Balanced's limits, no caution penalty, maximise complete transects (all PLACEHOLDER). (5) Describe OR-Tools as a time-limited reference, not an optimum, and report the worst case. (6) Phase 4, then the rover as a mobile comms relay: a few reachable overwatch points it moves between during the EVA, with the thread ending wherever the rover is.
+- **Phase 4 review (2026-11-10):** (1) shelter rule: walking minutes to the rover, wherever it is on its relay schedule, 20 min (PLACEHOLDER), Safest 10; terrain shielding stays as information, not shelter (it blocks a few percent at most; S ≤ 0.95 removed nothing). (2) Storm mode: the destination with the lowest modeled dose over the event, counting the exposed walk, not the earliest arrival; the rover's S stays a labeled PLACEHOLDER. (3) Presets should separate under the new rule (say so if not), and the route options get a price-of-safety line: the science value Safest gives up and the margin it gains against Most science. (4) A site-level note in the assumptions panel and the Validation tab that slope no-go classes in boxwork terrain are conservative. (5) PROMPT.md and docs/PLAN.md to match; then Phase 5.
 
 ## Kickoff findings that change the plan
 
@@ -487,6 +489,82 @@ The rover becomes a mobile comms relay: it moves between a few overwatch points 
 - **Tests:** F1 to F5 pass with every earlier test (312 pipeline, 45 web, 5 Playwright). Playwright now runs one test at a time: run in parallel, the 3D tour's software WebGL slowed the dark-mode check past its timeout.
 - **The planner** shows the relay sites (R1 to R3) on the map and the rover's moves and end point in the route options.
 
+## Phase 4 review plan (team decisions of 2026-11-10)
+
+1. **Shelter is the rover.** The shelter value at a point is the walking time from it to the rover, wherever it is on its relay schedule; the limits stay 20 min (PLACEHOLDER) and 10 min for Safest. Parked, that is the walk to its relay site. While it drives during a station visit, it is the walk from the station to the farthest point of its drive. While it drives during the first leg, it is the walk to where it is at that moment, from rover positions every half minute of the drive (PLACEHOLDER), taking the larger of the two around each moment. Walking times use every walkable cell, since in an emergency the crew may cross any of them. The terrain shielding zones (S ≤ 0.95) stay as an information layer and a storm-mode option, never shelter.
+2. **Storm mode by lowest dose.** At every point the options are the rover where it is parked (S PLACEHOLDER 0.5), the nearest terrain shielding zone (its own S) and staying put. The dose over an event is the exposed walk (S along the fastest path) plus the rest of the event at the refuge's S, cut at the event's end if the walk is longer; the lowest dose wins, ties to the shorter walk. The event length is a PLACEHOLDER 120 min until Phase 6 replays May 2024. While the rover drives, the higher dose of its two parking places is shown. `ariadne plan` stores a response every 5 minutes along each plan, with the line home (the fastest walk to where the rover parks next), for the HUD, tablet and card.
+3. **Price of safety.** The route options and the plan report give the science value Safest gives up and the least-margin gain against Most science, and say whether the presets separate.
+4. **Site notes.** validation.json gains `site_notes`, the first being that slope no-go classes in boxwork terrain are conservative, with its numbers taken from the rover check. The planner's new assumptions panel shows it with every PLACEHOLDER setting; the new Validation tab renders validation.json with the notes first.
+
+### Phase 4 review acceptance tests
+
+| ID | Test | Where |
+| --- | --- | --- |
+| E11 | Shelter rule: walking minutes to the rover at its relay; during a station visit when it moves, the farthest point of its drive; during a first-leg drive, the walk to its sampled position (the larger of the two around each moment); the check fails over the limit | `pipeline/tests/test_shelter_rule.py` |
+| E12 | Storm mode: the lowest event dose wins, counting the exposed walk, a walk longer than the event cut at its end, ties to the shorter walk; responses every 5 min along a plan carry the line home; Python and TypeScript hold the same dose rule | `pipeline/tests/test_storm.py`, `web/tests/storm.test.ts` |
+| E13 | Committed plans keep every sample within the preset's walking limit to the rover and carry storm responses (MODELED, placeholders named); the report gives the price of safety and says whether the presets separate; the route options show the price-of-safety line with its label | `pipeline/tests/test_plan_outputs.py`, `web/tests/review.test.tsx` |
+| E14 | The manifest and the assumptions panel list every PLACEHOLDER setting and the conservative-slope site note; no layer calls terrain a shelter | `pipeline/tests/test_package.py`, `web/tests/review.test.tsx` |
+| E15 | validation.json holds the site note with the rover check's numbers; the Validation tab renders every check, its status in words and a shape, and the site notes | `pipeline/tests/test_validation_outputs.py`, `web/tests/review.test.tsx` |
+
+### Phase 4 review evidence
+
+- **Run:** `ariadne plan --site boxwork` took 9 minutes (the leg caches from a trial run were reused). Rover positions are sampled along each first-leg drive (25, 21 and 52 samples for the three relay sites). 35% of the walkable planning grid lies within a 10-minute walk of some place the rover can park, 61% within 20 minutes.
+- **Plans under the new shelter rule** (docs/plan/boxwork-*.json; worst walk to the rover is wherever it is, parked or driving):
+
+| Preset | Transects | Science value | Minutes | Distance (m) | Least thread margin (min) | Worst walk to the rover (min) | Longest comm shadow (min) | Rover moves | Usable transects | Checks |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| safest | 4 (12 stations) | 10.93 | 216 | 1,878 | 195.1 | 9.7 | 1.1 | 0, ends at STAGING | 8 | all pass |
+| balanced | 7 (21 stations) | 18.94 | 355 | 1,912 | 124.0 | 19.6 | 2.1 | 2, ends at STAGING | 20 | all pass |
+| most_science | 7 (21 stations) | 19.11 | 359 | 2,337 | 119.3 | 15.8 | 0.3 | 2, ends at STAGING | 20 | all pass |
+
+- **The presets now separate.** Safest's 10-minute walking limit to the rover leaves 8 usable transects (Balanced and Most science: 20). Price of safety, Safest against Most science: it gives up 8.18 of science value (43%) and 3 transects, and gains 75.8 min of least thread margin above its reserve (195.1 against 119.3), with a 45-minute reserve against 30 and a worst walk to the rover of 9.7 min against 15.8. Safest and Most science share 3 transects. Balanced and Most science, with the same limits, still choose similar sets (7 transects each, values 18.94 and 19.11); they differ by the caution penalty and the objective.
+- **Under the old rule** (terrain zones counted as shelter) every candidate lay within 4 minutes of shelter and Safest's limit removed nothing; all three presets planned 7 transects.
+- **Storm mode** (a response at least every 5 minutes of walking, once per station visit; 120-minute PLACEHOLDER event):
+
+| Preset | Responses | Rover chosen | Longest walk to the refuge (min) | Mean dose avoided (open-sky min) |
+| --- | --- | --- | --- | --- |
+| safest | 17 | 17 | 9.6 | 51.5 |
+| balanced | 26 | 26 | 19.6 | 47.2 |
+| most_science | 28 | 28 | 15.4 | 50.4 |
+
+  The rover wins everywhere: over 120 minutes its PLACEHOLDER S of 0.5 beats any terrain zone (S of 0.95 or more blocks 5% at most) as long as it can be reached. Terrain would win only for events of a few minutes (tested on synthetic terrain). Every response also carries the line home, the fastest walk to where the rover parks next, for the HUD, tablet and printed card.
+- **Thread:** 1000 of 1000 random scenarios hold with the moving-rover shelter rule (least margin above the reserve 2.07 min).
+- **Browser solver:** 104.3% of the time-limited OR-Tools value on average over 60 scenarios on the new Balanced legs, worst case 100.0%, at most 41 ms each.
+- **Site note** (validation.json `site_notes`, the planner's assumptions panel and the new Validation tab): slope no-go classes in boxwork terrain are conservative; on Curiosity's path the rover check classed 20% of positions no-go where it drove (79.8% go or caution against 95%); the hatched over-cautious cells (0.9% of the site) mark only the seam and low-confidence part; Murray Buttes passes (99.8%).
+- **Assumptions panel:** 43 PLACEHOLDER settings from config/presets.json, rovers.json, suits.json and derive.yaml, grouped, each with its note or source.
+- **Wording:** the shielding layer, the derive reports and the plan report now call the S ≤ 0.95 zones terrain shielding zones, information only; the planner's map layer is minutes to the rover (and to its nearest parking place).
+- **Tests:** E11 to E15 pass locally where this machine can run them (see the open issue on Windows Application Control): 256 pipeline tests and the plan, package and validation output checks; 53 Vitest tests; 7 Playwright tests (the judge tour, the page checks and the new Validation tab in light and dark mode). The sun-track functions moved to `ariadne/models/sun.py` so the package step no longer loads numba.
+
+## Phase 5 plan: Visor HUD, Cuff Tablet and printed card
+
+Three surfaces driven by one EVA state store, simulated from the plan in the demo (PROMPT.md section 6). New tabs beside the Habitat Planner and Validation: Visor HUD, Cuff Tablet and Cuff card.
+
+1. **State store and simulation** (`web/src/core/eva/`): mission time, play and speed, the chosen preset, a manual storm alert (Phase 6 replaces it with the May 2024 replay), dropped pins and breadcrumbs. Pure functions give, at plan time t: EV1's position (interpolated along the plan's margin samples, held at each station during its visit); EV2's (at the station's overwatch point during a visit, a few seconds behind EV1 on legs); the rover's (its relay schedule, a straight line between parking places while it drives); the next station with bearing and distance; the thread margin and the line home; the storm response in force. All labeled simulated (PLACEHOLDER) or MODELED.
+2. **Visor HUD** (`web/src/hud/`): an overlay on the first-person view in a 1920×1080 frame (scaled to fit). Four slots at most, in the periphery:
+   - next station: heading arrow and distance (replaced by the storm arrow in storm mode);
+   - thread: a small map with the line home, the margin in minutes, breadcrumbs and pins;
+   - buddy: bearing, distance and suit status (consumables left);
+   - caution and warning: the highest-priority alert (storm, low margin, "map may be over-cautious here, check by eye"), with a count of any others.
+   White and cyan with dark outlines, never red or orange; every element has its own shape. Voice commands ("distance home", "next station", "drop pin") through the Web Speech API where supported, with buttons for the same commands.
+3. **Over-cautious marking:** `ariadne package` adds to each plan the samples within 25 m (PLACEHOLDER) of an over-cautious walker cell (slope no-go in a seam or low-confidence zone), with the nearest such cell. The HUD and tablet show "map may be over-cautious here, check by eye" there; the planner still avoids those cells.
+4. **Cuff Tablet** (`web/src/tablet/`), in a 1024×768 frame: controls of at least 64 CSS px (PLACEHOLDER for gloved use); a next-station card with a "what you'll see" photo (a Navcam frame looking toward that transect, where one exists, with its credit); station steps Look, Observe, Describe, Document (after SUITS); the margin, the line home and alerts; a sample log with a photo field, stored in the browser (IndexedDB); offline through a service worker that caches the app and the site package.
+5. **Printed cuff card** (`web/src/card/`): a print stylesheet giving one page with the route map (legs, stations, relay sites, abort routes to the rover), a station table with bearings and distances, landmark thumbnails, and a compact timeline.
+
+### Phase 5 acceptance tests
+
+| ID | Test | Where |
+| --- | --- | --- |
+| G1 | Simulation: EV1 follows the plan's margin samples and holds at each station during its visit; EV2 is at the overwatch point during visits; the rover follows its relay schedule; bearing and distance are exact on synthetic points | `web/tests/eva.test.ts` |
+| G2 | HUD: at most four elements in every state (every minute of every committed plan, storm on and off, with pins, near over-cautious cells); alerts in priority order; in storm mode the arrow points along the path to the lowest-dose refuge | `web/tests/hud.test.ts` |
+| G3 | HUD colors: white and cyan only (with dark outlines), no red or orange hue; each element type has its own shape; under protanopia, deuteranopia and tritanopia simulation (Machado et al. 2009) each symbol keeps at least 3:1 contrast with its outline and with the Mars ground color of the packaged imagery | `web/tests/hud.test.ts` |
+| G4 | Voice: the parser maps "distance home", "next station" and "drop pin" (and close variants) to commands and ignores anything else; buttons do the same; recognition starts only where the browser supports it | `web/tests/voice.test.ts` |
+| G5 | Over-cautious marking: each packaged plan lists the samples within 25 m of an over-cautious walker cell; the HUD and tablet show the marking exactly there | `pipeline/tests/test_package.py`, `web/tests/hud.test.ts` |
+| G6 | Tablet: every control is at least 64 × 64 CSS px at 1024×768; the next-station card has a "what you'll see" photo with its credit where one exists; the four station steps; a sample log entry with a photo is saved locally and reloads | `web/tests/tablet.test.tsx`, `web/e2e/surfaces.spec.ts` |
+| G7 | Offline: after one visit, the tablet reloads with the network off (Chromium) | `web/e2e/surfaces.spec.ts` |
+| G8 | Printed card: Chromium prints it on exactly one page, with the route map, stations with bearings and distances, landmark thumbnails, abort routes to the rover and the timeline | `web/e2e/surfaces.spec.ts` |
+| G9 | No serious or critical axe violations on the HUD, tablet and card in light and dark mode; every control reachable from the keyboard | `web/e2e/surfaces.spec.ts` |
+| G10 | CI green on `main`; the Pages deploy serves the new tabs | GitHub Actions and a fetch of the Pages URL |
+
 ## Next steps
 
 1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
@@ -507,6 +585,8 @@ The rover becomes a mobile comms relay: it moves between a few overwatch points 
 - The boxwork rover check fails (79.8%) beside the Murray Buttes PASS (99.8%); no more re-runs (team decision). It can only measure false alarms. The boxwork ridges sit at the DEM's resolution limit and seams add false alarms; the planner stays conservative and the surfaces will mark the over-cautious cells.
 - Seams between the CCDs inside one HiRISE image are not mapped.
 - The walker model is a stand-in: Minetti et al. 2002 (Earth, unsuited) with PLACEHOLDER suit, gravity and pace settings, because NASA/TP-2010-216125 publishes no coefficients. A suited, reduced-gravity source with published coefficients would replace it.
-- Comms is line of sight from a 3 m antenna at the staging point only; it leaves about 15% of the boxwork site in view and is the main limit on candidate stations. Relays are not modeled.
+- Comms is line of sight only (no radio model), from a 3 m antenna on the rover at the staging point or one of three relay sites.
 - The rover relay assumes contact from the rover's destination while it drives during the first leg. The buddy's walk to the overwatch point is not timed.
-- With the PLACEHOLDER presets the 360-minute EVA limit binds before consumables, and Safest's tighter limits remove no boxwork candidate, so the presets choose similar transects and differ mainly in paths and margins.
+- Balanced and Most science share their limits and still choose similar transects (7 each); only Safest's limits separate it. Relay sites are still chosen for comms coverage alone; choosing them for walking distance as well (now that the rover is the shelter) might give Safest more usable transects.
+- The shelter check while the rover drives during the first leg takes the larger of two rover positions half a minute apart, an approximation within about 15 seconds of driving. While it drives during a station visit, the check takes the farthest point of its drive (conservative).
+- **This machine's Windows Application Control policy now blocks the DLLs of numba, OR-Tools and pyproj** (since 2026-11-11, after the boxwork plan run). Locally, the tests that import them cannot run (8 test modules and 12 tests), and `make derive` and `make plan` cannot run either, which blocks the ridge-label follow-up on this machine. CI on Linux is unaffected. Changing the policy is the team's decision; a Python environment under WSL (Ubuntu is installed) would be another route.

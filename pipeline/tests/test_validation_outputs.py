@@ -145,3 +145,12 @@ def test_rover_check_has_the_murray_buttes_held_out_result(validation):
     assert held["status"] == ("pass" if held["result"]["go_or_caution"] >= 0.95 else "fail")
     assert held["result"]["points"] > 100
     assert "seams" in held["result"] and "comparison_horn_1m" in held
+
+
+def test_validation_has_the_conservative_slope_site_note(validation):
+    notes = {n["id"]: n for n in validation["site_notes"]}
+    note = notes["conservative-slope-no-go"]
+    rv = next(c for c in validation["checks"] if c["id"] == "rover-walkability")
+    assert note["site"] == "boxwork" and note["label"] == "MEASURED"
+    assert f"{100 * rv['result']['go_or_caution']:.1f}%" in note["text"]
+    assert "false alarms" in note["text"] and "conservative" in note["text"]

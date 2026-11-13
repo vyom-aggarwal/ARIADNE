@@ -1,8 +1,18 @@
 {
  "title": "ARIADNE validation",
  "pipeline_version": "0.0.0",
- "generated_utc": "2026-11-09T20:39:25+00:00",
+ "generated_utc": "2026-11-13T18:12:45+00:00",
  "note": "Targets are team targets, set before each run, not published standards.",
+ "site_notes": [
+  {
+   "id": "conservative-slope-no-go",
+   "site": "boxwork",
+   "title": "Slope no-go is conservative in boxwork terrain",
+   "text": "Slope no-go classes in boxwork terrain are conservative. On Curiosity's own path the rover check classed 20% of 2,893 positions no-go where the rover actually drove (79.8% go or caution, against a 95% target): the boxwork ridges sit at the elevation model's resolution limit, and DEM seams add false alarms. The walker classes come from the same slopes, so they share this bias. The planner still avoids every no-go cell, so routes may be longer than they need to be, and some good ground is closed. The hatched over-cautious cells (0.9% of the site) mark only the seam and low-confidence part of this; elsewhere no-go cells are not marked. At Murray Buttes, outside the boxwork, the same check passes (99.8%).",
+   "label": "MEASURED",
+   "source": "validation.json rover-walkability check: PLACES localizations against the derived rover walkability classes"
+  }
+ ],
  "checks": [
   {
    "id": "shielding-murray-buttes",
@@ -4259,24 +4269,24 @@
    "result": {
     "scenarios": 1000,
     "held": 1000,
-    "worst_margin_min": 2.097,
-    "mean_transects_visited": 3.49,
-    "mean_rover_moves": 1.03,
+    "worst_margin_min": 2.07,
+    "mean_transects_visited": 3.57,
+    "mean_rover_moves": 1.05,
     "seed": 20261109
    },
    "plans": {
     "safest": {
-     "transects": 7,
-     "stations": 21,
-     "science_value": 18.943,
-     "minutes": 355.89,
-     "consumables_min": 237.171,
-     "relative_dose_min": 39.4667,
-     "distance_m": 1958.5,
-     "min_thread_margin_min": 107.829,
-     "worst_minutes_to_shelter": 4.19,
-     "longest_comm_shadow_min": 2.15,
-     "rover_moves": 2,
+     "transects": 4,
+     "stations": 12,
+     "science_value": 10.931,
+     "minutes": 216.15,
+     "consumables_min": 149.85,
+     "relative_dose_min": 34.9997,
+     "distance_m": 1878.4,
+     "min_thread_margin_min": 195.135,
+     "worst_minutes_to_shelter": 9.67,
+     "longest_comm_shadow_min": 1.11,
+     "rover_moves": 0,
      "label": "MODELED",
      "checks": {
       "thread": "pass",
@@ -4296,7 +4306,7 @@
      "relative_dose_min": 38.7687,
      "distance_m": 1912.1,
      "min_thread_margin_min": 123.959,
-     "worst_minutes_to_shelter": 4.19,
+     "worst_minutes_to_shelter": 19.57,
      "longest_comm_shadow_min": 2.1,
      "rover_moves": 2,
      "label": "MODELED",
@@ -4318,7 +4328,7 @@
      "relative_dose_min": 42.762,
      "distance_m": 2336.7,
      "min_thread_margin_min": 119.344,
-     "worst_minutes_to_shelter": 2.47,
+     "worst_minutes_to_shelter": 15.76,
      "longest_comm_shadow_min": 0.34,
      "rover_moves": 2,
      "label": "MODELED",
@@ -4357,12 +4367,12 @@
    "status": "pass",
    "result": {
     "scenarios": 60,
-    "mean_ratio": 1.0294,
+    "mean_ratio": 1.0431,
     "min_ratio": 1,
     "target": 0.95
    },
    "label": "MODELED",
-   "note": "OR-Tools runs a guided local search with a time limit per scenario, so it is a time-limited reference, not a proven optimum; the browser solver can and sometimes does find more value. Mean ratio 1.029, worst case 1.000; per-scenario rows in docs/validation/station-solver.json."
+   "note": "OR-Tools runs a guided local search with a time limit per scenario, so it is a time-limited reference, not a proven optimum; the browser solver can and sometimes does find more value. Mean ratio 1.043, worst case 1.000; per-scenario rows in docs/validation/station-solver.json."
   },
   {
    "id": "labels",

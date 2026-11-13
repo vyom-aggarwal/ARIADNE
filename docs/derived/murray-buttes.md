@@ -96,8 +96,8 @@ This site is for validation only. It has no boxwork, so its ridge and fracture l
 | Sand proxy | uses THEMIS night IR: no (no THEMIS input for this site); drop-off cells 0.2% |
 | Ridges and hollows (MODELED, PLACEHOLDER thresholds) | ridges 2.4%, hollows 3.9% of the site |
 | Fractures | 908 lines of 10 m or more, 24.62 km in all, median 18 m |
-| Terrain shelters (S ≤ 0.95, PLACEHOLDER) | 18,693 m² (0.1% of the site) |
-| Minutes to shelter or the staging point (PLACEHOLDER pace) | median 19.5, 95th percentile 61.2, max 100.4 |
+| Terrain shielding zones (S ≤ 0.95, PLACEHOLDER; information only, not shelter) | 18,693 m² (0.1% of the site) |
+| Minutes to a shielding zone or the staging point (PLACEHOLDER pace; the route engine uses walking minutes to the rover) | median 19.5, 95th percentile 61.2, max 100.4 |
 | Line of sight from the staging antenna | 16.6% of the site (line of sight only, no radio model) |
 | Confidence | median 0.60; 0.0% of cells below 0.5 |
 | Candidate DEM mosaic seams | 14.3 km of stereo-pair footprint edges (Traverse, West, West of Center); 5.3% of the site within 30 m |
@@ -110,4 +110,4 @@ This site is for validation only. It has no boxwork, so its ridge and fracture l
 - The spectral term of the science score needs CRISM summary parameters, not read yet; its weight is set aside.
 - Ridge thresholds are PLACEHOLDER until the hand labels arrive (`ariadne ridge-sample` builds the labeling page; `ariadne ridge-tune` tunes on one half and tests on the other).
 - Seams between the CCDs inside one HiRISE image are not mapped; only stereo-pair footprint edges are.
-- Minutes-to-shelter uses a PLACEHOLDER pace until Phase 3 brings the NASA/TP-2010-216125 walking model.
+- Terrain shielding zones block a few percent of the dose at most, so they are information only, not shelter; the rover is the shelter (team decision, 2026-11-10). Their minutes use a PLACEHOLDER pace; the route engine works out walking minutes to the rover with the walker model.

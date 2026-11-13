@@ -157,7 +157,7 @@ def test_timeline_sun_elevation_matches_mars24():
     for t, el in zip([0.0, 60.0, 120.0], sun, strict=True):
         from datetime import timedelta
 
-        from ariadne.derive.light import planetographic_latitude
+        from ariadne.models.sun import planetographic_latitude
 
         s = mars24.solar_state(start + timedelta(minutes=t), lon, planetographic_latitude(lat))
         assert el == pytest.approx(90.0 - s.zenith, abs=0.05)
@@ -183,3 +183,29 @@ def test_photo_placement_and_facing():
     assert photos.looks_at(ph, ahead, max_m=60.0, max_angle_deg=25.0)
     assert not photos.looks_at(ph, behind, max_m=60.0, max_angle_deg=25.0)
     assert photos.place({**item, "site": 1, "drive": 1}, loc) is None
+
+
+# --- E14 and E15: assumptions, site notes and the Validation tab's data ---
+
+
+def test_manifest_lists_the_placeholder_assumptions_and_the_site_notes():
+    m = json.loads((SITE / "manifest.json").read_text(encoding="utf-8"))
+    items = m["assumptions"]
+    assert items and all(a["label"] == "PLACEHOLDER" for a in items)
+    keys = {a["key"] for a in items}
+    assert {"eva_max_min", "shelter_max_min", "safest.shelter_max_min", "safest.reserve_min",
+            "shelter_s", "storm_event_duration_min", "walker_slope_deg"} <= keys  # fmt: skip
+    notes = {n["id"]: n for n in m["site_notes"]}
+    assert "conservative" in notes["conservative-slope-no-go"]["text"]
+    # the Validation tab reads the same validation.json that make validate writes
+    shipped = json.loads((SITE / m["validation"]).read_text(encoding="utf-8"))
+    repo = json.loads((ROOT / "validation.json").read_text(encoding="utf-8"))
+    assert shipped == repo
+
+
+def test_no_layer_calls_terrain_a_shelter():
+    m = json.loads((SITE / "manifest.json").read_text(encoding="utf-8"))
+    ids = {lay["id"] for lay in m["layers"]}
+    assert "shelter_minutes" not in ids and "minutes_to_rover" in ids
+    shielding = next(lay for lay in m["layers"] if lay["id"] == "shielding")
+    assert "not counted as shelter" in shielding["description"]

@@ -28,6 +28,7 @@ from ariadne.plan import graph as g
 from ariadne.plan import relay as rl
 from ariadne.plan import relay_plan as rp
 from ariadne.plan import select
+from ariadne.plan import storm as stm
 from ariadne.plan import transects as tr
 
 CONSUMABLES = {"time": 0.0, "metabolic": 1.0, "hazard": 0.0, "dose": 0.0, "uncertainty": 0.0}
@@ -182,25 +183,30 @@ def preset_limits(sc: dict, pr: dict) -> dict:
     return lim
 
 
-def cached_relay_legs(path: Path, gr, suit, w, staging, nodes, rel, shelters, log) -> dict:
+def cached_relay_legs(path: Path, gr, suit, w, staging, nodes, rel, shelters, log,
+                      first_leg=None) -> dict:  # fmt: skip
     """Leg matrix (staging and transect exits to transect entries and relay sites), per-leg
     shadow and shelter for every relay, and each transect's internal walks; reused from `path`
     when every input is the same."""
     import hashlib
     import pickle
 
-    key = hashlib.sha256(
+    h = hashlib.sha256(
         json.dumps(
             {"staging": list(map(int, staging)), "nodes": [n["points"] for n in nodes],
              "relays": [list(map(int, c)) for c in rel["cells"]], "w": w,
              "suit": suit.__dict__, "shape": list(gr.z.shape), "res": gr.res,
-             "version": PIPELINE_VERSION, "cache_format": 3},
+             "version": PIPELINE_VERSION, "cache_format": 4},
             sort_keys=True,
         ).encode()
-        + gr.z.tobytes() + gr.passable.tobytes() + gr.hazard.tobytes() + gr.dose.tobytes()
-        + gr.unc.tobytes() + b"".join(v.tobytes() for v in rel["views"])
-        + b"".join(s.tobytes() for s in shelters)
-    ).hexdigest()  # fmt: skip
+    )  # fmt: skip
+    arrays = [gr.z, gr.passable, gr.hazard, gr.dose, gr.unc, *rel["views"], *shelters]
+    for r, (times, fields) in sorted((first_leg or {}).items()):
+        h.update(str(r).encode())
+        arrays += [times, *fields]
+    for a in arrays:
+        h.update(np.ascontiguousarray(a).tobytes())
+    key = h.hexdigest()
     if path.exists():
         with path.open("rb") as f:
             saved = pickle.load(f)
@@ -211,7 +217,7 @@ def cached_relay_legs(path: Path, gr, suit, w, staging, nodes, rel, shelters, lo
     targets = [n["points"][0] for n in nodes] + list(rel["cells"])
     m = g.leg_matrix_st(gr, suit, w, sources, targets, same_node_diagonal=False)
     m.update(rp.leg_extras_by_relay(gr, suit, w, m["paths"], m["minutes"].shape, rel["views"],
-                                    shelters))  # fmt: skip
+                                    shelters, first_leg))  # fmt: skip
     m["internal"] = rp.internals_by_relay(gr, suit, w, nodes, rel["views"], shelters)
     with path.open("wb") as f:
         pickle.dump({"key": key, "m": m}, f)
@@ -226,7 +232,7 @@ def validate_plan(plan: dict) -> None:
 
 
 def plan_json(site, preset, pr, res, legs, info, seq, r_end, nodes, rel, gr, suit, t2, sc, lim,
-              inputs) -> dict:  # fmt: skip
+              inputs, storm=None) -> dict:  # fmt: skip
     relay_ids = ["STAGING"] + [f"RELAY{k}" for k in range(1, len(rel["cells"]))]
     stations, ids = [], []
     order = []
@@ -308,10 +314,11 @@ def plan_json(site, preset, pr, res, legs, info, seq, r_end, nodes, rel, gr, sui
             "moves": rp.schedule(seq, rel),
             "ends_at": relay_ids[r_end],
             "label": "PLACEHOLDER",
-            "note": "The rover is a mobile comms relay: it parks at a relay site for each "
-            "transect and moves only during the last station of a transect (or the first leg); "
-            "the walk ends at the rover.",
+            "note": "The rover is a mobile comms relay and the crew's shelter: it parks at a "
+            "relay site for each transect and moves only during the last station of a transect "
+            "(or the first leg); the walk ends at the rover.",
         },
+        "storm": storm,
         "totals": {
             "transects": len(seq),
             "stations": len(stations),
@@ -336,7 +343,8 @@ def plan_json(site, preset, pr, res, legs, info, seq, r_end, nodes, rel, gr, sui
     }
 
 
-def thread_scenarios(m, nodes, pairs, rel, ok_sw, fields_r, suit, w, sc, lim, n, seed, log):
+def thread_scenarios(m, nodes, pairs, rel, ok_sw, fields_r, suit, w, sc, lim, n, seed, log,
+                     sw_shelter=None, mv=None):  # fmt: skip
     """Plan n random scenarios (transect subsets and budgets, rover relays allowed) and check
     the thread, with C_home following the rover, on each."""
     rng = np.random.default_rng(seed)
@@ -351,7 +359,7 @@ def thread_scenarios(m, nodes, pairs, rel, ok_sw, fields_r, suit, w, sc, lim, n,
                                 eva=float(rng.uniform(120, 420)), cons_total=total)  # fmt: skip
         sol = select.solve(prob, first_solution_only=True)
         res, _, _, _, seq, _, _ = rp.check(fields_r, suit, w, m, nodes, sub, sol.route, sc, lim,
-                                           total)  # fmt: skip
+                                           total, sw_shelter, mv)  # fmt: skip
         visited += len(seq)
         moves += len(rp.schedule(seq, rel))
         if res is None:
@@ -421,6 +429,58 @@ def bench_fixture(m, nodes, pairs, rel, ok_sw, sc, lim, suit, n, seed, time_limi
     }
 
 
+def price_of_safety(plans: dict, limits: dict) -> dict | None:
+    """What Safest gives up in science value, and gains in margin, against Most science."""
+    if "safest" not in plans or "most_science" not in plans:
+        return None
+    a, b = plans["safest"]["totals"], plans["most_science"]["totals"]
+    ta = {s["transect_source_id"] for s in plans["safest"]["stations"]}
+    tb = {s["transect_source_id"] for s in plans["most_science"]["stations"]}
+    given = b["science_value"] - a["science_value"]
+    if ta == tb:
+        sep = (
+            "No: Safest and Most science visit the same transects; they differ in paths and "
+            "margins only."
+        )
+    else:
+        sep = (
+            f"Yes: Safest visits {len(ta)} transects and Most science {len(tb)}, "
+            f"{len(ta & tb)} of them in common."
+        )
+    return {
+        "value_safest": a["science_value"],
+        "value_most_science": b["science_value"],
+        "value_given_up": round(given, 4),
+        "value_given_up_share": round(given / b["science_value"], 4) if b["science_value"] else 0,
+        "transects_given_up": b["transects"] - a["transects"],
+        "margin_safest_min": a["min_thread_margin_min"],
+        "margin_most_science_min": b["min_thread_margin_min"],
+        "margin_gained_min": round(a["min_thread_margin_min"] - b["min_thread_margin_min"], 3),
+        "reserve_safest_min": limits["safest"]["reserve_min"],
+        "reserve_most_science_min": limits["most_science"]["reserve_min"],
+        "worst_to_rover_safest_min": a["worst_minutes_to_shelter"],
+        "worst_to_rover_most_science_min": b["worst_minutes_to_shelter"],
+        "transects_in_common": len(ta & tb),
+        "separation": sep,
+        "label": "MODELED",
+    }
+
+
+def storm_stats(storm: dict) -> dict:
+    sm = storm["samples"]
+    choices: dict[str, int] = {}
+    for x in sm:
+        choices[x["choice"]] = choices.get(x["choice"], 0) + 1
+    return {
+        "samples": len(sm),
+        "choices": choices,
+        "longest_walk_min": max((x["walk_min"] for x in sm), default=0.0),
+        "mean_dose_avoided": round(float(np.mean([x["dose_avoided"] for x in sm])), 3)
+        if sm
+        else 0.0,
+    }
+
+
 def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
     t0 = time.time()
     root = repo_root()
@@ -440,46 +500,57 @@ def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
     staging_rc = xy_to_rc(t2, *staging_xy)
     if not gr0.passable[staging_rc]:
         raise RuntimeError("the staging point is not walkable on the planning grid")
-    # terrain shelters, with and without the parked rover (storm pointers use the staging point)
-    sh_cells = [tuple(x) for x in np.argwhere(extra["shelters"] & gr0.passable)]
-    ties = [float(gr0.dose[x]) for x in sh_cells]
-    storm = g.dijkstra(gr0, suit, TIME_ONLY, sh_cells + [staging_rc], reverse=True,
-                       tie_break=ties + [float(rover["shelter_s"])])  # fmt: skip
-    terrain_sh = g.dijkstra(gr0, suit, TIME_ONLY, sh_cells, reverse=True, tie_break=ties).time
+    # Shelter is the rover, wherever it is (team decision, 2026-11-10). Terrain shielding zones
+    # (S <= 0.95) block a few percent at most, so they are information and a storm-mode option
+    # only, never shelter.
+    rover_s = float(rover["shelter_s"])
     limits = {name: preset_limits(sc, pr) for name, pr in presets["presets"].items()}
-    loosest = max(lim["shelter_max_min"] for lim in limits.values())
-
-    def grid_for(shelter_max):
-        passable = gr0.passable & (storm.time <= shelter_max)
-        return g.Grid(gr0.z, passable, gr0.hazard, gr0.dose, gr0.unc, gr0.res)
-
-    g_loose = grid_for(loosest)
-    home0 = g.dijkstra(g_loose, suit, CONSUMABLES, [staging_rc], reverse=True)
-    f_loose = cs.Fields(g_loose, home0.consumables, storm.time, extra["comms"], extra["rover_ok"])
-    log(f"  fields ready ({time.time() - t0:.0f} s)")
-    common = dict(resolution_m=gr0.res, inputs=["derived layers"])
-    for name, arr, pid in (
-        ("c_home.tif", np.where(np.isfinite(home0.consumables), home0.consumables, np.nan),
-         "Consumables to walk back to the staging point, minutes at the nominal rate"),
-        ("shelter_minutes.tif", np.where(np.isfinite(storm.time), storm.time, np.nan),
-         "Walking minutes to the nearest shelter or the rover at the staging point"),
-        ("storm_pointer.tif", storm.pred.astype(np.int16),
-         "Storm mode: index of the next move toward the earliest shelter (-1 at shelters)"),
-    ):  # fmt: skip
-        write_layer(out / name, arr.astype(np.float32 if arr.dtype != np.int16 else np.int16),
-                    t2, crs, None, product_id=pid, label=Label.MODELED,
-                    notes="Walker model with PLACEHOLDER suit settings.", **common)  # fmt: skip
+    home0 = g.dijkstra(gr0, suit, CONSUMABLES, [staging_rc], reverse=True)
+    f0 = cs.Fields(gr0, home0.consumables, np.zeros_like(gr0.z), extra["comms"],
+                   extra["rover_ok"])  # fmt: skip
     transects = json.loads((site_dir / "derived" / "transects.geojson").read_text("utf-8"))
     # the pool relays are chosen to cover: whole transects within reach, comms not yet required
-    pool = transect_candidates(transects["features"], g_loose, t2, staging_rc, f_loose, sc, log,
+    pool = transect_candidates(transects["features"], gr0, t2, staging_rc, f0, sc, log,
                                limit=150, check_comms=False)  # fmt: skip
-    rel = rp.choose_relays(g_loose, staging_rc, extra["rover_cls"], pool, rover, log)
+    rel = rp.choose_relays(gr0, staging_rc, extra["rover_cls"], pool, rover, log)
+    walk_f = rp.walk_fields(gr0, suit, rel["cells"], rover_s)
+    walks = [f.time for f in walk_f]
+    nearest_relay = np.minimum.reduce(walks)
+
+    def grid_for(shelter_max):
+        """Cells within the shelter limit of at least one relay site (the exact check follows
+        the rover leg by leg)."""
+        passable = gr0.passable & (nearest_relay <= shelter_max)
+        return g.Grid(gr0.z, passable, gr0.hazard, gr0.dose, gr0.unc, gr0.res)
+
     in_sight = [nd for nd in pool if any(rl.sees_transect(v, nd["points"]) for v in rel["views"])]
     nodes = in_sight[: int(sc["candidate_transects"])]
     log(f"  candidate transects: {len(nodes)} in sight of the rover at some relay "
         f"({sum(1 for nd in pool if rl.sees_transect(rel['views'][0], nd['points']))} from the "
         "staging point alone)")  # fmt: skip
-    ok_sw = rp.switches(g_loose, nodes, rel, sc["service_min"], float(rover["antenna_height_m"]))
+    ok_sw = rp.switches(gr0, nodes, rel, sc["service_min"], float(rover["antenna_height_m"]))
+    sw_sh = rp.switch_shelter(gr0, suit, nodes, rel)
+    mv = rp.moving_rover_fields(gr0, suit, rel, walks, float(sc["rover_track_step_min"]))
+    sh_cells = [tuple(x) for x in np.argwhere(extra["shelters"] & gr0.passable)]
+    terrain_f = (
+        g.dijkstra(gr0, suit, TIME_ONLY, sh_cells, reverse=True,
+                   tie_break=[float(gr0.dose[x]) for x in sh_cells])
+        if sh_cells else None
+    )  # fmt: skip
+    log(f"  fields ready ({time.time() - t0:.0f} s): rover track samples "
+        f"{ {r: len(v[0]) for r, v in mv.items()} }")  # fmt: skip
+    common = dict(resolution_m=gr0.res, inputs=["derived layers"])
+    for name, arr, pid in (
+        ("c_home.tif", home0.consumables,
+         "Consumables to walk back to the staging point, minutes at the nominal rate"),
+        ("minutes_to_rover.tif", walks[0],
+         "Walking minutes to the rover parked at the staging point"),
+        ("minutes_to_nearest_relay.tif", nearest_relay,
+         "Walking minutes to the nearest place the rover can park (staging point or relay site)"),
+    ):  # fmt: skip
+        write_layer(out / name, np.where(np.isfinite(arr), arr, np.nan).astype(np.float32),
+                    t2, crs, None, product_id=pid, label=Label.MODELED,
+                    notes="Walker model with PLACEHOLDER suit settings.", **common)  # fmt: skip
     inputs = ["usgs-gale-dem-1m", "usgs-gale-ortho-25cm", "msl-places", "mola-dem-463m",
               "derived layers (docs/derived)"]  # fmt: skip
     plans, mats, ctx_by = {}, {}, {}
@@ -487,28 +558,59 @@ def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
     for name, pr in presets["presets"].items():
         w, lim = pr["weights"], limits[name]
         gp = grid_for(lim["shelter_max_min"])
-        shelters = [np.minimum(terrain_sh, g.dijkstra(gp, suit, TIME_ONLY, [c], reverse=True).time)
-                    for c in rel["cells"]]  # fmt: skip
-        fields_r = rp.relay_fields(gp, suit, rel["cells"], rel["views"], terrain_sh,
+        fields_r = rp.relay_fields(gp, suit, rel["cells"], rel["views"], walks,
                                    extra["rover_ok"])  # fmt: skip
         m = cached_relay_legs(out / f"legs_{name}.pkl", gp, suit, w, staging_rc, nodes, rel,
-                              shelters, log)  # fmt: skip
+                              walks, log, first_leg=mv)  # fmt: skip
+        ok_p = ok_sw & (sw_sh <= lim["shelter_max_min"] + 1e-9)
         pairs = rp.usable_pairs(m, nodes, rp.pairs_for(nodes, rel["views"]), lim)
         mats[name] = m
-        ctx_by[name] = (pairs, fields_r)
-        prob = rp.build_problem(m, nodes, pairs, rel, ok_sw, sc, lim, suit,
+        ctx_by[name] = (pairs, fields_r, ok_p)
+        prob = rp.build_problem(m, nodes, pairs, rel, ok_p, sc, lim, suit,
                                 float(pr["value_weight"]), pr["objective"])  # fmt: skip
         sol = select.solve(prob, time_limit_s=3.0 if quick else 30.0)
         res, legs, stations, info, seq, r_end, _ = rp.check(
-            fields_r, suit, w, m, nodes, pairs, sol.route, sc, lim, sc["consumables_total_min"]
+            fields_r,
+            suit,
+            w,
+            m,
+            nodes,
+            pairs,
+            sol.route,
+            sc,
+            lim,
+            sc["consumables_total_min"],
+            sw_shelter=sw_sh,
+            mv=mv,
         )
+        storm = None
+        if res is not None:
+            visit, first = rp.moving(seq, info, sw_sh, mv)
+            leg_relay = [x["relay"] for x in info] + [r_end]
+            moving = {"first": first is not None,
+                      "visits": {k for k, v in enumerate(visit) if v is not None}}  # fmt: skip
+            storm = {
+                "label": "MODELED",
+                "event_duration_min": sc["storm_event_duration_min"],
+                "rover_s": rover_s,
+                "placeholders": ["event_duration_min", "rover_s"],
+                "note": "Relative dose in open-sky minutes over the event: the exposed walk "
+                "(S along the fastest path) plus the rest of the event at the refuge's S. "
+                "Refuges: the rover where it is parked (S PLACEHOLDER), the nearest terrain "
+                "shielding zone (its own S), or staying put; the lowest dose wins. While the "
+                "rover drives, the higher dose of its two parking places is shown.",
+                "samples": stm.track(gr0, res["margins"], leg_relay, moving, walk_f, terrain_f,
+                                     rover_s, sc["storm_event_duration_min"],
+                                     sc["storm_sample_every_min"],
+                                     lambda r, c: rc_to_xy(t2, r, c)),
+            }  # fmt: skip
         plan = plan_json(site, name, pr, res, legs, info, seq, r_end, nodes, rel, gp, suit, t2,
-                         sc, lim, inputs)  # fmt: skip
+                         sc, lim, inputs, storm)  # fmt: skip
         validate_plan(plan)
         plans[name] = plan
         # the same problem with the rover held at the staging point, for comparison
         fixed = [p for p in pairs if p[1] == 0]
-        p0 = rp.build_problem(m, nodes, fixed, rel, ok_sw, sc, lim, suit,
+        p0 = rp.build_problem(m, nodes, fixed, rel, ok_p, sc, lim, suit,
                               float(pr["value_weight"]), pr["objective"])  # fmt: skip
         s0 = select.solve(p0, time_limit_s=3.0 if quick else 20.0)
         seq0 = [fixed[i - 1] for i in s0.route[1:-1]]
@@ -526,14 +628,13 @@ def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
             f"checks {plan['checks']}; staging only: {len(seq0)} transects, value "
             f"{comparison[name]['value_staging_only']:.2f}")  # fmt: skip
     bal = mats["balanced"]
-    pairs_b, fields_b = ctx_by["balanced"]
+    pairs_b, fields_b, ok_b = ctx_by["balanced"]
     w_bal = presets["presets"]["balanced"]["weights"]
     lim_b = limits["balanced"]
     n_thread = 100 if quick else 1000
-    thread = thread_scenarios(
-        bal, nodes, pairs_b, rel, ok_sw, fields_b, suit, w_bal, sc, lim_b, n_thread, 20261109, log
-    )
-    bench = bench_fixture(bal, nodes, pairs_b, rel, ok_sw, sc, limits["balanced"], suit,
+    thread = thread_scenarios(bal, nodes, pairs_b, rel, ok_b, fields_b, suit, w_bal, sc, lim_b,
+                              n_thread, 20261109, log, sw_sh, mv)  # fmt: skip
+    bench = bench_fixture(bal, nodes, pairs_b, rel, ok_b, sc, limits["balanced"], suit,
                           10 if quick else 60, 1109, 0.5 if quick else 2.0, log)  # fmt: skip
     docs = root / "docs" / "plan"
     docs.mkdir(parents=True, exist_ok=True)
@@ -553,6 +654,8 @@ def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
         "candidate_transects": len(nodes),
         "usable_transects": {n_: len({t for t, _ in ctx_by[n_][0]}) for n_ in plans},
         "walkable_share": round(float(gr0.passable.mean()), 4),
+        "within_shelter_limit_share_note": "Share of walkable cells within each shelter limit "
+        "of at least one place the rover can park",
         "within_shelter_limit_share": {
             str(s): round(float(grid_for(s).passable.sum() / max(1, gr0.passable.sum())), 4)
             for s in sorted({lim["shelter_max_min"] for lim in limits.values()})
@@ -584,6 +687,8 @@ def plan_site(site: str = "boxwork", log=print, quick: bool = False) -> dict:
             for n_, p_ in plans.items()
         },  # fmt: skip
         "thread": thread,
+        "price_of_safety": price_of_safety(plans, limits),
+        "storm": {n_: storm_stats(p_.get("storm")) for n_, p_ in plans.items() if p_.get("storm")},
         "scenario": sc,
         "seconds": round(time.time() - t0),
     }

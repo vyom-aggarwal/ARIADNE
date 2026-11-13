@@ -4,7 +4,8 @@
 - Thread: C_left(x) - C_home(x) >= C_reserve at every sample, where C_left is consumables left
   (minutes at the nominal rate) and C_home the least consumables needed to walk home from x.
 - Buddy: every station has an overwatch point within 50 m with mutual helmet line of sight.
-- Shelter: minutes to the nearest shelter stay at or below the limit.
+- Shelter: walking minutes to the rover, wherever it is (team decision, 2026-11-10), stay at
+  or below the limit. Terrain shielding is not shelter: it blocks a few percent at most.
 - Comms: no comm shadow (out of line of sight of the rover antenna) lasts longer than the limit,
   counting station work done in a shadow.
 - Rover: the staging point, where the walk ends, is passable for the rover.
@@ -32,9 +33,20 @@ DISCRETISATION_MARGIN_MIN = 2.0  # PLACEHOLDER: grid versus smoothed legs
 class Fields:
     grid: g.Grid
     c_home: np.ndarray  # consumables minutes to the staging point (least)
-    shelter_min: np.ndarray  # walking minutes to the nearest shelter or the rover
+    shelter_min: np.ndarray  # walking minutes to the rover at this relay
     comms: np.ndarray  # True where the rover antenna is in line of sight
     rover_ok: bool
+
+
+def rover_walk_at(mv, rc, t: float) -> float:
+    """Walking minutes from cell rc to a rover that is driving: `mv` is (sample times, walking-
+    minute fields to the rover at each sample); between two samples the larger is taken, and
+    after the last sample the rover has arrived."""
+    times, fields = mv
+    if t >= times[-1]:
+        return float(fields[-1][rc])
+    k = int(np.searchsorted(times, t, side="right"))
+    return float(max(fields[max(k - 1, 0)][rc], fields[min(k, len(fields) - 1)][rc]))
 
 
 def _cell(gr: g.Grid, r: float, c: float) -> tuple[int, int]:
@@ -112,11 +124,15 @@ def check_route(
     limits: dict,
     buddy_ok: list[bool] | None = None,
     leg_fields: list[Fields] | None = None,
+    visit_shelter: list[float | None] | None = None,
+    first_leg_rover=None,
 ) -> dict:
     """Check a route. With `leg_fields` (one Fields per leg) the rover moves: each leg uses its
     own C_home, shelter and comms fields (those of the relay the rover is parked at), and at a
     station where the rover changes relay, C_home is the larger of the two and the station must
-    be in sight of both."""
+    be in sight of both. `visit_shelter[k]` is the walk to the rover while it drives during
+    station k's visit; `first_leg_rover` (sample times, fields) follows it while it drives during
+    the first leg."""
     gr = fields.grid
     samples = route_samples(gr, suit, w, legs, stations, service_min, service_cons)
     reserve = float(limits["reserve_min"])
@@ -134,13 +150,19 @@ def check_route(
                 in_sight = in_sight and bool(nxt.comms[rc])
         c_left = consumables_total - s["cons"]
         worst = min(worst, c_left - ch - reserve if np.isfinite(ch) else -np.inf)
-        shelter_worst = max(shelter_worst, float(f.shelter_min[rc]))
+        sh = float(f.shelter_min[rc])
+        if first_leg_rover is not None and s["leg"] == 0 and s["station"] is None:
+            sh = rover_walk_at(first_leg_rover, rc, s["t"])
+        if visit_shelter is not None and s["station"] is not None:
+            v = visit_shelter[s["station"]]
+            sh = sh if v is None else max(sh, v)
+        shelter_worst = max(shelter_worst, sh)
         if not in_sight:
             shadow = s["t"] if shadow is None else shadow
             longest = max(longest, s["t"] - shadow)
         else:
             shadow = None
-        s.update(c_left=c_left, c_home=ch)
+        s.update(c_left=c_left, c_home=ch, shelter=sh)
     # keep a sample whenever the next step would put more than step_m since the last kept one
     step = float(limits["sample_step_m"])
     last_m = 0.0
@@ -154,6 +176,11 @@ def check_route(
                     "c_home": round(s["c_home"], 3) if np.isfinite(s["c_home"]) else None,
                     "c_reserve": reserve,
                     "step_m": round(s["m"] - last_m, 3),
+                    "minutes_to_rover": round(s["shelter"], 2)
+                    if np.isfinite(s["shelter"])
+                    else None,
+                    "leg": s["leg"],
+                    "station": s["station"],
                     "xy_cell": [round(s["r"], 2), round(s["c"], 2)],
                 }
             )

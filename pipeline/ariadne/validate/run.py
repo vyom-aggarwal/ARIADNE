@@ -563,8 +563,54 @@ def build_validation(root: Path | None = None) -> dict:
         "pipeline_version": PIPELINE_VERSION,
         "generated_utc": datetime.now(UTC).replace(microsecond=0).isoformat(),
         "note": "Targets are team targets, set before each run, not published standards.",
+        "site_notes": site_notes(root, checks),
         "checks": checks,
     }
+
+
+def site_notes(root: Path, checks: list) -> list[dict]:
+    """Site-level notes for the planner's assumptions panel and the Validation tab (team
+    decision, 2026-11-10), with their numbers taken from the checks."""
+    by = {c["id"]: c for c in checks}
+    rv, held = by.get("rover-walkability"), by.get("rover-walkability-held-out")
+    if not rv or "result" not in rv:
+        return []
+    r = rv["result"]
+    flagged = None
+    summ = root / "data" / "sites" / "boxwork" / "derived" / "summary.json"
+    if summ.exists():
+        flags = json.loads(summ.read_text(encoding="utf-8")).get("flags", {})
+        flagged = flags.get("walker", {}).get("flagged_share_of_site")
+    text = (
+        "Slope no-go classes in boxwork terrain are conservative. On Curiosity's own path the "
+        f"rover check classed {100 * r['share']['no-go']:.0f}% of {r['points']:,} positions "
+        f"no-go where the rover actually drove ({100 * r['go_or_caution']:.1f}% go or caution, "
+        "against a 95% target): the boxwork ridges sit at the elevation model's resolution "
+        "limit, and DEM seams add false alarms. The walker classes come from the same slopes, so "
+        "they share this bias. The planner still avoids every no-go cell, so "
+        "routes may be longer than they need to be, and some good ground is closed."
+    )
+    if flagged is not None:
+        text += (
+            f" The hatched over-cautious cells ({100 * flagged:.1f}% of the site) mark only the "
+            "seam and low-confidence part of this; elsewhere no-go cells are not marked."
+        )
+    if held and "result" in held:
+        text += (
+            f" At Murray Buttes, outside the boxwork, the same check passes "
+            f"({100 * held['result']['go_or_caution']:.1f}%)."
+        )
+    return [
+        {
+            "id": "conservative-slope-no-go",
+            "site": "boxwork",
+            "title": "Slope no-go is conservative in boxwork terrain",
+            "text": text,
+            "label": "MEASURED",
+            "source": "validation.json rover-walkability check: PLACES localizations against "
+            "the derived rover walkability classes",
+        }
+    ]
 
 
 def write_validation(root: Path | None = None, log=print) -> dict:
