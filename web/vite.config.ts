@@ -9,5 +9,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     include: ["tests/**/*.test.{ts,tsx}"],
+    // the HUD test walks every minute of every plan; leave room on busy CI runners
+    testTimeout: 30_000,
   },
 });

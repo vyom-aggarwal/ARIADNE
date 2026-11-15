@@ -18,7 +18,7 @@ Last updated: 2026-11-15 UTC (Phase 6 storm replay done; submission assets in pr
 | 6 Time Machine (storm replay) | Done locally 2026-11-15: H1 to H5 pass; light time within 0.001 s of Horizons; DONKI snapshot; the May 20, 2024 replay raises storm mode on cue with RAD's 8,100 µGy beside modeled doses. Weather (REMS) and the Earth backroom not built |
 | 7 Validation tab | Built with Phase 4c (renders validation.json with site notes) |
 | 8 Site 2 generator | Not built (final-sprint decision): Murray Buttes is the second site the same pipeline built; the frontier site is future work |
-| 9 Submission | In progress |
+| 9 Submission | Done 2026-11-15 (docs and footage ready; the team submits): docs/SUBMISSION.md for every 2026 form field, AI_USE.md split into team decisions and AI work, README, VIDEO_SCRIPT.md with English subtitles, SLIDES.md (seven slides), Playwright footage (`make footage`) |
 
 ## Human decisions (2026-11-08)
 
@@ -614,6 +614,18 @@ Scoped by the final-sprint decision to what the replay needs; weather (REMS) and
 - **Station steps:** cited to Ross and Eppler 2015 (NASA JSC, verified; docs/SOURCES_LOG.md): field geology means observing and describing in detail what you see and recording it. The team's original source, NASA's 2023-24 SUITS mission description, is offline.
 - **WSL:** a Python 3.14 environment at `~/.venvs/ariadne` (pip bootstrapped from PyPA's installer, since Ubuntu's python3 has no ensurepip) runs numba 0.68.1, OR-Tools 9.15 and rasterio 1.5.2; the storm, shelter, selection, environment, Mars24 and sol tests pass there (60 tests). No Windows setting was changed.
 - **Tests:** H1 to H5 pass locally (pipeline on Windows and WSL; 100 Vitest tests; the replay test in Chromium).
+
+## Phase 9 evidence: submission
+
+- **2026 rules read** (Project Submission Guide and Judging & Awards Guide, both dated November 13, 2026; docs/SOURCES_LOG.md). Changes that affect ARIADNE, all reflected in docs/SUBMISSION.md, AI_USE.md and README:
+  - The AI question is now **"Use of Super Intelligence (SI)"**. SI may not be used to come up with the idea; SI use must be shown clearly, for code and data "in descriptive text and metadata", and SI-generated images or video need a visible watermark. The answer to the form question is not shown to judges, but judges see the SI indicators inside the project and weigh originality, intent and execution. So the source headers, commit trailers and AI_USE.md stay; the packaged manifest now carries an `ai_assistance` field; the app footer and the video's end card say the software was written with AI assistance; nothing in the app or video is AI-generated.
+  - The demo is a video of **30 seconds or less** (English subtitles required) or a deck of **at most seven slides** with the team name, members and challenge; longer demos are not eligible for global judging.
+  - Form fields: Project Name, High-Level Project Summary, Link to Project Demo, Link to Final Project, Detailed Project Description, Use of SI, NASA Data, Space Agency Partner Data and Other References. All external resources must be listed (the "original work" checkbox says so).
+  - Five criteria scored 1 to 5: Impact, Creativity, Validity, Relevance, Presentation. No content showing anyone under 18. Teams of at most six.
+- **Documents:** docs/SUBMISSION.md (every form field, with a pre-submission checklist), AI_USE.md (the team's decisions, decision by decision, separate from what Claude Code built), README (finished state, the app's surfaces, data and partner data, SI split), docs/VIDEO_SCRIPT.md and docs/video_subtitles.srt (30 s, the guide's beats, real NASA imagery and screen recordings only), docs/SLIDES.md (seven slides).
+- **Video hook verified:** NASA's Apollo 14 mission details: on Feb. 6, 1971 Shepard and Mitchell turned back an estimated 50 to 75 m short of Cone Crater's rim when told to collect samples and return; the page says nothing of navigation, so the script does not claim it. Picture: AS14-66-09305 (NASA).
+- **Footage:** `make footage` records five 1280 × 720 clips and stills (planner, rehearsal, visor, storm replay, tablet and card; about 16 MB) into `footage/`, which is not committed.
+- **Second site:** Phase 8 (a generator for a new site) was not built, by the final-sprint decision. The second site is Murray Buttes, built by the same pipeline for the shielding calibration and the held-out walkability check.
 
 ## Next steps
 

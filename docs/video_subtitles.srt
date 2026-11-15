@@ -1,0 +1,32 @@
+1
+00:00:00,000 --> 00:00:02,000
+We're [team name].
+
+2
+00:00:02,000 --> 00:00:05,000
+1971: Apollo 14's moonwalkers turned back
+an estimated 50 to 75 m short of Cone Crater's rim.
+
+3
+00:00:05,000 --> 00:00:10,000
+ARIADNE: a thread home on Mars.
+
+4
+00:00:10,000 --> 00:00:15,000
+NASA terrain, Curiosity's path and radiation data
+become a meter-scale walk plan.
+
+5
+00:00:15,000 --> 00:00:20,000
+Rehearse it in 3D past real Curiosity photos,
+then follow it on a four-item visor.
+
+6
+00:00:20,000 --> 00:00:27,000
+May 20, 2024: a solar storm reached Mars in tens of minutes.
+ARIADNE sends both walkers to the rover.
+
+7
+00:00:27,000 --> 00:00:30,000
+Every step keeps a way home.
+vyom-aggarwal.github.io/ARIADNE

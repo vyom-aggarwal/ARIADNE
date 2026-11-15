@@ -4,20 +4,20 @@
 
 ARIADNE plans, rehearses and guards a two-astronaut Marswalk through the boxwork ridges of Mount Sharp in Gale crater. It keeps a safe way back to shelter at every step: if a route would leave the crew without enough oxygen and supplies to get home with a reserve, ARIADNE rejects it.
 
-**Status: under construction.** The repository and its guardrails are being set up (Phase 0). See [docs/PROGRESS.md](docs/PROGRESS.md) for where things stand.
+**Status: ready for NASA Space Apps 2026 (submission closes November 15, 2026).** The planner, the visor, the cuff tablet, the printed card and the May 20, 2024 storm replay all work in the live app. See [docs/PROGRESS.md](docs/PROGRESS.md) for every phase's tests and results, and [docs/SUBMISSION.md](docs/SUBMISSION.md) for the project form text.
 
-This README follows the NASA Space Apps project form and is filled in as the project is built.
+This README follows the NASA Space Apps project form.
 
 ## Project details
 
 | Field | Entry |
 | --- | --- |
 | Project name | ARIADNE |
-| Team | To be added |
+| Team | [team name and members, to be added by the team] |
 | Challenge | Interplanetary Survival Guide: Martian Map (NASA Space Apps Challenge 2026) |
-| Live site | https://vyom-aggarwal.github.io/ARIADNE/ (placeholder page for now) |
+| Live site | https://vyom-aggarwal.github.io/ARIADNE/ |
 | Source code | https://github.com/vyom-aggarwal/ARIADNE |
-| Demo video | To be added in Phase 9 |
+| Demo | [30-second video link, to be added by the team]; storyboard and subtitles in [docs/VIDEO_SCRIPT.md](docs/VIDEO_SCRIPT.md), backup deck in [docs/SLIDES.md](docs/SLIDES.md) |
 
 ## Summary
 
@@ -34,23 +34,35 @@ ARIADNE has two parts:
 - a **Python pipeline** (`pipeline/`) that runs at build time: it downloads terrain, imagery and rover data, builds the safety and science layers, and plans reference routes;
 - a **static web app** (`web/`) that only loads the files the pipeline made. There is no server and no secret key.
 
+## What you can do in the app
+
+- **Habitat Planner:** the boxwork map with every layer's source, resolution, date and label; three routes side by side with a price-of-safety line; a timeline; an assumptions panel; a 3D rehearsal at walking height past Curiosity photos placed where they were taken.
+- **Visor HUD:** the walk seen through the visor, never more than four elements, white and cyan with a shape each; buttons and voice for "distance home", "next station" and "drop pin".
+- **Cuff Tablet:** glove-sized controls, a "what you'll see" photo for each station, the station steps, a sample log that stays in your browser, and it works offline.
+- **Cuff card:** one printed page with the route, abort routes to the rover, bearings and distances.
+- **Storm replay:** "Replay the May 20, 2024 storm" starts the event in the middle of the walk; the alert comes on cue and both walkers head for the rover, with Curiosity's measured dose beside the modeled ones.
+- **Validation:** every check, passed or failed, with site notes.
+
 ## NASA data
 
-Used so far (Phases 1 and 2), each credited in [CREDITS.md](CREDITS.md) with the checks in [docs/SOURCES_LOG.md](docs/SOURCES_LOG.md):
+Each credited in [CREDITS.md](CREDITS.md), with the checks in [docs/SOURCES_LOG.md](docs/SOURCES_LOG.md):
 
 - Terrain: the USGS MSL Gale merged 1 m elevation model and 25 cm orthophoto (built from HiRISE, CTX and HRSC), the HiRISE color mosaic, and the MOLA global elevation model for distant horizons such as Mount Sharp.
 - Rover: Curiosity's localizations (PLACES), ChemCam target tables, and the sols of the four boxwork drill holes from NASA's Curiosity blog.
 - Orbital context: HiRISE footprints from the PDS Orbital Data Explorer and THEMIS night-infrared mosaics through NASA Mars Trek.
 - Radiation: RAD's measurement beside the Murray Buttes in 2016 (Ehresmann et al. 2021), which calibrates the shielding layer, and the dose-pressure relation in Guo et al. 2021.
 - Time: the NASA GISS Mars24 algorithm and NAIF's MSL clock.
+- Rover photos: Curiosity Navcam frames from NASA's raw-image API (Courtesy NASA/JPL-Caltech).
+- Space weather and the storm replay: CCMC DONKI (through api.nasa.gov), JPL's report of the May 20, 2024 storm (RAD), and JPL Horizons for Earth-Mars light time.
+- Space agency partner data: ESA's HRSC images (Mars Express) inside the USGS elevation model; ESA/NASA Solar Orbiter and SOHO behind the May 2024 storm records.
 
-## Use of AI
+## Use of AI (Super Intelligence)
 
-ARIADNE is built with Claude Code, an AI coding assistant, under the team's direction. [AI_USE.md](AI_USE.md) explains what the AI does, what people do, and how to tell which work is AI-assisted. No AI-generated images, video or audio are used.
+The idea and every judgement call are the team's: the project plan was written before any AI-assisted work, and the team decided the site, the safety rules, how to report a failed check, the rover's role as relay and shelter, the storm-mode rule and what to label. Claude Code, Anthropic's AI coding assistant, built the pipeline, the web app and the tests under that direction, checked the data sources and drafted the documents. Every source file and commit is marked, and the packaged data says so in its metadata. No AI-generated images, video or audio are used. [AI_USE.md](AI_USE.md) gives the full split, decision by decision.
 
 ## Running it
 
-You need Python 3.12 or 3.13, Node 24 and GNU make (on Windows, run make from Git Bash, for example after `choco install make`).
+You need Python 3.12 or newer, Node 24 and GNU make. On Windows the team runs the Python pipeline under WSL (Ubuntu), because a Windows security policy blocks numba's and OR-Tools' libraries there; CI runs everything on Linux.
 
 ```bash
 make setup     # create .venv and install the web dependencies
@@ -73,7 +85,13 @@ ariadne ridge-sample --site boxwork  # draw the ridge-labeling sample and build 
 ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json  # tune on half, test on half
 ```
 
-`make package` and `make site` are defined but not built yet; each one says which phase builds it. Raw and derived rasters go to `data/` (not committed); the reports in `docs/coverage/`, `docs/derived/` and `docs/plan/` (with one plan.json per preset) and `validation.json` are committed.
+```bash
+ariadne timemachine             # light-time table (JPL Horizons) and the DONKI storm snapshot
+make package SITE=boxwork       # tiles, plans, photos, the storm replay and the manifest for the app
+make footage                    # screen recordings for the demo video (footage/, not committed)
+```
+
+`make site` and `ariadne build-site` (a whole new site from a HiRISE terrain model) are not built yet. Raw and derived rasters go to `data/` (not committed); the reports in `docs/coverage/`, `docs/derived/` and `docs/plan/` (with one plan.json per preset), the snapshots in `config/snapshots/`, `validation.json` and the packaged site in `web/public/sites/` are committed.
 
 ## License and credits
 

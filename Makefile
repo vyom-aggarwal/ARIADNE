@@ -16,7 +16,7 @@ NPM := npm --prefix web
 
 .PHONY: help setup setup-python setup-web setup-browsers \
 	fetch derive plan validate package site \
-	test test-python test-web lint guardrails licenses build-web e2e web-dev
+	test test-python test-web lint guardrails licenses build-web e2e footage web-dev
 
 help:
 	@echo "make setup            create .venv and install the web dependencies"
@@ -90,6 +90,10 @@ build-web:
 
 e2e: build-web
 	$(NPM) run e2e
+
+# screen footage for the demo video and slides (docs/VIDEO_SCRIPT.md), saved in footage/
+footage: build-web
+	cd web && ARIADNE_FOOTAGE=1 npx playwright test e2e/footage.spec.ts
 
 web-dev:
 	$(NPM) run dev

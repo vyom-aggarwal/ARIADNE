@@ -61,6 +61,7 @@ Curiosity Navcam frames shown as 3D billboards in the Habitat Planner (web/publi
 | NRB_826633542EDR_F1210000NCAM00262M_ | Navcam, sol 4834 (site 121, drive 0) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633542EDR_F1210000NCAM00262M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
 | NLB_826276448EDR_F1202726NCAM00258M_ | Navcam, sol 4830 (site 120, drive 2726) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04830/opgs/edr/ncam/NLB_826276448EDR_F1202726NCAM00258M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
 | NLB_826633459EDR_F1210000NCAM00262M_ | Navcam, sol 4834 (site 121, drive 0) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NLB_826633459EDR_F1210000NCAM00262M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
+| AS14-66-09305 (demo video only, not in the app) | Apollo 14, first EVA, February 5, 1971: the lunar module with Cone Crater behind | https://images-assets.nasa.gov/image/as14-66-09305/as14-66-09305~large.jpg | Credit: NASA (NASA imagery, no copyright) |
 | NRB_826633459EDR_F1210000NCAM00262M_ | Navcam, sol 4834 (site 121, drive 0) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633459EDR_F1210000NCAM00262M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
 
 ## Text

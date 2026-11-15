@@ -30,3 +30,6 @@ Thumbs.db
 # Local environment files never hold secrets in the repo (CLAUDE.md rule 6)
 .env
 .env.*
+
+# demo footage recorded by `make footage` (large; shared outside the repo)
+footage/
