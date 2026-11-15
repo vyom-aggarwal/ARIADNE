@@ -1,0 +1,1856 @@
+{
+ "_about": "DONKI snapshot around the May 20, 2024 storm, through NASA's API gateway (https://api.nasa.gov/DONKI/). Fetched by `ariadne timemachine`. DONKI's disclaimer: NOAA's Space Weather Prediction Center is the official US source for space weather forecasts; DONKI holds preliminary NASA research products.",
+ "source": "https://api.nasa.gov/DONKI/",
+ "window": [
+  "2024-05-13",
+  "2024-05-31"
+ ],
+ "fetched_utc": "2026-11-15T21:48:33+00:00",
+ "pipeline_version": "0.0.0",
+ "label": "MEASURED",
+ "cme": [
+  {
+   "activityID": "2024-05-13T09:12:00-CME-001",
+   "startTime": "2024-05-13T09:12Z",
+   "sourceLocation": "S25W75",
+   "speed_km_s": 1456.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Lucy",
+     "arrival": "2024-05-16T13:29Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-16T18:09Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-16T18:40Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T03:29Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T04:00Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-14T19:14Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-14T19:15Z",
+     "glancing": false
+    },
+    {
+     "location": "STEREO A",
+     "arrival": "2024-05-14T19:11Z",
+     "glancing": false
+    },
+    {
+     "location": "STEREO A",
+     "arrival": "2024-05-16T04:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "Full asymmetric halo CME seen to the SW in all three coronagraphs. Source is a large eruption and several M-class flares from Active Region 13664, including a long-duration M4.9 flare associated with the post-eruptive arcades. Widely opening field lines and a rising loop of ejecta seen starting at 2024-05-13T08:10Z in SDO AIA 193/171. Ejecta and post-eruptive brightening and arcades seen at 08:43Z in SDO AIA 131/304. Post eruptive arcades seen at 11:15Z in SDO AIA 171/193/304.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30814/-1"
+  },
+  {
+   "activityID": "2024-05-14T02:24:00-CME-001",
+   "startTime": "2024-05-14T02:24Z",
+   "sourceLocation": "S19W89",
+   "speed_km_s": 502.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-18T09:34Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-18T16:00Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-17T06:01Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-17T08:00Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T13:09Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T16:49Z",
+     "glancing": false
+    }
+   ],
+   "note": "Lopsided CME seen to the W in all coronagraphs. The CME front has an interesting point-shaped nose, but this is much fainter than the faint bright front which is somewhat lopsided to the S. Source is an X1.7 flare from AR 3664 which peaked at 2024-05-14T02:09Z, seen best in SDO AIA 131. Also observed as fast, wide opening field lines and small EUV wave in SDO AIA 171/193/211 starting around 2024-05-14T02:07Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30844/-1"
+  },
+  {
+   "activityID": "2024-05-14T04:48:00-CME-001",
+   "startTime": "2024-05-14T04:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 567.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-05-20T11:22Z",
+     "glancing": false
+    }
+   ],
+   "note": "Wide CME seen to the SE in all coronagraphs. Source is uncertain, with what could be an on-disk source that does not line up well when used in measurement. Observed well as field line movement over the SE limb in SDO AIA 171/193/211 starting around 2024-05-14T04:06Z. Additionally, a smaller C6.5 flare which peaked at 2024-05-14T04:08Z observed in SDO AIA 131 (this flare does not rise high above background flux, but is distinct in EUV imagery) lines up with this timestamp and the field line movement, but the source coordinates did not work well in swpc_cat triangulation to support it. It is possible that the source for this CME is on/just beyond the SE limb, supported by better triangulation at those longitudes.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30860/-1"
+  },
+  {
+   "activityID": "2024-05-14T10:09:00-CME-001",
+   "startTime": "2024-05-14T10:09Z",
+   "sourceLocation": "N25E35",
+   "speed_km_s": 744.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Wide CME seen to the NE in all coronagraphs (STEREO A gets first visible frame). Source is an unnumbered region of the solar disk, centered around N23E35. Starting around 2024-05-14T09:07Z, field line movement is observed in SDO AIA 171/193/211 alongside a diagonal region of light dimming spanning approximately N40E60 -> N15E30 across that center point. A distinct post-eruptive arcade forms around 2024-05-14T10:47Z across SDO AIA 131/171/193/211.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30856/-1"
+  },
+  {
+   "activityID": "2024-05-14T10:36:00-CME-001",
+   "startTime": "2024-05-14T10:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 763.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This irregularly shaped CME is seen to the SW in SOHO LASCO C2/C3 and STEREO A COR2. Source is likely near Active Region 13664 which was at about W90-95 at the time of this eruption. Source is one of several instances of opening field lines seen on the SW limb at about S20 starting at 2024-05 14T08:30Z and lasting through 2024-05-14T10:30Z. The most likely occurrence of field line movement to be associated with this CME is seen in GOES SUVI 304 at 09:12Z. Field line movement is also seen in SDO AIA 193 at 08:48Z and in GOES SUIV 284 at 08:44Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30915/-1"
+  },
+  {
+   "activityID": "2024-05-14T13:12:00-CME-001",
+   "startTime": "2024-05-14T13:12Z",
+   "sourceLocation": "S19W94",
+   "speed_km_s": 676.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-18T09:34Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-18T18:42Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-17T06:01Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-17T11:42Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T13:09Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T19:09Z",
+     "glancing": false
+    }
+   ],
+   "note": "CME seen to the W in all coronagraphs. Source is an X1.2 flare from AR 3664 (located at S19W94 at this time, just beyond the limb) which peaked at 2024-05-14T12:55Z, best seen in SDO AIA 131. Also observed as rapidly opening field lines and a small EUV wave in SDO AIA 171/193/211 around 2024-05-14T12:49Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30841/-1"
+  },
+  {
+   "activityID": "2024-05-14T17:00:00-CME-001",
+   "startTime": "2024-05-14T17:00Z",
+   "sourceLocation": "S19W96",
+   "speed_km_s": 2119.0,
+   "type": "R",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-16T19:08Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-16T20:47Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T02:11Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-15T23:21Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T03:06Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T06:40Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-15T17:33Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-15T19:25Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-15T22:24Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-15T15:56Z",
+     "glancing": false
+    }
+   ],
+   "note": "Bright CME from behind the west limb, the first in a series of two closely following CMEs. Its source is the occulted X8.7 flare from AR 3664, just over the limb. Coronal signatures include a massive EUV wave and field line movement/restructuring of magnetic field behind the limb across wide range of latitudes (mass seen departing) beginning ~2024-05-14T16:49Z, field line movement seen across every wavelength. Very fast opening of the field lines likely associated with this CME is best seen in AIA 335 starting at 16:50Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30867/-1"
+  },
+  {
+   "activityID": "2024-05-14T17:30:00-CME-001",
+   "startTime": "2024-05-14T17:30Z",
+   "sourceLocation": "S19W96",
+   "speed_km_s": 1199.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T02:11Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T15:08Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T06:40Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T16:10Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-15T22:24Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T05:18Z",
+     "glancing": false
+    }
+   ],
+   "note": "CME to the west which closely follows the preceding faster and slightly narrower 2024-05-14T17:0Z CME. The source of this second CME could be the long filament eruption off/behind the west limb best seen in GOES SUVI 304 starting at 2024-05-14T17:02Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30873/-1"
+  },
+  {
+   "activityID": "2024-05-14T17:48:00-CME-001",
+   "startTime": "2024-05-14T17:48Z",
+   "sourceLocation": "N18E72",
+   "speed_km_s": 1292.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-05-18T21:48Z",
+     "glancing": false
+    }
+   ],
+   "note": "Very wide eruption to the NE in all coronagraphs, notably bright with a twisted flux-rope structure beautifully observed in SOHO LASCO C2. The source is an eruption from new AR 3682, associated with an M4.4 class flare observed in SDO AIA 131. Also observed as field line movement and EUV wave in SDO AIA 171/193/211 starting around 2024-05-14T17:09Z, with a post-eruptive arcade forming shortly after. A massive loop is seen well in GOES SUVI 284 at 2024-05-14T17:33Z before it erupts further, not seen often at that scale.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30883/-1"
+  },
+  {
+   "activityID": "2024-05-15T08:36:00-CME-001",
+   "startTime": "2024-05-15T08:36Z",
+   "sourceLocation": "S15W90",
+   "speed_km_s": 1766.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T14:19Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T15:40Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-18T01:36Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-18T01:57Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T21:02Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T22:20Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-17T02:40Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-17T02:44Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:50Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:57Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T16:43Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T17:07Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-17T04:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "Bright CME seen due West in SOHO LASCO C2/C3 and STEREO A COR2. Source is EUV wave seen beyond the SW limb starting at 2024-05-15T08:18Z in SDO AIA 171/193. Widely opening field lines with northern deflection seen on or just beyond the SW limb at an apparent latitude of S15 (before deflection). This CME overlaps heavily with CME: 2024-05-15T08:48Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30891/-1"
+  },
+  {
+   "activityID": "2024-05-15T08:48:00-CME-001",
+   "startTime": "2024-05-15T08:48Z",
+   "sourceLocation": "S20W100",
+   "speed_km_s": 1082.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T14:19Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T15:40Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T21:02Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T22:20Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-18T12:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:50Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:57Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-18T00:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-17T04:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "Fast CME seen to the WSW in all coronagraphs, overlaps with CME 2024-05-15T08:36Z. The source is an X3.4 flare (partially occulted) from AR 3664 that peaked at 2024-05-15T08:37Z, observed in SDO AIA 131/193/304, and located around the west limb at approximately W100-W105 at this time. Additionally observed source signature as large EUV wave in SDO AIA 171/193/211/304 starting around 2024-05-15T08:18Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30894/-1"
+  },
+  {
+   "activityID": "2024-05-15T10:00:00-CME-001",
+   "startTime": "2024-05-15T10:00Z",
+   "sourceLocation": null,
+   "speed_km_s": 1205.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T14:19Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T15:40Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-18T04:13Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-18T04:32Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T21:02Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T22:20Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-17T05:33Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-17T05:36Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:50Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:57Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T19:30Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T19:31Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-17T04:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-17T06:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "This CME is a faint but distinct loop visible to the West in SOHO LASCO C2/C3 and STEREO A COR2. A distinct source for this CME is not discernable in UV imagery, so it is likely beyond the West limb. This CME is preceded by two much larger CMEs (2024-05-15T08:36Z and 2024-05-15T08:48Z) with source locations that are clearly beyond the limb and are measured to have similar speeds to this CME.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30913/-1"
+  },
+  {
+   "activityID": "2024-05-15T10:36:00-CME-001",
+   "startTime": "2024-05-15T10:36Z",
+   "sourceLocation": "N35E35",
+   "speed_km_s": 805.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Lucy",
+     "arrival": "2024-05-21T23:00Z",
+     "glancing": true
+    },
+    {
+     "location": "STEREO A",
+     "arrival": "2024-05-18T18:00Z",
+     "glancing": true
+    },
+    {
+     "location": "STEREO A",
+     "arrival": "2024-05-18T19:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "CME seen to the NNE in all coronagraphs. Observed in SDO AIA 171/193/211 as a loop centered over an unnumbered region on the disk ~N35E35. This loop slowly begins rising around 2024-05-16T06:30Z before explosively erupting and breaking around 2024-05-16T09:15Z. A broad area of dimming to the N and E of this area is observed in SDO AIA 193 with the eruption, a double ribbon flare is observed in SDO AIA 304 underneath this loop, and a post-eruptive arcade starts forming around 2024-05-16T10:09Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30940/-1"
+  },
+  {
+   "activityID": "2024-05-15T10:48:00-CME-001",
+   "startTime": "2024-05-15T10:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 1162.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T14:19Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T15:40Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T21:02Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T22:20Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:50Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:57Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-17T04:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "This CME is seen to the W/SW in SOHO LASCO C2/C3 and STEREO A COR2. Source is a distinct loop of material (a flux rope) seen slowly rising from on or just beyond the SW limb, at an apparent latitude of S25, starting at 2024-05-15T10:00Z in SDO AIA 171/193 as well as in GOES SUVI 284/304/193. The longitude of candidate source location Active Region 13664 was at approximately W105. This CME is visible in only a few frames of STEREO A COR2 due to a short data gap lasting from 2024-05-15T12:23Z-13:38Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30920/-1"
+  },
+  {
+   "activityID": "2024-05-15T14:53:00-CME-001",
+   "startTime": "2024-05-15T14:53Z",
+   "sourceLocation": null,
+   "speed_km_s": 1570.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-05-19T15:32Z",
+     "glancing": false
+    }
+   ],
+   "note": "Wide CME seen to the SE in all coronagraphs. A data gap in SOHO that will not backfill from 2024-05-15T13:36Z - 2024-05-15T16:05Z in C2 (T13:40Z-T16:30Z in C3) missed a large portion of the event, but it is still observed in later frames. Associated with an X2.9 flare from new AR 3685 which peaked at 2024-05-15T14:38Z in SDO AIA 131. Also observed as wide field line opening and EUV wave in SDO AIA 171/193/211 with a post-eruptive arcade across all wavelengths, both observed around 2024-05-15T14:20Z with the flare start time.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30948/-1"
+  },
+  {
+   "activityID": "2024-05-15T17:36:00-CME-001",
+   "startTime": "2024-05-15T17:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 732.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "CME visible to the east in SOHO LASCO C2/C3 and STEREO A COR2. The source is not clearly visible in EUV imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30968/-1"
+  },
+  {
+   "activityID": "2024-05-15T21:12:00-CME-001",
+   "startTime": "2024-05-15T21:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 1269.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-17T14:19Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-16T21:02Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-16T10:50Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-17T04:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "CME visible to the west in SOHO LASCO C2/C3. Not visible in STEREO A COR2 due to a data gap. The source can be seen as opening field lines starting at 2024-05-15T20:39Z best seen in SDO AIA 171/193 and GOES SUVI 284. A potential candidate active region is Active Region 13664, located around approximately W110.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30923/-1"
+  },
+  {
+   "activityID": "2024-05-16T01:25:00-CME-001",
+   "startTime": "2024-05-16T01:25Z",
+   "sourceLocation": null,
+   "speed_km_s": 1103.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-19T05:08Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-18T07:17Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-17T14:47Z",
+     "glancing": false
+    }
+   ],
+   "note": "CME visible to the west in SOHO LASCO C2/C3 and STEREO A COR2. A source was not clearly visible in EUV imagery, but a candidate source may be old Active Region 3664.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30955/-1"
+  },
+  {
+   "activityID": "2024-05-16T04:36:00-CME-001",
+   "startTime": "2024-05-16T04:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 773.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-19T05:08Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-18T07:17Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-17T14:47Z",
+     "glancing": false
+    }
+   ],
+   "note": "CME visible to the west in SOHO LASCO C2/C3 and STEREO A COR2. The source is not clear in EUV imagery, and this CME may be backsided.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30957/-1"
+  },
+  {
+   "activityID": "2024-05-16T06:48:00-CME-001",
+   "startTime": "2024-05-16T06:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 1110.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-19T05:08Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-18T07:17Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-17T14:47Z",
+     "glancing": false
+    }
+   ],
+   "note": "CME visible to the west in SOHO LASCO C2/C3 and STEREO A COR2. The source is not clear in EUV imagery, and this CME may be backsided.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30959/-1"
+  },
+  {
+   "activityID": "2024-05-16T08:12:00-CME-001",
+   "startTime": "2024-05-16T08:12Z",
+   "sourceLocation": "S15E70",
+   "speed_km_s": 1298.0,
+   "type": "O",
+   "predicted_impacts": [],
+   "note": "Narrow CME visible to the east in SOHO LASCO C2/C3 and STEREO A COR2. The source is unclear, but faint opening field lines and some brightening can be seen around S15E70 in SDO AIA 193 starting around 2024-05-16T07:00Z. The eruption is not clearly visible in STEREO A EUV imagery or other wavelengths.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30970/-1"
+  },
+  {
+   "activityID": "2024-05-16T09:09:00-CME-001",
+   "startTime": "2024-05-16T09:09Z",
+   "sourceLocation": null,
+   "speed_km_s": 374.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Faint CME with unclear leading edge visible to the SW in SOHO LASCO C2/C3 and STEREO A COR2. The source is not clearly visible in EUV imagery and may be beyond the west limb from the perspective of EUV imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30972/-1"
+  },
+  {
+   "activityID": "2024-05-16T13:38:00-CME-001",
+   "startTime": "2024-05-16T13:38Z",
+   "sourceLocation": null,
+   "speed_km_s": 1452.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-19T09:15Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-20T06:40Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-20T06:43Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-18T08:53Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-18T22:10Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-18T22:24Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-17T22:19Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-18T09:40Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-18T09:48Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-18T07:30Z",
+     "glancing": true
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-18T13:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "CME seen to the W in STEREO COR2A, not yet observed in SOHO LASCO due to a lengthy planned data gap that will end at 2024-05-17T02:10Z. The source is far-sided around the west limb, and very likely old AR 3664, estimated to be located around W120 at this time. Best observed as fieldline movement and an EUV wave starting around 2024-05-16T13:34Z in SDO AIA 171/193/211 and GOES SUVI 284.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30936/-1"
+  },
+  {
+   "activityID": "2024-05-16T18:00:00-CME-001",
+   "startTime": "2024-05-16T18:00Z",
+   "sourceLocation": null,
+   "speed_km_s": 767.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Bright three-lobed (and hence wide) heart-shaped northern CME fully covered by a night time data gap in STEREO. Its source is likely a super faint movement of a field line and a movement of matter on the NNW front at 18:54Z seen only in AIA 171 possibly confirming that the CME is backsided.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31002/-1"
+  },
+  {
+   "activityID": "2024-05-16T23:12:00-CME-001",
+   "startTime": "2024-05-16T23:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 569.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Narrow CME in the NNW. No clear source has been found for it although there is some very minor dimming in the north and also a movement of field line on the NNW limb around 23:50Z but both are inconclusive.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31000/-1"
+  },
+  {
+   "activityID": "2024-05-17T00:12:00-CME-001",
+   "startTime": "2024-05-17T00:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 679.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-20T07:52Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-19T09:31Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-19T00:37Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-18T21:55Z",
+     "glancing": false
+    }
+   ],
+   "note": "Faint narrow outflow with unclear front. The source is likely Active Region 3664 located at ~128 deg.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30980/-1"
+  },
+  {
+   "activityID": "2024-05-17T03:12:00-CME-001",
+   "startTime": "2024-05-17T03:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 545.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Faint CME to the south. No clear source found on disk, although there is eruption in AR 3683 after 03:00Z (S23W23) but this seems too far to the west.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30998/-1"
+  },
+  {
+   "activityID": "2024-05-17T04:17:00-CME-001",
+   "startTime": "2024-05-17T04:17Z",
+   "sourceLocation": null,
+   "speed_km_s": 586.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-20T07:52Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-19T09:31Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-19T00:37Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-18T21:55Z",
+     "glancing": false
+    }
+   ],
+   "note": "Narrow western CME following 2024-05-17T00:12Z CME. Coronal signature of this CME is seen in the west in AIA 193 as opening/moving of field lines after 03:33Z. The source is likely Active Region 3664 located at ~130 deg.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30982/-1"
+  },
+  {
+   "activityID": "2024-05-17T04:28:00-CME-001",
+   "startTime": "2024-05-17T04:28Z",
+   "sourceLocation": "S10E15",
+   "speed_km_s": 854.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Narrow, faint CME visible to the east in SOHO LASCO C2/C3 and STEREO A COR2. Potentially associated with AR 3679. A filament eruption is visible in this area around 2024-05-17T03:00Z in SDO AIA 304 which appears to deflect to the north in EUV imagery. Dimming and post eruptive arcades are visible in SDO AIA 193.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30989/-1"
+  },
+  {
+   "activityID": "2024-05-17T12:48:00-CME-001",
+   "startTime": "2024-05-17T12:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 1134.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-20T07:52Z",
+     "glancing": false
+    },
+    {
+     "location": "Mars",
+     "arrival": "2024-05-20T09:35Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-19T09:31Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-19T10:17Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-19T00:37Z",
+     "glancing": false
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-19T02:27Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-18T21:22Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-18T21:55Z",
+     "glancing": false
+    }
+   ],
+   "note": "Bright CME seen to the west. A backsided source is indicated for it by a massive and fast restructuring of magnetic field behind the west limb which is seen at 2024-05-17T12:38Z in SDO AIA 171 and less prominently in AIA 193. The source is likely the former Active Region  13664 which is now at the longitude of 135 degrees. The backsided flare is confirmed by the STIX instrument at the Solar Orbiter which saw a significant flare.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30974/-1"
+  },
+  {
+   "activityID": "2024-05-17T13:25:00-CME-001",
+   "startTime": "2024-05-17T13:25Z",
+   "sourceLocation": "N28E45",
+   "speed_km_s": 465.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Faint CME likely associated with an eruption starting around 2024-05-20T12:00Z close to the coronal hole in the northwest at ~(N28E45), with dimming and bright post-eruptive arcades as coronal signatures.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30986/-1"
+  },
+  {
+   "activityID": "2024-05-17T18:48:00-CME-001",
+   "startTime": "2024-05-17T18:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 942.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-21T18:00Z",
+     "glancing": true
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-20T10:10Z",
+     "glancing": false
+    }
+   ],
+   "note": "This faint, narrow, and irregularly shaped CME is seen to the SW in SOHO LASCO C2/C3 and STEREO A COR2. The only discernible source may be some very small ejecta from just beyond the SW limb at an apparent latitude of S20 or so, visible in GOES SUVI 304 at 2024-05-17T18:34Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31012/-1"
+  },
+  {
+   "activityID": "2024-05-17T21:24:00-CME-001",
+   "startTime": "2024-05-17T21:24Z",
+   "sourceLocation": "S11E65",
+   "speed_km_s": 1129.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-05-22T22:12Z",
+     "glancing": false
+    }
+   ],
+   "note": "This heart-shaped CME is seen to the E/SE in SOHO LASCO C2 and C3. This CME is not observed by STEREO A COR2 due to a data gap lasting from 2024-05-17T20:53Z to 2024-05-18T01:23Z. Associated with the M7.2 flare from AR 13685 (S13E52). Widely opening field lines, an EUV wave, and post-eruptive arcade can be seen in SDO AIA 171/193 starting at 2024-05-17T20:54Z, and ejecta and brightening can be seen in SDO AIA 304/171. This eruption is also visible in STEREO A EUVI 195 at 2024-0517T20:55Z as widely opening field lines and brightening, and in STEREO A EUVI 304 at 21:15Z as ejecta, brightening, and post-eruptive arcades.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31005/-1"
+  },
+  {
+   "activityID": "2024-05-18T06:24:00-CME-001",
+   "startTime": "2024-05-18T06:24Z",
+   "sourceLocation": null,
+   "speed_km_s": 341.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This slow CME is the first of three overlapping slow CMEs seen to the S/SW in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is widely but slowly opening field lines on the Southern limb as seen in SDO AIA 171/193 and GOES SUVI 284, starting at about 2024-05-18T05:09Z. Prominence material - some of which lingers and some of which escapes - can be seen just beyond the S/SW limb in SDO AIA 304 and GOES SUVI 304 around 05:24Z. Imagery of this CME was affected by the scheduled calibration maneuvers which entailed a reduction in LASCO imagery cadence.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31010/-1"
+  },
+  {
+   "activityID": "2024-05-18T13:38:00-CME-001",
+   "startTime": "2024-05-18T13:38Z",
+   "sourceLocation": null,
+   "speed_km_s": 1585.0,
+   "type": "O",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the W in STEREO A COR2 and SOHO LASCO C2/C3.  Imagery of this CME was affected by the scheduled calibration maneuvers which entailed a reduction in LASCO imagery cadence. Source is narrow ejecta seen from beyond the W limb at an apparent latitude of S20 starting at 2024-05-18T12:37Z in SDO AIA 304/171 and GOES SUVI 304.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31018/-1"
+  },
+  {
+   "activityID": "2024-05-18T19:38:00-CME-001",
+   "startTime": "2024-05-18T19:38Z",
+   "sourceLocation": null,
+   "speed_km_s": 375.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Thin, faint CME seen to the E in all coronagraphs. The source is unclear, and may be visible as some weak field line movement over the east limb in SDO AIA 171/193, otherwise no EUV signature observed.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31028/-1"
+  },
+  {
+   "activityID": "2024-05-19T01:23:00-CME-001",
+   "startTime": "2024-05-19T01:23Z",
+   "sourceLocation": "S40E10",
+   "speed_km_s": 426.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Filament eruption seen to the SSE in all coronagraphs. Source is a long filament on-disk, spanning approximately S65E40->S35W20 (centered ~S40E10) at 2024-05-18T19:00Z, slowly rising and eventually lifting off from the disk. The filament extends a bit further SE, but that portion beyond ~S65E40 remains on the disk. Best observed as the filament erupting in SDO AIA 171/193/304, also as field line movement and dimming in SDO AIA 171/193, with a double ribbon flare in SDO AIA 304. A weak post-eruptive arcade is observed after the eruption as well.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31022/-1"
+  },
+  {
+   "activityID": "2024-05-19T03:36:00-CME-001",
+   "startTime": "2024-05-19T03:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 304.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Thin, faint CME seen to the E in all coronagraphs. The source is unclear, and may be visible as some weak field line movement over the east limb in SDO AIA 171/193, otherwise no EUV signature observed.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31030/-1"
+  },
+  {
+   "activityID": "2024-05-19T14:23:00-CME-001",
+   "startTime": "2024-05-19T14:23Z",
+   "sourceLocation": "S10E35",
+   "speed_km_s": 524.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Thin, faint CME seen to the east in all coronagraphs. The source is not too clear, but may be associated with an M1.9 flare from AR 3685 that peaked at 2024-05-19T13:44Z, best observed in SDO AIA 131. Some weak field line movement is observed at this time of the flare in SDO AIA 171/193, and dark filamentary material is seen rising along field lines after the flare occurs and correlates to the start time of the CME in coronagraph imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31032/-1"
+  },
+  {
+   "activityID": "2024-05-19T16:23:00-CME-001",
+   "startTime": "2024-05-19T16:23Z",
+   "sourceLocation": null,
+   "speed_km_s": 327.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Narrow CME visible to the SW in SOHO LASCO C2/C3 and STEREO A COR2. The start of the CME is not visible in SOHO LASCO C2/C3 due to data gaps from 2024-05-19T15:16Z-19:12Z. The source of the CME is unclear, and may be on the far side.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31051/-1"
+  },
+  {
+   "activityID": "2024-05-19T16:53:00-CME-001",
+   "startTime": "2024-05-19T16:53Z",
+   "sourceLocation": "N33W25",
+   "speed_km_s": 456.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Visible in the NW of STEREO A COR2 and SOHO LASCO C2/C3. The start of the CME is not visible in SOHO LASCO C2/C3 due to a data gaps from 2024-05-19T15:16Z-19:12Z. There is continuing outflow following the initial leading edge of this CME. The source is a northwest filament eruption centered around N33W25 starting at 2024-05-19T14:33Z. The filament liftoff is visible in SDO AIA 193/304. Opening field lines and post eruptive arcades are also visible in SDO AIA 171//193. The filament eruption is also visible from the point of view of STEREO A EUV 195/304.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31044/-1"
+  },
+  {
+   "activityID": "2024-05-19T17:09:00-CME-001",
+   "startTime": "2024-05-19T17:09Z",
+   "sourceLocation": null,
+   "speed_km_s": 317.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "CME visible to the SSW in STEREO A COR2 and SOHO LASCO C2/C3. The start of the CME is not visible in SOHO due to data gaps from 2024-05-19T15:16Z-19:12Z. The source is a filament eruption seen lifting off beyond the limb in GOES SUVI 304. The liftoff starts very gradually around 2024-05-19T12:00Z. Footpoints for the filament are not visible on the disk in EUV imagery, so it is believed to be on the back side. The filament liftoff is also visible on the limb in STEREO A EUV 304.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31046/-1"
+  },
+  {
+   "activityID": "2024-05-19T19:09:00-CME-001",
+   "startTime": "2024-05-19T19:09Z",
+   "sourceLocation": "S10E33",
+   "speed_km_s": 584.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Narrow CME visible to the east in SOHO LASCO C2/C3 and STEREO A COR2. The potential source is the M2.5 flare starting at 2024-05-19T17:47Z from AR 3685 (S10E33). An eruption can be best seen in SDO AIA 304 following the flare. It is also visible in SDO AIA 193 and STEREO A EUV 195.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31042/-1"
+  },
+  {
+   "activityID": "2024-05-20T05:36:00-CME-001",
+   "startTime": "2024-05-20T05:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 2678.0,
+   "type": "R",
+   "predicted_impacts": [
+    {
+     "location": "Juno",
+     "arrival": "2024-05-30T07:45Z",
+     "glancing": false
+    },
+    {
+     "location": "Juno",
+     "arrival": "2024-05-31T19:50Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-21T20:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-21T00:18Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-21T06:05Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-21T06:12Z",
+     "glancing": false
+    }
+   ],
+   "note": "Fast halo CME visible in SOHO LASCO C2/C3 and STEREO A COR2. The source is believed to be backsided, with moving field lines and EUV wave visible in SDO AIA 171/193 at 2024-05-20T05:22Z. A filament eruption and C6.7 flare peaking at 2024-05-20T05:54Z from Active Region 3683 (approx. S24W65) occurred around the same time, but was determined not be the source of this fast halo CME due to location and timing.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31034/-1"
+  },
+  {
+   "activityID": "2024-05-20T20:12:00-CME-001",
+   "startTime": "2024-05-20T20:12Z",
+   "sourceLocation": "S20E35",
+   "speed_km_s": 836.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Faint CME to the east. Its source could be 2024-05-20T18:36Z slow eruption in AR 3688, with dimming enlarging the coronal hole located to the south of this AR. The eruption is likely centered around (S25E35).",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31055/-1"
+  },
+  {
+   "activityID": "2024-05-20T21:12:00-CME-001",
+   "startTime": "2024-05-20T21:12Z",
+   "sourceLocation": "S28E33",
+   "speed_km_s": 654.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Faint CME to the SE (the second, more S in a pair of closely following faint and narrow CMEs). Its source could be the continuing eruption SE of AR 3688 seen after 20Z as dimming seen as enlarging the SE CH to the south of the Active Region. This dimming is centered at S28E33.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31060/-1"
+  },
+  {
+   "activityID": "2024-05-21T08:00:00-CME-001",
+   "startTime": "2024-05-21T08:00Z",
+   "sourceLocation": "S35W77",
+   "speed_km_s": 481.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Narrow faint CME with uneven front in the SW. Its source could be the C4.8 flare in AR 3683 (S24W77) peaking at 2024-05-21T07:32Z and there is also associated very minor post eruptive arcade in AIA 304 south of AR 3683 (S35W77) that could indicate that the latitude of the source is southward of the AR.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31057/-1"
+  },
+  {
+   "activityID": "2024-05-21T13:36:00-CME-001",
+   "startTime": "2024-05-21T13:36Z",
+   "sourceLocation": "S47E15",
+   "speed_km_s": 660.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Faint southward CME with a fuzzy front. A possible source a large-area slow filament eruption seen starting to erupt at ~2024-05-21T09:04Z south of the coronal hole in the southeast in AIA 304 and 193, with slowly appearing (in AIA 193/304) massive post-eruptive arcades centered at S47E15. The filament seems to be directed more southwestward than the latitude of the arcades.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31065/-1"
+  },
+  {
+   "activityID": "2024-05-21T14:36:00-CME-001",
+   "startTime": "2024-05-21T14:36Z",
+   "sourceLocation": "S23W77",
+   "speed_km_s": 531.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "CME seen to the SW in all coronagraphs. Source is likely an eruption from AR 3683 with a C6.6 flare (S23W77) which peaked at 2024-05-21T14:13Z observed in SDO AIA 131. Seen best in GOES SUVI 284 as field line movement and dimming rising up from the region and deflecting southward within the corona. Also observed as field line movement in SDO AIA 171/193/211.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31075/-1"
+  },
+  {
+   "activityID": "2024-05-21T20:12:00-CME-001",
+   "startTime": "2024-05-21T20:12Z",
+   "sourceLocation": "S06W47",
+   "speed_km_s": 345.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "CME seen to the NW in SOHO only, as STEREO is in a data gap at this time. The source is not completely certain, but is likely an M1.9 flare (S06W47) from AR 3679 which peaked at 2024-05-21T19:31Z best observed in SDO AIA 131. The CME is observed deflected northward if this is the source, but it is backed up by SDO AIA 171/193 imagery showing the signature could erupt northward instead of outward from the region. Observed as dimming after the flare and some weak field line movement in SDO AIA 171/193.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31079/-1"
+  },
+  {
+   "activityID": "2024-05-21T20:24:00-CME-001",
+   "startTime": "2024-05-21T20:24Z",
+   "sourceLocation": null,
+   "speed_km_s": 522.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Filament eruption seen to the S in all coronagraphs. The source for this CME is a filament which is observed best in SDO AIA 304 and GOES SUVI 304's wider FOV over the far southern limb, in close proximity to the south pole. As such, narrowing down a longitude is difficult. This filament began to slowly lift off ~2024-05-21T14:00Z, erupting more explosively ~T17:00Z, and fiercely whipping around in the corona ~T19:00Z before fading away and leaving the FOV into this observed CME front.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31077/-1"
+  },
+  {
+   "activityID": "2024-05-22T03:36:00-CME-001",
+   "startTime": "2024-05-22T03:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 306.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the south/southeast in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is likely far-sided as there are no source signatures visible on the Earth-facing disk at the time of this event.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31141/-1"
+  },
+  {
+   "activityID": "2024-05-22T04:00:00-CME-001",
+   "startTime": "2024-05-22T04:00Z",
+   "sourceLocation": "S06W52",
+   "speed_km_s": 429.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "CME seen to the NW in all coronagraphs. Source is not completely certain, but likely an M1.5 flare (S06W52) from AR 3679 which peaked at 2024-05-22T03:13Z, best seen in SDO AIA 131. Also observed as dimming and some weak field line movement at the time of the flare in SDO AIA 171/193/211, deflected northward of the region, supporting the source at S06W52 leading to a NW-directed CME.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31082/-1"
+  },
+  {
+   "activityID": "2024-05-22T11:36:00-CME-001",
+   "startTime": "2024-05-22T11:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 488.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Faint event with a dimpled unclear front. The source is more likely behind the NW limb as there is a minor movement of field lines behind the limb in AIA 171 around 2024-05-21T11:30Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31086/-1"
+  },
+  {
+   "activityID": "2024-05-22T17:24:00-CME-001",
+   "startTime": "2024-05-22T17:24Z",
+   "sourceLocation": null,
+   "speed_km_s": 492.0,
+   "type": "S",
+   "predicted_impacts": [
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-25T14:18Z",
+     "glancing": false
+    }
+   ],
+   "note": "This CME is visible to the south/southeast in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is likely far-sided as there are no source signatures visible on the Earth-facing disk at this time. Based on the rate of solar rotation, former Active Region 13664 is estimated to be around longitude -158 at the time of this event. However, it was difficult to obtain a decent measurement based on this longitude. It is possible this region is responsible for this CME, but this event would likely have been deflected from the source if so.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31112/-1"
+  },
+  {
+   "activityID": "2024-05-23T01:25:00-CME-001",
+   "startTime": "2024-05-23T01:25Z",
+   "sourceLocation": "S35E45",
+   "speed_km_s": 469.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Bright lightbulb-shaped CME to the SE where the source is a 2023-05-23T00:39Z eruption of an unusually-looking filament stretched longitudinally and centered at S35E45, as seen in SDO AIA 304/171. The eruption of this filament is also marked by the massive post-eruptive arcades seen in AIA 193 after ~2024-05-2302:30Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31092/-1"
+  },
+  {
+   "activityID": "2024-05-23T03:12:00-CME-001",
+   "startTime": "2024-05-23T03:12Z",
+   "sourceLocation": "S09W60",
+   "speed_km_s": 455.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the northwest in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is likely an eruption and subsequent M4.2 flare from Active Region 13679 (S09W60) starting around 2024-05-23T02:15Z in SDO AIA 131, 171, 193, 304 imagery which appears to deflect northward.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31143/-1"
+  },
+  {
+   "activityID": "2024-05-23T04:24:00-CME-001",
+   "startTime": "2024-05-23T04:24Z",
+   "sourceLocation": "S10W62",
+   "speed_km_s": 507.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-28T11:30Z",
+     "glancing": true
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-27T03:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-25T19:02Z",
+     "glancing": false
+    }
+   ],
+   "note": "First CME in a series of three CMEs likely associated with M-class flares from Active Region 3679. The likely associated very minor eruption is seen in AIA 193 as faint minor dimming/posteruptive arcades after 04:15Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31104/-1"
+  },
+  {
+   "activityID": "2024-05-23T06:48:00-CME-001",
+   "startTime": "2024-05-23T06:48Z",
+   "sourceLocation": "S32E18",
+   "speed_km_s": 649.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the south/southeast in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is likely an eruption centered around S32E18 which begins starting around 2024-05-23T06:15Z as seen in SDO AIA 131, 171, 193, 304 imagery. Post-eruptive arcades are visible in SDO AIA 171 and 193 imagery starting around 07:00Z. This event partially overlaps with CME: 2024-05-23T07:12Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31100/-1"
+  },
+  {
+   "activityID": "2024-05-23T07:12:00-CME-001",
+   "startTime": "2024-05-23T07:12Z",
+   "sourceLocation": "S12E03",
+   "speed_km_s": 274.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the southeast in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is likely a small filament eruption centered near S12E03 which begins to lift-off around 2024-05-23T06:45Z as seen in SDO AIA 131, 171, 193, 304 imagery. This eruption appears to deflect towards the southeast as it leaves the solar disk/initial source location. Post eruptive arcades begin to form in SDO AIA 171 and 193 imagery around 07:20Z. This event partially overlaps with CME: 2024-05-23T06:48Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31098/-1"
+  },
+  {
+   "activityID": "2024-05-23T10:12:00-CME-001",
+   "startTime": "2024-05-23T10:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 337.0,
+   "type": "S",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-28T11:30Z",
+     "glancing": true
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-27T03:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-25T19:02Z",
+     "glancing": false
+    }
+   ],
+   "note": "Second CME in a series of three CMEs likely associated with M-class flares from Active region 3679",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31106/-1"
+  },
+  {
+   "activityID": "2024-05-23T13:25:00-CME-001",
+   "startTime": "2024-05-23T13:25Z",
+   "sourceLocation": null,
+   "speed_km_s": 512.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-28T11:30Z",
+     "glancing": true
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-27T03:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-25T19:02Z",
+     "glancing": false
+    }
+   ],
+   "note": "Third CME in a series of three CMEs likely associated with M-class flares from Active region 3679",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31108/-1"
+  },
+  {
+   "activityID": "2024-05-23T17:24:00-CME-001",
+   "startTime": "2024-05-23T17:24Z",
+   "sourceLocation": null,
+   "speed_km_s": 342.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the east in SOHO LASCO C2/C3 and STEREO A COR2 imagery for a few frames prior to a data gap starting at 2024-05-23T20:53Z. The source is likely far-sided as there are no source signatures visible on the Earth-facing disk at the time of this event.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31135/-1"
+  },
+  {
+   "activityID": "2024-05-23T22:36:00-CME-001",
+   "startTime": "2024-05-23T22:36Z",
+   "sourceLocation": "N19E80",
+   "speed_km_s": 943.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the east in SOHO LASCO C2/C3 coronagraph imagery. This event is not seen in STEREO A COR2 due to a data gap starting at 2024-05-23T20:53Z. The source is likely an eruption from N19E80 starting around 2024-05-23T22:15Z as seen in SDO AIA 131, 171, 193, 304 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31133/-1"
+  },
+  {
+   "activityID": "2024-05-24T03:12:00-CME-001",
+   "startTime": "2024-05-24T03:12Z",
+   "sourceLocation": "S12W78",
+   "speed_km_s": 521.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-29T12:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-26T14:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "This CME is visible to the southwest in SOHO LASCO C2/C3 coronagraph imagery. This event is not seen in STEREO A COR2 due to a data gap starting at 2024-05-23T20:53Z. The source is likely an eruption near AR 3679 (S12W78) starting around 2024-05-24T02:45Z as seen in SDO AIA 131 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31131/-1"
+  },
+  {
+   "activityID": "2024-05-24T05:00:00-CME-001",
+   "startTime": "2024-05-24T05:00Z",
+   "sourceLocation": null,
+   "speed_km_s": 463.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the northeast in SOHO LASCO C2/C3 coronagraph imagery. This event is not seen in STEREO A COR2 due to a data gap starting at 2024-05-23T20:53Z. The source is likely far-sided as there are no source signatures visible on the Earth-facing disk at this time.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31125/-1"
+  },
+  {
+   "activityID": "2024-05-24T07:36:00-CME-001",
+   "startTime": "2024-05-24T07:36Z",
+   "sourceLocation": "S14W67",
+   "speed_km_s": 360.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the west in SOHO LASCO C2/C3 coronagraph imagery. This event is not seen in STEREO A COR2 due to a data gap starting at 2024-05-23T20:53Z. The source is likely a small dimming region centered near S14W67 in SDO AIA 193 imagery starting around 2024-05-24T06:30Z. Faint field line movement is visible over the W/SW limb in SDO AIA 171 imagery starting around 2024-05-24T07:20Z as well.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31127/-1"
+  },
+  {
+   "activityID": "2024-05-24T08:12:00-CME-001",
+   "startTime": "2024-05-24T08:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 374.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the northeast in SOHO LASCO C2/C3 coronagraph imagery. This event is only seen in one timestamp of STEREO A COR2. The source is an eruption visible just on or slightly beyond the northeast limb starting around 2024-05-24T07:40Z as seen in SDO AIA 131 and 304 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31129/-1"
+  },
+  {
+   "activityID": "2024-05-24T10:48:00-CME-001",
+   "startTime": "2024-05-24T10:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 289.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the northwest in SOHO LASCO C2/C3 coronagraph imagery. This event is not seen in STEREO A COR2 due to a data gap starting at 2024-05-23T20:53Z. The source is a wide opening of field lines visible beyond the northwest limb in SDO AIA 171 and 193 imagery starting around 2024-05-24T310:15Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31123/-1"
+  },
+  {
+   "activityID": "2024-05-24T12:12:00-CME-001",
+   "startTime": "2024-05-24T12:12Z",
+   "sourceLocation": "N45W75",
+   "speed_km_s": 518.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the northwest in SOHO LASCO C2/C3 imagery. The source is likely an eruption centered near N45W75 starting around 2024-05-24T11:25Z as seen in SDO AIA 131, 171, 193, 304 imagery, but the center of the eruption could be closer to the limb/on limb. A strong opening of field lines is visible in SDO AIA 171 and 193 imagery, with post eruptive arcades starting to form around 12:00Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31121/-1"
+  },
+  {
+   "activityID": "2024-05-24T13:25:00-CME-001",
+   "startTime": "2024-05-24T13:25Z",
+   "sourceLocation": null,
+   "speed_km_s": 718.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the east in SOHO LASCO C2/C3 coronagraph imagery. This event is not seen in STEREO A COR2 due to a data gap starting at 2024-05-23T20:53Z. The source is a wide opening of field lines visible beyond the eastern limb in SDO AIA 171 and 193 imagery starting around 2024-05-24T13:09Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31119/-1"
+  },
+  {
+   "activityID": "2024-05-24T20:48:00-CME-001",
+   "startTime": "2024-05-24T20:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 854.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Mars",
+     "arrival": "2024-05-29T05:56Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-28T00:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Parker Solar Probe",
+     "arrival": "2024-05-26T17:21Z",
+     "glancing": false
+    }
+   ],
+   "note": "Narrow CME to the west with the likely source an M-class flare and an associated minor eruption on/near the western limb seen starting around 2024-05-25T20:12Z in SDO AIA 304 imagery and as opening of field lines in AIA 193/171.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31147/-1"
+  },
+  {
+   "activityID": "2024-05-25T17:24:00-CME-001",
+   "startTime": "2024-05-25T17:24Z",
+   "sourceLocation": null,
+   "speed_km_s": 652.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Faint front with initial bright right hand boundary and core parts, this CME is visible to the SW in SOHO LASCO C2 and C3. There is a data gap in STEREO A COR2 from 2024-05-25T12:23Z to 2024-05-26T01:09Z. The source appears to be moving/opening field lines beyond the SW limb best seen in GOES SUVI 284 starting around 2024-05-25T17:00Z with multiple \"waves\" possibly indicating more than one eruption. The CME in difference imagery appears to have two fronts following the same path at the same speed, it is possible this analysis includes two overlapping CMEs.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31155/-1"
+  },
+  {
+   "activityID": "2024-05-26T17:24:00-CME-001",
+   "startTime": "2024-05-26T17:24Z",
+   "sourceLocation": null,
+   "speed_km_s": 435.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Bright front CME to the SW in SOHO LASCO C2, C3, and STEREO A COR2 imagery. The source appears to be moving/opening field lines seen in SDO/AIA 94 starting around 2024-05-26T16:45Z. The associated moving/opening field lines are not as clear in STA EUVI 195, however slight changes along the limb suggest the eruption is beyond STA's field-of-view (~104 degrees).",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31170/-1"
+  },
+  {
+   "activityID": "2024-05-27T07:23:00-CME-001",
+   "startTime": "2024-05-27T07:23Z",
+   "sourceLocation": "S21E95",
+   "speed_km_s": 1220.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-05-31T22:44Z",
+     "glancing": false
+    },
+    {
+     "location": "Psyche",
+     "arrival": "2024-06-01T13:33Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-29T13:04Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-29T13:29Z",
+     "glancing": false
+    }
+   ],
+   "note": "Large partial halo, potential full halo CME with likely H-alpha emission seen with a bulk portion to the east in SOHO LASCO C2, C3, and STEREO A COR2 imagery. The source is an X2.8 flare peaking at 2024-05-27T07:08Z from an unnumbered active region just beyond the SE limb (likely old AR3664 based on solar rotation calculations). The flare included the release of plasma/filament material best seen in SDO/AIA 304 and was followed by moving/opening field lines and EUV wave best seen in SDO/AIA 211 and GOES SUVI 284, as well as post-eruptive arcades best seen in SDO/AIA 193.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31161/-1"
+  },
+  {
+   "activityID": "2024-05-27T20:12:00-CME-001",
+   "startTime": "2024-05-27T20:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 262.0,
+   "type": "S",
+   "predicted_impacts": [
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-31T08:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-31T08:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "Faint narrow CME preceding the brighter and wider 2024-05-28T05:38Z CME likely from the same backsided source. No clear source have been found, although there is a slow movement of field lines in AIA 171 in the  SW for a long time. There might be a super minor restructuring of magnetic field configuration likely far behind the SW limb seen in AIA 335 around 2024-05-27T20Z seen in AIA 335.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31174/-1"
+  },
+  {
+   "activityID": "2024-05-28T05:36:00-CME-001",
+   "startTime": "2024-05-28T05:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 755.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-31T08:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-31T08:00Z",
+     "glancing": true
+    }
+   ],
+   "note": "Large, wide and bright CME to the SW. Source appears to be beyond the SW limb based on field line movement seen in SDO/AIA 94, 335, and GOES SUVI 284.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31176/-1"
+  },
+  {
+   "activityID": "2024-05-28T19:48:00-CME-001",
+   "startTime": "2024-05-28T19:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 976.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Faint CME in the SSW with no clear source; however there are a couple of potential coronal signatures - a slow possible ejecta seen in the SSW in AIA 171 starting after 2024-05-28T18Z and a faint movement of field lines far behind the limb in the SSW in AIA 171 at the same time as well. The CME is almost completely covered by the nighttime data gap in STEREO A coronagraph.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31191/-1"
+  },
+  {
+   "activityID": "2024-05-28T23:12:00-CME-001",
+   "startTime": "2024-05-28T23:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 607.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "A faint most likely backsided high southern latitude CME in the SSW.  A possible source is an ejecta and movement of field lines seen in AIA 171 leaving the AIA field of view in south southwest after 2024-05-28T22Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31195/-1"
+  },
+  {
+   "activityID": "2024-05-29T01:48:00-CME-001",
+   "startTime": "2024-05-29T01:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 853.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "A very faint partial halo CME in the NW seen only in difference imagery (SOHO LASCO C2/C3 and STEREO A COR2). No on-disk source have been found on the earth-facing disk, so it is likely backsided.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31204/-1"
+  },
+  {
+   "activityID": "2024-05-29T02:12:00-CME-001",
+   "startTime": "2024-05-29T02:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 791.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "Extremely faint full halo with a fuzzy faint front only seen in difference imagery in the first few timestamps of SOHO LASCO C2 and in one early timestamp of C3. The source has not been found on the Earth-facing disk. The halo is not discernible in STEREO A COR2.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31210/-1"
+  },
+  {
+   "activityID": "2024-05-29T05:24:00-CME-001",
+   "startTime": "2024-05-29T05:24Z",
+   "sourceLocation": null,
+   "speed_km_s": 310.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "Faint and narrow CME mostly seen to the east in SOHO LASCO C2/STEREO A COR2 (too faint to be seen in more than a couple timestamps in C3). The source is a relatively narrow opening of field lines on/behind the E limb seen starting 2024-05-29T04:30Z in AIA 193/171 and a super faint ejecta seen in AIA 304. The opening of field lines is preceded at 2024-05-29T02:30 by another, more minor, on/close to limb eruption seen in AIA 335. These eruptions are followed by slowly appearing post-eruptive arcades on the east limb seen after 2024-05-29T05:20Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31189/-1"
+  },
+  {
+   "activityID": "2024-05-29T14:48:00-CME-001",
+   "startTime": "2024-05-29T14:48Z",
+   "sourceLocation": "S23E70",
+   "speed_km_s": 1033.0,
+   "type": "O",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-06-04T20:00Z",
+     "glancing": false
+    }
+   ],
+   "note": "Large, bright partial halo CME to east in SOHO LASCO C2, C3, and STEREO A COR2 imagery. The source of this CME is the X1.4 class flare from AR13697 with associated moving/opening field lines visible in SDO/AIA 193, 171, and GOES SUVI 284. Additionally, a thin filament ejecta was visible during the eruption as seen in GOES SUVI 304. Post-eruptive arcades followed the flare as seen in SDO/AIA 193 and 171.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31200/-1"
+  },
+  {
+   "activityID": "2024-05-29T17:36:00-CME-001",
+   "startTime": "2024-05-29T17:36Z",
+   "sourceLocation": "S21E70",
+   "speed_km_s": 723.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-06-05T22:03Z",
+     "glancing": false
+    }
+   ],
+   "note": "This CME is visible to the east in SOHO LASCO C2/C3 and STEREO A COR2 imagery. This event follows in the path of CME: 2024-05-29T14:48Z. The source is likely an eruption starting around 2024-05-29T16:30Z from AR 3697 (S21E70) as seen in SDO AIA 131, 171, 103, 304 imagery. Post eruptive loops begin to form around 17:00Z as seen in SDO AIA 171, 193 and 304 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31220/-1"
+  },
+  {
+   "activityID": "2024-05-29T18:48:00-CME-001",
+   "startTime": "2024-05-29T18:48Z",
+   "sourceLocation": null,
+   "speed_km_s": 302.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the SW in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is an eruption near or slightly beyond the S/SW limb starting around 2024-05-29T17:45Z as seen in SDO AIA 171, 193, 304 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31224/-1"
+  },
+  {
+   "activityID": "2024-05-29T21:12:00-CME-001",
+   "startTime": "2024-05-29T21:12Z",
+   "sourceLocation": "S25E70",
+   "speed_km_s": 541.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the east in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is likely a small eruption/brightening near Active Region 13697 (S25E70) starting around 2024-05-29T19:10Z as seen in SDO AIA 131, 171, 193, 304 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31232/-1"
+  },
+  {
+   "activityID": "2024-05-29T23:24:00-CME-001",
+   "startTime": "2024-05-29T23:24Z",
+   "sourceLocation": null,
+   "speed_km_s": 579.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the east in SOHO LASCO C2/C3 imagery, and is not visible in STEREO A COR2 due to a data gap. The source is likely far-sided as there are no source signatures visible on the Earth-facing disk at the time of this event.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31230/-1"
+  },
+  {
+   "activityID": "2024-05-30T01:25:00-CME-001",
+   "startTime": "2024-05-30T01:25Z",
+   "sourceLocation": "S40E90",
+   "speed_km_s": 332.0,
+   "type": "S",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the southeast in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is likely an eruption visible near the southeast limb (~S40E90) in SDO AIA 304 imagery starting around 2024-05-30T00:30Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31228/-1"
+  },
+  {
+   "activityID": "2024-05-30T03:48:00-CME-001",
+   "startTime": "2024-05-30T03:48Z",
+   "sourceLocation": "S22E60",
+   "speed_km_s": 561.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-06-06T15:04Z",
+     "glancing": false
+    }
+   ],
+   "note": "This CME is visible to the east in SOHO LASCO C2/C3 and STEREO A COR2 imagery. The source is an eruption near AR 3697 (S22E60) starting around 2024-05-30T03:20Z as seen in SDO AIA 131, 171, 193, 304 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31226/-1"
+  },
+  {
+   "activityID": "2024-05-30T09:24:00-CME-001",
+   "startTime": "2024-05-30T09:24Z",
+   "sourceLocation": "S10E80",
+   "speed_km_s": 750.0,
+   "type": "C",
+   "predicted_impacts": [
+    {
+     "location": "Psyche",
+     "arrival": "2024-06-06T15:04Z",
+     "glancing": false
+    }
+   ],
+   "note": "This CME is visible to the east in SOHO LASCO C2/C3 and STEREO A COR2 coronagraph imagery. The source is likely an eruption centered near S10E80 starting around 2024-05-30T08:50Z as seen in SDO AIA 131, 171, 193, 304 imagery. A subsequent opening of field lines is visible in SDO AIA 171 and 193, and post eruptive loops begin to form around 10:00Z.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31217/-1"
+  },
+  {
+   "activityID": "2024-05-30T21:12:00-CME-001",
+   "startTime": "2024-05-30T21:12Z",
+   "sourceLocation": null,
+   "speed_km_s": 571.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This bright CME is visible to the S/SW in SOHO LASCO C2/C3 and STEREO A COR2. Opening field lines and material liftoff seen beyond the SW limb starting around 2024-05-30T20:27Z as seen in SDO AIA 171, 193, and faintly in 304 imagery. Seen in GOES SUVI 304 and 284 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31243/-1"
+  },
+  {
+   "activityID": "2024-05-31T04:17:00-CME-001",
+   "startTime": "2024-05-31T04:17Z",
+   "sourceLocation": null,
+   "speed_km_s": 817.0,
+   "type": "C",
+   "predicted_impacts": [],
+   "note": "This CME is visible to the S in SOHO LASCO C2/C3 and STEREO A COR2. Overlaps with CME:2024-05-30T21:12Z. Source is opening field lines seen beyond the S limb starting around 2024-05-31T03:27Z as seen in SDO AIA 171. Opening field lines are also seen in GOES SUVI 284 imagery.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31245/-1"
+  }
+ ],
+ "sep": [
+  {
+   "sepID": "2024-05-13T12:44:00-SEP-001",
+   "eventTime": "2024-05-13T12:44Z",
+   "instruments": [
+    "STEREO A: IMPACT 13-100 MeV"
+   ]
+  },
+  {
+   "sepID": "2024-05-13T13:10:00-SEP-001",
+   "eventTime": "2024-05-13T13:10Z",
+   "instruments": [
+    "MODEL: REleASE:SOHO/EPHIN 15.8-39.8 MeV"
+   ]
+  },
+  {
+   "sepID": "2024-05-13T14:00:00-SEP-001",
+   "eventTime": "2024-05-13T14:00Z",
+   "instruments": [
+    "GOES-P: SEISS >10 MeV"
+   ]
+  },
+  {
+   "sepID": "2024-05-13T16:19:00-SEP-001",
+   "eventTime": "2024-05-13T16:19Z",
+   "instruments": [
+    "MODEL: REleASE:ACE/EPAM 15.8-39.8 MeV"
+   ]
+  },
+  {
+   "sepID": "2024-05-13T18:07:00-SEP-001",
+   "eventTime": "2024-05-13T18:07Z",
+   "instruments": [
+    "SOHO: COSTEP 15.8-39.8 MeV"
+   ]
+  },
+  {
+   "sepID": "2024-05-13T18:07:00-SEP-002",
+   "eventTime": "2024-05-13T18:07Z",
+   "instruments": [
+    "SOHO: COSTEP 28.2-50.1 MeV"
+   ]
+  }
+ ],
+ "notifications": [
+  {
+   "messageType": "CME",
+   "messageID": "20240520-AL-001",
+   "messageIssueTime": "2024-05-20T15:52Z",
+   "messageURL": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/31039/1",
+   "title": "Space Weather Notification - CME (Juno, Solar Orbiter)"
+  },
+  {
+   "messageType": "CME",
+   "messageID": "20240520-AL-002",
+   "messageIssueTime": "2024-05-20T18:17Z",
+   "messageURL": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/31049/1",
+   "title": "Space Weather Notification - CMEs (Missions Near Earth)"
+  },
+  {
+   "messageType": "CME",
+   "messageID": "20240521-AL-001",
+   "messageIssueTime": "2024-05-21T18:36Z",
+   "messageURL": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/31064/1",
+   "title": "Space Weather Notification - CMEs (Missions Near Earth)"
+  },
+  {
+   "messageType": "Report",
+   "messageID": "20240522-7D-001",
+   "messageIssueTime": "2024-05-22T20:00Z",
+   "messageURL": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/31085/1",
+   "title": "Weekly Space Weather Summary Report for May 15, 2024 - May 21, 2024"
+  }
+ ],
+ "flares": [],
+ "flares_status": "unavailable through api.nasa.gov (HTTP Error 429: Too Many Requests)"
+}

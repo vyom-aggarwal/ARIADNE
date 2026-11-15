@@ -232,3 +232,54 @@ export function snapshot(plan: Plan, t: number): EvaSnapshot {
     overcautious: overcautiousAt(plan, t),
   };
 }
+
+/** Distance along a polyline and the point at a given distance. */
+function along(path: XY[], dist: number): { xy: XY; heading: number } {
+  let left = Math.max(0, dist);
+  for (let i = 1; i < path.length; i++) {
+    const seg = distanceM(path[i - 1], path[i]);
+    if (left <= seg && seg > 0) return { xy: lerp(path[i - 1], path[i], left / seg), heading: bearingDeg(path[i - 1], path[i]) };
+    left -= seg;
+  }
+  const n = path.length;
+  return { xy: path[n - 1], heading: n > 1 ? bearingDeg(path[n - 2], path[n - 1]) : 0 };
+}
+
+export function pathLength(path: XY[]): number {
+  let s = 0;
+  for (let i = 1; i < path.length; i++) s += distanceM(path[i - 1], path[i]);
+  return s;
+}
+
+/**
+ * The storm replay: up to the alert the crew follows the plan; from the alert they leave it and
+ * walk the storm response's path (frozen at the alert) to the refuge at its modeled pace, EV2
+ * 15 s behind. The storm sample carries the minutes still to walk.
+ */
+export function replaySnapshot(plan: Plan, t: number, alertMin: number): EvaSnapshot {
+  if (t < alertMin) return snapshot(plan, t);
+  const base = snapshot(plan, alertMin);
+  const s = base.storm;
+  if (!s || s.choice === "stay") return { ...snapshot(plan, alertMin), t, storm: s };
+  const path: XY[] = [base.ev1, ...s.path_xy_m];
+  const total = pathLength(path);
+  const walked = s.walk_min > 0 ? Math.min(1, (t - alertMin) / s.walk_min) : 1;
+  const lag = s.walk_min > 0 ? Math.min(1, Math.max(0, (t - alertMin - BUDDY_LAG_MIN) / s.walk_min)) : 1;
+  const me = along(path, walked * total);
+  const buddy = along([base.ev2, ...s.path_xy_m], lag * pathLength([base.ev2, ...s.path_xy_m]));
+  return {
+    ...base,
+    t,
+    ev1: me.xy,
+    heading: me.heading,
+    ev2: buddy.xy,
+    next: null,
+    storm: { ...s, walk_min: Math.max(0, s.walk_min - (t - alertMin)) },
+  };
+}
+
+/** Micrograys from relative open-sky minutes, scaling the whole event under an open sky to the
+ * reference dose (RAD's 8,100 for May 20, 2024) at a constant rate over the event (MODELED). */
+export function microgray(relative: number, eventMin: number, referenceUGy: number): number {
+  return eventMin > 0 ? (referenceUGy * relative) / eventMin : 0;
+}

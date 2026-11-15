@@ -1,7 +1,7 @@
 {
  "title": "ARIADNE validation",
  "pipeline_version": "0.0.0",
- "generated_utc": "2026-11-13T18:12:45+00:00",
+ "generated_utc": "2026-11-15T21:49:33+00:00",
  "note": "Targets are team targets, set before each run, not published standards.",
  "site_notes": [
   {
@@ -4355,9 +4355,35 @@
   {
    "id": "light-time",
    "title": "Light time against JPL Horizons",
-   "status": "not run",
-   "reason": "Phase 6 builds the light-time table",
-   "phase": 6
+   "reference": "JPL Horizons API, Mars (499) from Earth's centre, one-way light time",
+   "target": "Interpolated table within 1 s of Horizons at three times off its grid",
+   "status": "pass",
+   "result": {
+    "worst_difference_s": 0.001,
+    "dates": 3,
+    "table_rows": 164
+   },
+   "rows": [
+    {
+     "utc": "2024-05-20T05:22:00Z",
+     "horizons_min": 15.83530919,
+     "table_min": 15.835309,
+     "difference_s": 0.0
+    },
+    {
+     "utc": "2024-05-24T15:30:00Z",
+     "horizons_min": 15.69564804,
+     "table_min": 15.695648,
+     "difference_s": 0.0
+    },
+    {
+     "utc": "2026-11-14T09:00:00Z",
+     "horizons_min": 10.98787105,
+     "table_min": 10.98785,
+     "difference_s": 0.001
+    }
+   ],
+   "label": "DERIVED"
   },
   {
    "id": "station-solver",

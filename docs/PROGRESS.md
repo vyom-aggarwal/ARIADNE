@@ -1,6 +1,6 @@
 # ARIADNE progress
 
-Last updated: 2026-11-13 UTC (Phase 4 review and Phase 5 done; ridge labels awaited; local numba, OR-Tools and pyproj blocked by Windows Application Control).
+Last updated: 2026-11-15 UTC (Phase 6 storm replay done; submission assets in progress; ridge map not validated, no labels; pipeline runs under WSL).
 
 ## Status
 
@@ -15,7 +15,10 @@ Last updated: 2026-11-13 UTC (Phase 4 review and Phase 5 done; ridge labels awai
 | 4b Rover as mobile comms relay | Done 2026-11-09: F1 to F5 pass (CI run 42696159967 green, Pages deploy 42696408772); 3 relay sites put 112 of 150 pool transects in sight (staging alone: 41); the 6 h limit, not comms, still caps the boxwork plans; thread holds in 1000 of 1000 |
 | 4c Phase 4 review | Done 2026-11-13 (CI run 43482693282 green, Pages deploy 43482962132): E11 to E15 pass; the rover is the shelter and the presets separate (Safest 4 transects, value 10.93; Balanced 7, 18.94; Most science 7, 19.11); storm mode by lowest dose; price of safety; assumptions panel and Validation tab |
 | 5 Visor HUD, Cuff Tablet, printed card | Done locally 2026-11-13: G1 to G9 pass (89 Vitest, 14 Playwright); HUD never shows more than four elements; colorblind check passes; card prints on one page; tablet works offline. CI run 43489176852 green (Python 3.12, 3.13, web); Pages deploy 43489508024 serves the new tabs (G10) |
-| 6 to 9 | Not started |
+| 6 Time Machine (storm replay) | Done locally 2026-11-15: H1 to H5 pass; light time within 0.001 s of Horizons; DONKI snapshot; the May 20, 2024 replay raises storm mode on cue with RAD's 8,100 µGy beside modeled doses. Weather (REMS) and the Earth backroom not built |
+| 7 Validation tab | Built with Phase 4c (renders validation.json with site notes) |
+| 8 Site 2 generator | Not built (final-sprint decision): Murray Buttes is the second site the same pipeline built; the frontier site is future work |
+| 9 Submission | In progress |
 
 ## Human decisions (2026-11-08)
 
@@ -28,6 +31,7 @@ Last updated: 2026-11-13 UTC (Phase 4 review and Phase 5 done; ridge labels awai
 - **Phase 2 follow-up (2026-11-09):** (1) compute slope at each traveller's footprint scale on physical grounds, not to hit the target: the rover from Curiosity's published dimensions, the walker no finer than the DEM's effective resolution; fix the method before re-running, re-run the check once, keep the failed first result in validation.json beside the new one, and run the rover check on the Murray Buttes traverse as a held-out test; report a miss as is. (2) Map the DEM mosaic seams from the stereo-pair footprints into the uncertainty layer and check whether no-go cells on Curiosity's path sit on a seam. (3) Build a local labeling page (25 cm image and hillshade chips at random points, stratified by predicted class) for about 250 labels; split them into tuning and test halves before tuning; tune on the first half only and report precision and recall on the second; consider a smoothed DEM for TPI and image texture; regenerate the transects from the tuned map. (4) Continue with Phase 3 without waiting for the labels.
 - **Phase 3 review (2026-11-09):** (1) walkability: no more re-runs; report the boxwork FAIL (79.8%) beside the Murray Buttes PASS (99.8%) with the diagnosis (ridges at the DEM's resolution limit, seams add false alarms), say that the check can only measure false alarms, keep the planner conservative, and mark slope no-go cells in seam or low-confidence zones on the HUD and tablet as "map may be over-cautious here, check by eye". (2) EVA length: align with the spec's 6 h plus a 30 min reserve (PLACEHOLDER). (3) Route each fracture-wall-hollow transect as one node with its combined service time and internal walk. (4) Presets differ by safety settings: Safest reserve 45 min, shelter limit 10 min, caution and uncertainty penalties ×3; Balanced the defaults; Most science Balanced's limits, no caution penalty, maximise complete transects (all PLACEHOLDER). (5) Describe OR-Tools as a time-limited reference, not an optimum, and report the worst case. (6) Phase 4, then the rover as a mobile comms relay: a few reachable overwatch points it moves between during the EVA, with the thread ending wherever the rover is.
 - **Phase 4 review (2026-11-10):** (1) shelter rule: walking minutes to the rover, wherever it is on its relay schedule, 20 min (PLACEHOLDER), Safest 10; terrain shielding stays as information, not shelter (it blocks a few percent at most; S ≤ 0.95 removed nothing). (2) Storm mode: the destination with the lowest modeled dose over the event, counting the exposed walk, not the earliest arrival; the rover's S stays a labeled PLACEHOLDER. (3) Presets should separate under the new rule (say so if not), and the route options get a price-of-safety line: the science value Safest gives up and the margin it gains against Most science. (4) A site-level note in the assumptions panel and the Validation tab that slope no-go classes in boxwork terrain are conservative. (5) PROMPT.md and docs/PLAN.md to match; then Phase 5.
+- **Final sprint (2026-11-13; submission closes Sunday 2026-11-15, 11:59 p.m. local time):** (1) run the Python pipeline under WSL (Ubuntu); change no Windows security setting. (2) The station steps came from NASA's 2023-24 SUITS mission description (Mars), now offline: keep the neutral wording, and cite Ross and Eppler 2015 (NASA JSC) only if verified. (3) Priorities: Phase 6 centred on the May 20, 2024 storm replay; then Phase 9 submission assets (README and docs/SUBMISSION.md for every form field, Playwright footage, VIDEO_SCRIPT.md with English subtitles, SLIDES.md), with AI_USE.md and the Use of AI text separating the team's decisions from what Claude Code built; Phase 8 only if both are done by Saturday evening, otherwise Murray Buttes stands as the second site the same pipeline built and the frontier site is future work. (4) Ridge labels: tune under WSL if they arrive; otherwise the ridge map stays "not validated". (5) Check the 2026 Project Submission and Judging & Awards guides and flag rule changes.
 
 ## Kickoff findings that change the plan
 
@@ -580,15 +584,44 @@ Three surfaces driven by one EVA state store, simulated from the plan in the dem
 - **CI and deploy (G10):** commit `ee30a0a`; CI run 43489176852 green on Python 3.12, Python 3.13 and web (the Linux jobs run the numba and OR-Tools tests this machine cannot, including the NumPy line-of-sight comparison); Pages deploy 43489508024 succeeded, and the live entry script carries the Visor HUD, Cuff Tablet and Cuff card tabs, with `sw.js` served.
 - **Performance:** a hidden 3D view no longer draws (the HUD and planner views pause when their tab is hidden). First map in the judge tour 2.0 s.
 
+## Phase 6 plan: Time Machine and the May 20, 2024 storm replay
+
+Scoped by the final-sprint decision to what the replay needs; weather (REMS) and the Earth backroom wait.
+
+1. **Light time** (`ariadne timemachine`): Earth-Mars one-way light time from the JPL Horizons API for the replay week (every 6 h), the plan's reference period and November 2026 (daily), bundled in `config/snapshots/horizons_light_time.json` and interpolated; three off-grid times are checked against Horizons directly (target within 1 s).
+2. **Space weather:** a DONKI snapshot (CMEs, SEP events, notifications) for May 13 to 31, 2024 through NASA's API gateway, since the CCMC host times out; `config/snapshots/donki_2024-05.json`.
+3. **Replay data** (`ariadne package` writes `replay.json`): the onset as DONKI records it, the CME, JPL's 8,100 µGy for an astronaut beside Curiosity (MEASURED, with its meaning and source), the X12 estimate, the "tens of minutes" arrival, the light time at onset, and the start in each walk (PLACEHOLDER: the walking sample nearest the middle).
+4. **Replay in the surfaces:** a "Replay the May 20, 2024 storm" control in the HUD and tablet. The alert comes on cue at the event's start; storm mode takes over; both crew leave the plan and walk the storm path to the refuge chosen at the alert; on arrival the HUD says they are sheltered. A panel sets RAD's 8,100 µGy beside modeled doses for EV1 staying put, going to the refuge, and the dose avoided, scaled so the whole open-sky event equals RAD's figure at a constant rate over the PLACEHOLDER event length.
+
+### Phase 6 acceptance tests
+
+| ID | Test | Where |
+| --- | --- | --- |
+| H1 | Horizons rows parse; interpolation is linear and refuses times outside the table; the bundled table is within 1 s of Horizons at three off-grid times; validation.json's light-time check passes | `pipeline/tests/test_timemachine.py` |
+| H2 | The DONKI snapshot holds the May 20 05:36Z CME with its speed, far-side note and 05:22Z onset; a missing flare list is recorded, not hidden | `pipeline/tests/test_timemachine.py` |
+| H3 | The packaged replay carries the onset, RAD's 8,100 µGy (MEASURED, with its meaning and JPL source), the light time at onset, and a mid-walk start on a walking sample for every plan | `pipeline/tests/test_timemachine.py`, `web/tests/replay.test.ts` |
+| H4 | The replay raises the alert exactly at the start (not before, not without the replay), keeps the HUD at four elements or fewer, walks both crew along the storm path to the refuge and shelters them on arrival; the storm arrow aims ahead along the path; doses scale so the open-sky event equals RAD's figure | `web/tests/replay.test.ts` |
+| H5 | In Chromium the replay enters storm mode on cue, with 8,100 µGy (MEASURED) beside three MODELED doses | `web/e2e/replay.spec.ts` |
+| H6 | The Mars24, sol and light-time tests pass; CI green | CI |
+
+### Phase 6 evidence
+
+- **Light time:** 164 Horizons rows; 15.84 min at the onset (2024-05-20 05:22 UTC, Mars 1.904 au from Earth). At three off-grid times the interpolated table is within 0.001 s of Horizons (target 1 s; validation.json `light-time` PASS).
+- **DONKI:** the event is CME 2024-05-20T05:36:00-CME-001, a fast halo CME at 2,678 km/s whose source "is believed to be backsided", with an EUV wave at 05:22Z. DONKI's gateway lists no Mars SEP entry for May 20, and its flare list answered 404, then 429 (recorded in the snapshot). JPL gives the day and "tens of minutes" but no time of day, so the replay raises the alert at the eruption's onset rather than at an invented arrival time.
+- **The 8,100 µGy:** JPL gives it as the dose an astronaut standing next to Curiosity would have received during the event, from RAD; the app labels it MEASURED and says exactly that on hover and in the panel.
+- **Replay starts** (PLACEHOLDER, mid-walk): Safest 108 min, Balanced 189 min, Most science 167 min. On Balanced the alert sends both crew 20 minutes on foot to the rover; modeled for EV1 over the PLACEHOLDER 120-minute event: about 7,670 µGy staying put in the open against about 4,680 µGy going to the rover (about 2,990 avoided), all MODELED and scaled to RAD's figure.
+- **The point the replay makes:** Earth was 15.8 light-minutes away, and the particles arrived in tens of minutes, so a warning from Earth could not have beaten them; the crew acts on the local alarm, which is what storm mode is for.
+- **Station steps:** cited to Ross and Eppler 2015 (NASA JSC, verified; docs/SOURCES_LOG.md): field geology means observing and describing in detail what you see and recording it. The team's original source, NASA's 2023-24 SUITS mission description, is offline.
+- **WSL:** a Python 3.14 environment at `~/.venvs/ariadne` (pip bootstrapped from PyPA's installer, since Ubuntu's python3 has no ensurepip) runs numba 0.68.1, OR-Tools 9.15 and rasterio 1.5.2; the storm, shelter, selection, environment, Mars24 and sol tests pass there (60 tests). No Windows setting was changed.
+- **Tests:** H1 to H5 pass locally (pipeline on Windows and WSL; 100 Vitest tests; the replay test in Chromium).
+
 ## Next steps
 
-1. Team: label the ridge sample (open `data/labeling/boxwork/index.html`, download the labels, save them as `config/labels/boxwork_ridge_labels.json`). Then `ariadne ridge-tune --site boxwork --labels config/labels/boxwork_ridge_labels.json`, `ariadne derive --site boxwork --from-stage walkability` and `ariadne validate` report precision and recall and regenerate the transects.
-2. Phase 6: the May 2024 storm replay (DONKI), REMS ground temperature and the light-time table; the replay replaces the manual storm alert in the HUD and tablet.
-3. Team: name the source of the station steps (Look, Observe, Describe, Document), or confirm they stay the team's own.
+1. Submission (tonight): the team fills the project form from docs/SUBMISSION.md, records or assembles the 30-second video from the Playwright footage and docs/VIDEO_SCRIPT.md, and submits before 11:59 p.m. local time.
+2. After the hackathon: the ridge labels (tune under WSL), REMS ground temperature, the Earth backroom view, and the site generator for a frontier site.
 
 ## Open issues
 
-- DONKI's host timed out from this machine (needed in Phase 6). Retry, then try api.nasa.gov.
 - The Photojournal boxwork link now redirects to a generic page (needed in Phase 4).
 - Still to wire in: image positions for the uncertainty layer (PLACES `observations.csv` or the raw-image API; `view_metadata.csv` turned out to describe database views) and the team's ridge labels. The drill sites and the Ehresmann et al. 2021 quantities are now verified.
 - Team name and README credits: not given yet; README shows them as "to be added".
@@ -606,4 +639,6 @@ Three surfaces driven by one EVA state store, simulated from the plan in the dem
 - The rover relay assumes contact from the rover's destination while it drives during the first leg. The buddy's walk to the overwatch point is not timed.
 - Balanced and Most science share their limits and still choose similar transects (7 each); only Safest's limits separate it. Relay sites are still chosen for comms coverage alone; choosing them for walking distance as well (now that the rover is the shelter) might give Safest more usable transects.
 - The shelter check while the rover drives during the first leg takes the larger of two rover positions half a minute apart, an approximation within about 15 seconds of driving. While it drives during a station visit, the check takes the farthest point of its drive (conservative).
-- **This machine's Windows Application Control policy now blocks the DLLs of numba, OR-Tools and pyproj** (since 2026-11-11, after the boxwork plan run). Locally, the tests that import them cannot run (8 test modules and 12 tests), and `make derive` and `make plan` cannot run either, which blocks the ridge-label follow-up on this machine. CI on Linux is unaffected. Changing the policy is the team's decision; a Python environment under WSL (Ubuntu is installed) would be another route.
+- **This machine's Windows Application Control policy blocks the DLLs of numba, OR-Tools and pyproj** (since 2026-11-11). The pipeline now runs under WSL (`~/.venvs/ariadne`, team decision of 2026-11-13); the Windows venv still runs the steps that need none of them (package, validate, timemachine).
+- The ridge map is not validated: no labels were saved before the deadline. Its thresholds stay PLACEHOLDER.
+- DONKI's CCMC host times out from this machine; the gateway at api.nasa.gov serves CMEs, SEP events and notifications, but its flare list answered 404 and 429. DONKI lists no Mars SEP entry for May 20, 2024, and JPL gives no time of day or duration, so the replay's alert time is the eruption's onset and the event length is a PLACEHOLDER.

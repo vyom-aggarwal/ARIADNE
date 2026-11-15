@@ -1,12 +1,13 @@
 // Written with AI assistance (Claude Code). See AI_USE.md.
 // Loads a packaged site once (manifest and the three plans) for every surface that needs it.
 import { useEffect, useState } from "react";
-import type { Manifest, Plan } from "../planner/types";
+import type { Manifest, Plan, Replay } from "../planner/types";
 
 export interface Site {
   base: string;
   manifest: Manifest;
   plans: Record<string, Plan>;
+  replay: Replay | null;
 }
 
 const cache = new Map<string, Promise<Site>>();
@@ -24,7 +25,10 @@ export function loadSite(site: string): Promise<Site> {
     const loaded = await Promise.all(
       manifest.plans.map(async (x) => [x.preset, await (await fetch(base + x.file)).json()] as const),
     );
-    return { base, manifest, plans: Object.fromEntries(loaded) };
+    const replay: Replay | null = manifest.replay
+      ? await (await fetch(base + manifest.replay)).json().catch(() => null)
+      : null;
+    return { base, manifest, plans: Object.fromEntries(loaded), replay };
   })();
   p.catch(() => cache.delete(site));
   cache.set(site, p);

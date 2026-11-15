@@ -921,3 +921,39 @@ button:disabled {
     break-inside: avoid;
   }
 }
+
+/* Storm replay panel (HUD and tablet), outside the visor frame */
+.replay-panel {
+  border: 2px solid var(--text);
+  border-radius: 8px;
+  padding: 0.6rem 0.8rem;
+  margin: 0.5rem 0;
+  background: var(--panel);
+}
+
+.replay-panel h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.05rem;
+}
+
+.replay-panel p {
+  margin: 0.25rem 0;
+}
+
+.replay-doses {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0.4rem 0;
+}
+
+.replay-doses dt {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.replay-doses dd {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1.1rem;
+}

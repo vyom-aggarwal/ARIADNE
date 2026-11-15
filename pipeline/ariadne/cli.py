@@ -14,7 +14,8 @@ import sys
 from ariadne import __version__
 
 NOT_BUILT = 2
-BUILT = {"fetch", "derive", "plan", "validate", "package", "ridge-sample", "ridge-tune"}
+BUILT = {"fetch", "derive", "plan", "validate", "package", "ridge-sample", "ridge-tune",
+         "timemachine"}  # fmt: skip
 
 # Command -> (phase that builds it, one-line description).
 COMMANDS = {
@@ -25,6 +26,7 @@ COMMANDS = {
     "ridge-sample": (2, "Draw the ridge-labeling sample and build the local labeling page."),
     "ridge-tune": (2, "Tune the ridge map on the tuning half of the labels; test on the rest."),
     "package": (4, "Write tiles, GeoJSON, snapshots and the manifest for the web app."),
+    "timemachine": (6, "Fetch the light-time table (JPL Horizons) and the DONKI storm snapshot."),
     "build-site": (8, "Build a whole new site from a config file or a HiRISE DTM."),
 }
 
@@ -102,6 +104,12 @@ def main(argv: list[str] | None = None) -> int:
         from ariadne.plan.run import plan_site
 
         plan_site(args.site, quick=args.quick)
+        return 0
+    if args.command == "timemachine":
+        from ariadne.guardrails import repo_root
+        from ariadne.timemachine import fetch_snapshots
+
+        fetch_snapshots(repo_root())
         return 0
     if args.command == "package":
         from ariadne.package.run import package_site

@@ -17,13 +17,24 @@ export interface EvaState {
   playing: boolean;
   /** Simulated minutes per real second. */
   speed: number;
-  /** Manual storm alert (PLACEHOLDER until Phase 6 replays May 2024). */
+  /** Manual storm alert (a drill, any time). */
   storm: boolean;
+  /** The May 20, 2024 storm replay: the alert comes on cue at the event's start in the walk. */
+  replay: boolean;
   pins: Pin[];
   said: string;
 }
 
-const initial: EvaState = { preset: "balanced", t: 0, playing: false, speed: 1, storm: false, pins: [], said: "" };
+const initial: EvaState = {
+  preset: "balanced",
+  t: 0,
+  playing: false,
+  speed: 1,
+  storm: false,
+  replay: false,
+  pins: [],
+  said: "",
+};
 let state: EvaState = initial;
 const listeners = new Set<() => void>();
 

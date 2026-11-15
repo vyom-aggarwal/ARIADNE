@@ -1,14 +1,15 @@
 // Written with AI assistance (Claude Code). See AI_USE.md.
 // The Cuff Tablet (PROMPT.md section 6), in a 1024 x 768 frame: controls of at least 64 CSS px
 // (PLACEHOLDER for gloved use), the next-station card with a "what you'll see" photo, station
-// steps from the team brief (Look, Observe, Describe, Document; PROMPT.md section 6 attributes
-// them to NASA SUITS, not yet confirmed in a SUITS document), alerts with the over-cautious marking,
+// steps from the team brief (Look, Observe, Describe, Document; the team took them from NASA's
+// 2023-24 SUITS description, now offline; cited to Ross and Eppler 2015), alerts, the over-cautious marking,
 // the line home, and a sample log kept in this browser.
 import { useEffect, useMemo, useState } from "react";
-import { bearingDeg, distanceM, snapshot } from "../core/eva/sim";
+import { bearingDeg, distanceM } from "../core/eva/sim";
 import { useEva } from "../core/eva/store";
 import { useSite } from "../core/site";
 import EvaControls, { clock } from "../eva/EvaControls";
+import { evaView, ReplayButton, ReplayPanel } from "../eva/replay";
 import { type Alert, alertsFor } from "../hud/model";
 import LabelBadge from "../planner/LabelBadge";
 import type { Manifest, Photo, Plan, Station } from "../planner/types";
@@ -73,17 +74,23 @@ function Steps({ station }: { station: Station }) {
   const [done, setDone] = useState<Record<string, boolean>>({});
   useEffect(() => setDone({}), [station.id]);
   return (
-    <ol className="tablet-steps">
-      {STEPS.map((s) => (
-        <li key={s}>
-          <button type="button" aria-pressed={!!done[s]} onClick={() => setDone((d) => ({ ...d, [s]: !d[s] }))}>
-            <span aria-hidden="true">{done[s] ? "✓ " : "○ "}</span>
-            {s}
-          </button>
-          <span className="step-help">{STEP_HELP[s]}</span>
-        </li>
-      ))}
-    </ol>
+    <>
+      <ol className="tablet-steps">
+        {STEPS.map((s) => (
+          <li key={s}>
+            <button type="button" aria-pressed={!!done[s]} onClick={() => setDone((d) => ({ ...d, [s]: !d[s] }))}>
+              <span aria-hidden="true">{done[s] ? "✓ " : "○ "}</span>
+              {s}
+            </button>
+            <span className="step-help">{STEP_HELP[s]}</span>
+          </li>
+        ))}
+      </ol>
+      <p className="step-help">
+        Why these steps: field geology means observing and describing in detail what you see, and
+        recording it (Ross and Eppler, NASA Johnson Space Center, 2015).
+      </p>
+    </>
   );
 }
 
@@ -141,7 +148,8 @@ export default function CuffTablet({ site = "boxwork" }: { site?: string }) {
   const { site: data, error } = useSite(site);
   const eva = useEva();
   const plan = data?.plans[eva.preset] ?? null;
-  const snap = useMemo(() => (plan ? snapshot(plan, eva.t) : null), [plan, eva.t]);
+  const view = useMemo(() => (plan ? evaView(plan, eva, data?.replay ?? null) : null), [plan, eva, data]);
+  const snap = view?.snap ?? null;
   return (
     <section className="tablet-wrap" aria-labelledby="tablet-heading">
       <h2 id="tablet-heading" className="planner-title">Cuff Tablet</h2>
@@ -150,10 +158,14 @@ export default function CuffTablet({ site = "boxwork" }: { site?: string }) {
       {data && plan && snap && (() => {
         const st = snap.next?.block.station;
         const ph = photoFor(data.manifest, st);
-        const alerts = alertsFor(plan, snap, eva.storm);
+        const alerts = alertsFor(plan, snap, view?.stormOn ?? false);
         return (
           <>
             <EvaControls plans={data.plans} idPrefix="tablet" />
+            <div className="voice-controls" role="group" aria-label="Storm replay">
+              <ReplayButton replay={data.replay} eva={eva} />
+            </div>
+            {data.replay && view && <ReplayPanel plan={plan} replay={data.replay} eva={eva} view={view} />}
             <div className="tablet" data-testid="tablet">
               <header className="tablet-bar">
                 <span>{clock(eva.t)} elapsed</span>

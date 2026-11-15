@@ -9,6 +9,7 @@ import { type Command, listen, speak, speechSupported } from "../core/eva/voice"
 import { refugeName } from "../core/plan/storm";
 import { useSite } from "../core/site";
 import EvaControls, { clock } from "../eva/EvaControls";
+import { evaView, ReplayButton, ReplayPanel } from "../eva/replay";
 import LabelBadge from "../planner/LabelBadge";
 import type { Plan } from "../planner/types";
 import HudOverlay from "./HudOverlay";
@@ -44,8 +45,9 @@ export default function VisorHud({ site = "boxwork" }: { site?: string }) {
   const frameRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0.5);
 
-  const snap = useMemo(() => (plan ? snapshot(plan, eva.t) : null), [plan, eva.t]);
-  const elements = plan && snap ? hudElements(plan, snap, eva) : [];
+  const view = useMemo(() => (plan ? evaView(plan, eva, data?.replay ?? null) : null), [plan, eva, data]);
+  const snap = view?.snap ?? null;
+  const elements = plan && view ? hudElements(plan, view.snap, { storm: view.stormOn, pins: eva.pins }) : [];
 
   useEffect(() => {
     const el = frameRef.current;
@@ -101,6 +103,7 @@ export default function VisorHud({ site = "boxwork" }: { site?: string }) {
             <button type="button" onClick={() => run("distance-home")}>Distance home</button>
             <button type="button" onClick={() => run("next-station")}>Next station</button>
             <button type="button" onClick={() => run("drop-pin")}>Drop pin</button>
+            <ReplayButton replay={data.replay} eva={eva} />
             {speechSupported() ? (
               <button type="button" aria-pressed={listening} onClick={toggleVoice}>
                 {listening ? "Stop listening" : "Listen for voice commands"}
@@ -120,11 +123,12 @@ export default function VisorHud({ site = "boxwork" }: { site?: string }) {
           <p className="note" role="status" aria-live="polite">
             {eva.said || `Mission time ${clock(eva.t)}.`}
           </p>
+          {data.replay && view && <ReplayPanel plan={plan} replay={data.replay} eva={eva} view={view} />}
           <p className="note">
             The visor shows at most four elements, in white and cyan with dark outlines; each has its
             own shape. Values are MODELED from the plan and simulated <LabelBadge label="PLACEHOLDER" source="Simulated EVA; suit status is consumables left on the walker model." />.
-            {eva.storm && snap.storm && ` Storm mode: ${refugeName(snap.storm.choice)}, dose ${snap.storm.dose.toFixed(0)} against ${snap.storm.dose_staying.toFixed(0)} open-sky minutes staying put over a ${plan.storm?.event_duration_min ?? 120}-minute event.`}{" "}
-            {eva.storm && <LabelBadge label="MODELED" source="Storm mode by lowest modeled dose; event length and rover shielding are PLACEHOLDER." />}
+            {view?.stormOn && !eva.replay && snap.storm && ` Storm mode: ${refugeName(snap.storm.choice)}, dose ${snap.storm.dose.toFixed(0)} against ${snap.storm.dose_staying.toFixed(0)} open-sky minutes staying put over a ${plan.storm?.event_duration_min ?? 120}-minute event.`}{" "}
+            {view?.stormOn && !eva.replay && <LabelBadge label="MODELED" source="Storm mode by lowest modeled dose; event length and rover shielding are PLACEHOLDER." />}
           </p>
         </>
       )}

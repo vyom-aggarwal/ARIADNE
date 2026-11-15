@@ -1,0 +1,225 @@
+{
+ "title": "May 20, 2024 solar storm",
+ "event": {
+  "onset_utc": "2024-05-20T05:22Z",
+  "label": "MEASURED",
+  "source": "DONKI 2024-05-20T05:36:00-CME-001: EUV wave seen by SDO at 05:22Z, fast halo CME at 05:36Z; source on the Sun's far side",
+  "cme": {
+   "activityID": "2024-05-20T05:36:00-CME-001",
+   "startTime": "2024-05-20T05:36Z",
+   "sourceLocation": null,
+   "speed_km_s": 2678.0,
+   "type": "R",
+   "predicted_impacts": [
+    {
+     "location": "Juno",
+     "arrival": "2024-05-30T07:45Z",
+     "glancing": false
+    },
+    {
+     "location": "Juno",
+     "arrival": "2024-05-31T19:50Z",
+     "glancing": false
+    },
+    {
+     "location": "OSIRIS-APEX",
+     "arrival": "2024-05-21T20:00Z",
+     "glancing": true
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-21T00:18Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-21T06:05Z",
+     "glancing": false
+    },
+    {
+     "location": "Solar Orbiter",
+     "arrival": "2024-05-21T06:12Z",
+     "glancing": false
+    }
+   ],
+   "note": "Fast halo CME visible in SOHO LASCO C2/C3 and STEREO A COR2. The source is believed to be backsided, with moving field lines and EUV wave visible in SDO AIA 171/193 at 2024-05-20T05:22Z. A filament eruption and C6.7 flare peaking at 2024-05-20T05:54Z from Active Region 3683 (approx. S24W65) occurred around the same time, but was determined not be the source of this fast halo CME due to location and timing.",
+   "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31034/-1"
+  }
+ },
+ "flare": {
+  "value": "X12 (estimated)",
+  "label": "DERIVED",
+  "source": "JPL, June 10, 2024 (https://www.jpl.nasa.gov/news/nasa-watches-mars-light-up-during-epic-solar-storm/): estimated from Solar Orbiter data; the flare was on the far side of the Sun as seen from Earth"
+ },
+ "arrival": {
+  "text": "Particles reached Mars in tens of minutes.",
+  "label": "MEASURED",
+  "source": "JPL, June 10, 2024 (https://www.jpl.nasa.gov/news/nasa-watches-mars-light-up-during-epic-solar-storm/)"
+ },
+ "rad_dose_uGy": {
+  "value": 8100,
+  "label": "MEASURED",
+  "meaning": "the dose an astronaut standing next to Curiosity would have received, from Curiosity's RAD instrument (JPL: the biggest surge RAD had measured since landing)",
+  "source": "JPL, June 10, 2024 (https://www.jpl.nasa.gov/news/nasa-watches-mars-light-up-during-epic-solar-storm/)"
+ },
+ "light_time_min": {
+  "value": 15.84,
+  "label": "DERIVED",
+  "source": "JPL Horizons, Earth-Mars one-way light time at the onset"
+ },
+ "alignment": {
+  "label": "PLACEHOLDER",
+  "start_min": {
+   "balanced": 188.7,
+   "most_science": 166.78,
+   "safest": 108.06
+  },
+  "rule": "the event begins at the walking sample nearest the middle of each walk"
+ },
+ "dose_scaling": {
+  "label": "MODELED",
+  "text": "Modeled doses are scaled so that the whole event under an open sky equals RAD's 8,100 micrograys, at a constant dose rate over the PLACEHOLDER event length; real storms rise and fall, and JPL gives no duration."
+ },
+ "donki": {
+  "cmes_may_20": [
+   {
+    "activityID": "2024-05-20T05:36:00-CME-001",
+    "startTime": "2024-05-20T05:36Z",
+    "sourceLocation": null,
+    "speed_km_s": 2678.0,
+    "type": "R",
+    "predicted_impacts": [
+     {
+      "location": "Juno",
+      "arrival": "2024-05-30T07:45Z",
+      "glancing": false
+     },
+     {
+      "location": "Juno",
+      "arrival": "2024-05-31T19:50Z",
+      "glancing": false
+     },
+     {
+      "location": "OSIRIS-APEX",
+      "arrival": "2024-05-21T20:00Z",
+      "glancing": true
+     },
+     {
+      "location": "Solar Orbiter",
+      "arrival": "2024-05-21T00:18Z",
+      "glancing": false
+     },
+     {
+      "location": "Solar Orbiter",
+      "arrival": "2024-05-21T06:05Z",
+      "glancing": false
+     },
+     {
+      "location": "Solar Orbiter",
+      "arrival": "2024-05-21T06:12Z",
+      "glancing": false
+     }
+    ],
+    "note": "Fast halo CME visible in SOHO LASCO C2/C3 and STEREO A COR2. The source is believed to be backsided, with moving field lines and EUV wave visible in SDO AIA 171/193 at 2024-05-20T05:22Z. A filament eruption and C6.7 flare peaking at 2024-05-20T05:54Z from Active Region 3683 (approx. S24W65) occurred around the same time, but was determined not be the source of this fast halo CME due to location and timing.",
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31034/-1"
+   },
+   {
+    "activityID": "2024-05-20T20:12:00-CME-001",
+    "startTime": "2024-05-20T20:12Z",
+    "sourceLocation": "S20E35",
+    "speed_km_s": 836.0,
+    "type": "C",
+    "predicted_impacts": [],
+    "note": "Faint CME to the east. Its source could be 2024-05-20T18:36Z slow eruption in AR 3688, with dimming enlarging the coronal hole located to the south of this AR. The eruption is likely centered around (S25E35).",
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31055/-1"
+   },
+   {
+    "activityID": "2024-05-20T21:12:00-CME-001",
+    "startTime": "2024-05-20T21:12Z",
+    "sourceLocation": "S28E33",
+    "speed_km_s": 654.0,
+    "type": "C",
+    "predicted_impacts": [],
+    "note": "Faint CME to the SE (the second, more S in a pair of closely following faint and narrow CMEs). Its source could be the continuing eruption SE of AR 3688 seen after 20Z as dimming seen as enlarging the SE CH to the south of the Active Region. This dimming is centered at S28E33.",
+    "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31060/-1"
+   }
+  ],
+  "notifications": [
+   {
+    "messageType": "CME",
+    "messageID": "20240520-AL-001",
+    "messageIssueTime": "2024-05-20T15:52Z",
+    "messageURL": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/31039/1",
+    "title": "Space Weather Notification - CME (Juno, Solar Orbiter)"
+   },
+   {
+    "messageType": "CME",
+    "messageID": "20240520-AL-002",
+    "messageIssueTime": "2024-05-20T18:17Z",
+    "messageURL": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/31049/1",
+    "title": "Space Weather Notification - CMEs (Missions Near Earth)"
+   },
+   {
+    "messageType": "CME",
+    "messageID": "20240521-AL-001",
+    "messageIssueTime": "2024-05-21T18:36Z",
+    "messageURL": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/31064/1",
+    "title": "Space Weather Notification - CMEs (Missions Near Earth)"
+   },
+   {
+    "messageType": "Report",
+    "messageID": "20240522-7D-001",
+    "messageIssueTime": "2024-05-22T20:00Z",
+    "messageURL": "https://ccmc.gsfc.nasa.gov/DONKI/view/Alert/31085/1",
+    "title": "Weekly Space Weather Summary Report for May 15, 2024 - May 21, 2024"
+   }
+  ],
+  "sep_in_window": [
+   {
+    "sepID": "2024-05-13T12:44:00-SEP-001",
+    "eventTime": "2024-05-13T12:44Z",
+    "instruments": [
+     "STEREO A: IMPACT 13-100 MeV"
+    ]
+   },
+   {
+    "sepID": "2024-05-13T13:10:00-SEP-001",
+    "eventTime": "2024-05-13T13:10Z",
+    "instruments": [
+     "MODEL: REleASE:SOHO/EPHIN 15.8-39.8 MeV"
+    ]
+   },
+   {
+    "sepID": "2024-05-13T14:00:00-SEP-001",
+    "eventTime": "2024-05-13T14:00Z",
+    "instruments": [
+     "GOES-P: SEISS >10 MeV"
+    ]
+   },
+   {
+    "sepID": "2024-05-13T16:19:00-SEP-001",
+    "eventTime": "2024-05-13T16:19Z",
+    "instruments": [
+     "MODEL: REleASE:ACE/EPAM 15.8-39.8 MeV"
+    ]
+   },
+   {
+    "sepID": "2024-05-13T18:07:00-SEP-001",
+    "eventTime": "2024-05-13T18:07Z",
+    "instruments": [
+     "SOHO: COSTEP 15.8-39.8 MeV"
+    ]
+   },
+   {
+    "sepID": "2024-05-13T18:07:00-SEP-002",
+    "eventTime": "2024-05-13T18:07Z",
+    "instruments": [
+     "SOHO: COSTEP 28.2-50.1 MeV"
+    ]
+   }
+  ],
+  "flares_status": "unavailable through api.nasa.gov (HTTP Error 429: Too Many Requests)",
+  "disclaimer": "DONKI holds preliminary NASA research products; NOAA's Space Weather Prediction Center is the official US source for space weather forecasts."
+ },
+ "pipeline_version": "0.0.0"
+}

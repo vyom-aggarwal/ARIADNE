@@ -155,6 +155,32 @@ export interface Manifest {
   site_notes?: SiteNote[];
   validation?: string;
   ground_tone?: { p01: number; p50: number; p99: number; label: Label; source: string };
+  replay?: string | null;
+}
+
+interface Sourced<T> {
+  value: T;
+  label: Label;
+  source: string;
+}
+
+/** The May 20, 2024 storm replay (ariadne.timemachine.replay). */
+export interface Replay {
+  title: string;
+  event: { onset_utc: string; label: Label; source: string;
+    cme: { activityID: string; startTime: string; speed_km_s: number | null; note: string | null; link: string | null } };
+  flare: Sourced<string>;
+  arrival: { text: string; label: Label; source: string };
+  rad_dose_uGy: Sourced<number> & { meaning: string };
+  light_time_min: Sourced<number>;
+  alignment: { label: Label; start_min: Record<string, number>; rule: string };
+  dose_scaling: { label: Label; text: string };
+  donki: {
+    cmes_may_20: { activityID: string; startTime: string; speed_km_s: number | null; note: string | null }[];
+    notifications: { messageType: string; messageID: string; messageIssueTime: string; title: string }[];
+    flares_status: string;
+    disclaimer: string;
+  };
 }
 
 export interface Assumption {

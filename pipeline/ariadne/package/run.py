@@ -532,6 +532,19 @@ def package_site(site: str = "boxwork", log=print) -> dict:
     ter = terrain(site_dir, out, ctx, log)
     pics = billboards(root, site_dir, out, plans, log)
     t = ctx["site_transform"]
+    replay_file = None
+    try:
+        from ariadne import timemachine as tm
+
+        lt, dk = tm.load_snapshots(root)
+        loaded = {p["preset"]: json.loads((out / p["file"]).read_text(encoding="utf-8"))
+                  for p in plans}  # fmt: skip
+        text = json.dumps(tm.replay(loaded, lt, dk), indent=1) + "\n"
+        (out / "replay.json").write_text(text, encoding="utf-8", newline="\n")
+        replay_file = "replay.json"
+        log("  storm replay written")
+    except FileNotFoundError:
+        log("  no Time Machine snapshots (run `ariadne timemachine`); no storm replay")
     validation = json.loads((root / "validation.json").read_text(encoding="utf-8"))
     (out / "validation.json").write_text(json.dumps(validation, separators=(",", ":")),
                                          encoding="utf-8", newline="\n")  # fmt: skip
@@ -554,6 +567,9 @@ def package_site(site: str = "boxwork", log=print) -> dict:
         "ground_tone": ter["ground_tone"],
         "site_notes": [n for n in validation.get("site_notes", []) if n.get("site") == site],
         "validation": "validation.json",
+        "replay": replay_file,
+        "ai_assistance": "The pipeline and app that produced this file were written with AI "
+        "assistance (Claude Code). See AI_USE.md.",
     }
     (out / "manifest.json").write_text(json.dumps(manifest, indent=1) + "\n", encoding="utf-8",
                                        newline="\n")  # fmt: skip

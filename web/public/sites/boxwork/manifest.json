@@ -2,7 +2,7 @@
  "site": "boxwork",
  "title": "Mount Sharp boxwork, Gale crater",
  "pipeline_version": "0.0.0",
- "packaged_utc": "2026-11-13T18:37:17+00:00",
+ "packaged_utc": "2026-11-15T21:50:01+00:00",
  "crs": "Equirectangular metres on the 3,396,190 m Mars sphere (east, north)",
  "bounds_m": [
   8141605.492786024,
@@ -3464,5 +3464,7 @@
    "source": "validation.json rover-walkability check: PLACES localizations against the derived rover walkability classes"
   }
  ],
- "validation": "validation.json"
+ "validation": "validation.json",
+ "replay": "replay.json",
+ "ai_assistance": "The pipeline and app that produced this file were written with AI assistance (Claude Code). See AI_USE.md."
 }

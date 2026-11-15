@@ -12,7 +12,8 @@ from ariadne import __version__, cli
 COMMANDS = {
     "build-site": 8,
 }
-BUILT_COMMANDS = ["fetch", "derive", "plan", "validate", "package", "ridge-sample", "ridge-tune"]
+BUILT_COMMANDS = ["fetch", "derive", "plan", "validate", "package", "ridge-sample", "ridge-tune",
+                  "timemachine"]  # fmt: skip
 
 
 def test_help_lists_every_command(capsys):

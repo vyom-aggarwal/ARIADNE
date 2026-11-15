@@ -81,7 +81,9 @@ export function alertsFor(plan: Plan, snap: EvaSnapshot, stormOn: boolean): Aler
       text: s
         ? s.choice === "stay"
           ? "Solar storm: stay put, the lowest modeled dose is here"
-          : `Solar storm: go to ${refugeName(s.choice)}, ${s.walk_min.toFixed(0)} min`
+          : s.walk_min <= 0.05
+            ? `Solar storm: sheltered at ${refugeName(s.choice)}`
+            : `Solar storm: go to ${refugeName(s.choice)}, ${Math.max(1, Math.ceil(s.walk_min))} min`
         : "Solar storm: go to the rover",
     });
   }
@@ -115,9 +117,34 @@ function arrow(rel: number): string {
  * closest to EV1 (the refuge itself when nearer). */
 export function steerPoint(path: XY[], from: XY): XY | null {
   if (path.length === 0) return null;
-  let k = 0;
-  for (let i = 1; i < path.length; i++) if (distanceM(path[i], from) < distanceM(path[k], from)) k = i;
-  for (let i = k; i < path.length; i++) if (distanceM(path[i], from) >= STEER_AHEAD_M) return path[i];
+  if (path.length === 1) return path[0];
+  // where `from` projects onto the path (distance along it), then STEER_AHEAD_M further on
+  let best = Infinity;
+  let at = 0;
+  let run = 0;
+  for (let i = 1; i < path.length; i++) {
+    const [a, b] = [path[i - 1], path[i]];
+    const seg = distanceM(a, b);
+    const f = seg > 0
+      ? Math.max(0, Math.min(1, ((from[0] - a[0]) * (b[0] - a[0]) + (from[1] - a[1]) * (b[1] - a[1])) / (seg * seg)))
+      : 0;
+    const p: XY = [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
+    const d = distanceM(p, from);
+    if (d < best) {
+      best = d;
+      at = run + f * seg;
+    }
+    run += seg;
+  }
+  let left = at + STEER_AHEAD_M;
+  for (let i = 1; i < path.length; i++) {
+    const seg = distanceM(path[i - 1], path[i]);
+    if (left <= seg && seg > 0) {
+      const f = left / seg;
+      return [path[i - 1][0] + (path[i][0] - path[i - 1][0]) * f, path[i - 1][1] + (path[i][1] - path[i - 1][1]) * f];
+    }
+    left -= seg;
+  }
   return path[path.length - 1];
 }
 
@@ -133,7 +160,10 @@ export function hudElements(
     els.push({ kind: "alert", slot: "top-left", shape: top.shape,
       color: top.level === "advisory" ? "cyan" : "white", text: top.text, more: alerts.length - 1 });
   }
-  if (eva.storm && snap.storm) {
+  if (eva.storm && snap.storm && snap.storm.choice !== "stay" && snap.storm.walk_min <= 0.05) {
+    els.push({ kind: "storm", slot: "top-centre", shape: "double-chevron", color: "white",
+      text: `Sheltered: at ${refugeName(snap.storm.choice)}` });
+  } else if (eva.storm && snap.storm) {
     const target = steerPoint(snap.storm.path_xy_m, snap.ev1);
     const rel = target ? relativeBearing(bearingDeg(snap.ev1, target), snap.heading) : 0;
     els.push({

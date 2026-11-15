@@ -546,14 +546,7 @@ def build_validation(root: Path | None = None) -> dict:
             6,
         )
     )
-    checks.append(
-        _not_run(
-            "light-time",
-            "Light time against JPL Horizons",
-            "Phase 6 builds the light-time table",
-            6,
-        )
-    )
+    checks.append(light_time_validation(root))
     checks.append(station_solver_check(root))
     checks.append(
         _not_run("labels", "Every number in the app labeled", "Phase 7 runs the label audit", 7)
@@ -565,6 +558,33 @@ def build_validation(root: Path | None = None) -> dict:
         "note": "Targets are team targets, set before each run, not published standards.",
         "site_notes": site_notes(root, checks),
         "checks": checks,
+    }
+
+
+def light_time_validation(root: Path) -> dict:
+    """The bundled light-time table, interpolated, against direct Horizons values at three times
+    off its grid (PROMPT.md section 7: within 1 s)."""
+    from ariadne.timemachine import light_time_check, snapshot_dir
+
+    path = snapshot_dir(root) / "horizons_light_time.json"
+    if not path.exists():
+        return _not_run("light-time", "Light time against JPL Horizons",
+                        "run `ariadne timemachine` first", 6)  # fmt: skip
+    lt = json.loads(path.read_text(encoding="utf-8"))
+    res = light_time_check(lt)
+    return {
+        "id": "light-time",
+        "title": "Light time against JPL Horizons",
+        "reference": "JPL Horizons API, Mars (499) from Earth's centre, one-way light time",
+        "target": "Interpolated table within 1 s of Horizons at three times off its grid",
+        "status": "pass" if res["passed"] else "fail",
+        "result": {
+            "worst_difference_s": res["worst_difference_s"],
+            "dates": len(res["rows"]),
+            "table_rows": len(lt["table"]),
+        },  # fmt: skip
+        "rows": res["rows"],
+        "label": "DERIVED",
     }
 
 
