@@ -145,7 +145,7 @@ export default function App() {
       </main>
       <footer className="footer">
         <p>
-          Code licensed under Apache-2.0. Written with AI assistance (Claude Code). Curiosity
+          Code licensed under Apache-2.0. Concept and plan generated with Claude (claude.ai); software written with Claude Code (see How we use AI). Curiosity
           photos courtesy NASA/JPL-Caltech. No NASA logos or AI-generated images are used. All
           plans are modeled on placeholder settings and are not mission guidance.
         </p>

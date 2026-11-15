@@ -7,7 +7,7 @@ For the demo field if the team uses slides instead of the video. The 2026 rules:
 - Team: [team name]; members: [names]
 - Challenge: Interplanetary Survival Guide: Martian Map (NASA Space Apps 2026)
 - Picture: the planner map of the Mount Sharp boxwork with the three routes.
-- Footer: "Software written with AI assistance (Claude Code). Data: NASA, USGS, JPL."
+- Footer: "Concept generated with Claude (claude.ai); software written with Claude Code. Data: NASA, USGS, JPL."
 
 ## 2. Why a thread home?
 
