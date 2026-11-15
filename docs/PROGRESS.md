@@ -15,10 +15,10 @@ Last updated: 2026-11-15 UTC (Phase 6 storm replay done; submission assets in pr
 | 4b Rover as mobile comms relay | Done 2026-11-09: F1 to F5 pass (CI run 42696159967 green, Pages deploy 42696408772); 3 relay sites put 112 of 150 pool transects in sight (staging alone: 41); the 6 h limit, not comms, still caps the boxwork plans; thread holds in 1000 of 1000 |
 | 4c Phase 4 review | Done 2026-11-13 (CI run 43482693282 green, Pages deploy 43482962132): E11 to E15 pass; the rover is the shelter and the presets separate (Safest 4 transects, value 10.93; Balanced 7, 18.94; Most science 7, 19.11); storm mode by lowest dose; price of safety; assumptions panel and Validation tab |
 | 5 Visor HUD, Cuff Tablet, printed card | Done locally 2026-11-13: G1 to G9 pass (89 Vitest, 14 Playwright); HUD never shows more than four elements; colorblind check passes; card prints on one page; tablet works offline. CI run 43489176852 green (Python 3.12, 3.13, web); Pages deploy 43489508024 serves the new tabs (G10) |
-| 6 Time Machine (storm replay) | Done locally 2026-11-15: H1 to H5 pass; light time within 0.001 s of Horizons; DONKI snapshot; the May 20, 2024 replay raises storm mode on cue with RAD's 8,100 µGy beside modeled doses. Weather (REMS) and the Earth backroom not built |
+| 6 Time Machine (storm replay) | Done 2026-11-15 (CI run 43766622316 green): H1 to H5 pass; light time within 0.001 s of Horizons; DONKI snapshot; the May 20, 2024 replay raises storm mode on cue with RAD's 8,100 µGy beside modeled doses. Weather (REMS) and the Earth backroom not built |
 | 7 Validation tab | Built with Phase 4c (renders validation.json with site notes) |
 | 8 Site 2 generator | Not built (final-sprint decision): Murray Buttes is the second site the same pipeline built; the frontier site is future work |
-| 9 Submission | Done 2026-11-15 (docs and footage ready; the team submits): docs/SUBMISSION.md for every 2026 form field, AI_USE.md split into team decisions and AI work, README, VIDEO_SCRIPT.md with English subtitles, SLIDES.md (seven slides), Playwright footage (`make footage`) |
+| 9 Submission | Done 2026-11-15 (CI run 43767617748 green; Pages deploy 43767821489 serves the replay; the team submits): docs/SUBMISSION.md for every 2026 form field, AI_USE.md split into team decisions and AI work, README, VIDEO_SCRIPT.md with English subtitles, SLIDES.md (seven slides), Playwright footage (`make footage`) |
 
 ## Human decisions (2026-11-08)
 
@@ -613,7 +613,7 @@ Scoped by the final-sprint decision to what the replay needs; weather (REMS) and
 - **The point the replay makes:** Earth was 15.8 light-minutes away, and the particles arrived in tens of minutes, so a warning from Earth could not have beaten them; the crew acts on the local alarm, which is what storm mode is for.
 - **Station steps:** cited to Ross and Eppler 2015 (NASA JSC, verified; docs/SOURCES_LOG.md): field geology means observing and describing in detail what you see and recording it. The team's original source, NASA's 2023-24 SUITS mission description, is offline.
 - **WSL:** a Python 3.14 environment at `~/.venvs/ariadne` (pip bootstrapped from PyPA's installer, since Ubuntu's python3 has no ensurepip) runs numba 0.68.1, OR-Tools 9.15 and rasterio 1.5.2; the storm, shelter, selection, environment, Mars24 and sol tests pass there (60 tests). No Windows setting was changed.
-- **Tests:** H1 to H5 pass locally (pipeline on Windows and WSL; 100 Vitest tests; the replay test in Chromium).
+- **Tests:** H1 to H5 pass locally (pipeline on Windows and WSL; 100 Vitest tests; the replay test in Chromium) and in CI (run 43766622316 on `0eb6a9d`: Python 3.12, Python 3.13 and web green). The Pages deploy after commit `d723a68` (run 43767821489) serves `replay.json` and the replay control (H6).
 
 ## Phase 9 evidence: submission
 
