@@ -26,6 +26,7 @@ NASA Space Apps 2026 calls AI tools "Super Intelligence (SI)" and asks teams to 
 - Checked every data source before the code depended on it, fetching it and recording what it found in [docs/SOURCES_LOG.md](docs/SOURCES_LOG.md), and flagged sources that had moved or could not be confirmed.
 - Ran the data processing and reported the results, including the ones that missed their targets, and diagnosed problems (for example the DEM seams behind the rover-check false alarms, and a timeline that showed the wrong comm shadows after the relay change).
 - Drafted the documents: README, this file, PROGRESS, CREDITS, the submission text, the video script and the slide outline.
+- Redesigned the user interface on November 15, 2026, at the team's request and to its brief (an app shell, a dark design system, floating map panels, route cards, the visor drawer and compass tape, validation cards, the About page, the first-visit intro and the judge tour), changing no data, number, label or check.
 
 ### The team
 

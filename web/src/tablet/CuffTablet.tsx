@@ -152,7 +152,7 @@ export default function CuffTablet({ site = "boxwork" }: { site?: string }) {
   const snap = view?.snap ?? null;
   return (
     <section className="tablet-wrap" aria-labelledby="tablet-heading">
-      <h2 id="tablet-heading" className="planner-title">Cuff Tablet</h2>
+      <h2 id="tablet-heading" className="page-title">Cuff Tablet</h2>
       {error && <p role="alert">{error}</p>}
       {!data && !error && <p role="status">Loading the site package…</p>}
       {data && plan && snap && (() => {

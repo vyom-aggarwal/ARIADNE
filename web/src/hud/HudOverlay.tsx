@@ -76,7 +76,42 @@ function MiniMap({ el }: { el: HudElement }) {
   );
 }
 
-export default function HudOverlay({ elements }: { elements: HudElement[] }) {
+/** A thin compass tape: 60 degrees either side of the direction of travel, with the target (the
+ * next station or the refuge) marked in cyan. Part of the top-centre element, not an element of
+ * its own, so the visor still shows at most four. */
+function Tape({ heading, target }: { heading: number; target: number | null }) {
+  const W = 600;
+  const span = 60;
+  const x = (deg: number) => W / 2 + (((deg - heading + 540) % 360) - 180) * (W / 2 / span);
+  const names: Record<number, string> = { 0: "N", 45: "NE", 90: "E", 135: "SE", 180: "S", 225: "SW", 270: "W", 315: "NW" };
+  const ticks: number[] = [];
+  for (let d = Math.ceil((heading - span) / 5) * 5; d <= heading + span; d += 5) ticks.push(((d % 360) + 360) % 360);
+  const tx = target === null ? null : Math.min(W - 8, Math.max(8, x(target)));
+  return (
+    <svg className="hud-tape" viewBox={`0 0 ${W} 60`} width={W} height={60} aria-hidden="true">
+      {[HUD.outline, HUD.white].map((stroke, k) => (
+        <g key={k} stroke={stroke} strokeWidth={k === 0 ? 6 : 2.5} fill="none">
+          <line x1={0} x2={W} y1={44} y2={44} />
+          {ticks.map((d) => (
+            <line key={d} x1={x(d)} x2={x(d)} y1={44} y2={d % 15 === 0 ? 30 : 37} />
+          ))}
+          <path d={`M ${W / 2} 50 L ${W / 2 - 8} 58 L ${W / 2 + 8} 58 Z`} fill={stroke} />
+        </g>
+      ))}
+      {ticks.filter((d) => d % 45 === 0).map((d) => (
+        <text key={`t${d}`} x={x(d)} y={22} textAnchor="middle" fontSize={22} fill={HUD.white}
+          stroke={HUD.outline} strokeWidth={5} paintOrder="stroke">
+          {names[d]}
+        </text>
+      ))}
+      {tx !== null && (
+        <path d={`M ${tx} 46 L ${tx - 10} 30 L ${tx + 10} 30 Z`} fill={HUD.cyan} stroke={HUD.outline} strokeWidth={3} />
+      )}
+    </svg>
+  );
+}
+
+export default function HudOverlay({ elements, heading }: { elements: HudElement[]; heading?: number }) {
   return (
     <div className="hud-overlay" data-hud-count={elements.length}>
       {elements.map((el) => {
@@ -84,6 +119,9 @@ export default function HudOverlay({ elements }: { elements: HudElement[] }) {
         return (
           <div key={el.slot} className={`hud-el hud-${el.slot}`} data-hud-element={el.kind}
             data-shape={el.shape} style={{ color }}>
+            {el.slot === "top-centre" && heading !== undefined && (
+              <Tape heading={heading} target={el.arrowDeg === undefined ? null : heading + el.arrowDeg} />
+            )}
             <Glyph shape={el.shape} color={color} rotate={el.shape === "chevron" || el.shape === "double-chevron" ? (el.arrowDeg ?? 0) : 0} />
             <div className="hud-text">
               {el.kind === "thread" && <MiniMap el={el} />}

@@ -20,6 +20,7 @@ const ALLOWED = new Set([
   "Unlicense",
   "Zlib",
   "CC0-1.0",
+  "OFL-1.1", // SIL Open Font License, OSI-approved; the self-hosted UI fonts (approved by the team 2026-11-15)
 ]);
 
 // Package name -> reason and the date the human approved it. Empty until approved.

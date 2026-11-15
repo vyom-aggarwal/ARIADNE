@@ -1,0 +1,85 @@
+/* Written with AI assistance (Claude Code). See AI_USE.md. */
+/* ARIADNE design tokens: one dark theme regardless of the system setting (the printed cuff card
+   stays black on white). Fonts are self-hosted latin subsets (woff2) so the offline tablet works:
+   Space Grotesk for the wordmark and headings, Inter for UI text, JetBrains Mono for numbers. */
+@import "@fontsource/space-grotesk/latin-500.css";
+@import "@fontsource/space-grotesk/latin-700.css";
+@import "@fontsource/inter/latin-400.css";
+@import "@fontsource/inter/latin-500.css";
+@import "@fontsource/inter/latin-600.css";
+@import "@fontsource/jetbrains-mono/latin-400.css";
+@import "@fontsource/jetbrains-mono/latin-600.css";
+
+:root {
+  color-scheme: dark;
+
+  /* surfaces */
+  --bg: #0a0e1a;
+  --bg-deep: #05070d;
+  --panel: rgba(15, 21, 38, 0.94);
+  --panel-solid: #0f1526;
+  --panel-raised: #141c33;
+  --border: rgba(140, 170, 255, 0.14);
+  --border-strong: rgba(140, 170, 255, 0.28);
+  --radius: 10px;
+  --radius-sm: 6px;
+
+  /* text: muted no darker than #7a88a6 keeps 4.5:1 on the panels */
+  --text: #e6ecf7;
+  --text-2: #9aa7c2;
+  --muted: #8a97b3;
+
+  /* one accent: the thread */
+  --accent: #3de0ff;
+  --accent-ink: #04121a;
+  --accent-soft: rgba(61, 224, 255, 0.14);
+  --modeled: #9b8cff;
+
+  /* planner-only status colors, always paired with an icon or text */
+  --caution: #ffc24a;
+  --danger: #ff5c8a;
+  --ok: #34d39a;
+
+  /* type */
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --fs-base: 14.5px;
+  --fs-small: 12.5px;
+  --fs-label: 11px;
+
+  /* motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --fast: 150ms;
+  --slow: 250ms;
+
+  /* shell */
+  --bar-h: 52px;
+  --rail-w: 64px;
+  --foot-h: 26px;
+
+  /* legacy names still used by a few components */
+  --link: var(--accent);
+  --focus: var(--accent);
+  --rule: var(--border);
+  --pressed: var(--accent);
+  --pressed-text: var(--accent-ink);
+  --margin-line: var(--accent);
+  --sun-line: var(--caution);
+  --station: var(--modeled);
+  --shadow: #7a88a6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --fast: 0ms;
+    --slow: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

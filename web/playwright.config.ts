@@ -14,6 +14,11 @@ export default defineConfig({
   use: {
     baseURL: `http://127.0.0.1:${PORT}/`,
     trace: "retain-on-failure",
+    // the first-visit intro is dismissed for every test except e2e/intro.spec.ts, which clears it
+    storageState: {
+      cookies: [],
+      origins: [{ origin: `http://127.0.0.1:${PORT}`, localStorage: [{ name: "ariadne-intro-dismissed", value: "1" }] }],
+    },
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
   webServer: {

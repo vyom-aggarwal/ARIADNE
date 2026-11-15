@@ -120,7 +120,7 @@ for (const scheme of ["light", "dark"] as const) {
     await page.goto("./");
     for (const tab of ["Visor HUD", "Cuff Tablet", "Cuff card"]) {
       await openTab(page, tab);
-      await expect(page.getByRole("tabpanel", { name: tab }).getByRole("heading", { level: 2 })).toBeVisible();
+      await expect(page.getByRole("tabpanel", { name: tab }).getByRole("heading", { level: 2, name: tab, exact: true })).toBeVisible();
       if (tab === "Visor HUD") await expect(page.locator(".visor-frame")).toBeVisible();
       expect(await axe(page), tab).toEqual([]);
     }

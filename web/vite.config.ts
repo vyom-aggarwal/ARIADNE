@@ -6,6 +6,8 @@ export default defineConfig({
   // Relative asset paths, so the build works at the GitHub Pages project URL and in preview.
   base: "./",
   plugins: [react()],
+  // the mission bar reads the bundled light-time table in config/snapshots (outside web/)
+  server: { fs: { allow: [".."] } },
   test: {
     environment: "jsdom",
     include: ["tests/**/*.test.{ts,tsx}"],

@@ -2,6 +2,7 @@
 // The Visor HUD (PROMPT.md section 6): an overlay on the first-person view in a 1920 x 1080
 // frame, driven by the simulated EVA. Voice commands where the browser supports them, and
 // buttons for the same commands.
+import { PanelRightClose, PanelRightOpen, SlidersHorizontal } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { bearingDeg, distanceM, relativeBearing, snapshot } from "../core/eva/sim";
 import { getEva, setEva, useEva } from "../core/eva/store";
@@ -41,9 +42,10 @@ export default function VisorHud({ site = "boxwork" }: { site?: string }) {
   const eva = useEva();
   const plan = data?.plans[eva.preset] ?? null;
   const [listening, setListening] = useState(false);
+  const [drawer, setDrawer] = useState(true);
   const stopRef = useRef<(() => void) | null>(null);
   const frameRef = useRef<HTMLDivElement>(null);
-  const [scale, setScale] = useState(0.5);
+  const [fit, setFit] = useState({ s: 0.5, x: 0, y: 0 });
 
   const view = useMemo(() => (plan ? evaView(plan, eva, data?.replay ?? null) : null), [plan, eva, data]);
   const snap = view?.snap ?? null;
@@ -52,9 +54,15 @@ export default function VisorHud({ site = "boxwork" }: { site?: string }) {
   useEffect(() => {
     const el = frameRef.current;
     if (!el) return;
-    const fit = () => setScale((el.clientWidth || 960) / 1920);
-    fit();
-    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(fit) : null;
+    // the 1920 x 1080 overlay scales to fit the frame, centred, whatever its shape
+    const measure = () => {
+      const w = el.clientWidth || 960;
+      const h = el.clientHeight || 540;
+      const s = Math.min(w / 1920, h / 1080);
+      setFit({ s, x: (w - 1920 * s) / 2, y: (h - 1080 * s) / 2 });
+    };
+    measure();
+    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(measure) : null;
     ro?.observe(el);
     return () => ro?.disconnect();
   }, [data]);
@@ -93,44 +101,58 @@ export default function VisorHud({ site = "boxwork" }: { site?: string }) {
 
   return (
     <section className="visor" aria-labelledby="visor-heading">
-      <h2 id="visor-heading" className="planner-title">Visor HUD</h2>
-      {error && <p role="alert">{error}</p>}
-      {!data && !error && <p role="status">Loading the site package…</p>}
-      {data && plan && snap && (
-        <>
-          <EvaControls plans={data.plans} idPrefix="hud" />
-          <div className="voice-controls" role="group" aria-label="Voice commands">
-            <button type="button" onClick={() => run("distance-home")}>Distance home</button>
-            <button type="button" onClick={() => run("next-station")}>Next station</button>
-            <button type="button" onClick={() => run("drop-pin")}>Drop pin</button>
-            <ReplayButton replay={data.replay} eva={eva} />
-            {speechSupported() ? (
-              <button type="button" aria-pressed={listening} onClick={toggleVoice}>
-                {listening ? "Stop listening" : "Listen for voice commands"}
-              </button>
-            ) : (
-              <span className="note">Voice commands need a browser with speech recognition; these buttons do the same.</span>
-            )}
-          </div>
+      <div className="visor-main">
+        <h2 id="visor-heading" className="visor-title">Visor HUD</h2>
+        {error && <p role="alert">{error}</p>}
+        {!data && !error && <p role="status">Loading the site package…</p>}
+        {data && plan && snap && (
           <div ref={frameRef} className="visor-frame" data-hud-count={elements.length}>
             <Suspense fallback={<div className="rehearsal-canvas embedded" aria-hidden="true" />}>
               <Rehearsal manifest={data.manifest} base={data.base} plan={plan} follow={() => latest.current()} embedded />
             </Suspense>
-            <div className="hud-scaler" style={{ transform: `scale(${scale})` }}>
-              <HudOverlay elements={elements} />
+            <div className="hud-scaler" style={{ transform: `translate(${fit.x}px, ${fit.y}px) scale(${fit.s})` }}>
+              <HudOverlay elements={elements} heading={snap.heading} />
             </div>
           </div>
-          <p className="note" role="status" aria-live="polite">
-            {eva.said || `Mission time ${clock(eva.t)}.`}
-          </p>
-          {data.replay && view && <ReplayPanel plan={plan} replay={data.replay} eva={eva} view={view} />}
-          <p className="note">
-            The visor shows at most four elements, in white and cyan with dark outlines; each has its
-            own shape. Values are MODELED from the plan and simulated <LabelBadge label="PLACEHOLDER" source="Simulated EVA; suit status is consumables left on the walker model." />.
-            {view?.stormOn && !eva.replay && snap.storm && ` Storm mode: ${refugeName(snap.storm.choice)}, dose ${snap.storm.dose.toFixed(0)} against ${snap.storm.dose_staying.toFixed(0)} open-sky minutes staying put over a ${plan.storm?.event_duration_min ?? 120}-minute event.`}{" "}
-            {view?.stormOn && !eva.replay && <LabelBadge label="MODELED" source="Storm mode by lowest modeled dose; event length and rover shielding are PLACEHOLDER." />}
-          </p>
-        </>
+        )}
+      </div>
+      {data && plan && snap && (
+        <aside className={`visor-drawer${drawer ? "" : " closed"}`} aria-labelledby="visor-controls-title">
+          <div className="panel-head">
+            <SlidersHorizontal size={15} aria-hidden="true" />
+            <h2 id="visor-controls-title">Controls</h2>
+            <button type="button" className="ghost collapse" aria-expanded={drawer} aria-controls="visor-drawer-body"
+              aria-label={drawer ? "Collapse the controls" : "Expand the controls"} onClick={() => setDrawer((d) => !d)}>
+              {drawer ? <PanelRightClose size={16} aria-hidden="true" /> : <PanelRightOpen size={16} aria-hidden="true" />}
+            </button>
+          </div>
+          <div className="drawer-body" id="visor-drawer-body" hidden={!drawer}>
+            <EvaControls plans={data.plans} idPrefix="hud" />
+            <div className="voice-controls" role="group" aria-label="Voice commands">
+              <button type="button" onClick={() => run("distance-home")}>Distance home</button>
+              <button type="button" onClick={() => run("next-station")}>Next station</button>
+              <button type="button" onClick={() => run("drop-pin")}>Drop pin</button>
+              <ReplayButton replay={data.replay} eva={eva} />
+              {speechSupported() ? (
+                <button type="button" aria-pressed={listening} onClick={toggleVoice}>
+                  {listening ? "Stop listening" : "Listen for voice commands"}
+                </button>
+              ) : (
+                <span className="note">Voice commands need a browser with speech recognition; these buttons do the same.</span>
+              )}
+            </div>
+            <p className="note" role="status" aria-live="polite">
+              {eva.said || `Mission time ${clock(eva.t)}.`}
+            </p>
+            {data.replay && view && <ReplayPanel plan={plan} replay={data.replay} eva={eva} view={view} />}
+            <p className="note">
+              The visor shows at most four elements, in white and cyan with dark outlines; each has its
+              own shape. Values are MODELED from the plan and simulated <LabelBadge label="PLACEHOLDER" source="Simulated EVA; suit status is consumables left on the walker model." />.
+              {view?.stormOn && !eva.replay && snap.storm && ` Storm mode: ${refugeName(snap.storm.choice)}, dose ${snap.storm.dose.toFixed(0)} against ${snap.storm.dose_staying.toFixed(0)} open-sky minutes staying put over a ${plan.storm?.event_duration_min ?? 120}-minute event.`}{" "}
+              {view?.stormOn && !eva.replay && <LabelBadge label="MODELED" source="Storm mode by lowest modeled dose; event length and rover shielding are PLACEHOLDER." />}
+            </p>
+          </div>
+        </aside>
       )}
     </section>
   );

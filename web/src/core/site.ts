@@ -22,12 +22,15 @@ export function loadSite(site: string): Promise<Site> {
   const base = siteBase(site);
   const p = (async () => {
     const manifest: Manifest = await (await fetch(`${base}manifest.json`)).json();
-    const loaded = await Promise.all(
-      manifest.plans.map(async (x) => [x.preset, await (await fetch(base + x.file)).json()] as const),
-    );
-    const replay: Replay | null = manifest.replay
-      ? await (await fetch(base + manifest.replay)).json().catch(() => null)
-      : null;
+    // the plans and the replay load in parallel, so the map is not held up
+    const [loaded, replay] = await Promise.all([
+      Promise.all(
+        manifest.plans.map(async (x) => [x.preset, await (await fetch(base + x.file)).json()] as const),
+      ),
+      manifest.replay
+        ? fetch(base + manifest.replay).then((r) => r.json() as Promise<Replay>).catch(() => null)
+        : Promise.resolve(null),
+    ]);
     return { base, manifest, plans: Object.fromEntries(loaded), replay };
   })();
   p.catch(() => cache.delete(site));

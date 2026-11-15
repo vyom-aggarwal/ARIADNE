@@ -33,3 +33,4 @@ Thumbs.db
 
 # demo footage recorded by `make footage` (large; shared outside the repo)
 footage/
+screens/

@@ -209,7 +209,7 @@ export default function CuffCard({ site = "boxwork" }: { site?: string }) {
   const plan = data?.plans[eva.preset] ?? null;
   return (
     <section className="card-wrap" aria-labelledby="card-heading">
-      <h2 id="card-heading" className="planner-title">Cuff card</h2>
+      <h2 id="card-heading" className="page-title">Cuff card</h2>
       {error && <p role="alert">{error}</p>}
       {!data && !error && <p role="status">Loading the site package…</p>}
       {data && plan && (

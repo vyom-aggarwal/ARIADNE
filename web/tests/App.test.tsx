@@ -28,7 +28,7 @@ describe("page", () => {
     const links = within(nav).getAllByRole("link");
     const byName = (re: RegExp) => links.find((a) => re.test(a.textContent ?? ""));
     expect(byName(/source code/i)?.getAttribute("href")).toBe(REPO_URL);
-    expect(byName(/AI/)?.getAttribute("href")).toBe(`${REPO_URL}/blob/main/AI_USE.md`);
+    expect(byName(/use SI/)?.getAttribute("href")).toBe(`${REPO_URL}/blob/main/AI_USE.md`);
     expect(byName(/credits/i)?.getAttribute("href")).toBe(`${REPO_URL}/blob/main/CREDITS.md`);
   });
 

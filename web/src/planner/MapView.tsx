@@ -2,7 +2,7 @@
 // The planner's 2D map: deck.gl OrthographicView in site metres (east, north), shifted to the
 // site's south-west corner so float32 keeps centimetre precision.
 import { OrthographicView } from "@deck.gl/core";
-import { BitmapLayer, GeoJsonLayer, PathLayer, ScatterplotLayer, TextLayer } from "@deck.gl/layers";
+import { BitmapLayer, GeoJsonLayer, IconLayer, PathLayer, ScatterplotLayer, TextLayer } from "@deck.gl/layers";
 import DeckGL from "@deck.gl/react";
 import { useEffect, useMemo, useState } from "react";
 import type { LayerState } from "./LayerPanel";
@@ -18,13 +18,22 @@ interface Props {
 
 type XY = [number, number];
 
-// Okabe-Ito colors for the station roles; the legend below the map names them in text.
-const ROLE_COLORS: Record<string, [number, number, number]> = {
-  fracture: [0, 114, 178],
-  crest: [0, 114, 178],
-  wall: [204, 121, 167],
-  hollow: [86, 180, 233],
-};
+const THREAD: [number, number, number] = [61, 224, 255];
+// a relay site is drawn as a diamond (a vector glyph, not an image)
+const DIAMOND =
+  "data:image/svg+xml;charset=utf-8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path d="M20 3 L37 20 L20 37 L3 20 Z" fill="#ffc24a" stroke="#000" stroke-width="3"/></svg>',
+  );
+
+/** A scale-bar length (metres) near 110 px at this zoom: 1, 2 or 5 times a power of ten. */
+export function scaleBar(zoom: number): { metres: number; px: number } {
+  const pxPerM = 2 ** zoom;
+  const target = 110 / pxPerM;
+  const p = 10 ** Math.floor(Math.log10(target));
+  const metres = [1, 2, 5, 10].map((k) => k * p).filter((m) => m <= target).pop() ?? p;
+  return { metres, px: metres * pxPerM };
+}
 
 function shiftGeo(gj: any, ox: number, oy: number): any {
   const shift = (c: any): any =>
@@ -75,6 +84,7 @@ export default function MapView({ manifest, base, layerState, plan, onReady }: P
   }, [manifest, base, ox, oy, ready]);
 
   const local = (p: XY): XY => [p[0] - ox, p[1] - oy];
+  const [zoom, setZoom] = useState(-1.2);
   const stage = local(manifest.staging_xy_m);
   const initialViewState = { target: [stage[0], stage[1], 0] as [number, number, number], zoom: -1.2,
     minZoom: -4, maxZoom: 4 };
@@ -120,59 +130,77 @@ export default function MapView({ manifest, base, layerState, plan, onReady }: P
       }
     }
     if (plan) {
+      // the thread: a dark edge, a wide soft glow and a bright core
+      const path = (l: any) => l.path_xy_m.map((p: XY) => local(p));
+      const transects = [...new Map(plan.stations.map((s) => [s.transect, s])).values()];
       out.push(
-        new PathLayer({
-          id: "route",
-          data: plan.legs,
-          getPath: (l: any) => l.path_xy_m.map((p: XY) => local(p)),
-          getColor: [0, 0, 0, 255],
-          getWidth: 5,
-          widthUnits: "pixels",
-        }),
-        new PathLayer({
-          id: "route-core",
-          data: plan.legs,
-          getPath: (l: any) => l.path_xy_m.map((p: XY) => local(p)),
-          getColor: [255, 255, 255, 255],
-          getWidth: 2,
-          widthUnits: "pixels",
-        }),
+        new PathLayer({ id: "route-edge", data: plan.legs, getPath: path, getColor: [0, 0, 0, 200],
+          getWidth: 9, widthUnits: "pixels", capRounded: true, jointRounded: true }),
+        new PathLayer({ id: "route", data: plan.legs, getPath: path, getColor: [...THREAD, 90],
+          getWidth: 12, widthUnits: "pixels", capRounded: true, jointRounded: true }),
+        new PathLayer({ id: "route-core", data: plan.legs, getPath: path, getColor: [215, 250, 255, 255],
+          getWidth: 2.5, widthUnits: "pixels", capRounded: true, jointRounded: true }),
         new ScatterplotLayer({
           id: "stations",
           data: plan.stations,
           getPosition: (s: any) => local(s.xy_m),
-          getFillColor: (s: any) => ROLE_COLORS[s.role] ?? [255, 255, 255],
-          getLineColor: [0, 0, 0],
+          getFillColor: [10, 14, 26, 255],
+          getLineColor: THREAD,
           stroked: true,
-          lineWidthMinPixels: 1.5,
-          getRadius: 6,
+          lineWidthMinPixels: 2,
+          getRadius: 5,
           radiusUnits: "pixels",
+          pickable: true,
+        }),
+        new ScatterplotLayer({
+          id: "transect-markers",
+          data: transects,
+          getPosition: (s: any) => local(s.xy_m),
+          getFillColor: [10, 14, 26, 255],
+          getLineColor: THREAD,
+          stroked: true,
+          lineWidthMinPixels: 2,
+          getRadius: 11,
+          radiusUnits: "pixels",
+          pickable: true,
+        }),
+        new TextLayer({
+          id: "transect-numbers",
+          data: transects,
+          getPosition: (s: any) => local(s.xy_m),
+          getText: (s: any) => s.transect.replace(/^T0?/, ""),
+          getSize: 12,
+          getColor: [230, 236, 247],
+          fontWeight: 700,
+          fontFamily: "Inter, system-ui, sans-serif",
         }),
       );
     }
     if (plan?.rover) {
       const relays = plan.rover.relays.filter((r) => r.id !== "STAGING");
       out.push(
-        new ScatterplotLayer({
+        new IconLayer({
           id: "relays",
           data: relays,
           getPosition: (r: any) => local(r.xy_m),
-          getFillColor: [240, 228, 66],
-          getLineColor: [0, 0, 0],
-          stroked: true,
-          lineWidthMinPixels: 2,
-          getRadius: 8,
-          radiusUnits: "pixels",
+          getIcon: () => ({ url: DIAMOND, width: 40, height: 40, anchorY: 20, mask: false }),
+          getSize: 22,
+          sizeUnits: "pixels",
+          pickable: true,
         }),
         new TextLayer({
           id: "relay-labels",
           data: relays,
           getPosition: (r: any) => local(r.xy_m),
           getText: (r: any) => r.id.replace("RELAY", "R"),
-          getSize: 13,
-          getColor: [0, 0, 0],
-          getPixelOffset: [0, 0],
+          getSize: 12,
+          getColor: [230, 236, 247],
+          getPixelOffset: [0, -20],
           fontWeight: 700,
+          fontFamily: "Inter, system-ui, sans-serif",
+          outlineWidth: 2,
+          outlineColor: [0, 0, 0, 255],
+          fontSettings: { sdf: true },
         }),
       );
     }
@@ -187,12 +215,25 @@ export default function MapView({ manifest, base, layerState, plan, onReady }: P
         lineWidthMinPixels: 3,
         getRadius: 9,
         radiusUnits: "pixels",
+        pickable: true,
       }),
     );
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [manifest, base, layerState, plan, vectors, ox, oy, shown, detail]);
 
+  const bar = scaleBar(zoom);
+  const tooltip = ({ object, layer }: any) => {
+    if (!object || !layer) return null;
+    const style = { background: "rgba(15,21,38,0.97)", color: "#e6ecf7", border: "1px solid rgba(140,170,255,0.28)",
+      borderRadius: "6px", fontFamily: "Inter, system-ui, sans-serif", fontSize: "12px", padding: "6px 8px" };
+    if (layer.id === "stations" || layer.id === "transect-markers") {
+      return { text: `${object.id} · ${object.role} station · transect ${object.transect}`, style };
+    }
+    if (layer.id === "relays") return { text: `${object.id.replace("RELAY", "Relay site R")} (PLACEHOLDER)`, style };
+    if (layer.id === "staging") return { text: "Staging point: the rover starts here (PLACEHOLDER)", style };
+    return null;
+  };
   return (
     <div className="map-wrap">
       <div className="map" role="region" aria-label="Map of the site in metres; drag to pan, scroll or use the keyboard to zoom" tabIndex={0}>
@@ -208,16 +249,26 @@ export default function MapView({ manifest, base, layerState, plan, onReady }: P
             onReady?.();
           }}
           getCursor={() => "crosshair"}
+          getTooltip={tooltip}
+          onViewStateChange={({ viewState }: any) => setZoom(viewState.zoom)}
         />
       </div>
-      <ul className="map-key">
-        <li><span className="key-dot key-staging" aria-hidden="true" /> Staging point (rover), PLACEHOLDER</li>
-        <li><span className="key-dot" style={{ background: "rgb(0,114,178)" }} aria-hidden="true" /> Fracture or crest station</li>
-        <li><span className="key-dot" style={{ background: "rgb(204,121,167)" }} aria-hidden="true" /> Wall station</li>
-        <li><span className="key-dot" style={{ background: "rgb(86,180,233)" }} aria-hidden="true" /> Hollow station</li>
-        <li><span className="key-line" aria-hidden="true" /> Selected route (white line with a black edge)</li>
-        <li><span className="key-dot" style={{ background: "rgb(240,228,66)" }} aria-hidden="true" /> Rover relay site (R1, R2, …), PLACEHOLDER</li>
-      </ul>
+      <div className="map-overlay map-scale" aria-hidden="true">
+        <span className="bar" style={{ width: `${bar.px.toFixed(0)}px` }} />
+        <span>{bar.metres >= 1000 ? `${bar.metres / 1000} km` : `${bar.metres} m`}</span>
+      </div>
+      <div className="map-overlay map-north" aria-hidden="true">
+        <svg width="16" height="22" viewBox="0 0 16 22"><path d="M8 1 L14 20 L8 15 L2 20 Z" fill="currentColor" /></svg>
+        N
+      </div>
+      <div className="map-overlay map-legend">
+        <ul className="map-key" aria-label="Map key">
+          <li><span className="lg-route" aria-hidden="true" /> Selected route (the thread)</li>
+          <li><span className="lg-station" aria-hidden="true" /> Station; numbered circle: transect</li>
+          <li><span className="lg-relay" aria-hidden="true" /> Rover relay site (R1 to R3), PLACEHOLDER</li>
+          <li><span className="lg-stage" aria-hidden="true" /> Staging point (rover), PLACEHOLDER</li>
+        </ul>
+      </div>
     </div>
   );
 }

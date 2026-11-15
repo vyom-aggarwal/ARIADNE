@@ -64,6 +64,12 @@ Curiosity Navcam frames shown as 3D billboards in the Habitat Planner (web/publi
 | AS14-66-09305 (demo video only, not in the app) | Apollo 14, first EVA, February 5, 1971: the lunar module with Cone Crater behind | https://images-assets.nasa.gov/image/as14-66-09305/as14-66-09305~large.jpg | Credit: NASA (NASA imagery, no copyright) |
 | NRB_826633459EDR_F1210000NCAM00262M_ | Navcam, sol 4834 (site 121, drive 0) | https://mars.nasa.gov/msl-raw-images/proj/msl/redops/ods/surface/sol/04834/opgs/edr/ncam/NRB_826633459EDR_F1210000NCAM00262M_.JPG | Courtesy NASA/JPL-Caltech (JPL image use policy) |
 
+## Design inspiration
+
+| Item | Source | Use |
+| --- | --- | --- |
+| Space-interface design patterns (dark canvases, hairline panels, small uppercase labels with monospace readouts, one glowing accent, floating panels, icon rails) | Dribbble, "Space UI" tag, https://dribbble.com/tags/space-ui | Inspiration only, studied on 2026-11-15; no layouts, images, icons or fonts were copied from it |
+
 ## Text
 
 | Item | Source | License |
@@ -99,6 +105,10 @@ Exact versions are in `web/package-lock.json`. `npm run licenses` checks every p
 | Package | Use | License | Link |
 | --- | --- | --- | --- |
 | React and React DOM | User interface | MIT | https://react.dev |
+| lucide-react | Interface icons (the rail, buttons and status chips) | ISC | https://lucide.dev |
+| @fontsource/space-grotesk | Space Grotesk, the wordmark and heading font, self-hosted (latin woff2) | OFL-1.1 | https://fontsource.org/fonts/space-grotesk |
+| @fontsource/inter | Inter, the interface font, self-hosted (latin woff2) | OFL-1.1 | https://fontsource.org/fonts/inter |
+| @fontsource/jetbrains-mono | JetBrains Mono, for numbers with tabular figures, self-hosted (latin woff2) | OFL-1.1 | https://fontsource.org/fonts/jetbrains-mono |
 | Vite and @vitejs/plugin-react | Build and dev server | MIT | https://vite.dev |
 | TypeScript | Type checking | Apache-2.0 | https://www.typescriptlang.org |
 | Vitest | Unit tests | MIT | https://vitest.dev |

@@ -1,5 +1,7 @@
 // Written with AI assistance (Claude Code). See AI_USE.md.
-// The three route options side by side (PROMPT.md section 6), every number labeled.
+// The three route options as cards side by side (PROMPT.md section 6), key numbers large in mono,
+// every number with its label, and the price-of-safety line as a highlighted strip.
+import { CircleAlert, CircleCheck } from "lucide-react";
 import LabelBadge from "./LabelBadge";
 import { type Plan, PRESET_TITLES, type Totals } from "./types";
 
@@ -14,15 +16,15 @@ const SOURCE =
   "Modeled by ariadne plan: walker model (Minetti et al. 2002 with PLACEHOLDER suit settings), " +
   "PLACEHOLDER presets and scenario (config/presets.json).";
 
-const ROWS: { name: string; unit: string; value: (t: Totals) => string }[] = [
+export const ROWS: { name: string; unit: string; value: (t: Totals) => string; big?: boolean }[] = [
+  { name: "Science value", unit: "sum of station scores", value: (t) => t.science_value.toFixed(2), big: true },
+  { name: "Stations (transects)", unit: "", value: (t) => `${t.stations} (${t.transects})` },
   { name: "Duration", unit: "min", value: (t) => t.minutes.toFixed(0) },
   { name: "Distance", unit: "m", value: (t) => Math.round(t.distance_m).toLocaleString("en-US") },
   { name: "Consumables used", unit: "min at nominal rate", value: (t) => t.consumables_min.toFixed(0) },
   { name: "Least margin above reserve", unit: "min", value: (t) => t.min_thread_margin_min.toFixed(1) },
   { name: "Worst walk to the rover", unit: "min", value: (t) => t.worst_minutes_to_shelter.toFixed(1) },
   { name: "Relative dose", unit: "open-sky minutes", value: (t) => t.relative_dose_min.toFixed(0) },
-  { name: "Stations (transects)", unit: "", value: (t) => `${t.stations} (${t.transects})` },
-  { name: "Science value", unit: "sum of station scores", value: (t) => t.science_value.toFixed(2) },
 ];
 const ROVER_SOURCE =
   "The rover is a mobile comms relay and the shelter: it parks at a relay site for each transect " +
@@ -60,76 +62,63 @@ export default function RouteOptions({ plans, selected, onSelect }: Props) {
   const presets = ORDER.filter((p) => plans[p]);
   const price = priceOfSafety(plans);
   return (
-    <section className="panel route-options" aria-labelledby="routes-heading">
-      <h2 id="routes-heading">Route options</h2>
-      <table aria-label="Route options">
-        <thead>
-          <tr>
-            <td />
-            {presets.map((p) => (
-              <th key={p} scope="col">
-                <button
-                  type="button"
-                  aria-pressed={p === selected}
-                  aria-label={`Show ${PRESET_TITLES[p]} on the map`}
-                  onClick={() => onSelect(p)}
-                  className="preset-button"
-                >
-                  {PRESET_TITLES[p]}
-                </button>
-              </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {ROWS.map((row) => (
-            <tr key={row.name}>
-              <th scope="row">
-                {row.name}
-                {row.unit && <span className="unit"> ({row.unit})</span>}
-              </th>
-              {presets.map((p) => (
-                <td key={p}>
-                  {row.value(plans[p].totals)} <LabelBadge label={plans[p].totals.label} source={SOURCE} />
-                </td>
-              ))}
-            </tr>
-          ))}
-          <tr>
-            <th scope="row">
-              Rover moves<span className="unit"> (where the walk ends)</span>
-            </th>
-            {presets.map((p) => (
-              <td key={p}>
-                {plans[p].rover ? `${plans[p].rover!.moves.length} (${plans[p].rover!.ends_at})` : "0"}{" "}
-                <LabelBadge label="MODELED" source={ROVER_SOURCE} />
-              </td>
-            ))}
-          </tr>
-          <tr>
-            <th scope="row">Checks</th>
-            {presets.map((p) => (
-              <td key={p}>
-                {Object.values(plans[p].checks).every((c) => c === "pass")
-                  ? "All five pass"
-                  : Object.entries(plans[p].checks)
-                      .filter(([, v]) => v !== "pass")
-                      .map(([k]) => k)
-                      .join(", ")}{" "}
-                <LabelBadge label="MODELED" source="Thread, buddy, shelter, comms and rover checks" />
-              </td>
-            ))}
-          </tr>
-        </tbody>
-      </table>
+    <section className="route-options" aria-label="Route options">
+      <div className="route-cards">
+        {presets.map((p) => {
+          const plan = plans[p];
+          const failed = Object.entries(plan.checks).filter(([, v]) => v !== "pass").map(([k]) => k);
+          return (
+            <article key={p} className={`route-card${p === selected ? " selected" : ""}`} aria-label={`${PRESET_TITLES[p]} route`}
+              data-preset={p}>
+              <button type="button" aria-pressed={p === selected} aria-label={`Show ${PRESET_TITLES[p]} on the map`}
+                onClick={() => onSelect(p)} className="preset-button">
+                {PRESET_TITLES[p]}
+              </button>
+              <dl>
+                {ROWS.map((row) => (
+                  <div key={row.name} data-row={row.name}>
+                    <dt>
+                      {row.name}
+                      {row.unit && <span className="visually-hidden"> ({row.unit})</span>}
+                    </dt>
+                    <dd className={row.big ? "big" : undefined} title={row.unit || undefined}>
+                      {row.value(plan.totals)} <LabelBadge label={plan.totals.label} source={SOURCE} />
+                    </dd>
+                  </div>
+                ))}
+                <div data-row="Rover moves">
+                  <dt>Rover moves (where the walk ends)</dt>
+                  <dd>
+                    {plan.rover ? `${plan.rover.moves.length} (${plan.rover.ends_at})` : "0"}{" "}
+                    <LabelBadge label="MODELED" source={ROVER_SOURCE} />
+                  </dd>
+                </div>
+                <div data-row="Checks">
+                  <dt>Checks</dt>
+                  <dd>
+                    {failed.length === 0 ? (
+                      <span className="checks-ok"><CircleCheck size={13} aria-hidden="true" /> All five pass</span>
+                    ) : (
+                      <span className="checks-ok" style={{ color: "var(--danger)" }}>
+                        <CircleAlert size={13} aria-hidden="true" /> {failed.join(", ")}
+                      </span>
+                    )}{" "}
+                    <LabelBadge label="MODELED" source="Thread, buddy, shelter, comms and rover checks" />
+                  </dd>
+                </div>
+              </dl>
+            </article>
+          );
+        })}
+      </div>
       {price && (
         <p className="price-of-safety" data-testid="price-of-safety">
-          <strong>Price of safety:</strong> Safest gives up {price.valueGivenUp.toFixed(2)} of science
-          value ({(100 * price.shareGivenUp).toFixed(0)}% of Most science
+          <strong>Price of safety:</strong> Safest gives up <span className="num">{price.valueGivenUp.toFixed(2)}</span> of
+          science value (<span className="num">{(100 * price.shareGivenUp).toFixed(0)}%</span> of Most science
           {price.transectsGivenUp > 0
             ? `, ${price.transectsGivenUp} transect${price.transectsGivenUp === 1 ? "" : "s"}`
             : ""}
-          ) and gains {price.marginGained.toFixed(1)} min of least margin above its reserve.{" "}
+          ) and gains <span className="num">{price.marginGained.toFixed(1)}</span> min of least margin above its reserve.{" "}
           {price.sameTransects
             ? "The two visit the same transects; they differ in paths and margins only."
             : "The two visit different transects."}{" "}

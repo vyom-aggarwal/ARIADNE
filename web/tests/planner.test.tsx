@@ -56,17 +56,16 @@ describe("layer panel (E6)", () => {
 describe("route options (E7)", () => {
   it("shows the eight figures for each preset, each with its label", () => {
     render(<RouteOptions plans={plans} selected="balanced" onSelect={() => {}} />);
-    const table = screen.getByRole("table", { name: /route options/i });
-    const rows = within(table).getAllByRole("row");
-    const names = rows.slice(1).map((r) => r.querySelector("th")?.textContent ?? "");
-    for (const m of ["Duration", "Distance", "Consumables used", "Least margin",
-      "Worst walk to the rover", "Relative dose", "Stations", "Science value"]) {
-      expect(names.some((n) => n.startsWith(m))).toBe(true);
-    }
-    for (const row of rows.slice(1)) {
-      const cells = row.querySelectorAll("td");
-      expect(cells).toHaveLength(3);
-      cells.forEach((td) => expect(td.querySelector(".label-badge")).toBeTruthy());
+    const table = screen.getByRole("region", { name: /route options/i });
+    const cards = within(table).getAllByRole("article");
+    expect(cards).toHaveLength(3); // one card per preset
+    for (const card of cards) {
+      const names = [...card.querySelectorAll("dt")].map((dt) => dt.textContent ?? "");
+      for (const m of ["Duration", "Distance", "Consumables used", "Least margin",
+        "Worst walk to the rover", "Relative dose", "Stations", "Science value"]) {
+        expect(names.some((n) => n.startsWith(m))).toBe(true);
+      }
+      card.querySelectorAll("dd").forEach((dd) => expect(dd.querySelector(".label-badge")).toBeTruthy());
     }
     expect(table.textContent).toContain(plans.balanced.totals.minutes.toFixed(0));
   });
