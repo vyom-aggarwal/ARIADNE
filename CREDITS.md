@@ -48,7 +48,7 @@ Sources move here, with their credit lines, when the pipeline first uses them. W
 
 ## Images
 
-Curiosity Navcam frames shown as 3D billboards in the Habitat Planner (web/public/sites/boxwork/photos/), from NASA's raw-image API. Only the upper part of each frame is shown, so the rover deck and any hardware markings stay out of view. No AI-generated images are used, and no NASA logos, flags, insignia or mission patches appear as graphics.
+Curiosity Navcam frames shown as 3D billboards in the Habitat Planner (web/public/sites/boxwork/photos/), from NASA's raw-image API. Only the upper part of each frame is shown, so the rover deck and any hardware markings stay out of view. No images from AI image generators are used, and no NASA logos, flags, insignia or mission patches appear as graphics. The one drawing made with AI help is the ARIADNE mark (web/public/favicon.svg, web/public/apple-touch-icon.png and web/src/brand/): Claude Code wrote it as SVG code from straight lines, a ring and a square, at the team's request; it copies no third-party artwork and is licensed Apache-2.0 with the code.
 
 | Image | Camera and time | Source | Credit and terms |
 | --- | --- | --- | --- |

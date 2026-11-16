@@ -4,7 +4,7 @@
 // and the small files of the site package the tablet and card need (manifest, plans, photos,
 // validation). Pages and data are fetched network-first, so a new deploy reaches users who are
 // online; hashed assets are served from the cache first. Nothing is sent anywhere.
-const CACHE = "ariadne-v1";
+const CACHE = "ariadne-v2";
 const SITE = "sites/boxwork/";
 
 async function put(cache, url) {
@@ -19,7 +19,7 @@ async function put(cache, url) {
 
 async function precache() {
   const cache = await caches.open(CACHE);
-  const shell = new Set(["./"]);
+  const shell = new Set(["./", "./favicon.svg", "./apple-touch-icon.png"]);
   const page = await put(cache, "./");
   if (page) {
     const html = await page.text();

@@ -37,6 +37,8 @@ Decisions approved by the team, most proposed by Claude (claude.ai), which gener
 
 - **Disclosure correction (2026-11-15):** the ARIADNE idea and plan were not written by the team before any AI work: Claude (claude.ai) generated the concept, PLAN.md and PROMPT.md on November 8 from the challenge statement, at the team's request, and later reviewed each phase and proposed most of the decisions the team approved. The idea was SI-generated before the 2026 SI rule (November 13) was published; AI_USE.md, the README and the Use of SI text now state both facts.
 
+- **Logo (2026-11-15, late evening):** the team asked for a logo and favicon. Rule 5 and the earlier design brief ("the wordmark is typographic, not a logo image") rule out AI-generated images. The mark is SVG code that Claude Code wrote from straight lines, a ring and a square (Mars ground with boxwork ridges; the thread from you to the rover), with no image generator, on branch `logo`. AI_USE.md, CREDITS.md, the README, the footer and the Use of SI text name it as the one exception to that rule. Whether to merge it, given the 2026 guide's watermark rule for SI-generated images, is the team's call.
+
 ## Kickoff findings that change the plan
 
 Full evidence is in docs/SOURCES_LOG.md. PROMPT.md and docs/PLAN.md now carry these corrections.

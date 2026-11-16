@@ -13,6 +13,7 @@ import {
   Zap,
 } from "lucide-react";
 import { type KeyboardEvent, lazy, Suspense, useEffect, useRef, useState } from "react";
+import Mark from "./brand/Mark";
 import { endTime } from "./core/eva/sim";
 import { getEva, runClock, useEva } from "./core/eva/store";
 import { LIGHT_TIME_SOURCE, lightTimeAt, solClock } from "./core/lighttime";
@@ -99,6 +100,7 @@ function MissionBar({ onTab, onTour }: { onTab: (id: TabId) => void; onTour: () 
   return (
     <header className="mission-bar">
       <div className="wordmark">
+        <Mark size={28} className="wordmark-mark" />
         <h1 className="wordmark-name">ARIADNE</h1>
         <span className="tag">A thread home on Mars</span>
       </div>
@@ -161,6 +163,7 @@ function Intro({ onTour, onClose }: { onTour: () => void; onClose: () => void })
     <div className="intro" role="dialog" aria-modal="true" aria-labelledby="intro-title"
       onKeyDown={(e) => e.key === "Escape" && onClose()}>
       <div className="intro-card">
+        <Mark size={56} className="intro-mark" />
         <p className="kicker">NASA Space Apps 2026 · Interplanetary Survival Guide: Martian Map</p>
         <h2 id="intro-title">A thread home on Mars</h2>
         <p>
@@ -310,8 +313,8 @@ export default function App() {
         {tour !== null && <Tour step={tour} onStep={goStep} onClose={() => setTour(null)} />}
       </main>
       <footer className="footer">
-        <p title="Code licensed under Apache-2.0. Concept and plan generated with Claude (claude.ai); software written with Claude Code (see How we use SI). Curiosity photos courtesy NASA/JPL-Caltech. No NASA logos or AI-generated images are used. All plans are modeled on placeholder settings and are not mission guidance.">
-          Apache-2.0 · Concept and plan generated with Claude (claude.ai); software written with Claude Code · Curiosity photos courtesy NASA/JPL-Caltech · No NASA logos or AI-generated images · Plans are modeled on placeholder settings, not mission guidance
+        <p title="Code licensed under Apache-2.0. Concept and plan generated with Claude (claude.ai); software written with Claude Code (see How we use SI). Curiosity photos courtesy NASA/JPL-Caltech. No NASA logos are used. The ARIADNE mark was drawn as SVG code by Claude Code (no image generator); no other images are AI-made. All plans are modeled on placeholder settings and are not mission guidance.">
+          Apache-2.0 · Concept and plan generated with Claude (claude.ai); software written with Claude Code · Curiosity photos courtesy NASA/JPL-Caltech · No NASA logos · Mark drawn as code by Claude Code; no other AI-made images · Plans are modeled on placeholder settings, not mission guidance
         </p>
       </footer>
     </div>

@@ -316,12 +316,19 @@ input[type="range"]::-moz-range-thumb {
 
 .wordmark {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 0.6rem;
   margin: 0;
   font-size: 1.15rem;
   letter-spacing: 0.18em;
   white-space: nowrap;
+}
+
+.wordmark-mark {
+  flex: none;
+  align-self: center;
+  border-radius: 7px;
+  box-shadow: 0 0 0 1px var(--border-strong);
 }
 
 .wordmark-name {
@@ -1061,6 +1068,13 @@ legend {
   border-radius: 14px;
   background: var(--panel-solid);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+
+.intro-mark {
+  display: block;
+  margin-bottom: 0.9rem;
+  border-radius: 13px;
+  box-shadow: 0 0 0 1px var(--border-strong), 0 8px 24px rgba(61, 224, 255, 0.12);
 }
 
 .intro-card .kicker {
