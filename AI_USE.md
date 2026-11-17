@@ -8,7 +8,7 @@ NASA Space Apps 2026 calls AI tools "Super Intelligence (SI)" and asks teams to 
 - **Two facts, both stated:** the idea was SI-generated, and that happened before the 2026 SI rule was published. The 2026 Project Submission Guide, published on November 13, 2026, says SI should not be used to come up with the idea of how to solve the challenge.
 - **Claude Code** (Anthropic's AI coding assistant) wrote the code, ran the pipeline, the tests and the checks, and drafted the documents.
 - **The team** chose the challenge, directed the work, approved or rejected each decision, got clearance from the Local Lead, and is responsible for the submission.
-- **No AI-generated images, video or audio, with one exception:** the ARIADNE mark (the small symbol beside the name and the browser-tab icon), which Claude Code drew as SVG code from straight lines, a ring and a square at the team's request, with no image generator. Every other picture is real mission imagery with its credit, or a chart or map drawn from data.
+- **No AI-generated images, video or audio, with one exception:** the ARIADNE mark (the small symbol beside the name and the browser-tab icon), which Claude Code drew as SVG code from two straight strokes and a dot at the team's request, with no image generator. Every other picture is real mission imagery with its credit, or a chart or map drawn from data.
 
 ## Who did what
 
@@ -27,7 +27,7 @@ NASA Space Apps 2026 calls AI tools "Super Intelligence (SI)" and asks teams to 
 - Ran the data processing and reported the results, including the ones that missed their targets, and diagnosed problems (for example the DEM seams behind the rover-check false alarms, and a timeline that showed the wrong comm shadows after the relay change).
 - Drafted the documents: README, this file, PROGRESS, CREDITS, the submission text, the video script and the slide outline.
 - Redesigned the user interface on November 15, 2026, at the team's request and to its brief (an app shell, a dark design system, floating map panels, route cards, the visor drawer and compass tape, validation cards, the About page, the first-visit intro and the judge tour), changing no data, number, label or check.
-- Drew the ARIADNE mark on November 15, 2026, at the team's request: Mars ground seen from above with boxwork ridges, and the thread from a ring (you) to a square (the rover), the same symbols as the line home on the HUD and tablet. It is SVG code (web/public/favicon.svg and web/src/brand/), written by hand from straight lines, a ring and a square; no image generator was used and no third-party artwork was copied. The app's footer says so beside it.
+- Drew the ARIADNE mark on November 15 and 16, 2026, at the team's request: a peak that is both the A of the name and Mount Sharp, with a dot for the walker on it, in the app's cyan-to-violet accent. It is SVG code (web/public/favicon.svg and web/src/brand/), written by hand from two straight strokes and a dot; no image generator was used and no third-party artwork was copied. The app's footer says so beside it.
 
 ### The team
 

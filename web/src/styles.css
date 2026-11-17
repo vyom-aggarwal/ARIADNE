@@ -327,8 +327,8 @@ input[type="range"]::-moz-range-thumb {
 .wordmark-mark {
   flex: none;
   align-self: center;
-  border-radius: 7px;
-  box-shadow: 0 0 0 1px var(--border-strong);
+  margin-right: -0.15rem;
+  filter: drop-shadow(0 0 6px rgba(61, 224, 255, 0.35));
 }
 
 .wordmark-name {
@@ -1073,8 +1073,8 @@ legend {
 .intro-mark {
   display: block;
   margin-bottom: 0.9rem;
-  border-radius: 13px;
-  box-shadow: 0 0 0 1px var(--border-strong), 0 8px 24px rgba(61, 224, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(61, 224, 255, 0.22);
 }
 
 .intro-card .kicker {

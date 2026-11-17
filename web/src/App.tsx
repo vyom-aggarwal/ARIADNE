@@ -100,7 +100,7 @@ function MissionBar({ onTab, onTour }: { onTab: (id: TabId) => void; onTour: () 
   return (
     <header className="mission-bar">
       <div className="wordmark">
-        <Mark size={28} className="wordmark-mark" />
+        <Mark size={24} variant="glyph" className="wordmark-mark" />
         <h1 className="wordmark-name">ARIADNE</h1>
         <span className="tag">A thread home on Mars</span>
       </div>

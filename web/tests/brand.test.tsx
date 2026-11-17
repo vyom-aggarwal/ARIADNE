@@ -1,6 +1,7 @@
 // Written with AI assistance (Claude Code). See AI_USE.md.
-// The ARIADNE mark and favicon: a vector drawing in code (no image generator, no third-party
-// artwork), the same geometry in the app and the favicon, and the page heading unchanged.
+// The ARIADNE mark and favicon: a vector drawing in code (two strokes and a dot; no image
+// generator, no third-party artwork), the same geometry in the app and the favicon, and the page
+// heading unchanged.
 import { cleanup, render, screen } from "@testing-library/react";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -33,8 +34,9 @@ describe("favicon", () => {
   });
 
   it("draws the same mark as the app", () => {
-    expect(favicon).toContain(MARK.route);
-    expect(favicon).toContain(MARK.ridges);
+    expect(favicon).toContain(`d="${MARK.peak}"`);
+    expect(favicon).toContain(`cx="${MARK.dot.cx}" cy="${MARK.dot.cy}" r="${MARK.dot.r}"`);
+    expect(favicon).toContain(`rx="${MARK.tileRadius}"`);
     for (const c of Object.values(MARK.colors)) expect(favicon.toLowerCase()).toContain(c.toLowerCase());
   });
 });
@@ -45,7 +47,21 @@ describe("mark", () => {
     const svg = container.querySelector("svg")!;
     expect(svg.getAttribute("aria-hidden")).toBe("true");
     expect(svg.getAttribute("focusable")).toBe("false");
-    expect(svg.querySelector("path[d]")?.getAttribute("d")).toBeTruthy();
+    expect(svg.querySelector("path")?.getAttribute("d")).toBe(MARK.peak);
+  });
+
+  it("draws a tile for the app icon and the bare glyph beside the wordmark", () => {
+    const { container } = render(
+      <>
+        <Mark variant="tile" />
+        <Mark variant="glyph" />
+      </>,
+    );
+    const [tile, glyph] = [...container.querySelectorAll("svg")];
+    expect(tile.querySelector("rect")).toBeTruthy();
+    expect(tile.getAttribute("viewBox")).toBe(MARK.viewBox);
+    expect(glyph.querySelector("rect")).toBeNull();
+    expect(glyph.getAttribute("viewBox")).toBe(MARK.glyphViewBox);
   });
 
   it("uses unique gradient ids when drawn twice", () => {

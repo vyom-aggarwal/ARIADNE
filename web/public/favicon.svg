@@ -1,19 +1,13 @@
 <!-- Written with AI assistance (Claude Code). See AI_USE.md. -->
-<!-- The ARIADNE mark: Mars ground with boxwork ridges and the thread from you (ring) to the rover (square). Same geometry as web/src/brand/geometry.ts. -->
+<!-- The ARIADNE mark: a peak (the A, and Mount Sharp) with a dot for the walker, cut out of the accent gradient. Same geometry as web/src/brand/geometry.ts. -->
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <defs>
-    <linearGradient id="ground" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#b5532a"/>
-      <stop offset="1" stop-color="#5c200d"/>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3de0ff"/>
+      <stop offset="1" stop-color="#9b8cff"/>
     </linearGradient>
-    <clipPath id="tile"><rect width="64" height="64" rx="14"/></clipPath>
   </defs>
-  <rect width="64" height="64" rx="14" fill="url(#ground)"/>
-  <g clip-path="url(#tile)" fill="none" stroke="#f0b58a" stroke-opacity="0.38" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-    <path d="M0 24 L17 21 L23 0 M17 21 L20 39 L0 44 M20 39 L39 35 L44 14 L64 10 M44 14 L36 0 M39 35 L45 52 L64 55 M45 52 L27 57 L24 64 M27 57 L20 39 M39 35 L64 33"/>
-  </g>
-  <path d="M14 15 H33 Q41 15 37 22 L30 30 Q26 36 34 36 H43 Q50 36 48 43 L46.5 47" fill="none" stroke="#05070d" stroke-width="9.5" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M14 15 H33 Q41 15 37 22 L30 30 Q26 36 34 36 H43 Q50 36 48 43 L46.5 47" fill="none" stroke="#3de0ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="14" cy="15" r="5.5" fill="#05070d" stroke="#3de0ff" stroke-width="3.2"/>
-  <rect x="40.5" y="45" width="12" height="12" rx="1.5" fill="#3de0ff" stroke="#05070d" stroke-width="2.6"/>
+  <rect width="64" height="64" rx="16" fill="url(#g)"/>
+  <path d="M17 47 L32 16 L47 47" fill="none" stroke="#0a0e1a" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="32" cy="38" r="4.6" fill="#0a0e1a"/>
 </svg>
